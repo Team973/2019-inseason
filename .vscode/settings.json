@@ -13,11 +13,8 @@
   },
   "C_Cpp.default.configurationProvider": "vscode-wpilib",
   "wpilib.online": true,
-
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
-
-  "editor.formatOnSave": true,
-  "python.pythonPath": "/usr/local/bin/python3"
+  "editor.formatOnSave": true
 }
