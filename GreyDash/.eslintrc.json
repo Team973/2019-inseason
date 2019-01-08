@@ -1,0 +1,13 @@
+{
+    "extends": "standard",
+    "plugins": [
+        "json",
+        "markdown"
+    ],
+    "rules": {
+        "indent": [2, 4]
+    },
+    "globals": {
+        "window": true
+    }
+}

@@ -1,0 +1,8 @@
+language: java
+install:
+    - ./gradlew installRoboRioToolchain
+script:
+    - ./gradlew build
+notifications:
+    slack:
+        secure: XPRDHS9Tv4phNxv0sTaq927+GYQ19N32Up4Q4Ddtxph7sRg+thibKt+hP9xlxY9+ittl5JzOtblq5VbU1edQsjKQxSFTdFCL8IoYKxGvjdB7vRQ7/Dm1lDWhUPbjCUf/HYWlS5Hjpbey09KZjHZpjfw56ZATUn1L9RTAqeQEqrTGKzO1Cm8yWUxZ6xzGeLrK0+oB39WLBahd/qg1pSbTydc56bmwa5of2UKl9MQv9BaNBTvHpOy/2Lw3jvAguKa7ZfeUM75/WsZ2gDM9L2n87+GjlJpMeYDSLeNYp9NDHeAu3VkK9Ky9w00ZPi3odKhjaXKAoO7sWEmA7H7ja482viEQvoJD0hmsh/0KIKFJC/CqGSaNLNRz1Uxgp9f4vI8N87UkxIBk8sr184Q9vPTG45bDWZeiDPM0Fz2J1Dk7jHHAQs8OI7ZXAq7kPmYYaKpCMDUpEFivFGAhylweN53/wDsE6pLMzLJOchysQ17U+tar9BagD7yaEP5pI9FeONslzkU+HO+EoteKnSmLa/54utnG7kWXWH+qm0Xiu8ZkJl3Ayss73++VbAvuXhCrXjpdydWWha4iDB6DgHo4cbux3tI2ES/gsQ2cdn8jhylS4ujU3NK07skVCd3IpzcJQb2ltbGD0qbTmr9xQ3dGAEQskN8UEN0PgTb8krGTQkLnp+c=

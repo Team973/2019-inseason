@@ -1,0 +1,162 @@
+{
+    "charts": [{
+            "settings": {
+                "tooltip": false,
+                "minValue": -1,
+                "maxValue": 1,
+                "show": true
+            },
+            "title": "Drive Percentages (red left, blue right)",
+            "keys": [
+                "/SmartDashboard/drive/percentages/leftpercent",
+                "/SmartDashboard/drive/percentages/rightpercent"
+            ]
+        },
+        {
+                "settings": {
+                    "tooltip": false,
+                    "minValue": 0,
+                    "maxValue": 100,
+                    "show": true
+                },
+                "title": "Drive Currents (red left, blue right)",
+                "keys": [
+                    "/SmartDashboard/drive/currents/leftcurrent",
+                    "/SmartDashboard/drive/currents/rightcurrent"
+                ]
+            },
+        {
+            "settings": {
+                "tooltip": false,
+                "minValue": -180,
+                "maxValue": 180,
+                "show": true
+            },
+            "title": "Drive Angles (red set point, blue actual)",
+            "keys": [
+                "/SmartDashboard/drive/outputs/anglesetpoint",
+                "/SmartDashboard/drive/outputs/angleactual"
+            ]
+        },
+        {
+            "settings": {
+                "tooltip": false,
+                "minValue": -20,
+                "maxValue": 320,
+                "show": true
+            },
+            "title": "Drive Left Positions (red set point, blue actual)",
+            "keys": [
+                "/SmartDashboard/drive/outputs/leftpossetpoint",
+                "/SmartDashboard/drive/outputs/leftposnow"
+            ]
+        },
+        {
+            "settings": {
+                "tooltip": false,
+                "minValue": -20,
+                "maxValue": 320,
+                "show": true
+            },
+            "title": "Drive Right Positions (red set point, blue actual)",
+            "keys": [
+                "/SmartDashboard/drive/outputs/rightpossetpoint",
+                "/SmartDashboard/drive/outputs/rightposnow"
+            ]
+        },
+        {
+            "settings": {
+                "tooltip": false,
+                "minValue": -144,
+                "maxValue": 144,
+                "show": true
+            },
+            "title": "Drive Velocity (red left, blue right)",
+            "keys": [
+                "/SmartDashboard/drive/outputs/leftvelff",
+                "/SmartDashboard/drive/outputs/rightvelff"
+            ]
+        },
+        {
+            "settings": {
+                "tooltip": false,
+                "minValue": -144,
+                "maxValue": 144,
+                "show": true
+            },
+            "title": "Angular Velocity (red set point, blue actual)",
+            "keys": [
+                "/SmartDashboard/drive/outputs/angratesetpoint",
+                "/SmartDashboard/drive/outputs/angratenow"
+            ]
+        },
+        {
+            "settings": {
+                "tooltip": false,
+                "minValue": 0,
+                "maxValue": 14,
+                "show": true
+            },
+            "title": "Battery Voltage",
+            "keys": [
+                "/SmartDashboard/misc/pdp/batteryvoltage"
+            ]
+        }
+    ],
+    "indicators": [{
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Left Drive Encoder",
+            "unit": "in",
+            "key": "/SmartDashboard/drive/encoders/leftencoder"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Right Drive Encoder",
+            "unit": "in",
+            "key": "/SmartDashboard/drive/encoders/rightencoder"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Left Drive Percentage",
+            "unit": "%",
+            "key": "/SmartDashboard/drive/percentages/leftpercent"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Right Drive Percentage",
+            "unit": "%",
+            "key": "/SmartDashboard/drive/percentages/rightpercent"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": true,
+                "debug": false
+            },
+            "title": "Battery Voltage",
+            "unit": "v",
+            "key": "/SmartDashboard/misc/pdp/batteryvoltage"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+  "java.configuration.updateBuildConfiguration": "disabled",
+  "java.import.gradle.enabled": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "bin/": true,
+    ".classpath": true,
+    ".project": true
+  },
+  "C_Cpp.default.configurationProvider": "vscode-wpilib",
+  "wpilib.online": true,
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  "editor.formatOnSave": true,
+  "python.pythonPath": "/usr/local/bin/python3"
+}

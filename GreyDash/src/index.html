@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GreyDash</title>
+
+    <!-- Material Design Lite -->
+    <link rel="stylesheet" href="css/material.css">
+
+    <!-- Custom -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="fonts/fonts.css">
+</head>
+
+<body>
+    <dialog id="connectionDialog" class="mdl-dialog">
+        <h3 class="mdl-dialog__title">Connecting to the robot...</h3>
+
+        <div class="mdl-dialog__actions">
+            <button id="connectionCloseButton" type="button" class="mdl-button close">Close</button>
+        </div>
+    </dialog>
+
+    <dialog id="helpDialog" class="mdl-dialog">
+        <h3 class="mdl-dialog__title">GreyDash Help</h3>
+
+        <div class="mdl-dialog__content">
+            <h4>How to use GreyDash:</h4>
+            <ol>
+                <li>Connect to the robot's network.</li>
+                <li>Open a driver station connection to the robot (required to read data).</li>
+                <li>Startup <a href="https://pynetworktables2js.readthedocs.io/en/stable/">pynetworktables2js</a>.</li>
+                <li>Open http://localhost:8888 in a web browser.</li>
+            </ol>
+            <p>More information can be found at <a href="https://github.com/Team973/greybots-skeleton/blob/master/docs/DashboardGuide.md">this guide</a>.</p>
+        </div>
+
+        <div class="mdl-dialog__actions">
+            <button id="helpCloseButton" type="button" class="mdl-button close">Close</button>
+        </div>
+    </dialog>
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">GreyDash</span>
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+                <!-- Navigation. We hide it in small screens. -->
+                <nav class="mdl-navigation mdl-layout--large-screen-only">
+                    <a onclick="helpDialog.showModal()" class="mdl-navigation__link"><i class="material-icons">help</i></a>
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <nav class="mdl-navigation">
+                <a onclick="openPage('default')" class="mdl-navigation__link">Default Dash</a>
+                <a onclick="openPage('debug')" class="mdl-navigation__link">Debug Dash</a>
+                <a onclick="openPage('table')" class="mdl-navigation__link">Table</a>
+            </nav>
+        </div>
+
+        <main class="mdl-layout__content mdl-color--grey-800">
+            <!--
+            Default tab
+            Use this tab for high priority items to be shown to the drivers.
+            -->
+            <section id="default" class="tabcontent">
+                <div class="mdl-grid content">
+                    <div id="cameraContainer" class="cameraContainer mdl-card mdl-cell mdl-cell--7-col mdl-color--grey-400">
+                        <button id="refresh" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="reloadCamera()">
+                            <i class="material-icons">autorenew</i>
+                        </button>
+                    </div>
+
+                    <div class="cards mdl-cell mdl-cell--2-col">
+                        <div id="indicators" class="indicators mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400"><span>Robot Status: <span id="robotState">Unknown State</span></span>
+                        </div>
+
+                        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            <!-- Gyroscope -->
+                            <svg id="gyro" class="gyro">
+                                <circle cx="50%" cy="50%" r="83"></circle>
+                                <circle cx="50%" cy="50%" r="50"></circle>
+                                <rect id="gyroDial" class="gyroDial" x="78" y="0" width="10" height="80"></rect>
+                                <text id="gyroNumber" class="gyroNumber" x="50%" y="115">0º</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="important-cards mdl-cell mdl-cell--3-col">
+                        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            <h1 id="timer" class="timer">--:--</h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!--
+            Debug tab
+            Use this tab for on demand charts and indicators for debugging.
+            -->
+            <section id="debug" class="tabcontent">
+                <div class="mdl-grid content">
+                    <div id="debugCharts" class="charts mdl-card mdl-cell mdl-cell--7-col mdl-color--grey-400">
+                    </div>
+
+                    <div class="cards mdl-cell mdl-cell--2-col">
+
+                        <div id="debugIndicators" class="indicators mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            </span>
+                        </div>
+
+                        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            <!-- Gyroscope -->
+                            <svg id="debugGyro" class="gyro">
+                                <circle cx="50%" cy="50%" r="83"></circle>
+                                <circle cx="50%" cy="50%" r="50"></circle>
+                                <rect id="debugGyroDial" class="gyroDial" x="78" y="0" width="10" height="80"></rect>
+                                <text id="debugGyroNumber" class="gyroNumber" x="50%" y="115">0º</text>
+                            </svg>
+                        </div>
+
+                    </div>
+                    <div class="important-cards mdl-cell mdl-cell--3-col">
+                        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            <h1 id="timer" class="timer">--:--</h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!--
+            Table Tab
+            Use this tab for on reading from DBPrintf.
+            -->
+            <section id="table" class="tabcontent">
+                <div class="mdl-grid content">
+                    <div id="tableContainer" class="tableContainer mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                        <table id="dbTable" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric">DB/String 0</th>
+                                    <th class="mdl-data-table__cell--non-numeric">DB/String 5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="/SmartDashboard/DB/String 0" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 5" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                </tr>
+                                <tr>
+                                    <td id="/SmartDashboard/DB/String 1" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 6" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                </tr>
+                                <tr>
+                                    <td id="/SmartDashboard/DB/String 2" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 7" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                </tr>
+                                <tr>
+                                    <td id="/SmartDashboard/DB/String 3" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 8" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                </tr>
+                                <tr>
+                                    <td id="/SmartDashboard/DB/String 4" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 9" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="text/javascript" src="js/smoothie.js"></script>
+    <script type="text/javascript" src="js/material.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/d3.min.js"></script>
+    <script type="text/javascript" src="/networktables/networktables.js"></script>
+    <script type="text/javascript" src="/networktables/camera.js"></script>
+
+    <script type="text/javascript" src="js/index.js"></script>
+</body>
+
+</html>
