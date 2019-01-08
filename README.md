@@ -1,64 +1,19 @@
-# greybots-skeleton
+# 2019-inseason
+## FRC Team 973: The Greybots 2019 Code for Destination: Deep Space
 
-This is a skeleton for FRC C++ projects using Gradle.
+[![Build Status](https://travis-ci.com/Team973/2019-inseason.svg?token=9qRQZ4Pb162wPMEfroVb&branch=master)](https://travis-ci.com/Team973/2019-inseason)
+[![FRC Year](https://img.shields.io/badge/frc-2019-brightgreen.svg)](https://www.firstinspires.com/robotics/frc/game-and-season)
+[![Language Type](https://img.shields.io/badge/language-c++-brightgreen.svg)](https://wpilib.screenstepslive.com/s/4485/m/13810)
 
-## Table of Contents
+## Getting Started
+We use Gradle to build here.  For a walk-through on installing the build system on your computer, check out `docs/InstallGuide.md`.
 
--   [Environment Setup/Installation](#environment-setup)
--   [Compiling with Gradle](#compiling-with-gradle)
+## Making your first Pull Request
+We do a feature-branch workflow here.  You write your features in your own branches.  When you finish writing your feature and you've tested it on the robot, you can make a pull request to get those changes merged into `dev`. When `dev` has been battle tested, we merge `dev` into `master`.  In this way `dev` is kinda stable and `master` is super duper stable.  When it's midnight before an event and the robot is speaking in tongues and Gradle isn't building and we're all grumpy, we revert back to the last commit in `master` because we know that anything in the `master` branch is guaranteed to work.  `master` might not always have the latest and greatest features, but it will always have something that the drivers can work with.
 
-## Environment Setup
+Check out `docs/YourFirstPR.md` for a walk-through on making a pull request.
 
-Our current Gradle setup only provides support for macOS, Ubuntu, and other Unix style OS', Windows is not supported. As of now only Ubuntu and macOS are tested.
+## Style guide
+Style is important with programming.  It can be the difference between your PR getting accepted and your PR getting declined.  Check out `docs/StyleGuide.md` for examples of what good style looks like in source code.
 
-### macOS Preinstall
-
-Unfortunately, Python 3 is not preinstalled in macOS (unlike Python 2.7). To be able to run the Python 3 install script, please follow the directions on [Homebrew's Website](https://brew.sh) to install Homebrew. After that is installed, run:
-
-    brew install python3
-
-After completion, follow the section below to finish the environment setup.
-
-### Installation
-
-Download the [`install.py`](https://raw.githubusercontent.com/Team973/greybots-skeleton/master/install.py) file (right click, save as).
-
-#### Easy Installation
-
-Run:
-
-    python3 /path/to/install.py install
-
-#### Advanced Usage
-
-    python3 /path/to/install.py <positional argument> <optional arguments>
-
-The following positional arguments are available:
-
--   `check` - check if dependencies and extras are installed
--   `install` - main installer for environment
-
-The following shared optional arguments are available:
-
--   `-h, --help` - displays help text explaining how to use the install script.
--   `-q, --quiet` - output only warnings and errors
-
-The following optional arguments are available only for the install argument.
-
--   `--barebones` - do not build/clone repo, just install
--   `--build` - automatically compile code to test Gradle
--   `--clone-repo` - automatically clone the repo
--   `--github` - clone/build repositories from a specific directory other than ~/Documents/GitHub
--   `--repo` - specify a repo to use for clone/build from Team973
--   `--vscode` - automatically install VSCode IDE
--   `--vscode-packages` - automatically install VSCode packages
-
-## Compiling with Gradle
-
-Build the robot code:
-
-    ./gradlew build
-
-Build and deploy to the robot:
-
-    ./gradlew deploy
+Other teams may have different style guides.  We use this one.  It doesn't really matter what style guide we use as long as it's consistent across the whole codebase.
