@@ -69,7 +69,7 @@ def main(args=None):
                                           parents=[shared])
         method_opt(cmd_parser)
         cmd_parser.set_defaults(cmdobj=cmd_method, github=Path(
-            user_home(), 'Documents', 'GitHub'), repo='greybots-skeleton')
+            user_home(), 'Documents', 'GitHub'), repo='2019-inseason')
 
     # Parse the arguments into an object
     options = parser.parse_args(args)
