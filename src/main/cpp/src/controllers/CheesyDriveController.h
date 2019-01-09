@@ -57,8 +57,7 @@ public:
      * Start the drive controller.
      * @param out The signal receiver for handling outgoing messages.
      */
-    void Start(DriveControlSignalReceiver *out) override {
-    }
+    void Start(DriveControlSignalReceiver *out) override;
 
     /**
      * Stop the drive controller.
