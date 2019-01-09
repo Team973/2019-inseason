@@ -1,7 +1,7 @@
 /*
  * RobotInfo.h
  * Created: January 9, 2018
- * Author: Kyle
+ * Author: One of the Chris's probably
  */
 #pragma once
 
@@ -10,9 +10,37 @@
 using namespace frc;
 
 namespace frc973 {
+
 /**
- * WARNING: This is just a sample file!!! Edit for each individual robot.
+ * Arm Subsystem
  */
+
+// CAN IDs
+static const int ARM_CAN_ID = 4;
+static const int ARM_MAX_HALL_DIN = 3;
+static const int ARM_MIN_HALL_DIN = 4;
+static const int ARM_ENCODER_COUNT = 4096.0;
+static const double ARM_ENCODER_DEGREES_PER_CLICK = 360.0 / ARM_ENCODER_COUNT;
+static const double ARM_GEAR_RATIO =
+    9.0 / 54.0;  // arm revolutions per encoder revolutions
+static const double ARM_DEGREES_PER_CLICK =
+    ARM_GEAR_RATIO * ARM_ENCODER_DEGREES_PER_CLICK;
+
+/**
+ * Claw Subsystem
+ */
+
+// CAN IDs
+static const int CLAW_LEFT_ROLLER_CAN_ID = 12;
+static const int CLAW_RIGHT_ROLLER_CAN_ID = 5;
+
+// Digital Inputs
+static const int CUBE_TIME_OF_FLIGHT_DIN = 2;
+
+// Pneumatics
+static const int HATCH_PUNCHER_PCM_ID = 0;
+static const int CUBE_CLAMP_PCM_ID = 1;
+static const int CUBE_SPRING_PCM_ID = 2;
 
 /**
  * Drive Subsystem
