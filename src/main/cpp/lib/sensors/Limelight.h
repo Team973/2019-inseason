@@ -20,7 +20,7 @@ public:
     /**
      * Constuct a Limelight Camera.
      */
-    Limelight();
+    Limelight(const char *name);
     virtual ~Limelight();
 
     /**
@@ -120,6 +120,7 @@ public:
 
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight
+    const char *m_camName;
 
     LightMode m_lightMode;    // enum for LED state
     CameraMode m_cameraMode;  // enum for camera state

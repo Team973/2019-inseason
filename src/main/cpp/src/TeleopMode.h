@@ -88,7 +88,10 @@ private:
     Drive *m_drive;
     enum class DriveMode
     {
-        Openloop
+        Openloop,
+        LimelightCargo,
+        LimelightHatch,
+        Cheesy
     };
     DriveMode m_driveMode;
 

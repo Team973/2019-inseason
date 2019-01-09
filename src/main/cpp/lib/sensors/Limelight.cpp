@@ -3,9 +3,9 @@
 using namespace frc;
 
 namespace frc973 {
-Limelight::Limelight()
-        : m_limelight(
-              nt::NetworkTableInstance::GetDefault().GetTable("limelight"))
+Limelight::Limelight(const char *name)
+        : m_limelight(nt::NetworkTableInstance::GetDefault().GetTable(name))
+        , m_camName(name)
         , m_lightMode(LightMode::on)
         , m_cameraMode(CameraMode::onVision)
         , m_targetStatus(false)

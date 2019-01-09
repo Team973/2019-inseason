@@ -41,11 +41,14 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = -m_driverJoystick->GetRawAxisWithDeadband(DualAction::LeftYAxis);
+    double y =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
     double x =
-        -m_driverJoystick->GetRawAxisWithDeadband(DualAction::RightXAxis);
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+    bool quickturn =
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
     bool softwareLowGear =
-        m_driverJoystick->GetRawButton(DualAction::RightTrigger);
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
     if (m_driveMode == DriveMode::Openloop) {
         if (softwareLowGear) {
@@ -53,6 +56,15 @@ void Teleop::TeleopPeriodic() {
             y /= 3.0;
         }
         m_drive->OpenloopArcadeDrive(y, x);
+    }
+    else if (m_driveMode == DriveMode::Cheesy) {
+        m_drive->CheesyDrive(y, x, quickturn, false);
+    }
+    else if (m_driveMode == DriveMode::LimelightCargo) {
+        m_drive->LimelightCargoDrive();
+    }
+    else if (m_driveMode == DriveMode::LimelightHatch) {
+        m_drive->LimelightHatchDrive();
     }
 
     /**
@@ -124,8 +136,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
+                    m_driveMode = DriveMode::LimelightCargo;
                 }
                 else {
+                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -142,8 +156,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
+                    m_driveMode = DriveMode::LimelightHatch;
                 }
                 else {
+                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::DPadUpVirtBtn:

@@ -8,6 +8,7 @@
 #pragma once
 
 #include "lib/bases/DriveBase.h"
+#include "lib/sensors/Limelight.h"
 #include <stdio.h>
 
 using namespace frc;
@@ -22,7 +23,7 @@ public:
     /**
      * Construct a Cheesy Drive controller.
      */
-    CheesyDriveController();
+    CheesyDriveController(Limelight *limelightCargo, Limelight *LimelightHatch);
     virtual ~CheesyDriveController();
 
     /**
@@ -57,7 +58,6 @@ public:
      * @param out The signal receiver for handling outgoing messages.
      */
     void Start(DriveControlSignalReceiver *out) override {
-        printf("Turning on Cheesy Mode\n");
     }
 
     /**
@@ -69,6 +69,9 @@ public:
     }
 
 private:
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
+
     double m_leftOutput;
     double m_rightOutput;
     double m_oldWheel;

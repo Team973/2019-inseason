@@ -1,7 +1,7 @@
 /*
  * Drive.h
  *
- *  Created on: January 7, 2018
+ *  Created on: January 7, 2019
  *      Authors: Kyle, Chris
  */
 #pragma once
@@ -63,7 +63,7 @@ public:
           VictorSPX *leftDriveVictorB, VictorSPX *leftDriveVictorC,
           TalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
           VictorSPX *rightDriveVictorC, ADXRS450_Gyro *gyro,
-          Limelight *limelight);
+          Limelight *limelightCargo, Limelight *limelightHatch);
     virtual ~Drive();
 
     /**
@@ -148,7 +148,12 @@ public:
     /**
      * Set drive controller to use limelight in following a target
      */
-    LimelightDriveController *LimelightDrive();
+    LimelightDriveController *LimelightCargoDrive();
+
+    /**
+     * Set drive controller to use limelight in following a target
+     */
+    LimelightDriveController *LimelightHatchDrive();
 
     /**
      * Return the left distance from the encoder in inches.
@@ -267,14 +272,16 @@ private:
 
     ADXRS450_Gyro *m_gyro;
     double m_gyroZero;
-    Limelight *m_limelight;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 
     CheesyDriveController *m_cheesyDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
-    LimelightDriveController *m_limelightDriveController;
+    LimelightDriveController *m_limelightCargoDriveController;
+    LimelightDriveController *m_limelightHatchDriveController;
 
     double m_angle;
     double m_angleRate;

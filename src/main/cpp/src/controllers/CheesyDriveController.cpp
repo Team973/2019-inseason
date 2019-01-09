@@ -15,8 +15,11 @@ using namespace frc;
 
 namespace frc973 {
 
-CheesyDriveController::CheesyDriveController()
-        : m_leftOutput(0.0)
+CheesyDriveController::CheesyDriveController(Limelight *limelightCargo,
+                                             Limelight *limelightHatch)
+        : m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch)
+        , m_leftOutput(0.0)
         , m_rightOutput(0.0)
         , m_oldWheel(0.0)
         , m_quickStopAccumulator(0.0)
@@ -24,6 +27,12 @@ CheesyDriveController::CheesyDriveController()
 }
 
 CheesyDriveController::~CheesyDriveController() {
+}
+
+void CheesyDriveController::Start(DriveControlSignalReceiver *out) {
+    printf("Turning on Cheesy Mode\n");
+    m_limelightCargo->SetCameraDriver();
+    m_limelightHatch->SetCameraDriver();
 }
 
 void CheesyDriveController::CalcDriveOutput(DriveStateProvider *state,

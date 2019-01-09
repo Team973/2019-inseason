@@ -30,14 +30,15 @@ Robot::Robot()
         , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_greylight(new GreyLight(NUM_LED))
-        , m_limelight(new Limelight())
+        , m_limelightCargo(new Limelight("limelight-one"))
+        , m_limelightHatch(new Limelight("limelight-two"))
         , m_logger(new LogSpreadsheet(this))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
-        , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
-                            m_leftDriveVictorB, m_leftDriveVictorC,
-                            m_rightDriveTalonA, m_rightDriveVictorB,
-                            m_rightDriveVictorC, m_gyro, m_limelight))
+        , m_drive(new Drive(
+              this, m_logger, m_leftDriveTalonA, m_leftDriveVictorB,
+              m_leftDriveVictorC, m_rightDriveTalonA, m_rightDriveVictorB,
+              m_rightDriveVictorC, m_gyro, m_limelightCargo, m_limelightHatch))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))

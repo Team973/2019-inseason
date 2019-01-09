@@ -1,8 +1,8 @@
 /*
  * Drive.cpp
  *
- *  Created on: January 7, 2018
- *      Authors: Chris
+ *  Created on: January 7, 2019
+ *      Authors: Luis and Dylan
  */
 
 #include <stdio.h>
@@ -31,7 +31,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              TalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
              VictorSPX *leftDriveVictorC, TalonSRX *rightDriveTalonA,
              VictorSPX *rightDriveVictorB, VictorSPX *rightDriveVictorC,
-             ADXRS450_Gyro *gyro, Limelight *limelight)
+             ADXRS450_Gyro *gyro, Limelight *limelightCargo,
+             Limelight *limelightHatch)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveTalonA(leftDriveTalonA)
@@ -51,13 +52,18 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_rightPosZero(0.0)
         , m_gyro(gyro)
         , m_gyroZero(0.0)
-        , m_limelight(limelight)
-        , m_cheesyDriveController(new CheesyDriveController())
+        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch)
+        , m_cheesyDriveController(
+              new CheesyDriveController(limelightCargo, limelightHatch))
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
-        , m_limelightDriveController(new LimelightDriveController(limelight))
+        , m_limelightCargoDriveController(
+              new LimelightDriveController(limelightCargo))
+        , m_limelightHatchDriveController(
+              new LimelightDriveController(limelightHatch))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))
@@ -160,10 +166,16 @@ void Drive::VelocityArcadeDrive(double throttle, double turn) {
     m_velocityArcadeDriveController->SetJoysticks(throttle, turn);
 }
 
-LimelightDriveController *Drive::LimelightDrive() {
-    this->SetDriveController(m_limelightDriveController);
+LimelightDriveController *Drive::LimelightCargoDrive() {
+    this->SetDriveController(m_limelightCargoDriveController);
 
-    return m_limelightDriveController;
+    return m_limelightCargoDriveController;
+}
+
+LimelightDriveController *Drive::LimelightHatchDrive() {
+    this->SetDriveController(m_limelightHatchDriveController);
+
+    return m_limelightHatchDriveController;
 }
 
 double Drive::GetLeftDist() const {
