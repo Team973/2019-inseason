@@ -10,23 +10,6 @@
 using namespace frc;
 
 namespace frc973 {
-/**
- * WARNING: This is just a sample file!!! Edit for each individual robot.
- */
-
-/**
- * Drive Subsystem
- */
-
-// CAN IDs
-static const int LEFT_DRIVE_A_CAN_ID = 16;
-static const int LEFT_DRIVE_B_VICTOR_ID = 15;
-static const int LEFT_DRIVE_C_VICTOR_ID = 14;
-static const int RIGHT_DRIVE_A_CAN_ID = 1;
-static const int RIGHT_DRIVE_B_VICTOR_ID = 2;
-static const int RIGHT_DRIVE_C_VICTOR_ID = 3;
-static const int INTAKE_CAN_ID = 4;
-
 // Constants
 static constexpr double DRIVE_WIDTH = 25.205;
 static constexpr double DRIVE_WHEEL_DIAMETER = 5.0;
@@ -42,21 +25,36 @@ static constexpr double DRIVE_IPS_FROM_CPDS =
 /**
  * Pneumatics Hardware
  */
-
-// CAN IDs
 static const int PCM_CAN_ID = 17;
+static const int COMPRESSOR_RELAY = 0;
 
-// Digital Inputs
+/**
+ * Drive Subsystem
+ **/
+static const int RIGHT_DRIVE_A_CAN_ID = 1;
+static const int RIGHT_DRIVE_B_VICTOR_ID = 2;
+static const int RIGHT_DRIVE_C_VICTOR_ID = 3;
+static const int LEFT_DRIVE_A_CAN_ID = 16;
+static const int LEFT_DRIVE_B_VICTOR_ID = 15;
+static const int LEFT_DRIVE_C_VICTOR_ID = 14;
+
+/**
+ * Intake Subsystem
+ **/
+static const int INTAKE_CAN_ID = 4;
+
+/**
+ * Digital Sensors
+ **/
 static const int PRESSURE_DIN_ID = 1;
 
-// Relays
-static const int COMPRESSOR_RELAY = 0;
+/**
+ * Analog Sensors
+ **/
 
 /**
  * Joysticks
  */
-
-// Port IDs
 static const int DRIVER_JOYSTICK_PORT = 0;
 static const int OPERATOR_JOYSTICK_PORT = 1;
 }
