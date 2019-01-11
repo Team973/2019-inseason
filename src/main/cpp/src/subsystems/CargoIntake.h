@@ -15,20 +15,34 @@ class TaskMgr;
 class LogSpreadsheet;
 class LogCell;
 
-class Subsystem : public CoopTask {
+class CargoIntake : public CoopTask {
 public:
-    Subsystem(TaskMgr *scheduler, LogSpreadsheet *logger);
-    virtual ~Subsystem();
+    CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger);
+    virtual ~CargoIntake();
 
-    void SubsystemStart();
-    void SubsystemStop();
+    void Start();
+    void Stop();
+    void Exhaust();
+
+    void ExtendWrist();
+    void RetractWrist();
 
     void TaskPeriodic(RobotMode mode) override;
+
+    enum class IntakeState
+    {
+        running,
+        notRunning,
+        reverse,
+        hold
+    };
 
 private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
-    TalonSRX *m_subsystemMotor;
+    TalonSRX *m_intakeMotor;
+    Solenoid *m_wrist;
+    IntakeState m_intakeState;
 
     LogCell *m_current;
 };

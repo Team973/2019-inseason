@@ -41,7 +41,8 @@ static const int LEFT_DRIVE_C_VICTOR_ID = 14;
 /**
  * Intake Subsystem
  **/
-static const int INTAKE_CAN_ID = 4;
+static const int CARGO_INTAKE_CAN_ID = 4;
+static const int CARGO_INTAKE_WRIST_PCM_ID = 0;
 
 /**
  * Digital Sensors
