@@ -1,5 +1,6 @@
 {
-    "charts": [{
+    "charts": [
+        {
             "settings": {
                 "tooltip": false,
                 "minValue": -1,
@@ -13,18 +14,18 @@
             ]
         },
         {
-                "settings": {
-                    "tooltip": false,
-                    "minValue": 0,
-                    "maxValue": 100,
-                    "show": true
-                },
-                "title": "Drive Currents (red left, blue right)",
-                "keys": [
-                    "/SmartDashboard/drive/currents/leftcurrent",
-                    "/SmartDashboard/drive/currents/rightcurrent"
-                ]
+            "settings": {
+                "tooltip": false,
+                "minValue": 0,
+                "maxValue": 100,
+                "show": true
             },
+            "title": "Drive Currents (red left, blue right)",
+            "keys": [
+                "/SmartDashboard/drive/currents/leftcurrent",
+                "/SmartDashboard/drive/currents/rightcurrent"
+            ]
+        },
         {
             "settings": {
                 "tooltip": false,
@@ -103,7 +104,8 @@
             ]
         }
     ],
-    "indicators": [{
+    "indicators": [
+        {
             "settings": {
                 "fixedDecimals": true,
                 "show": true,
@@ -146,6 +148,28 @@
             "title": "Right Drive Percentage",
             "unit": "%",
             "key": "/SmartDashboard/drive/percentages/rightpercent"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Limelight Cargo Timer",
+            "unit": "ms",
+            "key": "/SmartDashboard/misc/limelight/cargo/timer"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Limelight Hatch Timer",
+            "unit": "ms",
+            "key": "/SmartDashboard/misc/limelight/hatch/timer"
         },
         {
             "settings": {

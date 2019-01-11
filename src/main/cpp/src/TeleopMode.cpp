@@ -13,7 +13,8 @@ using namespace frc;
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
-               GreyLight *greylight)
+               GreyLight *greylight, Limelight *limelightCargo,
+               Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
@@ -21,7 +22,9 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_greylight(greylight)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
-        , m_endGameSignalSent(false) {
+        , m_endGameSignalSent(false)
+        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch) {
 }
 
 Teleop::~Teleop() {
@@ -49,10 +52,10 @@ void Teleop::TeleopPeriodic() {
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
 
     if (m_driveMode == DriveMode::Openloop) {
-        if (softwareLowGear) {
-            x /= 3.0;
-            y /= 3.0;
-        }
+        // if (softwareLowGear) {
+        //     x /= 3.0;
+        //     y /= 3.0;
+        // }
         m_drive->OpenloopArcadeDrive(y, x);
     }
     else if (m_driveMode == DriveMode::Cheesy) {
@@ -134,7 +137,14 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
+                    double m_limelightCargoTimer = ((double)(GetMsecTime()));
                     m_driveMode = DriveMode::LimelightCargo;
+
+                    if (m_limelightCargo->isTargetValid()) {
+                        SmartDashboard::PutNumber(
+                            "misc/limelight/cargo/timer",
+                            ((double)(GetMsecTime()- m_limelightCargoTimer)));
+                    }
                 }
                 else {
                     m_driveMode = DriveMode::Cheesy;
@@ -154,7 +164,14 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
+                    double m_limelightHatchTimer = ((double)(GetMsecTime()));
                     m_driveMode = DriveMode::LimelightHatch;
+
+                    if (m_limelightHatch->isTargetValid()) {
+                        SmartDashboard::PutNumber(
+                            "misc/limelight/hatch/timer",
+                            ((double)(GetMsecTime() - m_limelightHatchTimer)));
+                    }
                 }
                 else {
                     m_driveMode = DriveMode::Cheesy;

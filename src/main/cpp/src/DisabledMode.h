@@ -6,6 +6,7 @@
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/SolidColor.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/util/WrapDash.h"
 #include "src/AutonomousMode.h"
 #include "src/Robot.h"
@@ -30,7 +31,7 @@ public:
      * @param greylight The GreyLight system.
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             GreyLight *greylight);
+             GreyLight *greylight, Limelight *limelightCargo, Limelight *limelightHatch);
     virtual ~Disabled();
 
     /**
@@ -82,5 +83,8 @@ private:
 
     GreyLight *m_greylight;
     LightPattern::SolidColor *m_disabledSignal;
+
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 };
 }

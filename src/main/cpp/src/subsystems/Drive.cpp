@@ -214,31 +214,14 @@ double Drive::GetDriveCurrent() const {
            2.0;
 }
 
-/**
- * Returns calculated current angle thorugh gyro translation
- *
- * @return  Current angle position with respect to initial position
- */
 double Drive::GetAngle() const {
     return -(m_angle - m_gyroZero);
 }
 
-/**
- * Returns calculated current anglular rate thorugh gyro translation
- *
- * @return  Current angular rate
- */
 double Drive::GetAngularRate() const {
     return -m_angleRate;
 }
 
-/**
- * Calculates Drive Output in Velocity (IPS) and sets it from driver input or
- * closed control loop
- *
- * @param left  desired left Output
- * @param right desired right Output
- */
 void Drive::SetDriveOutputIPS(double left, double right) {
     m_leftDriveOutput = left;
     m_rightDriveOutput = right;

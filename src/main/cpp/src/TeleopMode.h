@@ -11,6 +11,7 @@
 #include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
@@ -32,9 +33,12 @@ public:
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
      * @param greylight The GreyLight system.
+     * @param limelightCargo The Limelight for the cargo.
+     * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, GreyLight *greylight);
+           Drive *drive, GreyLight *greylight, Limelight *limelightCargo,
+           Limelight *limelightHatch);
     virtual ~Teleop();
 
     /**
@@ -98,5 +102,8 @@ private:
     GreyLight *m_greylight;
     LightPattern::Flash *m_endGameSignal;
     bool m_endGameSignalSent;
+
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 };
 }

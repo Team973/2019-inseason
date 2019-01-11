@@ -5,11 +5,13 @@ using namespace frc;
 
 namespace frc973 {
 Disabled::Disabled(ObservablePoofsJoystick *driver,
-                   ObservableXboxJoystick *codriver, GreyLight *greylight)
+                   ObservableXboxJoystick *codriver, GreyLight *greylight, Limelight *limelightCargo, Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_greylight(greylight)
-        , m_disabledSignal(new LightPattern::SolidColor(DISABLED_RED)) {
+        , m_disabledSignal(new LightPattern::SolidColor(DISABLED_RED))
+        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch) {
 }
 
 Disabled::~Disabled() {
@@ -18,6 +20,10 @@ Disabled::~Disabled() {
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
     m_greylight->SetPixelStateProcessor(m_disabledSignal);
+    m_limelightCargo->SetLightOff();
+    m_limelightHatch->SetLightOff();
+    m_limelightCargo->SetCameraDriver();
+    m_limelightHatch->SetCameraDriver();
 }
 
 void Disabled::DisabledPeriodic() {
