@@ -45,6 +45,13 @@ public:
         return m_onTarget;
     };
 
+    /**
+     * Set the joystick values (which in this case will be output).
+     * @param throttle Forward/backwards amount.
+     * @param turn Left/right amount.
+     */
+    void SetJoysticks(double throttle, double turn);
+
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
         500.0;  // in native units per degree
 
@@ -52,6 +59,9 @@ private:
     bool m_onTarget;
     double m_leftSetpoint;
     double m_rightSetpoint;
+
+    double m_throttle;
+    double m_turn;
 
     Limelight *m_limelight;
     PID *m_pid;

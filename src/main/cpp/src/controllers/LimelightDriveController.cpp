@@ -8,6 +8,8 @@ LimelightDriveController::LimelightDriveController(Limelight *limelight)
         : m_onTarget(false)
         , m_leftSetpoint(0.0)
         , m_rightSetpoint(0.0)
+        , m_throttle(0.0)
+        , m_turn(0.0)
         , m_limelight(limelight)
         , m_pid(new PID(0.5, 0.0, 0.0)) {
 }
@@ -32,8 +34,8 @@ void LimelightDriveController::CalcDriveOutput(
     }
     else {
         double pidOut = m_pid->CalcOutputWithError(offset);
-        m_leftSetpoint = -pidOut;
-        m_rightSetpoint = pidOut;
+        m_leftSetpoint = (-pidOut + m_throttle - m_turn);
+        m_rightSetpoint = (pidOut + m_throttle + m_turn);
     }
 
     out->SetDriveOutputIPS(-m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
@@ -45,5 +47,10 @@ void LimelightDriveController::CalcDriveOutput(
     else {
         m_onTarget = false;
     }
+}
+
+void LimelightDriveController::SetJoysticks(double throttle, double turn) {
+    m_throttle = throttle;
+    m_turn = turn;
 }
 }
