@@ -62,10 +62,10 @@ void Teleop::TeleopPeriodic() {
         m_drive->CheesyDrive(y, x, quickturn, false);
     }
     else if (m_driveMode == DriveMode::LimelightCargo) {
-        m_drive->LimelightCargoDrive(y, x);
+        m_drive->LimelightCargoDrive();
     }
     else if (m_driveMode == DriveMode::LimelightHatch) {
-        m_drive->LimelightHatchDrive(y, x);
+        m_drive->LimelightHatchDrive();
     }
 
     /**

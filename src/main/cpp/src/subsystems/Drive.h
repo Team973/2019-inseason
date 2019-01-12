@@ -148,12 +148,12 @@ public:
     /**
      * Set drive controller to use limelight in following a target
      */
-    LimelightDriveController *LimelightCargoDrive(double throttle, double turn);
+    LimelightDriveController *LimelightCargoDrive();
 
     /**
      * Set drive controller to use limelight in following a target
      */
-    LimelightDriveController *LimelightHatchDrive(double throttle, double turn);
+    LimelightDriveController *LimelightHatchDrive();
 
     /**
      * Return the left distance from the encoder in inches.

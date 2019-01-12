@@ -56,9 +56,4 @@ void LimelightDriveController::CalcDriveOutput(
         m_onTarget = false;
     }
 }
-
-void LimelightDriveController::SetJoysticks(double throttle, double turn) {
-    m_throttle = throttle;
-    m_turn = turn;
-}
 }

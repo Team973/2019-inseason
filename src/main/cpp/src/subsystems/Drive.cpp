@@ -166,16 +166,14 @@ void Drive::VelocityArcadeDrive(double throttle, double turn) {
     m_velocityArcadeDriveController->SetJoysticks(throttle, turn);
 }
 
-LimelightDriveController *Drive::LimelightCargoDrive(double throttle, double turn) {
+LimelightDriveController *Drive::LimelightCargoDrive() {
     this->SetDriveController(m_limelightCargoDriveController);
-    m_limelightCargoDriveController->SetJoysticks(throttle, turn);
 
     return m_limelightCargoDriveController;
 }
 
-LimelightDriveController *Drive::LimelightHatchDrive(double throttle, double turn) {
+LimelightDriveController *Drive::LimelightHatchDrive() {
     this->SetDriveController(m_limelightHatchDriveController);
-    m_limelightHatchDriveController->SetJoysticks(throttle, turn);
 
     return m_limelightHatchDriveController;
 }
