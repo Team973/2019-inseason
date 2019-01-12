@@ -38,6 +38,7 @@ Robot::Robot()
                             m_leftDriveVictorB, m_leftDriveVictorC,
                             m_rightDriveTalonA, m_rightDriveVictorB,
                             m_rightDriveVictorC, m_gyro, m_limelight))
+        , m_cargoIntake(new CargoIntake(this, m_logger))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
@@ -47,9 +48,9 @@ Robot::Robot()
               new Disabled(m_driverJoystick, m_operatorJoystick, m_greylight))
         , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro, m_greylight))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
-                              m_greylight))
+                              m_cargoIntake, m_greylight))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_greylight)) {
+                          m_cargoIntake, m_greylight)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 

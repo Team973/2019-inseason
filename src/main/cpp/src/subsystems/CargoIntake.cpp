@@ -39,6 +39,10 @@ void CargoIntake::RetractWrist() {
     m_wrist->Set(false);
 }
 
+double CargoIntake::GetCurrent() {
+    return m_intakeMotor->GetOutputCurrent();
+}
+
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_intakeMotor->GetOutputCurrent());
 }

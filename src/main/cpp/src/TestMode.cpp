@@ -4,10 +4,11 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, GreyLight *greylight)
+           Drive *drive, CargoIntake *cargoIntake, GreyLight *greylight)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_cargoIntake(cargoIntake)
         , m_greylight(greylight)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
@@ -49,20 +50,20 @@ void Test::TestPeriodic() {
     /**
      * Operator Joystick
      */
-    switch (m_intakeState) {
-        case IntakeState::running:
-            ExtendWrist();
-            if (m_intakeMotor->GetOutputCurrent() > 5.0) {
-                m_intakeState = IntakeState::hold;
+    switch (m_cargoIntakeState) {
+        case CargoIntakeState::running:
+            m_cargoIntake->ExtendWrist();
+            if (m_cargoIntake->GetCurrent() > 5.0) {
+                m_cargoIntakeState = CargoIntakeState::hold;
             }
             break;
-        case IntakeState::notRunning:
+        case CargoIntakeState::notRunning:
             break;
-        case IntakeState::reverse:
+        case CargoIntakeState::reverse:
             break;
-        case IntakeState::hold:
-            m_intakeMotor->Set(ControlMode::PercentOutput, 0.2);
-            RetractWrist();
+        case CargoIntakeState::hold:
+            m_cargoIntake->RunIntake(0.2);
+            m_cargoIntake->RetractWrist();
             break;
     }
 }

@@ -27,6 +27,8 @@ public:
     void ExtendWrist();
     void RetractWrist();
 
+    double GetCurrent();
+
     void TaskPeriodic(RobotMode mode) override;
 
 private:

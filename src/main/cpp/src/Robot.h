@@ -22,6 +22,7 @@
 #include "src/TestMode.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -96,6 +97,7 @@ private:
     LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
+    CargoIntake *m_cargoIntake;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;
