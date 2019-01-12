@@ -33,8 +33,6 @@ void CheesyDriveController::Start(DriveControlSignalReceiver *out) {
     printf("Turning on Cheesy Mode\n");
     m_limelightCargo->SetCameraDriver();
     m_limelightHatch->SetCameraDriver();
-    m_limelightCargo->SetLightOff();
-    m_limelightHatch->SetLightOff();
 }
 
 void CheesyDriveController::CalcDriveOutput(DriveStateProvider *state,

@@ -47,11 +47,12 @@ public:
     };
 
     /**
-     * Set the joystick values (which in this case will be output).
-     * @param throttle Forward/backwards amount.
-     * @param turn Left/right amount.
+     * Stop the drive controller.
+     * @param out The signal receiver for handling outgoing messages.
      */
-    void SetJoysticks(double throttle, double turn);
+    void Stop(DriveControlSignalReceiver *out) override {
+        printf("Turning off Limelight Drive Mode\n");
+    }
 
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
         500.0;  // in native units per degree

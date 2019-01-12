@@ -20,6 +20,7 @@ LimelightDriveController::~LimelightDriveController() {
 }
 
 void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
+    printf("Turning on Limelight Drive Mode\n");
     m_limelight->SetCameraVision();
     m_limelight->SetLightOn();
     m_onTarget = false;

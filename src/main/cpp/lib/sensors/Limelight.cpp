@@ -46,15 +46,12 @@ void Limelight::SetCameraMode(CameraMode mode) {
 }
 
 void Limelight::SetPipelineIndex(int index) {
-    try {
-        if (index >= 0 || index <= 9) {
-            m_limelight->PutNumber("pipeline", 0);
-        }
-        else {
-            throw std::out_of_range("Limelight pipeline must be between 0-9.");
-        }
-    } catch (const std::out_of_range &e) {
-        std::cout << "Limelight pipeline index out of range." << std::endl;
+    if (index >= 0 || index <= 9) {
+        m_limelight->PutNumber("pipeline", index);
+    }
+    else {
+        printf("Limelight pipeline must be between 0-9. Ignoring value: %d\n",
+               index);
     }
 }
 
@@ -110,13 +107,11 @@ void Limelight::SetLightBlink() {
 }
 
 void Limelight::SetCameraVision() {
-    SetLightOn();
     SetPipeline(PipelineMode::target_vision);
     SetCameraMode(CameraMode::onVision);
 }
 
 void Limelight::SetCameraDriver() {
-    SetLightOff();
     SetPipeline(PipelineMode::drive);
     SetCameraMode(CameraMode::onDriver);
 }

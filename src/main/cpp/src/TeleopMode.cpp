@@ -71,6 +71,17 @@ void Teleop::TeleopPeriodic() {
     /**
      * Operator Joystick
      */
+
+    if (m_operatorJoystick->GetRawButton(Xbox::LeftBumper) &&
+        m_limelightCargo->isTargetValid() == 1) {
+        printf("got a Cargo target\n");
+        printf("%d\n", (GetMsecTime() - m_limelightCargoTimer));
+    }
+    if (m_operatorJoystick->GetRawButton(Xbox::RightBumper) &&
+        m_limelightHatch->isTargetValid() == 1) {
+        printf("got a hatch target\n");
+        printf("%d\n", (GetMsecTime() - m_limelightHatchTimer));
+    }
 }
 
 void Teleop::TeleopStop() {
@@ -137,24 +148,11 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
-                    if (m_cargoTimerRan == false) {
-                        m_cargoTimerRan = true;
-                        double m_limelightCargoTimer =
-                            ((double)(GetMsecTime()));
-                        m_driveMode = DriveMode::LimelightCargo;
-
-                        if (m_limelightCargo->isTargetValid() == 1) {
-                            double m_limelightCargoLag = ((
-                                double)(GetMsecTime() - m_limelightCargoTimer));
-                            SmartDashboard::PutNumber(
-                                "misc/limelight/cargo/timer",
-                                m_limelightCargoLag);
-                        }
-                    }
+                    m_limelightCargoTimer = GetMsecTime();
+                    m_driveMode = DriveMode::LimelightCargo;
                 }
                 else {
                     m_driveMode = DriveMode::Cheesy;
-                    m_hatchTimerRan = false;
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -171,24 +169,11 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
-                    if (m_hatchTimerRan == false) {
-                        m_hatchTimerRan = true;
-                        double m_limelightHatchTimer =
-                            ((double)(GetMsecTime()));
-                        m_driveMode = DriveMode::LimelightHatch;
-
-                        if (m_limelightHatch->isTargetValid() == 1) {
-                            double m_limelightHatchLag = ((
-                                double)(GetMsecTime() - m_limelightHatchTimer));
-                            SmartDashboard::PutNumber(
-                                "misc/limelight/hatch/timer",
-                                m_limelightHatchLag);
-                        }
-                    }
+                    m_limelightHatchTimer = GetMsecTime();
+                    m_driveMode = DriveMode::LimelightHatch;
                 }
                 else {
                     m_driveMode = DriveMode::Cheesy;
-                    m_hatchTimerRan = false;
                 }
                 break;
             case Xbox::DPadUpVirtBtn:

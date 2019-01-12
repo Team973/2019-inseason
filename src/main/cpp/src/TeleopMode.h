@@ -106,7 +106,7 @@ private:
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
-    bool m_cargoTimerRan;
-    bool m_hatchTimerRan;
+    u_int32_t m_limelightCargoTimer;
+    u_int32_t m_limelightHatchTimer;
 };
 }
