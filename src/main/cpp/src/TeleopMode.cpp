@@ -49,11 +49,12 @@ void Teleop::TeleopPeriodic() {
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
 
     if (m_driveMode == DriveMode::Openloop) {
-        if (softwareLowGear) {
-            x /= 3.0;
-            y /= 3.0;
-        }
-        m_drive->OpenloopArcadeDrive(y, x);
+        /* if (softwareLowGear) {
+             x /= 3.0;
+             y /= 3.0;
+         }
+         m_drive->OpenloopArcadeDrive(y, x);
+         */
     }
 
     /**
