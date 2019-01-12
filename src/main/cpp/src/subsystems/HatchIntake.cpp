@@ -63,6 +63,40 @@ void HatchIntake::ManualPuncherIdle() {
     m_hatchPuncher->Set(puncherIdle);
 }
 
+void HatchIntake::TaskPeriodic(RobotMode mode) {
+    switch (m_hatchIntakeState) {
+        case HatchIntakeState::release:
+            break;
+        case HatchIntakeState::grab:
+            break;
+        case HatchIntakeState::pushOpen:
+            if (GetMsecTime() - m_stateStartTimeMs > 1000) {
+                GoToState(pushClose);
+            }
+            break;
+        case HatchIntakeState::pushClose:
+            GoToState(grab);
+            break;
+        case HatchIntakeState::preLaunch:
+            if (GetMsecTime() - m_stateStartTimeMs > 100) {
+                GoToState(launch);
+                m_hatchClaw->Set(clawOpen);
+            }
+            break;
+        case HatchIntakeState::launch:
+            if (GetMsecTime() - m_stateStartTimeMs > 500) {
+                GoToState(launchReset);
+            }
+            break;
+        case HatchIntakeState::launchReset:
+            GoToState(release);
+            break;
+        case HatchIntakeState::manual:
+            GoToState(manual);
+            break;
+    }
+}
+
 void HatchIntake::GoToState(HatchIntakeState newState) {
     m_stateStartTimeMs = GetMsecTime();
     m_hatchIntakeState = newState;
