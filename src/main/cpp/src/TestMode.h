@@ -81,6 +81,14 @@ private:
         Openloop
     };
 
+    enum class IntakeState
+    {
+        running,
+        notRunning,
+        reverse,
+        hold
+    };
+
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 

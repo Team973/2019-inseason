@@ -20,29 +20,20 @@ public:
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger);
     virtual ~CargoIntake();
 
-    void Start();
+    void RunIntake(double power);
     void Stop();
-    void Exhaust();
+    void Exhaust(double power);
 
     void ExtendWrist();
     void RetractWrist();
 
     void TaskPeriodic(RobotMode mode) override;
 
-    enum class IntakeState
-    {
-        running,
-        notRunning,
-        reverse,
-        hold
-    };
-
 private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
     TalonSRX *m_intakeMotor;
     Solenoid *m_wrist;
-    IntakeState m_intakeState;
 
     LogCell *m_current;
 };

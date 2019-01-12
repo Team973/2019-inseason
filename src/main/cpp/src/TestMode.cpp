@@ -49,6 +49,22 @@ void Test::TestPeriodic() {
     /**
      * Operator Joystick
      */
+    switch (m_intakeState) {
+        case IntakeState::running:
+            ExtendWrist();
+            if (m_intakeMotor->GetOutputCurrent() > 5.0) {
+                m_intakeState = IntakeState::hold;
+            }
+            break;
+        case IntakeState::notRunning:
+            break;
+        case IntakeState::reverse:
+            break;
+        case IntakeState::hold:
+            m_intakeMotor->Set(ControlMode::PercentOutput, 0.2);
+            RetractWrist();
+            break;
+    }
 }
 
 void Test::TestStop() {
