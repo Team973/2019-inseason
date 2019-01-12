@@ -18,7 +18,6 @@ LimelightDriveController::~LimelightDriveController() {
 
 void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
     m_limelight->SetCameraVision();
-    m_limelight->SetLightOn();
     m_onTarget = false;
 }
 

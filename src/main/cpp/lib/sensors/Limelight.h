@@ -6,7 +6,8 @@
 #pragma once
 
 #include "frc/WPILib.h"
-#include "lib/util/WrapDash.h"
+#include <iostream>
+#include "lib/filters/BullshitFilter.h"
 #include "networktables/NetworkTable.h"
 #include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableEntry.h"
@@ -45,6 +46,35 @@ public:
     };
 
     /**
+     *  Limelight stream modes.
+     */
+    enum class StreamMode
+    {
+        standard,    /**< Side by side Limelight/USB camera. */
+        pipMain,     /**< Picture in picture w/ USB camera in lower right. */
+        pipSecondary /**< Picture in picture w/ Limelight in lower right. */
+    };
+
+    /**
+     *  Limelight snapshot modes.
+     */
+    enum class SnapshotMode
+    {
+        stop, /**< Stop taking snapshots. */
+        start /**< Take snapshots. */
+    };
+
+    /**
+     *  Limelight pipeline modes.
+     */
+    enum class PipelineMode
+    {
+        drive,          /**< The limelight drive pipeline */
+        default_vision, /**< The limelight default vision pipeline */
+        target_vision   /**< The limelight target vision pipeline */
+    };
+
+    /**
      * Sets the limelight's LEDs to on, off, or blink
      * @param mode the LED mode
      */
@@ -56,6 +86,30 @@ public:
      * @param mode the camera mode
      */
     void SetCameraMode(CameraMode mode);
+
+    /**
+     * Sets the limelight's pipeline index.
+     * @param pipeline The pipeline index.
+     */
+    void SetPipelineIndex(int index);
+
+    /**
+     * Set the pipeline mode.
+     * @param mode The pipeline mode.
+     */
+    void SetPipeline(PipelineMode mode);
+
+    /**
+     * Sets the limelight's stream mode.
+     * @param mode The stream mode.
+     */
+    void SetStreamMode(StreamMode mode);
+
+    /**
+     * Sets the limelight's snapshot mode.
+     * @param mode The snapshot mode.
+     */
+    void SetSnapshotMode(SnapshotMode mode);
 
     /**
      * Sets the limelight's LEDs to on
