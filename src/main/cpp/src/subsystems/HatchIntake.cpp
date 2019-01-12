@@ -89,7 +89,7 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
             }
             break;
         case HatchIntakeState::launchReset:
-            GoToState(release);
+            GoToState(close);
             break;
         case HatchIntakeState::manual:
             GoToState(manual);

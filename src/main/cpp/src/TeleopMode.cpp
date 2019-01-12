@@ -13,11 +13,12 @@ using namespace frc;
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
-               GreyLight *greylight)
+               HatchIntake *hatchIntake, GreyLight *greylight)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Openloop)
+        , m_hatchIntake(hatchIntake)
         , m_greylight(greylight)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
