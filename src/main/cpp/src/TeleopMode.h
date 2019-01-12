@@ -105,5 +105,8 @@ private:
 
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
+
+    bool m_cargoTimerRan;
+    bool m_hatchTimerRan;
 };
 }

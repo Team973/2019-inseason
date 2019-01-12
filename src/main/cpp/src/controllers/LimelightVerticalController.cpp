@@ -14,6 +14,10 @@ LimelightVerticalController::LimelightVerticalController(Limelight *limelight,
 LimelightVerticalController::~LimelightVerticalController() {
 }
 
+void LimelightVerticalController::Start() {
+    m_limelight->SetCameraVision();
+}
+
 void LimelightVerticalController::CalcOutput() {
     double offset = m_limelight->GetYOffset();
 

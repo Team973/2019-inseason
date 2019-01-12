@@ -30,8 +30,8 @@ Robot::Robot()
         , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_greylight(new GreyLight(NUM_LED))
-        , m_limelightCargo(new Limelight("limelight-one"))
-        , m_limelightHatch(new Limelight("limelight-two"))
+        , m_limelightCargo(new Limelight("limelight-cargo"))
+        , m_limelightHatch(new Limelight("limelight-hatch"))
         , m_logger(new LogSpreadsheet(this))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
@@ -44,8 +44,9 @@ Robot::Robot()
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
-        , m_disabled(
-              new Disabled(m_driverJoystick, m_operatorJoystick, m_greylight, m_limelightCargo, m_limelightHatch))
+        , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
+                                  m_greylight, m_limelightCargo,
+                                  m_limelightHatch))
         , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro, m_greylight))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
                               m_greylight, m_limelightCargo, m_limelightHatch))
@@ -115,6 +116,10 @@ void Robot::TestStop() {
 void Robot::AllStateContinuous() {
     // NetworkTable Battery Voltage
     SmartDashboard::PutNumber("misc/pdp/batteryvoltage", m_pdp->GetVoltage());
+    SmartDashboard::PutNumber("misc/limelight/cargo/target",
+                              m_limelightCargo->isTargetValid());
+    SmartDashboard::PutNumber("misc/limelight/hatch/target",
+                              m_limelightHatch->isTargetValid());
 
     m_matchIdentifier->LogPrintf(
         "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),

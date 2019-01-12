@@ -14,6 +14,7 @@ Limelight::Limelight(const char *name)
         , m_targetArea(0.0)
         , m_targetSkew(0.0)
         , m_latency(0.0) {
+    SetCameraDriver();
 }
 
 Limelight::~Limelight() {
@@ -44,6 +45,58 @@ void Limelight::SetCameraMode(CameraMode mode) {
     }
 }
 
+void Limelight::SetPipelineIndex(int index) {
+    try {
+        if (index >= 0 || index <= 9) {
+            m_limelight->PutNumber("pipeline", 0);
+        }
+        else {
+            throw std::out_of_range("Limelight pipeline must be between 0-9.");
+        }
+    } catch (const std::out_of_range &e) {
+        std::cout << "Limelight pipeline index out of range." << std::endl;
+    }
+}
+
+void Limelight::SetPipeline(PipelineMode mode) {
+    switch (mode) {
+        case PipelineMode::drive:
+            SetPipelineIndex(0);
+            break;
+        case PipelineMode::default_vision:
+            SetPipelineIndex(1);
+            break;
+        case PipelineMode::target_vision:
+            SetPipelineIndex(2);
+            break;
+    }
+}
+
+void Limelight::SetStreamMode(StreamMode mode) {
+    switch (mode) {
+        case StreamMode::standard:
+            m_limelight->PutNumber("stream", 0);
+            break;
+        case StreamMode::pipMain:
+            m_limelight->PutNumber("stream", 1);
+            break;
+        case StreamMode::pipSecondary:
+            m_limelight->PutNumber("stream", 2);
+            break;
+    }
+}
+
+void Limelight::SetSnapshotMode(SnapshotMode mode) {
+    switch (mode) {
+        case SnapshotMode::stop:
+            m_limelight->PutNumber("snapshot", 0);
+            break;
+        case SnapshotMode::start:
+            m_limelight->PutNumber("snapshot", 1);
+            break;
+    }
+}
+
 void Limelight::SetLightOn() {
     SetLightMode(LightMode::on);
 }
@@ -57,10 +110,14 @@ void Limelight::SetLightBlink() {
 }
 
 void Limelight::SetCameraVision() {
+    SetLightOn();
+    SetPipeline(PipelineMode::target_vision);
     SetCameraMode(CameraMode::onVision);
 }
 
 void Limelight::SetCameraDriver() {
+    SetLightOff();
+    SetPipeline(PipelineMode::drive);
     SetCameraMode(CameraMode::onDriver);
 }
 
