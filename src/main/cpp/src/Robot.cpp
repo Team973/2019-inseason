@@ -39,8 +39,8 @@ Robot::Robot()
                             m_rightDriveTalonA, m_rightDriveVictorB,
                             m_rightDriveVictorC, m_gyro, m_limelight))
         , m_hatchIntake(new HatchIntake(this, m_logger, new DigitalInput(0),
-                                        new DigitalInput(0), new Solenoid(0),
-                                        new Solenoid(0)))
+                                        new DigitalInput(0), new Solenoid(1),
+                                        new Solenoid(2)))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))

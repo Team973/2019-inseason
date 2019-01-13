@@ -6,8 +6,8 @@
 namespace frc973 {
 HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                          DigitalInput *rightHatchSensor,
-                         DigitalInput *leftHatchSensor, Solenoid *hatchClamp,
-                         Solenoid *hatchRelease)
+                         DigitalInput *leftHatchSensor, Solenoid *hatchClaw,
+                         Solenoid *hatchPuncher)
         : m_scheduler(scheduler)
         , m_rightHatchSensor(rightHatchSensor)
         , m_leftHatchSensor(leftHatchSensor)

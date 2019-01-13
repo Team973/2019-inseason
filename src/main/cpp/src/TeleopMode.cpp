@@ -17,7 +17,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
-        , m_driveMode(DriveMode::Openloop)
+        , m_driveMode(DriveMode::Cheesy)
         , m_hatchIntake(hatchIntake)
         , m_greylight(greylight)
         , m_endGameSignal(
@@ -49,18 +49,37 @@ void Teleop::TeleopPeriodic() {
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
 
-    if (m_driveMode == DriveMode::Openloop) {
-        /* if (softwareLowGear) {
-             x /= 3.0;
-             y /= 3.0;
-         }
-         m_drive->OpenloopArcadeDrive(y, x);
-         */
-    }
+    bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
-    /**
-     * Operator Joystick
-     */
+    if (m_driveMode == DriveMode::Cheesy) {
+        if (lowGear) {
+            m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
+        }
+        else {
+            m_drive->CheesyDrive(y, x, quickturn, false);
+        }
+    }
+    else if (m_driveMode == DriveMode::Openloop) {
+        if (lowGear) {
+            m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
+        }
+        else {
+            m_drive->OpenloopArcadeDrive(y, x);
+
+            if (m_driveMode == DriveMode::Openloop) {
+                /* if (softwareLowGear) {
+                     x /= 3.0;
+                     y /= 3.0;
+                 }
+                 m_drive->OpenloopArcadeDrive(y, x);
+                 */
+            }
+
+            /**
+             * Operator Joystick
+             */
+        }
+    }
 }
 
 void Teleop::TeleopStop() {
