@@ -1,16 +1,13 @@
 #include "src/subsystems/HatchIntake.h"
-#include "WPILib.h"
+#include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
 #include "lib/util/WrapDash.h"
 
 namespace frc973 {
-HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
-                         DigitalInput *rightHatchSensor,
-                         DigitalInput *leftHatchSensor, Solenoid *hatchClaw,
-                         Solenoid *hatchPuncher)
+HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger)
         : m_scheduler(scheduler)
-        , m_rightHatchSensor(rightHatchSensor)
-        , m_leftHatchSensor(leftHatchSensor)
+        , m_rightHatchSensor(new DigitalInput(LEFT_HATCH_SENSOR_ID))
+        , m_leftHatchSensor(new DigitalInput(RIGHT_HATCH_SENSOR_ID))
         , m_logger(logger)
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
         , m_hatchClaw(new Solenoid(PCM_CAN_ID, HATCH_CLAW_PCM_ID))

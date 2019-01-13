@@ -19,9 +19,7 @@ public:
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
      */
-    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
-                DigitalInput *rightHatchSensor, DigitalInput *leftHatchSensor,
-                Solenoid *hatchClamp, Solenoid *hatchKicker);
+    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger);
     virtual ~HatchIntake();
 
     enum ClawState

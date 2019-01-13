@@ -49,10 +49,11 @@ void Teleop::TeleopPeriodic() {
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
 
-    bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+    bool softwareLowGear =
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
     if (m_driveMode == DriveMode::Cheesy) {
-        if (lowGear) {
+        if (softwareLowGear) {
             m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
         }
         else {
@@ -60,7 +61,7 @@ void Teleop::TeleopPeriodic() {
         }
     }
     else if (m_driveMode == DriveMode::Openloop) {
-        if (lowGear) {
+        if (softwareLowGear) {
             m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
         }
         else {
