@@ -6,8 +6,8 @@
 namespace frc973 {
 HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger)
         : m_scheduler(scheduler)
-        , m_rightHatchSensor(new DigitalInput(LEFT_HATCH_SENSOR_ID))
-        , m_leftHatchSensor(new DigitalInput(RIGHT_HATCH_SENSOR_ID))
+        , m_rightHatchSensor(new DigitalInput(RIGHT_HATCH_SENSOR_ID))
+        , m_leftHatchSensor(new DigitalInput(LEFT_HATCH_SENSOR_ID))
         , m_logger(logger)
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
         , m_hatchClaw(new Solenoid(PCM_CAN_ID, HATCH_CLAW_PCM_ID))
