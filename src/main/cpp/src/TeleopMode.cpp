@@ -17,7 +17,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
-        , m_driveMode(DriveMode::Cheesy)
+        , m_driveMode(DriveMode::Openloop)
         , m_hatchIntake(hatchIntake)
         , m_greylight(greylight)
         , m_endGameSignal(
@@ -42,17 +42,16 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y =
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x =
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
-    bool quickturn =
-        m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
-
-    bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+    double y = -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
+    double x = -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
+    bool quickturn = false;
+    // bool quickturn = m_operatorJoystick->GetRawButton(Xbox::LeftBumper);
+    bool softwareLowGear = false;
+    // bool softwareLowGear =
+    // m_operatorJoystick->GetRawButton(Xbox::RightBumper);
 
     if (m_driveMode == DriveMode::Cheesy) {
-        if (lowGear) {
+        if (softwareLowGear) {
             m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
         }
         else {
@@ -60,7 +59,7 @@ void Teleop::TeleopPeriodic() {
         }
     }
     else if (m_driveMode == DriveMode::Openloop) {
-        if (lowGear) {
+        if (softwareLowGear) {
             m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
         }
         else {
@@ -146,8 +145,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
+                    m_hatchIntake->ManualPuncherActivate();
                 }
                 else {
+                    m_hatchIntake->ManualPuncherIdle();
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -164,8 +165,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
+                    m_hatchIntake->ClawOpen();
                 }
                 else {
+                    m_hatchIntake->ClawClose();
                 }
                 break;
             case Xbox::DPadUpVirtBtn:

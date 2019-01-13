@@ -42,8 +42,10 @@ static const int LEFT_DRIVE_C_VICTOR_ID = 14;
  * Intake Subsystem
  **/
 static const int INTAKE_CAN_ID = 4;
-static const int HATCH_PUNCHER_PCM_ID = 1;
-static const int HATCH_CLAW_PCM_ID = 2;
+static const int HATCH_PUNCHER_PCM_ID = 4;
+static const int HATCH_CLAW_PCM_ID = 3;
+static const int LEFT_HATCH_SENSOR_ID = 2;
+static const int RIGHT_HATCH_SENSOR_ID = 3;
 
 /**
  * Digital Sensors

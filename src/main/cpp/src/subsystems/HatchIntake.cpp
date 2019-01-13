@@ -1,20 +1,17 @@
 #include "src/subsystems/HatchIntake.h"
-#include "WPILib.h"
+#include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
 #include "lib/util/WrapDash.h"
 
 namespace frc973 {
-HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
-                         DigitalInput *rightHatchSensor,
-                         DigitalInput *leftHatchSensor, Solenoid *hatchClaw,
-                         Solenoid *hatchPuncher)
+HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger)
         : m_scheduler(scheduler)
-        , m_rightHatchSensor(rightHatchSensor)
-        , m_leftHatchSensor(leftHatchSensor)
+        , m_rightHatchSensor(new DigitalInput(RIGHT_HATCH_SENSOR_ID))
+        , m_leftHatchSensor(new DigitalInput(LEFT_HATCH_SENSOR_ID))
         , m_logger(logger)
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
         , m_hatchClaw(new Solenoid(PCM_CAN_ID, HATCH_CLAW_PCM_ID))
-        , m_hatchIntakeState(HatchIntakeState::close) {
+        , m_hatchIntakeState(HatchIntakeState::grab) {
     this->m_scheduler->RegisterTask("HatchIntake", this, TASK_PERIODIC);
 }
 
@@ -22,113 +19,96 @@ HatchIntake::~HatchIntake() {
     m_scheduler->UnregisterTask(this);
 }
 
-void HatchIntake::HatchOpen() {
-    GoToState(release);
-}
-
-void HatchIntake::HatchGrab() {
-    GoToState(grab);
-}
-
-void HatchIntake::HatchPush() {
-    GoToState(pushOpen);
-}
-
-void HatchIntake::HatchPuncherOn() {
-    m_hatchPuncher->Set(active);
-}
-
-void HatchIntake::HatchPuncherOff() {
-    m_hatchPuncher->Set(puncherIdle);
-}
-
-void HatchIntake::HatchLaunch() {
-    GoToState(preLaunch);
+void HatchIntake::ClawOpen() {
+    m_hatchClaw->Set(ClawState::open);
 }
 
 void HatchIntake::ClawClose() {
-    m_hatchClaw->Set(clawClosed);
+    m_hatchClaw->Set(ClawState::close);
 }
 
-void HatchIntake::ClawOpen() {
-    m_hatchClaw->Set(clawOpen);
-}
-void HatchIntake::ManualPuncherActivate() {
-    GoToState(manual);
-    m_hatchPuncher->Set(active);
+void HatchIntake::PuncherOn() {
+    m_hatchPuncher->Set(PuncherState::punch);
 }
 
-void HatchIntake::ManualPuncherIdle() {
-    GoToState(manual);
-    m_hatchPuncher->Set(puncherIdle);
+void HatchIntake::PuncherOff() {
+    m_hatchPuncher->Set(PuncherState::retract);
+}
+
+void HatchIntake::HatchOpen() {
+    m_hatchIntakeState = HatchIntakeState::release;
+}
+
+void HatchIntake::HatchGrab() {
+    m_hatchIntakeState = HatchIntakeState::grab;
+}
+
+void HatchIntake::HatchPush() {
+    m_hatchIntakeState = HatchIntakeState::pushOpen;
+}
+
+void HatchIntake::HatchLaunch() {
+    m_hatchIntakeState = HatchIntakeState::preLaunch;
+}
+
+void HatchIntake::ManualClawOpen() {
+    m_hatchIntakeState = HatchIntakeState::manual;
+    ClawOpen();
+}
+
+void HatchIntake::ManualClawClose() {
+    m_hatchIntakeState = HatchIntakeState::manual;
+    ClawClose();
+}
+
+void HatchIntake::ManualPuncherOn() {
+    m_hatchIntakeState = HatchIntakeState::manual;
+    PuncherOn();
+}
+
+void HatchIntake::ManualPuncherOff() {
+    m_hatchIntakeState = HatchIntakeState::manual;
+    PuncherOff();
 }
 
 void HatchIntake::TaskPeriodic(RobotMode mode) {
     switch (m_hatchIntakeState) {
         case HatchIntakeState::release:
+            ClawOpen();
+            PuncherOff();
             break;
         case HatchIntakeState::grab:
+            ClawClose();
+            PuncherOff();
             break;
         case HatchIntakeState::pushOpen:
             if (GetMsecTime() - m_stateStartTimeMs > 1000) {
-                GoToState(pushClose);
+                ClawOpen();
+                PuncherOn();
             }
             break;
         case HatchIntakeState::pushClose:
-            GoToState(grab);
+            ClawClose();
+            PuncherOff();
             break;
         case HatchIntakeState::preLaunch:
             if (GetMsecTime() - m_stateStartTimeMs > 100) {
-                GoToState(launch);
-                m_hatchClaw->Set(clawOpen);
+                ClawClose();
+                PuncherOn();
+                m_hatchIntakeState = HatchIntakeState::launch;
             }
             break;
         case HatchIntakeState::launch:
             if (GetMsecTime() - m_stateStartTimeMs > 500) {
-                GoToState(launchReset);
+                ClawOpen();
             }
             break;
         case HatchIntakeState::launchReset:
-            GoToState(close);
+            ClawOpen();
+            PuncherOff();
             break;
         case HatchIntakeState::manual:
-            GoToState(manual);
-            break;
-    }
-}
-
-void HatchIntake::GoToState(HatchIntakeState newState) {
-    m_stateStartTimeMs = GetMsecTime();
-    m_hatchIntakeState = newState;
-    switch (m_hatchIntakeState) {
-        case HatchIntakeState::release:
-            m_hatchClaw->Set(clawOpen);
-            m_hatchPuncher->Set(puncherIdle);
-            break;
-        case HatchIntakeState::grab:
-            m_hatchClaw->Set(clawClosed);
-            m_hatchPuncher->Set(puncherIdle);
-            break;
-        case HatchIntakeState::pushOpen:
-            m_hatchClaw->Set(clawOpen);
-            m_hatchPuncher->Set(active);
-            break;
-        case HatchIntakeState::pushClose:
-            m_hatchClaw->Set(clawClosed);
-            m_hatchPuncher->Set(puncherIdle);
-            break;
-        case HatchIntakeState::preLaunch:
-            m_hatchClaw->Set(clawClosed);
-            m_hatchPuncher->Set(active);
-            break;
-        case HatchIntakeState::launch:
-            m_hatchClaw->Set(clawOpen);
-            break;
-        case HatchIntakeState::launchReset:
-            m_hatchClaw->Set(clawOpen);
-            m_hatchPuncher->Set(puncherIdle);
-            break;
-        case HatchIntakeState::manual:
+            // manual control
             break;
     }
 }

@@ -19,24 +19,22 @@ public:
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
      */
-    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
-                DigitalInput *rightHatchSensor, DigitalInput *leftHatchSensor,
-                Solenoid *hatchClamp, Solenoid *hatchKicker);
+    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger);
     virtual ~HatchIntake();
 
     enum ClawState
     {
-        clawOpen = true,
-        clawClosed = false
+        open = true,
+        close = false
     };
 
     enum PuncherState
     {
-        active = true,
-        puncherIdle = false
+        punch = true,
+        retract = false
     };
 
-    enum HatchIntakeState
+    enum class HatchIntakeState
     {
         release,
         grab,
@@ -49,68 +47,69 @@ public:
         manual
     };
 
+    /**
+     * When called, opens claw.
+     */
+    void ClawOpen();
+
+    /**
+     * When called, closes claw.
+     */
+    void ClawClose();
+
     /*
-     * When called, opens the claw arms
+     * When called, activates kicker.
+     */
+    void PuncherOn();
+
+    /**
+     * When called, deactivates clawKicker.
+     */
+    void PuncherOff();
+
+    /**
+     * When called, opens the claw arms.
      */
     void HatchOpen();
 
-    /*
+    /**
      * When called, closes claw arms, and
      * has all claw solenoids set to idle
      */
     void HatchGrab();
 
-    /*
+    /**
      * When called, opens claw arms and
-     * activates kicker
+     * activates kicker.
      */
     void HatchPush();
 
-    /*
-     * When called, activates kicker
-     */
-    void HatchPuncherOn();
-
-    /*
-     * When called, deactivates clawKicker
-     */
-    void HatchPuncherOff();
-
-    /*
-     * When called, launches cube
+    /**
+     * When called, launches cube.
      */
     void HatchLaunch();
 
-    /*
-     * When called, closes claw
-     */
-    void ClawClose();
+    void ManualClawOpen();
+    void ManualClawClose();
 
-    /*
-     * Whe called, opens claw
+    /**
+     * When called, activates puncher.
      */
-    void ClawOpen();
+    void ManualPuncherOn();
 
-    /*
-     * When called, activates kicker
+    /**
+     * When called, deactivates puncher.
      */
-    void ManualPuncherActivate();
-
-    /*
-     * When called, deactivates Kicker
-     */
-
-    void ManualPuncherIdle();
+    void ManualPuncherOff();
 
     /**
      * Periodically update information about the drive.
      * @param mode The current robot mode.
      */
-
     void TaskPeriodic(RobotMode mode);
 
 private:
-    void GoToState(HatchIntakeState newState);
+    void GoToIntakeState(HatchIntakeState state);
 
     TaskMgr *m_scheduler;
     DigitalInput *m_rightHatchSensor;
