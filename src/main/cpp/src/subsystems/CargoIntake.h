@@ -32,6 +32,12 @@ public:
     void TaskPeriodic(RobotMode mode) override;
 
 private:
+    enum WristState
+    {
+        extend = true,
+        retract = false
+    };
+
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
     TalonSRX *m_intakeMotor;

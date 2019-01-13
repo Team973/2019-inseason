@@ -32,11 +32,11 @@ void CargoIntake::Stop() {
 }
 
 void CargoIntake::ExtendWrist() {
-    m_wrist->Set(true);
+    m_wrist->Set(extend);
 }
 
 void CargoIntake::RetractWrist() {
-    m_wrist->Set(false);
+    m_wrist->Set(retract);
 }
 
 double CargoIntake::GetCurrent() {
