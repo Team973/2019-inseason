@@ -147,10 +147,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
-                    m_hatchIntake->ManualPuncherActivate();
+                    m_hatchIntake->ManualPuncherOn();
                 }
                 else {
-                    m_hatchIntake->ManualPuncherIdle();
+                    m_hatchIntake->ManualPuncherOff();
                 }
                 break;
             case Xbox::LJoystickBtn:
