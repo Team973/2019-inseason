@@ -10,6 +10,7 @@
 #include "math.h"
 #include "lib/util/Util.h"
 #include "lib/sensors/Limelight.h"
+#include "src/info/RobotInfo.h"
 
 namespace frc973 {
 
@@ -58,10 +59,6 @@ public:
         500.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT =
         12.0;  // in inches from target to robot bumper
-    static constexpr double TARGET_HEIGHT = 28.592;  // in inches from ground
-    static constexpr double CAMERA_HEIGHT = 20.0;    // in inches from ground
-    static constexpr double TARGET_ANGLE = 20.0;  // in degrees wrt camera angle
-    static constexpr double CAMERA_ANGLE = 0.0;   // in degrees wrt ground
 
 private:
     bool m_onTarget;

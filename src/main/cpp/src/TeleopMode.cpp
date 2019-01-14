@@ -148,8 +148,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
-                    m_limelightCargoTimer = GetMsecTime();
-                    m_driveMode = DriveMode::LimelightCargo;
+                    // m_limelightCargoTimer = GetMsecTime();
+                    // m_driveMode = DriveMode::LimelightCargo;
                 }
                 else {
                     m_driveMode = DriveMode::Cheesy;
@@ -169,8 +169,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
-                    m_limelightHatchTimer = GetMsecTime();
-                    m_driveMode = DriveMode::LimelightHatch;
+                    // m_limelightHatchTimer = GetMsecTime();
+                    // m_driveMode = DriveMode::LimelightHatch;
+                    m_limelightHatch->SetPipelineIndex(2);
                 }
                 else {
                     m_driveMode = DriveMode::Cheesy;

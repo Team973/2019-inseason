@@ -116,6 +116,11 @@ void Limelight::SetCameraDriver() {
     SetCameraMode(CameraMode::onDriver);
 }
 
+void Limelight::SetCameraDefaultVision() {
+    SetPipeline(PipelineMode::default_vision);
+    SetCameraMode(CameraMode::onVision);
+}
+
 bool Limelight::isTargetValid() {
     return m_limelight->GetNumber("tv", 0.0);
 }
@@ -138,5 +143,25 @@ double Limelight::GetTargetSkew() {
 
 double Limelight::GetLatency() {
     return m_limelight->GetNumber("tl", 0.0);
+}
+
+double Limelight::GetHorizontalLength() {
+    return m_limelight->GetNumber("tlong", 0.0);
+}
+
+double Limelight::GetVerticalLength() {
+    return m_limelight->GetNumber("tvert", 0.0);
+}
+
+double Limelight::FindTargetSkew() {
+    return (180.0 / PI) *
+           asin(Util::bound((GetHorizontalLength() / GetVerticalLength()) *
+                                TARGET_ASPECT_RATIO,
+                            0.0, 1.0));
+}
+
+double Limelight::GetHorizontalDistance() {
+    return (TARGET_HEIGHT - CAMERA_HEIGHT) /
+           tan(CAMERA_ANGLE + this->GetYOffset() * (PI / 180.0));
 }
 }

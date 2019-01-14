@@ -7,10 +7,13 @@
 
 #include "frc/WPILib.h"
 #include <iostream>
+#include "math.h"
+#include "lib/util/WrapDash.h"
 #include "lib/filters/BullshitFilter.h"
 #include "networktables/NetworkTable.h"
 #include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableEntry.h"
+#include "src/info/RobotInfo.h"
 
 using namespace frc;
 
@@ -127,7 +130,7 @@ public:
     void SetLightBlink();
 
     /**
-     * Sets the limelight's camera to use vision settings
+     * Sets the limelight's camera to use target vision settings
      */
     void SetCameraVision();
 
@@ -135,6 +138,11 @@ public:
      * Sets the limelight's cameras to use driver settings (just raw feedback)
      */
     void SetCameraDriver();
+
+    /**
+     * Sets the limelight's camera to use default vision settings
+     */
+    void SetCameraDefaultVision();
 
     /**
      * Checks if target is present or not
@@ -172,6 +180,33 @@ public:
      */
     double GetLatency();
 
+    /**
+     * Gets the target's horizontal length
+     * @return target's horizontal length
+     */
+    double GetHorizontalLength();
+
+    /**
+     * Gets the target's vertical length
+     * @return target's vertical length
+     */
+    double GetVerticalLength();
+
+    /**
+     * Finds the angle skew of the robot in reference to the target
+     */
+    double FindTargetSkew();
+
+    /**
+     * Finds the horizontal distance of the robot in reference to the target
+     */
+    double GetHorizontalDistance();
+
+    static constexpr double TARGET_HEIGHT = 10.0;  // in inches from ground
+    static constexpr double CAMERA_HEIGHT = 2.3;   // in inches from ground
+    static constexpr double CAMERA_ANGLE =
+        0.0 * (PI / 180.0);  // in degrees wrt ground
+
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight
     const char *m_camName;
@@ -187,5 +222,8 @@ private:
     double m_targetSkew;      // target skew or rotation [-90, 0]
     double m_latency;  // The pipeline’s latency contribution (ms) Add at least
                        // 11ms for image capture latency.
+
+    static constexpr double TARGET_ASPECT_RATIO =
+        6.0 / 15.0;  // Constant for the targets aspect ratio
 };
 }

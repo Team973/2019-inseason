@@ -29,8 +29,7 @@ void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
     double offset = m_limelight->GetXOffset();
-    double distance = (TARGET_HEIGHT - CAMERA_HEIGHT) /
-                      tan(CAMERA_ANGLE + TARGET_ANGLE);  // in inches
+    double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError = DISTANCE_SETPOINT - distance;
 
     if (!m_limelight->isTargetValid()) {

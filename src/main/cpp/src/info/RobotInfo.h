@@ -21,6 +21,7 @@ static constexpr double DRIVE_DIST_PER_CLICK =
 static constexpr double DRIVE_IPS_FROM_RPM = DRIVE_DIST_PER_REVOLUTION / 60.0;
 static constexpr double DRIVE_IPS_FROM_CPDS =
     1 * 10 / DRIVE_ENCODER_COUNT * DRIVE_DIST_PER_REVOLUTION;  // aka 0.0383
+static constexpr double PI = 3.14159265359;
 
 /**
  * Pneumatics Hardware
