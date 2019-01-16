@@ -91,14 +91,22 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
+                    m_hatchIntake->SetIntakeState(
+                        HatchIntake::HatchIntakeState::intaking);
                 }
                 else {
+                    m_hatchIntake->SetIntakeState(
+                        HatchIntake::HatchIntakeState::idle);
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
+                    m_hatchIntake->SetIntakeState(
+                        HatchIntake::HatchIntakeState::exhaust);
                 }
                 else {
+                    m_hatchIntake->SetIntakeState(
+                        HatchIntake::HatchIntakeState::idle);
                 }
                 break;
             case Xbox::BtnX:

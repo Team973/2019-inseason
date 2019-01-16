@@ -36,14 +36,21 @@ public:
 
     enum HatchIntakeState
     {
+        idle,
+        intaking,
+        hold,
+        exhaust
+
+    };
+
+    enum PneumaticState
+    {
         release,
         grab,
         close,
         pushOpen,
         pushClose,
-        preLaunch,
         launch,
-        launchReset,
         manual
     };
 
@@ -100,6 +107,8 @@ public:
 
     void ManualPuncherIdle();
 
+    void SetIntakeState(HatchIntakeState state);
+
     /**
      * Periodically update information about the drive.
      * @param mode The current robot mode.
@@ -108,7 +117,7 @@ public:
     void TaskPeriodic(RobotMode mode);
 
 private:
-    void GoToState(HatchIntakeState newState);
+    void GoToState(PneumaticState state);
 
     TaskMgr *m_scheduler;
     DigitalInput *m_rightHatchSensor;
