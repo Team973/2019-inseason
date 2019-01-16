@@ -4,7 +4,7 @@ namespace frc973 {
 Intake::Intake(TaskMgr *scheduler, LogSpreadsheet *logger)
         : m_scheduler(scheduler)
         , m_logger(logger)
-        , m_intakeMotor(new TalonSRX(INTAKE_CAN_ID))
+        , m_intakeMotor(new GreyTalonSRX(INTAKE_CAN_ID))
         , m_intakeState(IntakeState::notRunning) {
     this->m_scheduler->RegisterTask("Intake", this, TASK_PERIODIC);
     m_intakeMotor->Set(ControlMode::PercentOutput, 0.0);

@@ -9,6 +9,7 @@
 
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
+#include "lib/helpers/GreyTalon.h"
 #include "lib/managers/CoopTask.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "src/info/RobotInfo.h"
@@ -62,7 +63,7 @@ public:
      * @param elevatorMotor The elevator Talon.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             TalonSRX *elevatorMotor, Limelight *limelight);
+             GreyTalonSRX *elevatorMotor, Limelight *limelight);
     virtual ~Elevator();
 
     /**
@@ -110,7 +111,7 @@ public:
 private:
     TaskMgr *m_scheduler;
 
-    TalonSRX *m_elevatorMotor;
+    GreyTalonSRX *m_elevatorMotor;
 
     double m_position;
     uint32_t m_zeroingTime;
