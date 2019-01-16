@@ -1,10 +1,11 @@
 #include "src/subsystems/Subsystem.h"
 
 namespace frc973 {
-Subsystem::Subsystem(TaskMgr *scheduler, LogSpreadsheet *logger)
+Subsystem::Subsystem(TaskMgr *scheduler, LogSpreadsheet *logger,
+                     GreyTalonSRX *subsystemMotor)
         : m_scheduler(scheduler)
         , m_logger(logger)
-        , m_subsystemMotor(new TalonSRX(0)) {
+        , m_subsystemMotor(subsystemMotor) {
     this->m_scheduler->RegisterTask("Subsystem", this, TASK_PERIODIC);
     m_subsystemMotor->Set(ControlMode::PercentOutput, 0.0);
     m_subsystemMotor->SetNeutralMode(NeutralMode::Coast);

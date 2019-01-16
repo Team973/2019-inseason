@@ -2,6 +2,7 @@
 
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
+#include "lib/helpers/GreyTalon.h"
 #include "src/info/RobotInfo.h"
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
@@ -36,7 +37,7 @@ public:
 private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
-    TalonSRX *m_intakeMotor;
+    GreyTalonSRX *m_intakeMotor;
     IntakeState m_intakeState;
 
     LogCell *m_current;

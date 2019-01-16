@@ -8,6 +8,7 @@
 
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
+#include "lib/helpers/GreyTalon.h"
 #include "src/info/RobotInfo.h"
 #include "lib/bases/DriveBase.h"
 #include "networktables/NetworkTableInstance.h"
@@ -60,11 +61,11 @@ public:
      * @param rightDriveVictorC The third right drive motor controller.
      * @param gyro The gyro object.
      */
-    Drive(TaskMgr *scheduler, LogSpreadsheet *logger, TalonSRX *leftDriveTalonA,
-          VictorSPX *leftDriveVictorB, VictorSPX *leftDriveVictorC,
-          TalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
-          VictorSPX *rightDriveVictorC, ADXRS450_Gyro *gyro,
-          Limelight *limelight);
+    Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
+          GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
+          VictorSPX *leftDriveVictorC, GreyTalonSRX *rightDriveTalonA,
+          VictorSPX *rightDriveVictorB, VictorSPX *rightDriveVictorC,
+          ADXRS450_Gyro *gyro, Limelight *limelight);
     virtual ~Drive();
 
     /**
@@ -256,10 +257,10 @@ public:
 private:
     LogSpreadsheet *m_logger;
 
-    TalonSRX *m_leftDriveTalonA;
+    GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
     VictorSPX *m_leftDriveVictorC;
-    TalonSRX *m_rightDriveTalonA;
+    GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
 
