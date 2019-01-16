@@ -9,11 +9,12 @@
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
 #include "src/controllers/CheesyDriveController.h"
+#include "src/controllers/LimelightDriveController.h"
 #include "src/controllers/OpenloopArcadeDriveController.h"
 #include "src/controllers/PIDDriveController.h"
 #include "src/controllers/SplineDriveController.h"
+#include "src/controllers/StingerDriveController.h"
 #include "src/controllers/VelocityArcadeDriveController.h"
-#include "src/controllers/LimelightDriveController.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "lib/util/Util.h"
@@ -53,11 +54,12 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_gyroZero(0.0)
         , m_limelight(limelight)
         , m_cheesyDriveController(new CheesyDriveController())
+        , m_limelightDriveController(new LimelightDriveController(limelight))
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
+        , m_stingerDriveController(new StingerDriveController())
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
-        , m_limelightDriveController(new LimelightDriveController(limelight))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))
@@ -119,6 +121,12 @@ void Drive::CheesyDrive(double throttle, double turn, bool isQuickTurn,
                                           isHighGear);
 }
 
+LimelightDriveController *Drive::LimelightDrive() {
+    this->SetDriveController(m_limelightDriveController);
+
+    return m_limelightDriveController;
+}
+
 void Drive::OpenloopArcadeDrive(double throttle, double turn) {
     this->SetDriveController(m_openloopArcadeDriveController);
     m_openloopArcadeDriveController->SetJoysticks(throttle, turn);
@@ -155,15 +163,16 @@ double Drive::GetSplinePercentComplete() {
     return m_splineDriveController->GetSplinePercentComplete();
 }
 
+void Drive::StingerDrive(double throttle, double turn, bool isQuickTurn,
+                         bool isHighGear) {
+    this->SetDriveController(m_stingerDriveController);
+    m_stingerDriveController->SetJoysticks(throttle, turn, isQuickTurn,
+                                           isHighGear);
+}
+
 void Drive::VelocityArcadeDrive(double throttle, double turn) {
     this->SetDriveController(m_velocityArcadeDriveController);
     m_velocityArcadeDriveController->SetJoysticks(throttle, turn);
-}
-
-LimelightDriveController *Drive::LimelightDrive() {
-    this->SetDriveController(m_limelightDriveController);
-
-    return m_limelightDriveController;
 }
 
 double Drive::GetLeftDist() const {

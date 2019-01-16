@@ -1,5 +1,5 @@
 /*
- * CheesyDriveController.h
+ * StingerDriveController.h
  *
  *  Created on: Jan 15, 2018
  *      Author: Chris
@@ -7,23 +7,24 @@
 
 #pragma once
 
-#include "lib/bases/DriveBase.h"
 #include <stdio.h>
+#include "lib/bases/DriveBase.h"
+#include "src/controllers/CheesyDriveController.h"
 
 using namespace frc;
 
 namespace frc973 {
 
 /**
- * Cheesy Drive controller.
+ * Stinger Drive controller.
  */
-class CheesyDriveController : public DriveController {
+class StingerDriveController : public CheesyDriveController {
 public:
     /**
-     * Construct a Cheesy Drive controller.
+     * Construct a Stinger Drive controller.
      */
-    CheesyDriveController();
-    virtual ~CheesyDriveController();
+    StingerDriveController();
+    virtual ~StingerDriveController();
 
     /**
      * Calculate motor output given the most recent joystick commands. In this
@@ -57,7 +58,7 @@ public:
      * @param out The signal receiver for handling outgoing messages.
      */
     void Start(DriveControlSignalReceiver *out) override {
-        printf("Turning on Cheesy Mode\n");
+        printf("Turning on Stinger Mode\n");
     }
 
     /**
@@ -65,26 +66,8 @@ public:
      * @param out The signal receiver for handling outgoing messages.
      */
     void Stop(DriveControlSignalReceiver *out) override {
-        printf("Turning off Cheesy Mode\n");
+        printf("Turning off Stinger Mode\n");
     }
-
-protected:
-    /*
-     * These factor determine how fast the turn traverses the "non linear" sine
-     * curve.
-     */
-    const double kHighWheelNonLinearity = 0.65;
-    const double kLowWheelNonLinearity = 0.5;
-    const double kHighNegInertiaScalar = 4.0;
-    const double kLowNegInertiaThreshold = 0.65;
-    const double kLowNegInertiaTurnScalar = 3.5;
-    const double kLowNegInertiaCloseScalar = 4.0;
-    const double kLowNegInertiaFarScalar = 5.0;
-    const double kHighSensitivity = 0.95;
-    const double kLowSensitivity = 1.3;
-    const double kQuickStopDeadband = 0.2;
-    const double kQuickStopWeight = 0.1;
-    const double kQuickStopScalar = 5.0;
 
 private:
     double m_leftOutput;
