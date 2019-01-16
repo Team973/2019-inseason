@@ -37,6 +37,7 @@ static const int RIGHT_DRIVE_C_VICTOR_ID = 3;
 static const int LEFT_DRIVE_A_CAN_ID = 16;
 static const int LEFT_DRIVE_B_VICTOR_ID = 15;
 static const int LEFT_DRIVE_C_VICTOR_ID = 14;
+static const int STINGER_DRIVE_CAN_ID = 13;
 
 /**
  * Intake Subsystem

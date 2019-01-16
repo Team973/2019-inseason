@@ -68,7 +68,13 @@ public:
         printf("Turning off Cheesy Mode\n");
     }
 
-protected:
+private:
+    double m_leftOutput;
+    double m_rightOutput;
+    double m_oldWheel;
+    double m_quickStopAccumulator;
+    double m_negInertiaAccumulator;
+
     /*
      * These factor determine how fast the turn traverses the "non linear" sine
      * curve.
@@ -85,12 +91,5 @@ protected:
     const double kQuickStopDeadband = 0.2;
     const double kQuickStopWeight = 0.1;
     const double kQuickStopScalar = 5.0;
-
-private:
-    double m_leftOutput;
-    double m_rightOutput;
-    double m_oldWheel;
-    double m_quickStopAccumulator;
-    double m_negInertiaAccumulator;
 };
 }

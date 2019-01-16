@@ -65,7 +65,8 @@ public:
           GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
           VictorSPX *leftDriveVictorC, GreyTalonSRX *rightDriveTalonA,
           VictorSPX *rightDriveVictorB, VictorSPX *rightDriveVictorC,
-          ADXRS450_Gyro *gyro, Limelight *limelight);
+          GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+          Limelight *limelight);
     virtual ~Drive();
 
     /**
@@ -152,8 +153,7 @@ public:
      * @param isQuickTurn Quickturn mode enable/disable.
      * @param isHighGear High gear enable/disable.
      */
-    void StingerDrive(double throttle, double turn, bool isQuickTurn,
-                      bool isHighGear);
+    void StingerDrive(double throttle, double turn);
 
     /**
      * Set drive to use the velocity arcade drive controller.
@@ -264,6 +264,8 @@ private:
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
 
+    GreyTalonSRX *m_stingerDriveMotor;
+
     ControlMode m_controlMode;
 
     double m_leftDriveOutput;
@@ -271,8 +273,10 @@ private:
 
     LogCell *m_leftDriveOutputLog;
     LogCell *m_rightDriveOutputLog;
+    LogCell *m_stingerDriveOutputLog;
     LogCell *m_leftVoltageLog;
     LogCell *m_rightVoltageLog;
+    LogCell *m_stingerVoltageLog;
 
     double m_leftPosZero;
     double m_rightPosZero;

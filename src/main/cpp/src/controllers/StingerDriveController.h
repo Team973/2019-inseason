@@ -1,27 +1,26 @@
 /*
  * StingerDriveController.h
  *
- *  Created on: Jan 15, 2018
- *      Author: Chris
+ *  Created on: Oct 30, 2015
+ *      Author: Andrew
  */
 
 #pragma once
 
-#include <stdio.h>
 #include "lib/bases/DriveBase.h"
-#include "src/controllers/CheesyDriveController.h"
+#include <stdio.h>
 
 using namespace frc;
 
 namespace frc973 {
 
 /**
- * Stinger Drive controller.
+ * Openloop Arcade Drive controller.
  */
-class StingerDriveController : public CheesyDriveController {
+class StingerDriveController : public DriveController {
 public:
     /**
-     * Construct a Stinger Drive controller.
+     * Construct a Openloop Arcade Drive controller.
      */
     StingerDriveController();
     virtual ~StingerDriveController();
@@ -37,7 +36,7 @@ public:
 
     /**
      * Checks with the controller to see if we are on target.
-     * @return false.
+     * @return false, this controller is open-loop.
      */
     bool OnTarget() override {
         return false;
@@ -47,18 +46,17 @@ public:
      * Set the joystick values (which in this case will be output).
      * @param throttle Forward/backwards amount.
      * @param turn Left/right amount.
-     * @param isQuickTurn Quickturn mode enable/disable.
-     * @param isHighGear High gear enable/disable.
      */
-    void SetJoysticks(double throttle, double turn, bool isQuickTurn,
-                      bool isHighGear);
+    void SetJoysticks(double throttle, double turn);
+
+    double GetStingerMotorOutput();
 
     /**
      * Start the drive controller.
      * @param out The signal receiver for handling outgoing messages.
      */
     void Start(DriveControlSignalReceiver *out) override {
-        printf("Turning on Stinger Mode\n");
+        printf("Turning on Open Loop Stinger Mode\n");
     }
 
     /**
@@ -66,14 +64,15 @@ public:
      * @param out The signal receiver for handling outgoing messages.
      */
     void Stop(DriveControlSignalReceiver *out) override {
-        printf("Turning off Stinger Mode\n");
+        printf("Turning off Open Loop Stinger Mode\n");
     }
 
 private:
     double m_leftOutput;
     double m_rightOutput;
-    double m_oldWheel;
-    double m_quickStopAccumulator;
-    double m_negInertiaAccumulator;
+    double m_stingerOutput;
+
+    double kStingerThrottleScale = 1.0;
+    double kStingerTurnScale = 1.0;
 };
 }
