@@ -29,6 +29,7 @@ Robot::Robot()
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
         , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
         , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
+        , m_stingerElevatorMotor(new GreyTalonSRX(STINGER_ELEVATOR_CAN_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_greylight(new GreyLight(NUM_LED))
         , m_limelight(new Limelight())
@@ -39,6 +40,7 @@ Robot::Robot()
               this, m_logger, m_leftDriveTalonA, m_leftDriveVictorB,
               m_leftDriveVictorC, m_rightDriveTalonA, m_rightDriveVictorB,
               m_rightDriveVictorC, m_stingerDriveMotor, m_gyro, m_limelight))
+        , m_stinger(new Stinger(this, m_logger, m_stingerElevatorMotor))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))

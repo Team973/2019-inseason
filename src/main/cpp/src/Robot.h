@@ -22,6 +22,7 @@
 #include "src/TestMode.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
@@ -88,6 +89,7 @@ private:
     VictorSPX *m_rightDriveVictorC;
 
     GreyTalonSRX *m_stingerDriveMotor;
+    GreyTalonSRX *m_stingerElevatorMotor;
 
     ADXRS450_Gyro *m_gyro;
     GreyLight *m_greylight;
@@ -98,6 +100,7 @@ private:
     LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
+    Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;

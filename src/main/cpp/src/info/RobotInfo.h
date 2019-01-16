@@ -45,6 +45,12 @@ static const int STINGER_DRIVE_CAN_ID = 13;
 static const int INTAKE_CAN_ID = 4;
 
 /**
+ * Stinger Subsystem
+ */
+static const int STINGER_ELEVATOR_CAN_ID = 11;
+// note: stinger drive motor is in drive subsystem
+
+/**
  * Digital Sensors
  **/
 static const int PRESSURE_DIN_ID = 1;
