@@ -2,6 +2,7 @@
 
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
+#include "lib/helpers/GreyTalon.h"
 #include "src/info/RobotInfo.h"
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
@@ -17,7 +18,8 @@ class LogCell;
 
 class Subsystem : public CoopTask {
 public:
-    Subsystem(TaskMgr *scheduler, LogSpreadsheet *logger);
+    Subsystem(TaskMgr *scheduler, LogSpreadsheet *logger,
+              GreyTalonSRX *subsystemMotor);
     virtual ~Subsystem();
 
     void SubsystemStart();
@@ -28,7 +30,7 @@ public:
 private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
-    TalonSRX *m_subsystemMotor;
+    GreyTalonSRX *m_subsystemMotor;
 
     LogCell *m_current;
 };
