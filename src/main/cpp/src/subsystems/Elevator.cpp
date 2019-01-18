@@ -7,7 +7,7 @@ using namespace frc;
 
 namespace frc973 {
 Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-                   TalonSRX *elevatorMotor, Limelight *limelight)
+                   GreyTalonSRX *elevatorMotor, Limelight *limelight)
         : m_scheduler(scheduler)
         , m_elevatorMotor(elevatorMotor)
         , m_position(0.0)

@@ -28,8 +28,8 @@ using namespace trajectories;
 
 namespace frc973 {
 Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
-             TalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
-             VictorSPX *leftDriveVictorC, TalonSRX *rightDriveTalonA,
+             GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
+             VictorSPX *leftDriveVictorC, GreyTalonSRX *rightDriveTalonA,
              VictorSPX *rightDriveVictorB, VictorSPX *rightDriveVictorC,
              ADXRS450_Gyro *gyro, Limelight *limelightCargo,
              Limelight *limelightHatch)

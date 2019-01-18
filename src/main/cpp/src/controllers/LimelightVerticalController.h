@@ -9,6 +9,7 @@
 #include "lib/util/Util.h"
 #include "lib/sensors/Limelight.h"
 #include "ctre/Phoenix.h"
+#include "lib/helpers/GreyTalon.h"
 
 namespace frc973 {
 
@@ -21,7 +22,7 @@ public:
      * @param limelight The limelight.
      * @param motor The motor for the vertical subsystem.
      */
-    LimelightVerticalController(Limelight *limelight, TalonSRX *motor);
+    LimelightVerticalController(Limelight *limelight, GreyTalonSRX *motor);
     virtual ~LimelightVerticalController();
 
     /**
@@ -50,6 +51,6 @@ private:
     double m_setpoint;
 
     Limelight *m_limelight;
-    TalonSRX *m_motor;
+    GreyTalonSRX *m_motor;
 };
 }

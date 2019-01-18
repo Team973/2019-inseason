@@ -81,10 +81,10 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
-    TalonSRX *m_leftDriveTalonA;
+    GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
     VictorSPX *m_leftDriveVictorC;
-    TalonSRX *m_rightDriveTalonA;
+    GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
 

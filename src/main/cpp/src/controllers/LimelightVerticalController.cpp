@@ -4,7 +4,7 @@
 
 namespace frc973 {
 LimelightVerticalController::LimelightVerticalController(Limelight *limelight,
-                                                         TalonSRX *motor)
+                                                         GreyTalonSRX *motor)
         : m_onTarget(false)
         , m_setpoint(0.0)
         , m_limelight(limelight)
