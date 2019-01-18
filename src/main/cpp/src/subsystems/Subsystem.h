@@ -16,34 +16,21 @@ class TaskMgr;
 class LogSpreadsheet;
 class LogCell;
 
-class CargoIntake : public CoopTask {
+class Subsystem : public CoopTask {
 public:
-    CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger);
-    virtual ~CargoIntake();
+    Subsystem(TaskMgr *scheduler, LogSpreadsheet *logger,
+              GreyTalonSRX *subsystemMotor);
+    virtual ~Subsystem();
 
-    void RunIntake(double power);
-    void Stop();
-    void Exhaust(double power);
-
-    void ExtendWrist();
-    void RetractWrist();
-
-    double GetCurrent();
+    void SubsystemStart();
+    void SubsystemStop();
 
     void TaskPeriodic(RobotMode mode) override;
 
 private:
-    enum WristState
-    {
-        extend = true,
-        retract = false
-    };
-
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
-    GreyTalonSRX *m_intakeMotor;
-    Solenoid *m_wrist;
-    IntakeState m_intakeState;
+    GreyTalonSRX *m_subsystemMotor;
 
     LogCell *m_current;
 };
