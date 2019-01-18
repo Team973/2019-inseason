@@ -38,6 +38,7 @@ Robot::Robot()
                             m_leftDriveVictorB, m_leftDriveVictorC,
                             m_rightDriveTalonA, m_rightDriveVictorB,
                             m_rightDriveVictorC, m_gyro, m_limelight))
+        , m_elevator(new Elevator(this, m_logger, m_elevatorMotor, m_limelight))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
