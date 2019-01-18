@@ -26,6 +26,7 @@ class PIDDriveController;
 class SplineDriveController;
 class VelocityArcadeDriveController;
 class LimelightDriveController;
+class AssistedCheesyDriveController;
 class Limelight;
 class LogSpreadsheet;
 
@@ -157,6 +158,8 @@ public:
      */
     LimelightDriveController *LimelightHatchDrive();
 
+    AssistedCheesyDriveController *AssistedCheesyDrive();
+
     /**
      * Return the left distance from the encoder in inches.
      * @return The left distance in inches.
@@ -284,6 +287,7 @@ private:
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
     LimelightDriveController *m_limelightCargoDriveController;
     LimelightDriveController *m_limelightHatchDriveController;
+    AssistedCheesyDriveController *m_assistedCheesyDriveController;
 
     double m_angle;
     double m_angleRate;

@@ -202,10 +202,10 @@ public:
      */
     double GetHorizontalDistance();
 
-    static constexpr double TARGET_HEIGHT = 10.0;  // in inches from ground
-    static constexpr double CAMERA_HEIGHT = 2.3;   // in inches from ground
+    static constexpr double TARGET_HEIGHT = 24.25;  // in inches from ground
+    static constexpr double CAMERA_HEIGHT = 4.75;   // in inches from ground
     static constexpr double CAMERA_ANGLE =
-        0.0 * (PI / 180.0);  // in degrees wrt ground
+        40.0 * (PI / 180.0);  // in degrees wrt ground
 
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight

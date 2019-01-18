@@ -14,6 +14,7 @@
 #include "src/controllers/SplineDriveController.h"
 #include "src/controllers/VelocityArcadeDriveController.h"
 #include "src/controllers/LimelightDriveController.h"
+#include "src/controllers/AssistedCheesyDriveController.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "lib/util/Util.h"
@@ -64,6 +65,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               new LimelightDriveController(limelightCargo))
         , m_limelightHatchDriveController(
               new LimelightDriveController(limelightHatch))
+        , m_assistedCheesyDriveController(
+              new AssistedCheesyDriveController(m_limelightHatch))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))
@@ -176,6 +179,11 @@ LimelightDriveController *Drive::LimelightHatchDrive() {
     this->SetDriveController(m_limelightHatchDriveController);
 
     return m_limelightHatchDriveController;
+}
+
+AssistedCheesyDriveController *Drive::AssistedCheesyDrive() {
+    this->SetDriveController(m_assistedCheesyDriveController);
+    return m_assistedCheesyDriveController;
 }
 
 double Drive::GetLeftDist() const {
@@ -309,6 +317,10 @@ void Drive::TaskPeriodic(RobotMode mode) {
                               m_rightDriveOutput * DRIVE_IPS_FROM_CPDS);
     SmartDashboard::PutNumber("drive/outputs/rightrateactual",
                               Drive::GetRightRate());
+
+    // NetworkTable Limelight
+    SmartDashboard::PutNumber("drive/limelight/error",
+                              m_limelightHatch->GetXOffset());
 
     // NetworkTable Gyro
     SmartDashboard::PutNumber("drive/gyro/angle", this->GetAngle());

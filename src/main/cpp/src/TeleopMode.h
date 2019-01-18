@@ -95,6 +95,7 @@ private:
         Openloop,
         LimelightCargo,
         LimelightHatch,
+        AssistedCheesy,
         Cheesy
     };
     DriveMode m_driveMode;

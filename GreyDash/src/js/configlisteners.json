@@ -3,6 +3,18 @@
         {
             "settings": {
                 "tooltip": false,
+                "minValue": -27.0,
+                "maxValue": 27.0,
+                "show": true
+            },
+            "title": "Limelight Error",
+            "keys": [
+                "/SmartDashboard/drive/limelight/error"
+            ]
+        },
+        {
+            "settings": {
+                "tooltip": false,
                 "minValue": -1,
                 "maxValue": 1,
                 "show": true

@@ -11,8 +11,8 @@ LimelightDriveController::LimelightDriveController(Limelight *limelight)
         , m_throttle(0.0)
         , m_turn(0.0)
         , m_limelight(limelight)
-        , m_turnPid(new PID(0.2, 0.0, 0.0))
-        , m_throttlePid(new PID(2.6, 0.0, 0.05)) {
+        , m_turnPid(new PID(0.07, 0.0, 0.0))
+        , m_throttlePid(new PID(0.1, 0.0, 0.0)) {
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -31,18 +31,20 @@ void LimelightDriveController::CalcDriveOutput(
     double offset = m_limelight->GetXOffset();
     double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError = DISTANCE_SETPOINT - distance;
+    /*if (fabs(offset) < 3.0) {
+        offset = 0.0;
+    }*/
 
-    if (!m_limelight->isTargetValid()) {
+    if (!m_limelight->isTargetValid() || m_onTarget) {
         m_leftSetpoint = 0.0;
         m_rightSetpoint = 0.0;
     }
     else {
         double turnPidOut = m_turnPid->CalcOutputWithError(offset);
-        /*double throttlePidOut =
-            m_throttlePid->CalcOutputWithError(distError) * pow(cos(offset),
-           5);*/
-        m_leftSetpoint = /*throttlePidOut -*/ turnPidOut;
-        m_rightSetpoint = /*throttlePidOut +*/ turnPidOut;
+        double throttlePidOut = m_throttlePid->CalcOutputWithError(
+            distError);                    // * pow(cos(offset), 5);
+        m_leftSetpoint = throttlePidOut;   // - turnPidOut;*/
+        m_rightSetpoint = throttlePidOut;  //+ turnPidOut;
     }
 
     out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
@@ -53,8 +55,8 @@ void LimelightDriveController::CalcDriveOutput(
     DBStringPrintf(DBStringPos::DB_LINE6, "LimeError: %3.2lf",
                    m_limelight->GetXOffset());
 
-    if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 1.0) &&
-        (fabs(distError) < 5.0 && fabs(state->GetRate() < 1.0))) {
+    if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 5.0) &&
+        (fabs(distError) < 5.0 && fabs(state->GetRate() < 5.0))) {
         m_onTarget = true;
     }
     else {
