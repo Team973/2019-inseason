@@ -88,6 +88,8 @@ private:
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
 
+    GreyTalonSRX *m_elevatorMotor;
+
     ADXRS450_Gyro *m_gyro;
     GreyLight *m_greylight;
     Limelight *m_limelight;
