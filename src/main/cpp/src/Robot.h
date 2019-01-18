@@ -90,6 +90,8 @@ private:
 
     GreyTalonSRX *m_stingerDriveMotor;
     GreyTalonSRX *m_stingerElevatorMotor;
+    DigitalInput *m_stingerLowerHall;
+    DigitalInput *m_stingerUpperHall;
 
     ADXRS450_Gyro *m_gyro;
     GreyLight *m_greylight;

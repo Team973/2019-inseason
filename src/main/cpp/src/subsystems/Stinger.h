@@ -19,11 +19,28 @@ class LogCell;
 class Stinger : public CoopTask {
 public:
     Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
-            GreyTalonSRX *stingerElevatorMotor);
+            GreyTalonSRX *stingerElevatorMotor, DigitalInput *stingerLowerHall,
+            DigitalInput *stingerUpperHall);
     virtual ~Stinger();
+
+    enum class StingerElevatorStatus
+    {
+        top,
+        middle,
+        bottom,
+        error
+    };
 
     void StingerStart();
     void StingerStop();
+
+    bool GetLowerHall();
+    bool GetUpperHall();
+    StingerElevatorStatus GetStingerElevatorState();
+
+    void SetStingerElevatorOutput(double input);
+
+    void SetManual();
 
     void TaskPeriodic(RobotMode mode) override;
 
@@ -31,6 +48,8 @@ private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
     GreyTalonSRX *m_stingerElevatorMotor;
+    DigitalInput *m_stingerLowerHall;
+    DigitalInput *m_stingerUpperHall;
 
     LogCell *m_current;
 };
