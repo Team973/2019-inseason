@@ -52,30 +52,31 @@ void Teleop::TeleopPeriodic() {
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
     bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
-    if (m_driveMode == DriveMode::Cheesy) {
-        if (lowGear) {
-            m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
-        }
-        else {
-            m_drive->CheesyDrive(y, x, quickturn, false);
-        }
-    }
-    else if (m_driveMode == DriveMode::Openloop) {
-        if (lowGear) {
-            m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
-        }
-        else {
-            m_drive->OpenloopArcadeDrive(y, x);
-        }
-    }
-    else if (m_driveMode == DriveMode::LimelightCargo) {
-        m_drive->LimelightCargoDrive();
-    }
-    else if (m_driveMode == DriveMode::LimelightHatch) {
-        m_drive->LimelightHatchDrive();
-    }
-    else if (m_driveMode == DriveMode::AssistedCheesy) {
-        m_drive->AssistedCheesyDrive();
+    switch (m_driveMode) {
+        case DriveMode::Cheesy:
+            if (lowGear) {
+                m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
+            }
+            else {
+                m_drive->CheesyDrive(y, x, quickturn, false);
+            }
+        case DriveMode::Openloop:
+            if (lowGear) {
+                m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
+            }
+            else {
+                m_drive->OpenloopArcadeDrive(y, x);
+            }
+            break;
+        case DriveMode::LimelightCargo:
+            m_drive->LimelightCargoDrive();
+            break;
+        case DriveMode::LimelightHatch:
+            m_drive->LimelightHatchDrive();
+            break;
+        case DriveMode::AssistedCheesy:
+            m_drive->AssistedCheesyDrive();
+            break;
     }
 
     /**
