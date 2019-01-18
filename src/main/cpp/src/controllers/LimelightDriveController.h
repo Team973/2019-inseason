@@ -56,9 +56,9 @@ public:
     }
 
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
-        500.0;  // in native units per degree
+        1.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT =
-        12.0;  // in inches from target to robot bumper
+        48.0;  // in inches from target to robot bumper
 
 private:
     bool m_onTarget;

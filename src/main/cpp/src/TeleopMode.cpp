@@ -130,8 +130,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
+                    m_driveMode = DriveMode::LimelightHatch;
                 }
                 else {
+                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::BtnX:
@@ -174,7 +176,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_limelightHatch->SetPipelineIndex(2);
                 }
                 else {
-                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::DPadUpVirtBtn:
@@ -222,14 +223,18 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
     switch (button) {
         case DualAction::BtnA:
             if (pressedP) {
+                m_driveMode = DriveMode::LimelightHatch;
             }
             else {
+                m_driveMode = DriveMode::Cheesy;
             }
             break;
         case DualAction::BtnB:
             if (pressedP) {
+                m_driveMode = DriveMode::LimelightCargo;
             }
             else {
+                m_driveMode = DriveMode::Cheesy;
             }
             break;
         case DualAction::BtnX:

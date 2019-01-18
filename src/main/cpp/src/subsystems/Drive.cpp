@@ -79,10 +79,10 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_leftDriveTalonA->SetSensorPhase(false);
     m_leftDriveTalonA->SetInverted(false);
     m_leftDriveTalonA->SelectProfileSlot(0, 0);
-    m_leftDriveTalonA->Config_kP(0, 0, 0);
-    m_leftDriveTalonA->Config_kI(0, 0, 0);
-    m_leftDriveTalonA->Config_kD(0, 0, 0);
-    m_leftDriveTalonA->Config_kF(0, 0, 0);
+    m_leftDriveTalonA->Config_kP(0, 0.5, 0);
+    m_leftDriveTalonA->Config_kI(0, 0.0, 0);
+    m_leftDriveTalonA->Config_kD(0, 0.0, 0);
+    m_leftDriveTalonA->Config_kF(0, 0.0, 0);
 
     m_leftDriveVictorB->Follow(*m_leftDriveTalonA);
     m_leftDriveVictorB->SetInverted(false);
@@ -95,10 +95,10 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_rightDriveTalonA->SetSensorPhase(false);
     m_rightDriveTalonA->SetInverted(false);
     m_rightDriveTalonA->SelectProfileSlot(0, 0);
-    m_rightDriveTalonA->Config_kP(0, 0, 0);
-    m_rightDriveTalonA->Config_kI(0, 0, 0);
-    m_rightDriveTalonA->Config_kD(0, 0, 0);
-    m_rightDriveTalonA->Config_kF(0, 0, 0);
+    m_rightDriveTalonA->Config_kP(0, 0.5, 0);
+    m_rightDriveTalonA->Config_kI(0, 0.0, 0);
+    m_rightDriveTalonA->Config_kD(0, 0.0, 0);
+    m_rightDriveTalonA->Config_kF(0, 0.0, 0);
 
     m_rightDriveVictorB->Follow(*m_rightDriveTalonA);
     m_rightDriveVictorB->SetInverted(false);
@@ -285,9 +285,9 @@ void Drive::DisableDriveCurrentLimit() {
 void Drive::TaskPeriodic(RobotMode mode) {
     // NetworkTable Voltages
     SmartDashboard::PutNumber("drive/voltages/leftvoltage",
-                              m_leftDriveTalonA->GetMotorOutputVoltage());
+                              m_leftDriveTalonA->GetBusVoltage() / 12.0);
     SmartDashboard::PutNumber("drive/voltages/rightvoltage",
-                              m_rightDriveTalonA->GetMotorOutputVoltage());
+                              m_rightDriveTalonA->GetBusVoltage() / 12.0);
 
     // NetworkTable Currents
     SmartDashboard::PutNumber("drive/currents/leftcurrent",

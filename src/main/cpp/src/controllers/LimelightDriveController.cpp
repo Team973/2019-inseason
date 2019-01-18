@@ -11,8 +11,8 @@ LimelightDriveController::LimelightDriveController(Limelight *limelight)
         , m_throttle(0.0)
         , m_turn(0.0)
         , m_limelight(limelight)
-        , m_turnPid(new PID(0.5, 0.0, 0.0))
-        , m_throttlePid(new PID(0.0, 0.0, 0.0)) {
+        , m_turnPid(new PID(0.2, 0.0, 0.0))
+        , m_throttlePid(new PID(2.6, 0.0, 0.05)) {
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -38,14 +38,20 @@ void LimelightDriveController::CalcDriveOutput(
     }
     else {
         double turnPidOut = m_turnPid->CalcOutputWithError(offset);
-        double throttlePidOut =
-            m_throttlePid->CalcOutputWithError(distError) * pow(cos(offset), 5);
-        m_leftSetpoint = throttlePidOut - turnPidOut;
-        m_rightSetpoint = throttlePidOut + turnPidOut;
+        /*double throttlePidOut =
+            m_throttlePid->CalcOutputWithError(distError) * pow(cos(offset),
+           5);*/
+        m_leftSetpoint = /*throttlePidOut -*/ turnPidOut;
+        m_rightSetpoint = /*throttlePidOut +*/ turnPidOut;
     }
 
-    out->SetDriveOutputVBus(-m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
+    out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
                             -m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
+
+    DBStringPrintf(DBStringPos::DB_LINE5, "LS: %3.2lf RS: %3.2lf",
+                   m_leftSetpoint, m_rightSetpoint);
+    DBStringPrintf(DBStringPos::DB_LINE6, "LimeError: %3.2lf",
+                   m_limelight->GetXOffset());
 
     if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 1.0) &&
         (fabs(distError) < 5.0 && fabs(state->GetRate() < 1.0))) {
