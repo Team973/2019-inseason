@@ -41,13 +41,11 @@ public:
         limelight
     };
 
-    static constexpr double GROUND = 0.0;      /**< Ground preset. */
-    static constexpr double VAULT = 4.5;       /**< Vault preset. */
-    static constexpr double LOW_GOAL = 24.0;   /**< Switch preset. */
-    static constexpr double HANGING = 55.0;    /**< Hang preset. */
-    static constexpr double SCALE_LOW = 58.0;  /**< Lower scale preset. */
-    static constexpr double SCALE_MID = 70.0;  /**< Middle scale preset. */
-    static constexpr double SCALE_HIGH = 77.5; /**< Higher scale preset. */
+    static constexpr double GROUND = 0.0;       /**< Ground preset. */
+    static constexpr double LOW_GOAL = 24.0;    /**< Low preset. */
+    static constexpr double MIDDLE_GOAL = 48.0; /**< Middle preset. */
+    static constexpr double HIGH_GOAL = 96.0;   /**< High preset. */
+    static constexpr double PLATFORM = 24.0;    /**< Platform preset. */
 
     static constexpr double ELEVATOR_SOFT_HEIGHT_LIMIT =
         80.5; /**< Soft elevator height. */
@@ -78,6 +76,9 @@ public:
      */
     void SetPower(double power);
 
+    /**
+     * Enable Limelight control.
+     */
     void EnableLimelightControl();
 
     /**
