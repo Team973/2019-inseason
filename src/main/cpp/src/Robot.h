@@ -33,6 +33,7 @@ namespace frc973 {
 class Disabled;
 class Autonomous;
 class Drive;
+class Elevator;
 
 /**
  * Defines the robot.

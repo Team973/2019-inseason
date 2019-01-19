@@ -4,10 +4,12 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, GreyLight *greylight)
+           Drive *drive, Elevator *elevator, GreyLight *greylight)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_driveMode(DriveMode::Openloop)
+        , m_elevator(elevator)
         , m_greylight(greylight)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
