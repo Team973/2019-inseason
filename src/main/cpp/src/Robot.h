@@ -23,6 +23,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/Elevator.h"
 #include <iostream>
 
 using namespace frc;
@@ -33,6 +34,7 @@ namespace frc973 {
 class Disabled;
 class Autonomous;
 class Drive;
+class Elevator;
 
 /**
  * Defines the robot.
@@ -89,6 +91,9 @@ private:
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
+
+    GreyTalonSRX *m_elevatorMotor;
+
     ADXRS450_Gyro *m_gyro;
 
     Limelight *m_limelight;
@@ -105,6 +110,7 @@ private:
 
     Drive *m_drive;
     CargoIntake *m_cargoIntake;
+    Elevator *m_elevator;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;

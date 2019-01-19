@@ -4,10 +4,13 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, CargoIntake *cargoIntake, GreyLight *greylight)
+           Drive *drive, Elevator *elevator, CargoIntake *cargoIntake,
+           GreyLight *greylight)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_driveMode(DriveMode::Openloop)
+        , m_elevator(elevator)
         , m_cargoIntake(cargoIntake)
         , m_greylight(greylight)
         , m_endGameSignal(

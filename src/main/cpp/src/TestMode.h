@@ -10,6 +10,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/Elevator.h"
 #include <iostream>
 
 using namespace frc;
@@ -29,7 +30,8 @@ public:
      * @param greylight The GreyLight system.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, CargoIntake *cargoIntake, GreyLight *greylight);
+         Drive *drive, Elevator *elevator, CargoIntake *cargoIntake,
+         GreyLight *greylight);
     virtual ~Test();
 
     /**
@@ -97,6 +99,8 @@ private:
     CargoIntake *m_cargoIntake;
     DriveMode m_driveMode;
     CargoIntakeState m_cargoIntakeState;
+
+    Elevator *m_elevator;
 
     GreyLight *m_greylight;
     LightPattern::Flash *m_endGameSignal;

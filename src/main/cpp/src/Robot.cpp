@@ -29,6 +29,7 @@ Robot::Robot()
         , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
         , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
+        , m_elevatorMotor(new GreyTalonSRX(ELEVATOR_CAN_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_limelight(new Limelight())
         , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
@@ -47,6 +48,7 @@ Robot::Robot()
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoWristLock, m_cargoWrist,
                                         m_cargoPlatformWheel))
+        , m_elevator(new Elevator(this, m_logger, m_elevatorMotor, m_limelight))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
@@ -58,7 +60,7 @@ Robot::Robot()
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
                               m_cargoIntake, m_greylight))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_cargoIntake, m_greylight)) {
+                          m_elevator, m_cargoIntake, m_greylight)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
