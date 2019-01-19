@@ -59,6 +59,7 @@ public:
         1.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT =
         40.0;  // in inches from target to robot bumper
+    static constexpr double PERIOD = 5.0;
 
 private:
     bool m_onTarget;

@@ -334,8 +334,8 @@ function render () {
 
 openPage('default')
 
-const cameraOneUrl = 'http://limelight-one.local:5800'
-const cameraTwoUrl = 'http://limelight-two.local:5800'
+const cameraOneUrl = 'http://limelight-hatch.local:5800'
+const cameraTwoUrl = 'http://limelight-cargo.local:5800'
 
 function reloadCameraOne () {
     const content = ui.misc.cameraOne.innerHTML

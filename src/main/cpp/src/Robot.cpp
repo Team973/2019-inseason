@@ -8,6 +8,7 @@
 #include "src/Robot.h"
 #include "ctre/Phoenix.h"
 #include "lib/util/WrapDash.h"
+#include "src/controllers/LimelightDriveController.h"
 
 using namespace frc;
 using namespace ctre;
@@ -128,6 +129,10 @@ void Robot::AllStateContinuous() {
         DriverStation::GetInstance().GetReplayNumber());
     m_gameSpecificMessage->LogText(
         DriverStation::GetInstance().GetGameSpecificMessage().c_str());
+    DBStringPrintf(DBStringPos::DB_LINE7, "Distance : %3.2lf",
+                   m_limelightHatch->GetHorizontalDistance());
+    DBStringPrintf(DBStringPos::DB_LINE8, "Pow(cos(offset)): %3.2lf",
+                   (pow(cos(m_limelightHatch->GetXOffset() * PI / 180), 5)));
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

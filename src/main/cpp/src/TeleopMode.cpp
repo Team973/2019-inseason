@@ -93,8 +93,6 @@ void Teleop::TeleopPeriodic() {
         printf("got a hatch target\n");
         printf("%d\n", (GetMsecTime() - m_limelightHatchTimer));
     }
-    DBStringPrintf(DBStringPos::DB_LINE7, "hd: %3.2lf",
-                   m_limelightHatch->GetHorizontalDistance());
 }
 
 void Teleop::TeleopStop() {
@@ -144,8 +142,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::BtnA:
                 if (pressedP) {
                     m_limelightHatch->SetPipelineIndex(2);
-                    m_limelightHatch->SetSnapshotMode(
-                        Limelight::SnapshotMode::start);
                     m_driveMode = DriveMode::LimelightHatch;
                 }
                 else {
