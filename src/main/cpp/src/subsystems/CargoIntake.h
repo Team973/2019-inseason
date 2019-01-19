@@ -131,10 +131,34 @@ public:
      */
     CargoEndgameState GetEndgameState();
 
+    /**
+     * Sets the desired cargo intake state
+     * @param The desired Cargo Intake state.
+     */
     void GoToIntakeState(CargoIntakeState newState);
+
+    /**
+     * Go to the wrist lock state
+     * @param The Wrist Lock state.
+     */
     void GoToWristLockState(CargoWristLockState newState);
+
+    /**
+     * Go to the desired wrist state
+     * @param The desired Wrist state.
+     */
     void GoToWristState(CargoWristState newState);
+
+    /**
+     * Go to the platform wheel state
+     * @param The Platform Wheel state.
+     */
     void GoToPlatformWheelState(CargoPlatformWheelState newState);
+
+    /**
+     * Go to the desired end game state
+     * @param The desired End Game state.
+     */
     void GoToEndgameState(CargoEndgameState newState);
 
     /**
