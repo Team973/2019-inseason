@@ -50,25 +50,6 @@ void Test::TestPeriodic() {
     /**
      * Operator Joystick
      */
-    switch (m_cargoIntakeState) {
-        case CargoIntakeState::running:
-            m_cargoIntake->ExtendWrist();
-            m_cargoIntake->RunIntake(1.0);
-            if (m_cargoIntake->GetCurrent() > 5.0) {
-                m_cargoIntakeState = CargoIntakeState::hold;
-            }
-            break;
-        case CargoIntakeState::notRunning:
-            m_cargoIntake->Stop();
-            break;
-        case CargoIntakeState::reverse:
-            m_cargoIntake->Exhaust(-1.0);
-            break;
-        case CargoIntakeState::hold:
-            m_cargoIntake->RunIntake(0.2);
-            m_cargoIntake->RetractWrist();
-            break;
-    }
 }
 
 void Test::TestStop() {
@@ -225,18 +206,18 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::LeftBumper:
             if (pressedP) {
-                m_cargoIntakeState = CargoIntakeState::running;
+                m_cargoIntake->RunIntake();
             }
             else {
-                m_cargoIntakeState = CargoIntakeState::notRunning;
+                m_cargoIntake->StopIntake();
             }
             break;
         case DualAction::LeftTrigger:
             if (pressedP) {
-                m_cargoIntakeState = CargoIntakeState::reverse;
+                m_cargoIntake->Exhaust();
             }
             else {
-                m_cargoIntakeState = CargoIntakeState::notRunning;
+                m_cargoIntake->StopIntake();
             }
             break;
         case DualAction::RightBumper:

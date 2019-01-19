@@ -43,6 +43,8 @@ static const int LEFT_DRIVE_C_VICTOR_ID = 14;
  **/
 static const int CARGO_INTAKE_CAN_ID = 4;
 static const int CARGO_INTAKE_WRIST_PCM_ID = 0;
+static const int CARGO_INTAKE_WRIST_LOCK_PCM_ID = 2;
+static const int CARGO_PLATFORM_WHEEL_PCM_ID = 3;
 
 /**
  * Digital Sensors

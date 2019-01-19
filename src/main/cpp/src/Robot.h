@@ -81,18 +81,25 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
+    LogSpreadsheet *m_logger;
+
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
     VictorSPX *m_leftDriveVictorC;
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
-
     ADXRS450_Gyro *m_gyro;
-    GreyLight *m_greylight;
+
     Limelight *m_limelight;
 
-    LogSpreadsheet *m_logger;
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoWristLock;
+    Solenoid *m_cargoPlatformWheel;
+
+    GreyLight *m_greylight;
+
     LogCell *m_matchIdentifier;
     LogCell *m_gameSpecificMessage;
 

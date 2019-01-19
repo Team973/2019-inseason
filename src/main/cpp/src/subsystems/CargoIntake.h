@@ -18,32 +18,141 @@ class LogCell;
 
 class CargoIntake : public CoopTask {
 public:
-    CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger);
+    /**
+     * Construct a Cargo Intake Subsystem.
+     * @param scheduler The task manager.
+     * @param logger The logger.
+     * @param cargoIntakeMotor The cargo intake motor.
+     * @param cargoWristLock The cargo wrist lock solenoid.
+     * @param cargoWrist The cargo wrist solenoid.
+     * @param cargoPlatformWheel The cargo platform wheel solenoid.
+     */
+    CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
+                GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoWristLock,
+                Solenoid *cargoWrist, Solenoid *cargoPlatformWheel);
     virtual ~CargoIntake();
 
-    void RunIntake(double power);
-    void Stop();
-    void Exhaust(double power);
+    /**
+     * Cargo Intake states.
+     */
+    enum class CargoIntakeState
+    {
+        running,    /**< Intaking state. */
+        notRunning, /**< Stopped state. */
+        reverse,    /**< Outtaking state. */
+        platform    /**< Endgame Platform state. */
+    };
 
-    void ExtendWrist();
-    void RetractWrist();
+    /**
+     * Cargo Wrist Lock states.
+     */
+    enum class CargoWristLockState
+    {
+        unlocked, /**< Unlocked wrist state. */
+        locked    /**< Locked wrist state. */
+    };
 
-    double GetCurrent();
+    /**
+     * Cargo Wrist states.
+     */
+    enum class CargoWristState
+    {
+        extended, /**< Extended wrist state. */
+        retracted /**< Retracted wrist state. */
+    };
 
+    /**
+     * Cargo Platform Wheel states.
+     */
+    enum class CargoPlatformWheelState
+    {
+        retracted, /**< Retracted wheel state. */
+        deployed   /**< Deployed wheel state. */
+    };
+
+    /**
+     * Cargo Endgame state.
+     */
+    enum class CargoEndgameState
+    {
+        notEndgame, /**< Default, not endgame state. */
+        stowed,     /**< Stowed state. */
+        deployed    /**< Deployed state. */
+    };
+
+    void RunIntake();  /**< Set the CargoIntakeState to running. */
+    void StopIntake(); /**< Set the CargoIntakeState to stop. */
+    void Exhaust();    /**< Set the CargoIntakeState to reverse. */
+
+    void UnlockWrist(); /**< Set the CargoWristLockState to unlocked. */
+    void LockWrist();   /**< Set the CargoWristLockState to locked. */
+
+    void ExtendWrist();  /**< Set the CargoWristState to extended. */
+    void RetractWrist(); /**< Set the CargoWristState to retracted. */
+
+    void DeployPlatformWheel();  /**< Set the CargoPlatformWheelState to
+                                    deployed */
+    void RetractPlatformWheel(); /**< Set the CargoPlatformWheelState to
+                                    retracted */
+
+    /**
+     * Get the intake current.
+     * @returns The intake motor's current pull in ohms.
+     */
+    double GetIntakeCurrent();
+
+    /**
+     * Get the current CargoIntakeState.
+     * @returns The current CargoIntakeState.
+     */
+    CargoIntakeState GetIntakeState();
+
+    /**
+     * Get the current CargoWristLockState.
+     * @returns The current CargoWristLockState.
+     */
+    CargoWristLockState GetWristLockState();
+
+    /**
+     * Get the current CargoWristState.
+     * @returns The current CargoWristState.
+     */
+    CargoWristState GetWristState();
+
+    /**
+     * Get the current CargoPlatformWheelState.
+     * @returns The current CargoPlatformWheelState.
+     */
+    CargoPlatformWheelState GetPlatformWheelState();
+
+    /**
+     * Get the current CargoEndgameState.
+     * @returns The current CargoEndgameState.
+     */
+    CargoEndgameState GetEndgameState();
+
+    /**
+     * The looping task periodic.
+     * @param mode The current robot mode.
+     */
     void TaskPeriodic(RobotMode mode) override;
 
 private:
-    enum WristState
-    {
-        extend = true,
-        retract = false
-    };
-
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
-    GreyTalonSRX *m_intakeMotor;
-    Solenoid *m_wrist;
-    IntakeState m_intakeState;
+
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoWristLock;
+    Solenoid *m_cargoPlatformWheel;
+
+    uint32_t m_cargoTimer;
+
+    CargoIntakeState m_cargoIntakeState;
+    CargoWristState m_cargoWristState;
+    CargoWristLockState m_cargoWristLockState;
+    CargoPlatformWheelState m_cargoPlatformWheelState;
+    CargoEndgameState m_cargoEndgameState;
 
     LogCell *m_current;
 };
