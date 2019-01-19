@@ -33,10 +33,8 @@ static const int COMPRESSOR_RELAY = 0;
  **/
 static const int RIGHT_DRIVE_A_CAN_ID = 1;
 static const int RIGHT_DRIVE_B_VICTOR_ID = 2;
-static const int RIGHT_DRIVE_C_VICTOR_ID = 3;
 static const int LEFT_DRIVE_A_CAN_ID = 16;
 static const int LEFT_DRIVE_B_VICTOR_ID = 15;
-static const int LEFT_DRIVE_C_VICTOR_ID = 14;
 
 /**
  * Intake Subsystem
