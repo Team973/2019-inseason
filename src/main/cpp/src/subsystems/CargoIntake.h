@@ -131,6 +131,12 @@ public:
      */
     CargoEndgameState GetEndgameState();
 
+    void GoToIntakeState(CargoIntakeState newState);
+    void GoToWristLockState(CargoWristLockState newState);
+    void GoToWristState(CargoWristState newState);
+    void GoToPlatformWheelState(CargoPlatformWheelState newState);
+    void GoToEndgameState(CargoEndgameState newState);
+
     /**
      * The looping task periodic.
      * @param mode The current robot mode.
@@ -146,7 +152,7 @@ private:
     Solenoid *m_cargoWristLock;
     Solenoid *m_cargoPlatformWheel;
 
-    uint32_t m_cargoTimer;
+    uint32_t m_cargoEndgameTimer;
 
     CargoIntakeState m_cargoIntakeState;
     CargoWristState m_cargoWristState;
