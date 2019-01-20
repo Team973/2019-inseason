@@ -41,7 +41,8 @@ static const int LEFT_DRIVE_C_VICTOR_ID = 14;
 /**
  * Elevator Subsystem
  */
-static const int ELEVATOR_CAN_ID = 4;
+static const int ELEVATOR_A_CAN_ID = 4;
+static const int ELEVATOR_B_CAN_ID = 5;
 
 /**
  * Intake Subsystem

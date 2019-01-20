@@ -61,7 +61,8 @@ public:
      * @param elevatorMotor The elevator Talon.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreyTalonSRX *elevatorMotor, Limelight *limelight);
+             GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
+             Limelight *limelight);
     virtual ~Elevator();
 
     /**
@@ -112,7 +113,8 @@ public:
 private:
     TaskMgr *m_scheduler;
 
-    GreyTalonSRX *m_elevatorMotor;
+    GreyTalonSRX *m_elevatorMotorA;
+    VictorSPX *m_elevatorMotorB;
 
     double m_position;
     uint32_t m_zeroingTime;
