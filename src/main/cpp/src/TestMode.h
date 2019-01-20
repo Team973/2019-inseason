@@ -8,9 +8,10 @@
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/Util.h"
 #include "src/info/RobotInfo.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Elevator.h"
-#include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
@@ -26,11 +27,15 @@ public:
      * Constuct a test mode.
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
+     * @param cargoIntake The cargo intake subsystem.
      * @param drive The drive subsystem.
+     * @param elevator The elevator subsystem.
+     * @param stinger The stinger subsystem.
      * @param greylight The GreyLight system.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, Elevator *elevator, CargoIntake *cargoIntake, GreyLight *greylight);
+         CargoIntake *cargoIntake, Drive *drive, Elevator *elevator,
+         Stinger *stinger, GreyLight *greylight);
     virtual ~Test();
 
     /**
@@ -94,12 +99,15 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
-    Drive *m_drive;
     CargoIntake *m_cargoIntake;
-    DriveMode m_driveMode;
     CargoIntakeState m_cargoIntakeState;
 
+    Drive *m_drive;
+    DriveMode m_driveMode;
+
     Elevator *m_elevator;
+
+    Stinger *m_stinger;
 
     GreyLight *m_greylight;
     LightPattern::Flash *m_endGameSignal;

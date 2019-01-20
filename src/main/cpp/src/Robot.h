@@ -86,6 +86,11 @@ private:
 
     LogSpreadsheet *m_logger;
 
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoWristLock;
+    Solenoid *m_cargoPlatformWheel;
+
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
     VictorSPX *m_leftDriveVictorC;
@@ -93,30 +98,25 @@ private:
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
 
+    GreyTalonSRX *m_elevatorMotor;
+
     GreyTalonSRX *m_stingerDriveMotor;
     GreyTalonSRX *m_stingerElevatorMotor;
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
 
     ADXRS450_Gyro *m_gyro;
-    
-    Limelight *m_limelight;
-    
-    GreyTalonSRX *m_elevatorMotor;
 
-    GreyTalonSRX *m_cargoIntakeMotor;
-    Solenoid *m_cargoWrist;
-    Solenoid *m_cargoWristLock;
-    Solenoid *m_cargoPlatformWheel;
+    Limelight *m_limelight;
 
     GreyLight *m_greylight;
 
     LogCell *m_matchIdentifier;
     LogCell *m_gameSpecificMessage;
 
+    CargoIntake *m_cargoIntake;
     Drive *m_drive;
     Elevator *m_elevator;
-    CargoIntake *m_cargoIntake;
     Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;
