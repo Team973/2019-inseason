@@ -9,11 +9,12 @@
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
 #include "src/controllers/CheesyDriveController.h"
+#include "src/controllers/LimelightDriveController.h"
 #include "src/controllers/OpenloopArcadeDriveController.h"
 #include "src/controllers/PIDDriveController.h"
 #include "src/controllers/SplineDriveController.h"
+#include "src/controllers/StingerDriveController.h"
 #include "src/controllers/VelocityArcadeDriveController.h"
-#include "src/controllers/LimelightDriveController.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "lib/util/Util.h"
@@ -31,7 +32,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
              VictorSPX *leftDriveVictorC, GreyTalonSRX *rightDriveTalonA,
              VictorSPX *rightDriveVictorB, VictorSPX *rightDriveVictorC,
-             ADXRS450_Gyro *gyro, Limelight *limelight)
+             GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+             Limelight *limelight)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveTalonA(leftDriveTalonA)
@@ -40,24 +42,29 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_rightDriveTalonA(rightDriveTalonA)
         , m_rightDriveVictorB(rightDriveVictorB)
         , m_rightDriveVictorC(rightDriveVictorC)
+        , m_stingerDriveMotor(stingerDriveMotor)
         , m_controlMode(ControlMode::PercentOutput)
         , m_leftDriveOutput(0.0)
         , m_rightDriveOutput(0.0)
         , m_leftDriveOutputLog(new LogCell("Left motor signal (pow or vel)"))
         , m_rightDriveOutputLog(new LogCell("Right motor signal (pow or vel)"))
+        , m_stingerDriveOutputLog(
+              new LogCell("Stinger motor signal (pow or vel)"))
         , m_leftVoltageLog(new LogCell("Left motor voltage"))
         , m_rightVoltageLog(new LogCell("Right motor voltage"))
+        , m_stingerVoltageLog(new LogCell("Stinger motor voltage"))
         , m_leftPosZero(0.0)
         , m_rightPosZero(0.0)
         , m_gyro(gyro)
         , m_gyroZero(0.0)
         , m_limelight(limelight)
         , m_cheesyDriveController(new CheesyDriveController())
+        , m_limelightDriveController(new LimelightDriveController(limelight))
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
+        , m_stingerDriveController(new StingerDriveController())
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
-        , m_limelightDriveController(new LimelightDriveController(limelight))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))
@@ -100,6 +107,15 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_rightDriveVictorC->Follow(*m_rightDriveTalonA);
     m_rightDriveVictorC->SetInverted(false);
 
+    m_stingerDriveMotor->SetNeutralMode(Coast);
+    m_stingerDriveMotor->SetSensorPhase(false);
+    m_stingerDriveMotor->SetInverted(false);
+    m_stingerDriveMotor->SelectProfileSlot(0, 0);
+    m_stingerDriveMotor->Config_kP(0, 0, 0);
+    m_stingerDriveMotor->Config_kI(0, 0, 0);
+    m_stingerDriveMotor->Config_kD(0, 0, 0);
+    m_stingerDriveMotor->Config_kF(0, 0, 0);
+
     logger->RegisterCell(m_angleLog);
     logger->RegisterCell(m_angularRateLog);
     logger->RegisterCell(m_leftDistLog);
@@ -117,6 +133,12 @@ void Drive::CheesyDrive(double throttle, double turn, bool isQuickTurn,
     this->SetDriveController(m_cheesyDriveController);
     m_cheesyDriveController->SetJoysticks(throttle, turn, isQuickTurn,
                                           isHighGear);
+}
+
+LimelightDriveController *Drive::LimelightDrive() {
+    this->SetDriveController(m_limelightDriveController);
+
+    return m_limelightDriveController;
 }
 
 void Drive::OpenloopArcadeDrive(double throttle, double turn) {
@@ -155,15 +177,23 @@ double Drive::GetSplinePercentComplete() {
     return m_splineDriveController->GetSplinePercentComplete();
 }
 
+void Drive::StingerDrive(double throttle, double turn) {
+    this->SetDriveController(m_stingerDriveController);
+    m_stingerDriveController->SetJoysticks(throttle, turn);
+
+    if (std::isnan(m_stingerDriveController->GetStingerMotorOutput())) {
+        m_stingerDriveMotor->Set(ControlMode::PercentOutput, 0.0);
+    }
+    else {
+        m_stingerDriveMotor->Set(
+            ControlMode::PercentOutput,
+            m_stingerDriveController->GetStingerMotorOutput());
+    }
+}
+
 void Drive::VelocityArcadeDrive(double throttle, double turn) {
     this->SetDriveController(m_velocityArcadeDriveController);
     m_velocityArcadeDriveController->SetJoysticks(throttle, turn);
-}
-
-LimelightDriveController *Drive::LimelightDrive() {
-    this->SetDriveController(m_limelightDriveController);
-
-    return m_limelightDriveController;
 }
 
 double Drive::GetLeftDist() const {
@@ -280,11 +310,16 @@ void Drive::ConfigDriveCurrentLimit(double limit) {
 
     m_rightDriveTalonA->EnableCurrentLimit(true);
     m_rightDriveTalonA->ConfigContinuousCurrentLimit(limit, 10);
+
+    m_stingerDriveMotor->EnableCurrentLimit(true);
+    m_stingerDriveMotor->ConfigContinuousCurrentLimit(limit, 10);
 }
 void Drive::DisableDriveCurrentLimit() {
     m_leftDriveTalonA->EnableCurrentLimit(false);
 
     m_rightDriveTalonA->EnableCurrentLimit(false);
+
+    m_stingerDriveMotor->EnableCurrentLimit(false);
 }
 
 void Drive::TaskPeriodic(RobotMode mode) {
@@ -293,12 +328,16 @@ void Drive::TaskPeriodic(RobotMode mode) {
                               m_leftDriveTalonA->GetMotorOutputVoltage());
     SmartDashboard::PutNumber("drive/voltages/rightvoltage",
                               m_rightDriveTalonA->GetMotorOutputVoltage());
+    SmartDashboard::PutNumber("drive/voltages/stingervoltage",
+                              m_stingerDriveMotor->GetMotorOutputVoltage());
 
     // NetworkTable Currents
     SmartDashboard::PutNumber("drive/currents/leftcurrent",
                               m_leftDriveTalonA->GetOutputCurrent());
     SmartDashboard::PutNumber("drive/currents/rightcurrent",
                               m_rightDriveTalonA->GetOutputCurrent());
+    SmartDashboard::PutNumber("drive/currents/rightcurrent",
+                              m_stingerDriveMotor->GetOutputCurrent());
 
     // NetworkTable Encoders
     SmartDashboard::PutNumber("drive/encoders/leftencoder", GetLeftDist());
@@ -355,6 +394,8 @@ void Drive::TaskPeriodic(RobotMode mode) {
 
     m_leftVoltageLog->LogDouble(m_leftDriveTalonA->GetMotorOutputVoltage());
     m_rightVoltageLog->LogDouble(m_rightDriveTalonA->GetMotorOutputVoltage());
+    m_stingerVoltageLog->LogDouble(
+        m_stingerDriveMotor->GetMotorOutputVoltage());
 
     m_currentLog->LogDouble(GetDriveCurrent());
 }

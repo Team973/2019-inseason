@@ -30,6 +30,10 @@ Robot::Robot()
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
         , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
         , m_elevatorMotor(new GreyTalonSRX(ELEVATOR_CAN_ID))
+        , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
+        , m_stingerElevatorMotor(new GreyTalonSRX(STINGER_ELEVATOR_CAN_ID))
+        , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
+        , m_stingerUpperHall(new DigitalInput(STINGER_UPPER_HALL_DIN_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_limelight(new Limelight())
         , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
@@ -41,14 +45,16 @@ Robot::Robot()
         , m_greylight(new GreyLight(NUM_LED))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
-        , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
-                            m_leftDriveVictorB, m_leftDriveVictorC,
-                            m_rightDriveTalonA, m_rightDriveVictorB,
-                            m_rightDriveVictorC, m_gyro, m_limelight))
+        , m_drive(new Drive(
+              this, m_logger, m_leftDriveTalonA, m_leftDriveVictorB,
+              m_leftDriveVictorC, m_rightDriveTalonA, m_rightDriveVictorB,
+              m_rightDriveVictorC, m_stingerDriveMotor, m_gyro, m_limelight))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotor, m_limelight))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoWristLock, m_cargoWrist,
                                         m_cargoPlatformWheel))
+        , m_stinger(new Stinger(this, m_logger, m_stingerElevatorMotor,
+                                m_stingerLowerHall, m_stingerUpperHall))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))

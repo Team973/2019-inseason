@@ -21,12 +21,13 @@ using namespace trajectories;
 
 namespace frc973 {
 class CheesyDriveController;
+class LimelightDriveController;
+class Limelight;
 class OpenloopArcadeDriveController;
 class PIDDriveController;
 class SplineDriveController;
+class StingerDriveController;
 class VelocityArcadeDriveController;
-class LimelightDriveController;
-class Limelight;
 class LogSpreadsheet;
 
 /**
@@ -64,7 +65,8 @@ public:
           GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
           VictorSPX *leftDriveVictorC, GreyTalonSRX *rightDriveTalonA,
           VictorSPX *rightDriveVictorB, VictorSPX *rightDriveVictorC,
-          ADXRS450_Gyro *gyro, Limelight *limelight);
+          GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+          Limelight *limelight);
     virtual ~Drive();
 
     /**
@@ -81,6 +83,11 @@ public:
      */
     void CheesyDrive(double throttle, double turn, bool isQuickTurn,
                      bool isHighGear);
+
+    /**
+     * Set drive controller to use limelight in following a target
+     */
+    LimelightDriveController *LimelightDrive();
 
     /**
      * Set a drive to use the openloop arcade drive controller.
@@ -140,16 +147,20 @@ public:
     double GetSplinePercentComplete();
 
     /**
+     * Set a drive to use the Cheesy drive controller.
+     * @param throttle Forward/backwards amount.
+     * @param turn Left/right amount.
+     * @param isQuickTurn Quickturn mode enable/disable.
+     * @param isHighGear High gear enable/disable.
+     */
+    void StingerDrive(double throttle, double turn);
+
+    /**
      * Set drive to use the velocity arcade drive controller.
      * @param throttle Forward/backwards amount.
      * @param turn Left/right amount.
      */
     void VelocityArcadeDrive(double throttle, double turn);
-
-    /**
-     * Set drive controller to use limelight in following a target
-     */
-    LimelightDriveController *LimelightDrive();
 
     /**
      * Return the left distance from the encoder in inches.
@@ -253,6 +264,8 @@ private:
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
 
+    GreyTalonSRX *m_stingerDriveMotor;
+
     ControlMode m_controlMode;
 
     double m_leftDriveOutput;
@@ -260,8 +273,10 @@ private:
 
     LogCell *m_leftDriveOutputLog;
     LogCell *m_rightDriveOutputLog;
+    LogCell *m_stingerDriveOutputLog;
     LogCell *m_leftVoltageLog;
     LogCell *m_rightVoltageLog;
+    LogCell *m_stingerVoltageLog;
 
     double m_leftPosZero;
     double m_rightPosZero;
@@ -271,11 +286,12 @@ private:
     Limelight *m_limelight;
 
     CheesyDriveController *m_cheesyDriveController;
+    LimelightDriveController *m_limelightDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
+    StingerDriveController *m_stingerDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
-    LimelightDriveController *m_limelightDriveController;
 
     double m_angle;
     double m_angleRate;

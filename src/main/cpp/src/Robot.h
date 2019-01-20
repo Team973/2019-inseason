@@ -24,6 +24,7 @@
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
@@ -91,6 +92,12 @@ private:
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
+
+    GreyTalonSRX *m_stingerDriveMotor;
+    GreyTalonSRX *m_stingerElevatorMotor;
+    DigitalInput *m_stingerLowerHall;
+    DigitalInput *m_stingerUpperHall;
+
     ADXRS450_Gyro *m_gyro;
     
     Limelight *m_limelight;
@@ -110,6 +117,7 @@ private:
     Drive *m_drive;
     Elevator *m_elevator;
     CargoIntake *m_cargoIntake;
+    Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;
