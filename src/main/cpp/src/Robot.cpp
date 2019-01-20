@@ -131,8 +131,9 @@ void Robot::AllStateContinuous() {
         DriverStation::GetInstance().GetGameSpecificMessage().c_str());
     DBStringPrintf(DBStringPos::DB_LINE7, "Distance : %3.2lf",
                    m_limelightHatch->GetHorizontalDistance());
-    DBStringPrintf(DBStringPos::DB_LINE8, "Pow(cos(offset)): %3.2lf",
-                   (pow(cos(m_limelightHatch->GetXOffset() * PI / 180), 5)));
+    DBStringPrintf(
+        DBStringPos::DB_LINE8, "Pow(cos(offset)): %3.2lf",
+        (pow(cos(m_limelightHatch->GetXOffset() * PI / 180 * 3.0), 5)));
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

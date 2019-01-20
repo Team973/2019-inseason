@@ -18,7 +18,7 @@ namespace frc973 {
 AssistedCheesyDriveController::AssistedCheesyDriveController(
     Limelight *limelight)
         : m_limelight(limelight)
-        , m_visionTurnPID(new PID(0.0, 0.0, 0.0))
+        , m_visionTurnPID(new PID(0.5, 0.0, 0.0))
         , m_leftOutput(0.0)
         , m_rightOutput(0.0)
         , m_oldWheel(0.0)
@@ -46,36 +46,27 @@ void AssistedCheesyDriveController::CalcDriveOutput(
 void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
                                                  bool isQuickTurn,
                                                  bool isHighGear) {
-    double turnPidOut =
-        VISION_MULTIPLIER *
-        m_visionTurnPID->CalcOutputWithError(m_limelight->GetXOffset());
-    double sumTurn = turn + turnPidOut;
-    double negInertia = sumTurn - m_oldWheel;
+    double negInertia = turn - m_oldWheel;
     if (isQuickTurn) {
-        sumTurn = Util::signSquare(sumTurn);
+        turn = Util::signSquare(turn);
     }
-    m_oldWheel = sumTurn;
+    m_oldWheel = turn;
 
     double turnNonLinearity;
     if (isHighGear) {
         turnNonLinearity = kHighWheelNonLinearity;
         double denominator = sin(Constants::PI / 2.0 * turnNonLinearity);
         // Apply a sin function that's scaled to make it feel better.
-        sumTurn =
-            sin(Constants::PI / 2.0 * turnNonLinearity * sumTurn) / denominator;
-        sumTurn =
-            sin(Constants::PI / 2.0 * turnNonLinearity * sumTurn) / denominator;
+        turn = sin(Constants::PI / 2.0 * turnNonLinearity * turn) / denominator;
+        turn = sin(Constants::PI / 2.0 * turnNonLinearity * turn) / denominator;
     }
     else {
         turnNonLinearity = kLowWheelNonLinearity;
         double denominator = sin(Constants::PI / 2.0 * turnNonLinearity);
         // Apply a sin function that's scaled to make it feel better.
-        sumTurn =
-            sin(Constants::PI / 2.0 * turnNonLinearity * sumTurn) / denominator;
-        sumTurn =
-            sin(Constants::PI / 2.0 * turnNonLinearity * sumTurn) / denominator;
-        sumTurn =
-            sin(Constants::PI / 2.0 * turnNonLinearity * sumTurn) / denominator;
+        turn = sin(Constants::PI / 2.0 * turnNonLinearity * turn) / denominator;
+        turn = sin(Constants::PI / 2.0 * turnNonLinearity * turn) / denominator;
+        turn = sin(Constants::PI / 2.0 * turnNonLinearity * turn) / denominator;
     }
 
     double leftPwm, rightPwm, overPower;
@@ -109,7 +100,7 @@ void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
     double negInertiaPower = negInertia * negInertiaScalar;
     m_negInertiaAccumulator += negInertiaPower;
 
-    sumTurn += m_negInertiaAccumulator;
+    turn += m_negInertiaAccumulator;
     if (m_negInertiaAccumulator > 1) {
         m_negInertiaAccumulator -= 1;
     }
@@ -130,12 +121,12 @@ void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
                 alpha * Util::limit(turn, 1.0) * kQuickStopScalar;
         }
         overPower = 1.0;
-        angularPower = sumTurn;
+        angularPower = turn;
     }
     else {
         overPower = 0.0;
         angularPower =
-            fabs(throttle) * sumTurn * sensitivity - m_quickStopAccumulator;
+            fabs(throttle) * turn * sensitivity - m_quickStopAccumulator;
         if (m_quickStopAccumulator > 1) {
             m_quickStopAccumulator -= 1;
         }
@@ -168,7 +159,13 @@ void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
         rightPwm = -1.0;
     }
 
-    m_leftOutput = -leftPwm;
-    m_rightOutput = -rightPwm;
+    m_leftOutput = Util::bound(
+        -leftPwm - (VISION_MULTIPLIER * m_visionTurnPID->CalcOutputWithError(
+                                            m_limelight->GetXOffset())),
+        -1.0, 1.0);
+    m_rightOutput = Util::bound(
+        -rightPwm + (VISION_MULTIPLIER * m_visionTurnPID->CalcOutputWithError(
+                                             m_limelight->GetXOffset())),
+        -1.0, 1.0);
 }
 }

@@ -44,10 +44,10 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y =
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x =
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+    double y = -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
+    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+    double x = -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
+    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
     bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
@@ -75,7 +75,7 @@ void Teleop::TeleopPeriodic() {
             m_drive->LimelightHatchDrive();
             break;
         case DriveMode::AssistedCheesy:
-            m_drive->AssistedCheesyDrive();
+            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
             break;
     }
 
@@ -183,11 +183,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
-                    // m_limelightHatchTimer = GetMsecTime();
-                    // m_driveMode = DriveMode::LimelightHatch;
-                    m_limelightHatch->SetPipelineIndex(2);
+                    m_driveMode = DriveMode::AssistedCheesy;
                 }
                 else {
+                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::DPadUpVirtBtn:

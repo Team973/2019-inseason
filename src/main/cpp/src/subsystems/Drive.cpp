@@ -181,8 +181,13 @@ LimelightDriveController *Drive::LimelightHatchDrive() {
     return m_limelightHatchDriveController;
 }
 
-AssistedCheesyDriveController *Drive::AssistedCheesyDrive() {
+AssistedCheesyDriveController *Drive::AssistedCheesyDrive(double throttle,
+                                                          double turn,
+                                                          bool isQuickTurn,
+                                                          bool isHighGear) {
     this->SetDriveController(m_assistedCheesyDriveController);
+    m_assistedCheesyDriveController->SetJoysticks(throttle, turn, isQuickTurn,
+                                                  isHighGear);
     return m_assistedCheesyDriveController;
 }
 

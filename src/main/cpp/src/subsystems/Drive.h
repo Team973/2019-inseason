@@ -158,7 +158,10 @@ public:
      */
     LimelightDriveController *LimelightHatchDrive();
 
-    AssistedCheesyDriveController *AssistedCheesyDrive();
+    AssistedCheesyDriveController *AssistedCheesyDrive(double throttle,
+                                                       double turn,
+                                                       bool isQuickTurn,
+                                                       bool isHighGear);
 
     /**
      * Return the left distance from the encoder in inches.
