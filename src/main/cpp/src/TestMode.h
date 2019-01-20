@@ -82,21 +82,12 @@ private:
         Openloop
     };
 
-    enum class CargoIntakeState
-    {
-        running,
-        notRunning,
-        reverse,
-        hold
-    };
-
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
     Drive *m_drive;
     CargoIntake *m_cargoIntake;
     DriveMode m_driveMode;
-    CargoIntakeState m_cargoIntakeState;
 
     GreyLight *m_greylight;
     LightPattern::Flash *m_endGameSignal;

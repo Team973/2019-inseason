@@ -96,7 +96,7 @@ private:
     GreyTalonSRX *m_cargoIntakeMotor;
     Solenoid *m_cargoWrist;
     Solenoid *m_cargoWristLock;
-    Solenoid *m_cargoPlatformWheel;
+    Solenoid *m_cargoWheelPiston;
 
     GreyLight *m_greylight;
 
