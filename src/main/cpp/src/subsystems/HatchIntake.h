@@ -54,6 +54,24 @@ public:
     };
 
     /**
+     * Hatch claw solenoid definitions.
+     */
+    enum HatchClawSolenoidStates
+    {
+        grab = true,
+        release = false,
+    };
+
+    /**
+     * Hatch puncher solenoid definitions.
+     */
+    enum HatchPuncherSolenoidStates
+    {
+        punch = true,
+        retract = false
+    };
+
+    /**
      * Set hatch intake to idle.
      */
     void SetIdle();
@@ -71,7 +89,7 @@ public:
     /**
      * Set hatch intake to exhausting.
      */
-    void Exhast();
+    void Exhaust();
 
     /**
      * Open the claw arms.

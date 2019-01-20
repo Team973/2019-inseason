@@ -99,7 +99,7 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
-                    m_hatchIntake->Exhast();
+                    m_hatchIntake->Exhaust();
                 }
                 else {
                     m_hatchIntake->SetIdle();

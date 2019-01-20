@@ -35,7 +35,7 @@ void HatchIntake::HoldHatch() {
     GoToIntakeState(HatchIntakeState::hold);
 }
 
-void HatchIntake::Exhast() {
+void HatchIntake::Exhaust() {
     GoToIntakeState(HatchIntakeState::exhaust);
 }
 
@@ -51,9 +51,12 @@ void HatchIntake::LaunchHatch() {
     GoToPneumaticState(HatchPneumaticState::launch);
 }
 
+void HatchIntake::ManualPuncherActivate() {
+    GoToPneumaticState(HatchPneumaticState::manualPunch);
+}
+
 void HatchIntake::ManualPuncherRetract() {
-    GoToPneumaticState(HatchPneumaticState::manual);
-    m_hatchPuncher->Set(true);
+    GoToPneumaticState(HatchPneumaticState::manualRetract);
 }
 
 void HatchIntake::GoToIntakeState(HatchIntake::HatchIntakeState newState) {
@@ -96,24 +99,24 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
 
     switch (m_hatchPneumaticState) {
         case HatchPneumaticState::release:
-            m_hatchClaw->Set(false);
-            m_hatchPuncher->Set(false);
+            m_hatchClaw->Set(HatchClawSolenoidStates::release);
+            m_hatchPuncher->Set(HatchPuncherSolenoidStates::retract);
             break;
         case HatchPneumaticState::grab:
-            m_hatchClaw->Set(true);
-            m_hatchPuncher->Set(false);
+            m_hatchClaw->Set(HatchClawSolenoidStates::grab);
+            m_hatchPuncher->Set(HatchPuncherSolenoidStates::retract);
             break;
         case HatchPneumaticState::launch:
-            m_hatchClaw->Set(true);
+            m_hatchClaw->Set(HatchClawSolenoidStates::grab);
             if (m_hatchPneumaticStateTimer - GetMsecTime() >= 100) {
-                m_hatchPuncher->Set(true);
+                m_hatchPuncher->Set(HatchPuncherSolenoidStates::punch);
             }
             break;
         case HatchPneumaticState::manualPunch:
-            m_hatchPuncher->Set(true);
+            m_hatchPuncher->Set(HatchPuncherSolenoidStates::punch);
             break;
         case HatchPneumaticState::manualRetract:
-            m_hatchPuncher->Set(false);
+            m_hatchPuncher->Set(HatchPuncherSolenoidStates::retract);
             break;
         case HatchPneumaticState::manual:
             // Do nothing
