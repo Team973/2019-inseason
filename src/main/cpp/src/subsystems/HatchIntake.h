@@ -18,115 +18,107 @@ public:
      * Hatch intake constructor.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
+     * @param hatchClaw The hatch intake's claw.
+     * @param hatchPuncher The hatch intake's puncher.
+     * @param leftHatchSensor The hatch intake's left hatch sensor.
+     * @param rightHatchSensor The hatch intake's right hatch sensor.
      */
-    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger);
+    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger, Solenoid *hatchClaw,
+                Solenoid *hatchPuncher, DigitalInput *leftHatchSensor,
+                DigitalInput *rightHatchSensor);
     virtual ~HatchIntake();
 
-    enum ClawState
+    /**
+     * Hatch intake states.
+     */
+    enum class HatchIntakeState
     {
-        clawOpen = true,
-        clawClosed = false
+        idle,     /**< Idle hatch intake. */
+        intaking, /**< Prime hatch intake for intaking. */
+        hold,     /**< Hold the hatch. */
+        exhaust,  /**< Place the hatch. */
+        manual    /**< Manual hatch intake control. */
     };
 
-    enum PuncherState
+    /**
+     * Hatch intake pneumatic states.
+     */
+    enum class HatchPneumaticState
     {
-        active = true,
-        puncherIdle = false
+        release,       /**< Release the hatch. */
+        grab,          /**< Grab the hatch. */
+        launch,        /**< Launch the hatch. */
+        manualPunch,   /**< Manually punch the hatch. */
+        manualRetract, /**< Manually retract the puncher. */
+        manual         /**< Manual pneumatic control. */
     };
 
-    enum HatchIntakeState
-    {
-        idle,
-        intaking,
-        hold,
-        exhaust
-
-    };
-
-    enum PneumaticState
-    {
-        release,
-        grab,
-        close,
-        pushOpen,
-        pushClose,
-        launch,
-        manual
-    };
-
-    /*
-     * When called, opens the claw arms
+    /**
+     * Set hatch intake to idle.
      */
-    void HatchOpen();
+    void SetIdle();
 
-    /*
-     * When called, closes claw arms, and
-     * has all claw solenoids set to idle
+    /**
+     * Set hatch intake to intaking.
      */
-    void HatchGrab();
+    void SetIntaking();
 
-    /*
-     * When called, opens claw arms and
-     * activates kicker
+    /**
+     * Set hatch intake to holding.
      */
-    void HatchPush();
+    void HoldHatch();
 
-    /*
-     * When called, activates kicker
+    /**
+     * Set hatch intake to exhausting.
      */
-    void HatchPuncherOn();
+    void Exhast();
 
-    /*
-     * When called, deactivates clawKicker
+    /**
+     * Open the claw arms.
      */
-    void HatchPuncherOff();
+    void OpenClaw();
 
-    /*
-     * When called, launches cube
+    /**
+     * Grab the hatch.
      */
-    void HatchLaunch();
+    void GrabHatch();
 
-    /*
-     * When called, closes claw
+    /**
+     * Launch the hatch.
      */
-    void ClawClose();
+    void LaunchHatch();
 
-    /*
-     * Whe called, opens claw
-     */
-    void ClawOpen();
-
-    /*
-     * When called, activates kicker
+    /**
+     * Manually punch, regardless of grab state.
      */
     void ManualPuncherActivate();
 
-    /*
-     * When called, deactivates Kicker
+    /**
+     * Manually retract puncher, regardless of grab state.
      */
-
-    void ManualPuncherIdle();
-
-    void SetIntakeState(HatchIntakeState state);
+    void ManualPuncherRetract();
 
     /**
-     * Periodically update information about the drive.
+     * Periodically update information about the hatch intake.
      * @param mode The current robot mode.
      */
-
     void TaskPeriodic(RobotMode mode);
 
 private:
-    void GoToState(PneumaticState state);
-
     TaskMgr *m_scheduler;
-    DigitalInput *m_rightHatchSensor;
-    DigitalInput *m_leftHatchSensor;
     LogSpreadsheet *m_logger;
+
     Solenoid *m_hatchClaw;
     Solenoid *m_hatchPuncher;
-    HatchIntakeState m_hatchIntakeState;
+    DigitalInput *m_leftHatchSensor;
+    DigitalInput *m_rightHatchSensor;
 
-    uint32_t m_stateStartTimeMs;
+    HatchIntakeState m_hatchIntakeState;
+    HatchPneumaticState m_hatchPneumaticState;
+
+    void GoToPneumaticState(HatchPneumaticState newState);
+    void GoToIntakeState(HatchIntakeState newState);
+
+    uint32_t m_hatchPneumaticStateTimer;
 };
 }

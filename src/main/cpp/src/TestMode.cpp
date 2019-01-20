@@ -91,22 +91,18 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::intaking);
+                    m_hatchIntake->SetIntaking();
                 }
                 else {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::idle);
+                    m_hatchIntake->SetIdle();
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::exhaust);
+                    m_hatchIntake->Exhast();
                 }
                 else {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::idle);
+                    m_hatchIntake->SetIdle();
                 }
                 break;
             case Xbox::BtnX:
@@ -190,15 +186,15 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
     switch (button) {
         case DualAction::BtnA:
             if (pressedP) {
-                m_hatchIntake->HatchOpen();
+                m_hatchIntake->OpenClaw();
             }
             else {
-                m_hatchIntake->HatchGrab();
+                m_hatchIntake->GrabHatch();
             }
             break;
         case DualAction::BtnB:
             if (pressedP) {
-                m_hatchIntake->HatchLaunch();
+                m_hatchIntake->LaunchHatch();
             }
             else {
             }

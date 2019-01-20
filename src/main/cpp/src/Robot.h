@@ -87,8 +87,13 @@ private:
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
-
     ADXRS450_Gyro *m_gyro;
+
+    Solenoid *m_hatchClaw;
+    Solenoid *m_hatchPuncher;
+    DigitalInput *m_leftHatchSensor;
+    DigitalInput *m_rightHatchSensor;
+
     GreyLight *m_greylight;
     Limelight *m_limelight;
 

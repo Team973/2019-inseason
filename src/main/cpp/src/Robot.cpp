@@ -29,6 +29,10 @@ Robot::Robot()
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
         , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
         , m_gyro(new ADXRS450_Gyro())
+        , m_hatchClaw(new Solenoid(PCM_CAN_ID, HATCH_CLAW_PCM_ID))
+        , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
+        , m_leftHatchSensor(new DigitalInput(LEFT_HATCH_SENSOR_ID))
+        , m_rightHatchSensor(new DigitalInput(RIGHT_HATCH_SENSOR_ID))
         , m_greylight(new GreyLight(NUM_LED))
         , m_limelight(new Limelight())
         , m_logger(new LogSpreadsheet(this))
@@ -38,7 +42,9 @@ Robot::Robot()
                             m_leftDriveVictorB, m_leftDriveVictorC,
                             m_rightDriveTalonA, m_rightDriveVictorB,
                             m_rightDriveVictorC, m_gyro, m_limelight))
-        , m_hatchIntake(new HatchIntake(this, m_logger))
+        , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchClaw,
+                                        m_hatchPuncher, m_leftHatchSensor,
+                                        m_rightHatchSensor))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
