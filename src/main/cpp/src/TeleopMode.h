@@ -34,7 +34,7 @@ public:
      * @param greylight The GreyLight system.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, GreyLight *greylight);
+           Drive *drive);
     virtual ~Teleop();
 
     /**
@@ -93,7 +93,16 @@ private:
     };
     DriveMode m_driveMode;
 
-    GreyLight *m_greylight;
+    enum class GameMode
+    {
+        Cargo,
+        Hatch,
+        EndGame,
+
+    };
+
+    GameMode m_gameMode;
+
     LightPattern::Flash *m_endGameSignal;
     bool m_endGameSignalSent;
 };

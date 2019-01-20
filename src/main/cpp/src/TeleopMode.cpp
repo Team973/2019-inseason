@@ -12,13 +12,12 @@ using namespace frc;
 
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver, Drive *drive,
-               GreyLight *greylight)
+               ObservableXboxJoystick *codriver, Drive *drive)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
-        , m_greylight(greylight)
+        , m_gameMode(GameMode::Hatch)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
         , m_endGameSignalSent(false) {
@@ -35,7 +34,6 @@ void Teleop::TeleopPeriodic() {
     if (!m_endGameSignalSent && Timer::GetMatchTime() < 40) {
         m_endGameSignalSent = true;
         m_endGameSignal->Reset();
-        m_greylight->SetPixelStateProcessor(m_endGameSignal);
     }
 
     /**
@@ -135,6 +133,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
+                    m_gameMode = GameMode::Hatch;
                 }
                 else {
                 }
@@ -159,6 +158,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
+                    m_gameMode = GameMode::Cargo;
                 }
                 else {
                 }
@@ -177,6 +177,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadRightVirtBtn:
                 if (pressedP) {
+                    m_gameMode = GameMode::EndGame;
                 }
                 else {
                 }
