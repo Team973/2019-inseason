@@ -24,10 +24,8 @@ Robot::Robot()
               new ObservableXboxJoystick(OPERATOR_JOYSTICK_PORT, this, this))
         , m_leftDriveTalonA(new GreyTalonSRX(LEFT_DRIVE_A_CAN_ID))
         , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
-        , m_leftDriveVictorC(new VictorSPX(LEFT_DRIVE_C_VICTOR_ID))
         , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
-        , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_greylight(new GreyLight(NUM_LED))
         , m_limelight(new Limelight())
@@ -35,9 +33,8 @@ Robot::Robot()
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
-                            m_leftDriveVictorB, m_leftDriveVictorC,
-                            m_rightDriveTalonA, m_rightDriveVictorB,
-                            m_rightDriveVictorC, m_gyro, m_limelight))
+                            m_leftDriveVictorB, m_rightDriveTalonA,
+                            m_rightDriveVictorB, m_gyro, m_limelight))
         , m_hatchIntake(new HatchIntake(this, m_logger))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
