@@ -29,7 +29,6 @@ Robot::Robot()
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
         , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
         , m_gyro(new ADXRS450_Gyro())
-        , m_greylight(new GreyLight(NUM_LED))
         , m_limelight(new Limelight())
         , m_logger(new LogSpreadsheet(this))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
@@ -45,7 +44,8 @@ Robot::Robot()
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(
               new Disabled(m_driverJoystick, m_operatorJoystick, m_greylight))
-        , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro, m_greylight))
+        , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro,
+                                      m_driverJoystick, m_operatorJoystick))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
                               m_greylight))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "frc/WPILib.h"
-#include <iostream>
 #include "src/info/RobotInfo.h"
 #include "lib/bases/AutoRoutineBase.h"
 #include "src/auto/NoAuto.h"
@@ -10,8 +9,19 @@
 #include "src/DisabledMode.h"
 #include "src/Robot.h"
 #include "src/subsystems/Drive.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/pixelprocessors/AutoIndicator.h"
+#include "lib/helpers/DualActionJoystickHelper.h"
+#include "lib/helpers/PoofsJoystickHelper.h"
+#include "lib/helpers/XboxJoystickHelper.h"
+#include "lib/pixelprocessors/Flash.h"
+#include "ctre/Phoenix.h"
+#include "lib/helpers/GreyTalon.h"
+#include "lib/managers/CoopTask.h"
+#include "lib/logging/LogSpreadsheet.h"
+#include "lib/sensors/Limelight.h"
+#include "src/controllers/LimelightVerticalController.h"
+#include "lib/util/Util.h"
+#include <iostream>
 
 using namespace frc;
 
@@ -31,7 +41,8 @@ public:
      * @param greylight The GreyLight system.
      */
     Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
-               GreyLight *greylight);
+               ObservablePoofsJoystick *driver,
+               ObservableXboxJoystick *codriver);
     virtual ~Autonomous();
 
     /**
@@ -60,7 +71,18 @@ private:
     Drive *m_drive;
     ADXRS450_Gyro *m_gyro;
 
-    GreyLight *m_greylight;
     LightPattern::AutoIndicator *m_autoSignal;
+    LightPattern::Flash *m_endGameSignal;
+    bool m_endGameSignalSent;
+
+    ObservablePoofsJoystick *m_driverJoystick;
+    ObservableXboxJoystick *m_operatorJoystick;
+
+    enum class DriveMode
+    {
+        Openloop,
+        Cheesy
+    };
+    DriveMode m_driveMode;
 };
 }

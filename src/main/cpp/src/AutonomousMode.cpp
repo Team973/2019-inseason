@@ -6,14 +6,17 @@ using namespace frc;
 
 namespace frc973 {
 Autonomous::Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
-                       GreyLight *greylight)
-        : m_noAuto(new NoAuto())
+                       ObservablePoofsJoystick *driver,
+                       ObservableXboxJoystick *codriver)
+        : m_driverJoystick(driver)
+        , m_operatorJoystick(codriver)
+        , m_driveMode(DriveMode::Cheesy)
+        , m_endGameSignalSent(false)
+        , m_noAuto(new NoAuto())
         , m_forwardAuto(new ForwardAuto(drive))
         , m_disabled(disabled)
-        , m_routine(m_noAuto)
         , m_drive(drive)
         , m_gyro(gyro)
-        , m_greylight(greylight)
         , m_autoSignal(new LightPattern::AutoIndicator()) {
 }
 
@@ -30,11 +33,37 @@ void Autonomous::AutonomousInit() {
 }
 
 void Autonomous::AutonomousPeriodic() {
-    m_routine->Execute();
+    /**
+     * Driver Joystick
+     */
+    double y =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+    double x =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+    bool quickturn =
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
+    bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
-    // Match time to display in dashboard
-    SmartDashboard::PutNumber("misc/timer",
-                              DriverStation::GetInstance().GetMatchTime());
+    if (m_driveMode == DriveMode::Cheesy) {
+        if (lowGear) {
+            m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
+        }
+        else {
+            m_drive->CheesyDrive(y, x, quickturn, false);
+        }
+    }
+    else if (m_driveMode == DriveMode::Openloop) {
+        if (lowGear) {
+            m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
+        }
+        else {
+            m_drive->OpenloopArcadeDrive(y, x);
+        }
+    }
+
+    /**
+     * Operator Joystick
+     */
 }
 
 void Autonomous::AutonomousStop() {
