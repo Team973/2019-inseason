@@ -21,8 +21,9 @@ Disabled::~Disabled() {
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
     m_greylight->SetPixelStateProcessor(m_disabledSignal);
-    m_limelightHatch->SetPipelineIndex(0);
-    m_limelightHatch->SetCameraDriver();
+
+    m_limelightCargo->SetCameraDriver();
+    m_limelightHatch->SetCameraVision();
 }
 
 void Disabled::DisabledPeriodic() {

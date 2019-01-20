@@ -107,6 +107,13 @@ private:
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
+    enum class Rumble
+    {
+        on,
+        off
+    };
+    Rumble m_rumble;
+
     u_int32_t m_limelightCargoTimer;
     u_int32_t m_limelightHatchTimer;
 };
