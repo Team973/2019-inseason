@@ -10,6 +10,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Elevator.h"
+#include "src/subsystems/CargoIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -29,7 +30,7 @@ public:
      * @param greylight The GreyLight system.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, Elevator *elevator, GreyLight *greylight);
+         Drive *drive, Elevator *elevator, CargoIntake *cargoIntake, GreyLight *greylight);
     virtual ~Test();
 
     /**
@@ -82,11 +83,21 @@ private:
         Openloop
     };
 
+    enum class CargoIntakeState
+    {
+        running,
+        notRunning,
+        reverse,
+        hold
+    };
+
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
     Drive *m_drive;
+    CargoIntake *m_cargoIntake;
     DriveMode m_driveMode;
+    CargoIntakeState m_cargoIntakeState;
 
     Elevator *m_elevator;
 

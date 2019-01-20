@@ -23,6 +23,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Elevator.h"
+#include "src/subsystems/CargoIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -82,25 +83,33 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
+    LogSpreadsheet *m_logger;
+
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
     VictorSPX *m_leftDriveVictorC;
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
     VictorSPX *m_rightDriveVictorC;
-
+    ADXRS450_Gyro *m_gyro;
+    
+    Limelight *m_limelight;
+    
     GreyTalonSRX *m_elevatorMotor;
 
-    ADXRS450_Gyro *m_gyro;
-    GreyLight *m_greylight;
-    Limelight *m_limelight;
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoWristLock;
+    Solenoid *m_cargoPlatformWheel;
 
-    LogSpreadsheet *m_logger;
+    GreyLight *m_greylight;
+
     LogCell *m_matchIdentifier;
     LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
     Elevator *m_elevator;
+    CargoIntake *m_cargoIntake;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;

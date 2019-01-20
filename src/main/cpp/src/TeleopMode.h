@@ -15,6 +15,7 @@
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -34,7 +35,7 @@ public:
      * @param greylight The GreyLight system.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, GreyLight *greylight);
+           Drive *drive, CargoIntake *cargoIntake, GreyLight *greylight);
     virtual ~Teleop();
 
     /**
@@ -92,6 +93,7 @@ private:
         Cheesy
     };
     DriveMode m_driveMode;
+    CargoIntake *m_cargoIntake;
 
     GreyLight *m_greylight;
     LightPattern::Flash *m_endGameSignal;

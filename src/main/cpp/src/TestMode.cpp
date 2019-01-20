@@ -4,12 +4,13 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, GreyLight *greylight)
+           Drive *drive, Elevator *elevator, CargoIntake *cargoIntake, GreyLight *greylight)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Openloop)
         , m_elevator(elevator)
+        , m_cargoIntake(cargoIntake)
         , m_greylight(greylight)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
@@ -21,7 +22,6 @@ Test::~Test() {
 
 void Test::TestInit() {
     std::cout << "Test Start" << std::endl;
-    m_driveMode = DriveMode::Openloop;
 }
 
 void Test::TestPeriodic() {
@@ -207,14 +207,18 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::LeftBumper:
             if (pressedP) {
+                m_cargoIntake->RunIntake();
             }
             else {
+                m_cargoIntake->StopIntake();
             }
             break;
         case DualAction::LeftTrigger:
             if (pressedP) {
+                m_cargoIntake->Exhaust();
             }
             else {
+                m_cargoIntake->StopIntake();
             }
             break;
         case DualAction::RightBumper:
