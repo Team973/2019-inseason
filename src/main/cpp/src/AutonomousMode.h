@@ -78,6 +78,12 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
+    /*
+     * Defines DriveModes
+     * Openloop: Arcade
+     * Cheesy: Turn is a function of drive
+     */
+
     enum class DriveMode
     {
         Openloop,
