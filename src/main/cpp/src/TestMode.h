@@ -88,19 +88,11 @@ private:
         Openloop
     };
 
-    enum class CargoIntakeState
-    {
-        running,
-        notRunning,
-        reverse,
-        hold
-    };
-
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
     CargoIntake *m_cargoIntake;
-    CargoIntakeState m_cargoIntakeState;
+    CargoIntake::CargoIntakeState m_cargoIntakeState;
 
     Drive *m_drive;
     DriveMode m_driveMode;

@@ -27,7 +27,7 @@ Robot::Robot()
         , m_cargoWrist(new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_PCM_ID))
         , m_cargoWristLock(
               new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_LOCK_PCM_ID))
-        , m_cargoPlatformWheel(
+        , m_cargoWheelPiston(
               new Solenoid(PCM_CAN_ID, CARGO_PLATFORM_WHEEL_PCM_ID))
         , m_leftDriveTalonA(new GreyTalonSRX(LEFT_DRIVE_A_CAN_ID))
         , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
@@ -47,7 +47,7 @@ Robot::Robot()
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoWristLock, m_cargoWrist,
-                                        m_cargoPlatformWheel))
+                                        m_cargoWheelPiston))
         , m_drive(new Drive(
               this, m_logger, m_leftDriveTalonA, m_leftDriveVictorB,
               m_leftDriveVictorC, m_rightDriveTalonA, m_rightDriveVictorB,

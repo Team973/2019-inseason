@@ -109,6 +109,11 @@ private:
 
     Limelight *m_limelight;
 
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoWristLock;
+    Solenoid *m_cargoWheelPiston;
+
     GreyLight *m_greylight;
 
     LogCell *m_matchIdentifier;
