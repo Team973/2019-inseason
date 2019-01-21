@@ -8,16 +8,15 @@ namespace frc973 {
 Autonomous::Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
                        ObservablePoofsJoystick *driver,
                        ObservableXboxJoystick *codriver)
-        : m_driverJoystick(driver)
-        , m_operatorJoystick(codriver)
+        : m_disabled(disabled)
         , m_drive(drive)
+        , m_gyro(gyro)
         , m_driveMode(DriveMode::Cheesy)
+        , m_driverJoystick(driver)
+        , m_operatorJoystick(codriver)
         , m_endGameSignalSent(false)
         , m_noAuto(new NoAuto())
         , m_forwardAuto(new ForwardAuto(drive))
-        , m_disabled(disabled)
-        , m_drive(drive)
-        , m_gyro(gyro)
         , m_autoSignal(new LightPattern::AutoIndicator()) {
 }
 

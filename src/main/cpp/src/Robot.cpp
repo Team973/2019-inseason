@@ -135,6 +135,9 @@ void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
     else if (this->IsTest()) {
         m_test->HandleDualActionJoystick(port, button, pressedP);
     }
+    else if (this->IsAutonomous()) {
+        m_autonomous->HandleDualActionJoystick(port, button, pressedP);
+    }
 }
 
 void Robot::ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
@@ -144,6 +147,9 @@ void Robot::ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
     }
     else if (this->IsTest()) {
         m_test->HandlePoofsJoystick(port, button, pressedP);
+    }
+    else if (this->IsAutonomous()) {
+        m_autonomous->HandlePoofsJoystick(port, button, pressedP);
     }
 }
 
@@ -157,6 +163,9 @@ void Robot::ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
     }
     else if (this->IsTest()) {
         m_test->HandleXboxJoystick(port, button, pressedP);
+    }
+    else if (this->IsAutonomous()) {
+        m_autonomous->HandleXboxJoystick(port, button, pressedP);
     }
 }
 }

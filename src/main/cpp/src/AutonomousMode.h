@@ -60,6 +60,31 @@ public:
      */
     void AutonomousStop();
 
+    /**
+     * Button handler for the disabled mode.
+     * @param port The port the joystick is connected to.
+     * @param button The button.
+     * @param pressedP The button's new status.
+     */
+    void HandleDualActionJoystick(uint32_t port, uint32_t button,
+                                  bool pressedP);
+
+    /**
+     * Button handler for the disabled mode.
+     * @param port The port the joystick is connected to.
+     * @param button The button.
+     * @param pressedP The button's new status.
+     */
+    void HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP);
+
+    /**
+     * Button handler for the disabled mode.
+     * @param port The port the joystick is connected to.
+     * @param button The button.
+     * @param pressedP The button's new status.
+     */
+    void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
+
 private:
     NoAuto *m_noAuto;
     ForwardAuto *m_forwardAuto;
@@ -78,10 +103,8 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
-    /*
-     * Defines DriveModes
-     * Openloop: Arcade
-     * Cheesy: Turn is a function of drive
+    /**
+     * Defines drivemodes.
      */
 
     enum class DriveMode
