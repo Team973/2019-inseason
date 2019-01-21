@@ -14,10 +14,8 @@ Autonomous::Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
         , m_driveMode(DriveMode::Cheesy)
         , m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
-        , m_endGameSignalSent(false)
         , m_noAuto(new NoAuto())
-        , m_forwardAuto(new ForwardAuto(drive))
-        , m_autoSignal(new LightPattern::AutoIndicator()) {
+        , m_forwardAuto(new ForwardAuto(drive)) {
 }
 
 Autonomous::~Autonomous() {

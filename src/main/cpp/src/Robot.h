@@ -87,7 +87,6 @@ private:
     VictorSPX *m_rightDriveVictorB;
 
     ADXRS450_Gyro *m_gyro;
-    GreyLight *m_greylight;
     Limelight *m_limelight;
 
     LogSpreadsheet *m_logger;

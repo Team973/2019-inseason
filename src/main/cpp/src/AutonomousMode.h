@@ -38,7 +38,6 @@ public:
      * @param disabled The disabled mode.
      * @param drive The drive subsystem.
      * @param gyro The gyro.
-     * @param greylight The GreyLight system.
      */
     Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
                ObservablePoofsJoystick *driver,
@@ -95,10 +94,6 @@ private:
 
     Drive *m_drive;
     ADXRS450_Gyro *m_gyro;
-
-    LightPattern::AutoIndicator *m_autoSignal;
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
