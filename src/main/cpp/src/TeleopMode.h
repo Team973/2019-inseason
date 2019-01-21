@@ -8,7 +8,6 @@
 
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/Flash.h"
@@ -98,12 +97,16 @@ private:
         Cargo,
         Hatch,
         EndGame,
-
     };
-
     GameMode m_gameMode;
 
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
+    enum class Rumble
+    {
+        on,
+        off
+    };
+    Rumble m_rumble;
+
+    uint32_t m_rumbleTimer;
 };
 }

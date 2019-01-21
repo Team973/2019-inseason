@@ -2,7 +2,6 @@
 
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/SolidColor.h"
@@ -70,9 +69,6 @@ public:
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
-
-    static constexpr Color DISABLED_RED = {
-        255, 0, 0}; /**< Default red disabled color. */
 
 private:
     ObservablePoofsJoystick *m_driverJoystick;

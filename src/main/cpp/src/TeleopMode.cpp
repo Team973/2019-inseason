@@ -18,9 +18,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
         , m_gameMode(GameMode::Hatch)
-        , m_endGameSignal(
-              new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
-        , m_endGameSignalSent(false) {
+        , m_rumble(Rumble::off) {
 }
 
 Teleop::~Teleop() {
@@ -31,11 +29,6 @@ void Teleop::TeleopInit() {
 }
 
 void Teleop::TeleopPeriodic() {
-    if (!m_endGameSignalSent && Timer::GetMatchTime() < 40) {
-        m_endGameSignalSent = true;
-        m_endGameSignal->Reset();
-    }
-
     /**
      * Driver Joystick
      */
@@ -64,6 +57,23 @@ void Teleop::TeleopPeriodic() {
         }
     }
 
+    switch (m_rumble) {
+        case Rumble::on:
+            m_rumbleTimer = GetMsecTime();
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kRightRumble,
+                                          1);
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kLeftRumble,
+                                          0);
+            break;
+        case Rumble::off:
+            if ((GetMsecTime() - m_rumbleTimer) > 150) {
+                m_operatorJoystick->SetRumble(
+                    GenericHID ::RumbleType::kRightRumble, 0);
+                m_operatorJoystick->SetRumble(
+                    GenericHID ::RumbleType::kLeftRumble, 0);
+            }
+            break;
+    }
     /**
      * Operator Joystick
      */
@@ -109,8 +119,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::BtnA:
@@ -158,9 +170,11 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
-                    m_gameMode = GameMode::Cargo;
+                    m_gameMode = GameMode::EndGame;
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::DPadDownVirtBtn:
@@ -171,15 +185,20 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadLeftVirtBtn:
                 if (pressedP) {
+                    m_gameMode = GameMode::Cargo;
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::DPadRightVirtBtn:
                 if (pressedP) {
-                    m_gameMode = GameMode::EndGame;
+                    m_gameMode = GameMode::Hatch;
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::Back:

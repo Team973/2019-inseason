@@ -10,7 +10,6 @@
 #include "lib/bases/CoopMTRobot.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/GreyTalon.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
@@ -88,7 +87,6 @@ private:
     VictorSPX *m_rightDriveVictorC;
 
     ADXRS450_Gyro *m_gyro;
-    GreyLight *m_greylight;
     Limelight *m_limelight;
 
     LogSpreadsheet *m_logger;
