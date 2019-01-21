@@ -16,6 +16,7 @@
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -37,8 +38,9 @@ public:
      * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, GreyLight *greylight, Limelight *limelightCargo,
+           Drive *drive, HatchIntake *hatchintake, Limelight *limelightCargo,
            Limelight *limelightHatch);
+
     virtual ~Teleop();
 
     /**
@@ -100,7 +102,8 @@ private:
     };
     DriveMode m_driveMode;
 
-    GreyLight *m_greylight;
+    HatchIntake *m_hatchIntake;
+
     LightPattern::Flash *m_endGameSignal;
     bool m_endGameSignalSent;
 

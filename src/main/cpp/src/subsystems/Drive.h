@@ -63,8 +63,7 @@ public:
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
           GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
-          VictorSPX *leftDriveVictorC, GreyTalonSRX *rightDriveTalonA,
-          VictorSPX *rightDriveVictorB, VictorSPX *rightDriveVictorC,
+          GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
           ADXRS450_Gyro *gyro, Limelight *limelightCargo,
           Limelight *limelightHatch);
     virtual ~Drive();
@@ -260,10 +259,8 @@ private:
 
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
-    VictorSPX *m_leftDriveVictorC;
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
-    VictorSPX *m_rightDriveVictorC;
 
     ControlMode m_controlMode;
 

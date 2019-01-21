@@ -13,13 +13,13 @@ using namespace frc;
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
-               GreyLight *greylight, Limelight *limelightCargo,
+               HatchIntake *hatchIntake, Limelight *limelightCargo,
                Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
-        , m_greylight(greylight)
+        , m_hatchIntake(hatchIntake)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
         , m_endGameSignalSent(false)
@@ -38,7 +38,6 @@ void Teleop::TeleopPeriodic() {
     if (!m_endGameSignalSent && Timer::GetMatchTime() < 40) {
         m_endGameSignalSent = true;
         m_endGameSignal->Reset();
-        m_greylight->SetPixelStateProcessor(m_endGameSignal);
     }
 
     /**
@@ -50,18 +49,20 @@ void Teleop::TeleopPeriodic() {
     //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
-    bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+
+    bool softwareLowGear =
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
     switch (m_driveMode) {
         case DriveMode::Cheesy:
-            if (lowGear) {
+            if (softwareLowGear) {
                 m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
             }
             else {
                 m_drive->CheesyDrive(y, x, quickturn, false);
             }
         case DriveMode::Openloop:
-            if (lowGear) {
+            if (softwareLowGear) {
                 m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
             }
             else {
