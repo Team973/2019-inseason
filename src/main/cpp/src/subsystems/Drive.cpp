@@ -29,17 +29,14 @@ using namespace trajectories;
 namespace frc973 {
 Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
-             VictorSPX *leftDriveVictorC, GreyTalonSRX *rightDriveTalonA,
-             VictorSPX *rightDriveVictorB, VictorSPX *rightDriveVictorC,
+             GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
              ADXRS450_Gyro *gyro, Limelight *limelight)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveTalonA(leftDriveTalonA)
         , m_leftDriveVictorB(leftDriveVictorB)
-        , m_leftDriveVictorC(leftDriveVictorC)
         , m_rightDriveTalonA(rightDriveTalonA)
         , m_rightDriveVictorB(rightDriveVictorB)
-        , m_rightDriveVictorC(rightDriveVictorC)
         , m_controlMode(ControlMode::PercentOutput)
         , m_leftDriveOutput(0.0)
         , m_rightDriveOutput(0.0)
@@ -73,32 +70,20 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_leftDriveTalonA->SetSensorPhase(false);
     m_leftDriveTalonA->SetInverted(false);
     m_leftDriveTalonA->SelectProfileSlot(0, 0);
-    m_leftDriveTalonA->Config_kP(0, 0, 0);
-    m_leftDriveTalonA->Config_kI(0, 0, 0);
-    m_leftDriveTalonA->Config_kD(0, 0, 0);
-    m_leftDriveTalonA->Config_kF(0, 0, 0);
+    m_leftDriveTalonA->Config_PID(0, 0.0, 0.0, 0.0, 0.0, 10);
 
     m_leftDriveVictorB->Follow(*m_leftDriveTalonA);
     m_leftDriveVictorB->SetInverted(false);
-
-    m_leftDriveVictorC->Follow(*m_leftDriveTalonA);
-    m_leftDriveVictorC->SetInverted(false);
 
     m_rightDriveTalonA->SetNeutralMode(Coast);
     m_rightDriveTalonA->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 10);
     m_rightDriveTalonA->SetSensorPhase(false);
     m_rightDriveTalonA->SetInverted(false);
     m_rightDriveTalonA->SelectProfileSlot(0, 0);
-    m_rightDriveTalonA->Config_kP(0, 0, 0);
-    m_rightDriveTalonA->Config_kI(0, 0, 0);
-    m_rightDriveTalonA->Config_kD(0, 0, 0);
-    m_rightDriveTalonA->Config_kF(0, 0, 0);
+    m_rightDriveTalonA->Config_PID(0, 0.0, 0.0, 0.0, 0.0, 10);
 
     m_rightDriveVictorB->Follow(*m_rightDriveTalonA);
     m_rightDriveVictorB->SetInverted(false);
-
-    m_rightDriveVictorC->Follow(*m_rightDriveTalonA);
-    m_rightDriveVictorC->SetInverted(false);
 
     logger->RegisterCell(m_angleLog);
     logger->RegisterCell(m_angularRateLog);
