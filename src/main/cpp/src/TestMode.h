@@ -8,6 +8,7 @@
 #include "lib/util/Util.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -26,7 +27,7 @@ public:
      * @param drive The drive subsystem.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive);
+         Drive *drive, HatchIntake *hatchIntake);
     virtual ~Test();
 
     /**
@@ -84,5 +85,7 @@ private:
 
     Drive *m_drive;
     DriveMode m_driveMode;
+
+    HatchIntake *m_hatchIntake;
 };
 }

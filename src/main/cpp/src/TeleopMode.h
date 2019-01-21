@@ -14,6 +14,7 @@
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -33,7 +34,7 @@ public:
      * @param greylight The GreyLight system.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive);
+           Drive *drive, HatchIntake *hatchIntake);
     virtual ~Teleop();
 
     /**
@@ -108,5 +109,7 @@ private:
     Rumble m_rumble;
 
     uint32_t m_rumbleTimer;
+
+    HatchIntake *m_hatchIntake;
 };
 }

@@ -4,10 +4,11 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive)
+           Drive *drive, HatchIntake *hatchIntake)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
-        , m_drive(drive) {
+        , m_drive(drive)
+        , m_hatchIntake(hatchIntake) {
 }
 
 Test::~Test() {
@@ -80,14 +81,22 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
+                    m_hatchIntake->SetIntakeState(
+                        HatchIntake::HatchIntakeState::intaking);
                 }
                 else {
+                    m_hatchIntake->SetIntakeState(
+                        HatchIntake::HatchIntakeState::idle);
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
+                    m_hatchIntake->SetIntakeState(
+                        HatchIntake::HatchIntakeState::exhaust);
                 }
                 else {
+                    m_hatchIntake->SetIntakeState(
+                        HatchIntake::HatchIntakeState::idle);
                 }
                 break;
             case Xbox::BtnX:
@@ -171,12 +180,15 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
     switch (button) {
         case DualAction::BtnA:
             if (pressedP) {
+                m_hatchIntake->HatchOpen();
             }
             else {
+                m_hatchIntake->HatchGrab();
             }
             break;
         case DualAction::BtnB:
             if (pressedP) {
+                m_hatchIntake->HatchLaunch();
             }
             else {
             }

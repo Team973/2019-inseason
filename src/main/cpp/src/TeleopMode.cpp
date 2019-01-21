@@ -12,11 +12,13 @@ using namespace frc;
 
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver, Drive *drive)
+               ObservableXboxJoystick *codriver, Drive *drive,
+               HatchIntake *hatchIntake)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
+        , m_hatchIntake(hatchIntake)
         , m_gameMode(GameMode::Hatch)
         , m_rumble(Rumble::off) {
 }
@@ -38,10 +40,12 @@ void Teleop::TeleopPeriodic() {
         -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
-    bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+
+    bool softwareLowGear =
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
     if (m_driveMode == DriveMode::Cheesy) {
-        if (lowGear) {
+        if (softwareLowGear) {
             m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
         }
         else {
@@ -49,11 +53,24 @@ void Teleop::TeleopPeriodic() {
         }
     }
     else if (m_driveMode == DriveMode::Openloop) {
-        if (lowGear) {
+        if (softwareLowGear) {
             m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
         }
         else {
             m_drive->OpenloopArcadeDrive(y, x);
+
+            if (m_driveMode == DriveMode::Openloop) {
+                /* if (softwareLowGear) {
+                     x /= 3.0;
+                     y /= 3.0;
+                 }
+                 m_drive->OpenloopArcadeDrive(y, x);
+                 */
+            }
+
+            /**
+             * Operator Joystick
+             */
         }
     }
 
