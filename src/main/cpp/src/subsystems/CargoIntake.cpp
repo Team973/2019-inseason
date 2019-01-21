@@ -13,8 +13,12 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_cargoPlatformWheel(cargoPlatformWheel)
         , m_cargoIntakeState(CargoIntakeState::notRunning)
         , m_cargoWristLockState(CargoWristLockState::unlocked)
+        , m_cargoWristLockPneumaticState(CargoWristLockPneumaticState::unlocked)
         , m_cargoWristState(CargoWristState::retracted)
+        , m_cargoWristPneumaticState(CargoWristPneumaticState::retracted)
         , m_cargoPlatformWheelState(CargoPlatformWheelState::retracted)
+        , m_cargoPlatfromWheelPneumaticState(
+              CargoPlatformWheelPneumaticState::retracted)
         , m_cargoEndgameState(CargoEndgameState::notEndgame) {
     this->m_scheduler->RegisterTask("CargoIntake", this, TASK_PERIODIC);
     m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
@@ -125,27 +129,57 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
 
     switch (m_cargoWristLockState) {
         case CargoWristLockState::unlocked:
-            m_cargoWristLock->Set(false);
+            m_cargoWristLockPneumaticState =
+                CargoWristLockPneumaticState::unlocked;
             break;
         case CargoWristLockState::locked:
-            m_cargoWristLock->Set(true);
+            m_cargoWristLockPneumaticState =
+                CargoWristLockPneumaticState::locked;
             break;
+    }
+
+    switch (m_cargoWristLockPneumaticState) {
+        case CargoWristLockPneumaticState::unlocked:
+            m_cargoWristLock->Set(false);
+            break;
+        case CargoWristLockPneumaticState::locked:
+            m_cargoWristLock->Set(true);
     }
 
     switch (m_cargoWristState) {
         case CargoWristState::extended:
-            m_cargoWrist->Set(true);
+            m_cargoWristPneumaticState = CargoWristPneumaticState::extended;
             break;
         case CargoWristState::retracted:
+            m_cargoWristPneumaticState = CargoWristPneumaticState::retracted;
+            break;
+    }
+
+    switch (m_cargoWristPneumaticState) {
+        case CargoWristPneumaticState::extended:
+            m_cargoWrist->Set(true);
+            break;
+        case CargoWristPneumaticState::retracted:
             m_cargoWrist->Set(false);
             break;
     }
 
     switch (m_cargoPlatformWheelState) {
         case CargoPlatformWheelState::retracted:
-            m_cargoPlatformWheel->Set(false);
+            m_cargoPlatfromWheelPneumaticState =
+                CargoPlatformWheelPneumaticState::retracted;
             break;
         case CargoPlatformWheelState::deployed:
+            m_cargoPlatfromWheelPneumaticState =
+                CargoPlatformWheelPneumaticState::deployed;
+            break;
+    }
+
+    switch (m_cargoPlatfromWheelPneumaticState) {
+        case CargoPlatformWheelPneumaticState::retracted:
+            m_cargoPlatformWheel->Set(false);
+            break;
+        case CargoPlatformWheelPneumaticState::deployed:
             m_cargoPlatformWheel->Set(true);
             break;
     }

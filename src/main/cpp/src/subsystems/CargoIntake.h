@@ -53,12 +53,31 @@ public:
     };
 
     /**
+     * Cargo Wrist Lock Pneumatics State
+     */
+
+    enum class CargoWristLockPneumaticState
+    {
+        unlocked, /**< Unlocked Wrist State. */
+        locked    /**< Locked Wrist State. */
+    };
+
+    /**
      * Cargo Wrist states.
      */
     enum class CargoWristState
     {
         extended, /**< Extended wrist state. */
         retracted /**< Retracted wrist state. */
+    };
+
+    /**
+     * Cargo Wrist Pneumatic State
+     */
+    enum class CargoWristPneumaticState
+    {
+        extended, /**<Extended Wrist State. */
+        retracted /**<Retracted Wrist State. */
     };
 
     /**
@@ -70,6 +89,11 @@ public:
         deployed   /**< Deployed wheel state. */
     };
 
+    enum class CargoPlatformWheelPneumaticState
+    {
+        retracted, /**<Retracted Wheel State. */
+        deployed   /**<Deployed Wheel State. */
+    };
     /**
      * Cargo Endgame state.
      */
@@ -180,8 +204,11 @@ private:
 
     CargoIntakeState m_cargoIntakeState;
     CargoWristState m_cargoWristState;
+    CargoWristPneumaticState m_cargoWristPneumaticState;
     CargoWristLockState m_cargoWristLockState;
+    CargoWristLockPneumaticState m_cargoWristLockPneumaticState;
     CargoPlatformWheelState m_cargoPlatformWheelState;
+    CargoPlatformWheelPneumaticState m_cargoPlatfromWheelPneumaticState;
     CargoEndgameState m_cargoEndgameState;
 
     LogCell *m_current;
