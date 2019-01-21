@@ -23,6 +23,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Stinger.h"
+#include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -83,10 +84,8 @@ private:
 
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
-    VictorSPX *m_leftDriveVictorC;
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
-    VictorSPX *m_rightDriveVictorC;
 
     GreyTalonSRX *m_stingerDriveMotor;
     GreyTalonSRX *m_stingerElevatorMotor;
@@ -102,6 +101,7 @@ private:
     LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
+    HatchIntake *m_hatchIntake;
     Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;

@@ -18,18 +18,15 @@ Stinger::Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_stingerElevatorMotor->SetNeutralMode(NeutralMode::Coast);
     m_stingerElevatorMotor->SetInverted(false);
 
-    m_stingerElevatorMotor->Config_kP(0, 0.0, 10);
-    m_stingerElevatorMotor->Config_kI(0, 0.0, 10);
-    m_stingerElevatorMotor->Config_kD(0, 0.0, 10);
-    m_stingerElevatorMotor->Config_kF(0, 0.0, 10);
+    m_stingerElevatorMotor->Config_PID(0, 0.0, 0.0, 0.0, 0.0, 10);
     m_stingerElevatorMotor->ConfigMotionCruiseVelocity(3750.0, 10);
     m_stingerElevatorMotor->ConfigMotionAcceleration(4200.0, 10);
     m_stingerElevatorMotor->SelectProfileSlot(0, 0);
 
-    m_stingerElevatorMotor->EnableCurrentLimit(false);
+    m_stingerElevatorMotor->EnableCurrentLimit(true);
     m_stingerElevatorMotor->ConfigPeakCurrentDuration(0, 10);
     m_stingerElevatorMotor->ConfigPeakCurrentLimit(0, 10);
-    m_stingerElevatorMotor->ConfigContinuousCurrentLimit(25, 10);
+    m_stingerElevatorMotor->ConfigContinuousCurrentLimit(50, 10);
     m_stingerElevatorMotor->EnableVoltageCompensation(false);
     m_stingerElevatorMotor->ConfigForwardSoftLimitThreshold(
         STINGER_SOFT_HEIGHT_LIMIT / STINGER_INCHES_PER_CLICK, 10);

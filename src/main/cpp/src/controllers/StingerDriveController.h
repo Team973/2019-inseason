@@ -2,7 +2,7 @@
  * StingerDriveController.h
  *
  *  Created on: Oct 30, 2015
- *      Author: Andrew
+ *      Author: Kyle
  */
 
 #pragma once
@@ -20,7 +20,7 @@ namespace frc973 {
 class StingerDriveController : public DriveController {
 public:
     /**
-     * Construct a Openloop Arcade Drive controller.
+     * Construct a Stinger Drive controller.
      */
     StingerDriveController();
     virtual ~StingerDriveController();
@@ -49,6 +49,10 @@ public:
      */
     void SetJoysticks(double throttle, double turn);
 
+    /**
+     * Gets the Stinger Motors output
+     * @return Stinger Motors Speed
+     */
     double GetStingerMotorOutput();
 
     /**
