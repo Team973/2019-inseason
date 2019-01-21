@@ -33,7 +33,6 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
-     * @param greylight The GreyLight system.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
            Drive *drive, HatchIntake *hatchintake, CargoIntake *cargoIntake);
@@ -79,10 +78,6 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color END_GAME_RED = {
-        255, 0, 0}; /**< Display red during end game. */
-    static constexpr Color NO_COLOR = {0, 0, 0}; /**< Turn off the LED strip. */
-
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
@@ -97,9 +92,5 @@ private:
     CargoIntake *m_cargoIntake;
 
     HatchIntake *m_hatchIntake;
-
-    GreyLight *m_greylight;
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
 };
 }

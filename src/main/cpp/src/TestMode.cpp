@@ -24,12 +24,6 @@ void Test::TestInit() {
 }
 
 void Test::TestPeriodic() {
-    if (!m_endGameSignalSent && Timer::GetMatchTime() < 40) {
-        m_endGameSignalSent = true;
-        m_endGameSignal->Reset();
-        m_greylight->SetPixelStateProcessor(m_endGameSignal);
-    }
-
     /**
      * Driver Joystick
      */
