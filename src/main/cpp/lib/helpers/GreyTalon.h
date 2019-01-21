@@ -24,6 +24,28 @@ public:
     }
 
     /**
+     * Configurate F, P, I, and D for a specifc Talon SRX
+     * @param motor The Talon SRX to configure
+     * @param kSlotIdx Slot Id
+     * @param kP Proportional value
+     * @param kI Integral value
+     * @param kD Derivative value
+     * @param kF Feed-Forward value
+     * @param kTimeoutMs Timeout value in milliseconds
+     * @return The configured motor
+     */
+
+    GreyTalonSRX* Config_PID(int kSlotIdx, double kP, double kI, double kD,
+                             double kF, int kTimeoutMs) {
+        this->Config_kP(kSlotIdx, kP, kTimeoutMs);
+        this->Config_kI(kSlotIdx, kI, kTimeoutMs);
+        this->Config_kD(kSlotIdx, kD, kTimeoutMs);
+        this->Config_kF(kSlotIdx, kF, kTimeoutMs);
+
+        return this;
+    }
+
+    /**
      * Factory reset a specific Talon SRX.
      * @param motor The Talon SRX to reset.
      * @return The resetted Talon SRX.

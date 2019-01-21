@@ -16,6 +16,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -35,7 +36,7 @@ public:
      * @param greylight The GreyLight system.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, CargoIntake *cargoIntake, GreyLight *greylight);
+           Drive *drive, HatchIntake *hatchintake, CargoIntake *cargoIntake);
     virtual ~Teleop();
 
     /**
@@ -94,6 +95,8 @@ private:
     };
     DriveMode m_driveMode;
     CargoIntake *m_cargoIntake;
+
+    HatchIntake *m_hatchIntake;
 
     GreyLight *m_greylight;
     LightPattern::Flash *m_endGameSignal;

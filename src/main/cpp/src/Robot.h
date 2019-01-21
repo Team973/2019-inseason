@@ -24,6 +24,7 @@
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
+#include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -87,10 +88,8 @@ private:
 
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
-    VictorSPX *m_leftDriveVictorC;
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
-    VictorSPX *m_rightDriveVictorC;
 
     GreyTalonSRX *m_elevatorMotor;
 
@@ -109,6 +108,7 @@ private:
     LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
+    HatchIntake *m_hatchIntake;
     CargoIntake *m_cargoIntake;
     Elevator *m_elevator;
 

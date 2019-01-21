@@ -13,16 +13,13 @@ using namespace frc;
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
-               CargoIntake *cargoIntake, GreyLight *greylight)
+               HatchIntake *hatchIntake, CargoIntake *cargoIntake)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
-        , m_cargoIntake(cargoIntake)
-        , m_greylight(greylight)
-        , m_endGameSignal(
-              new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
-        , m_endGameSignalSent(false) {
+        , m_hatchIntake(hatchIntake)
+        , m_cargoIntake(cargoIntake) {
 }
 
 Teleop::~Teleop() {
@@ -48,10 +45,12 @@ void Teleop::TeleopPeriodic() {
         -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
-    bool lowGear = m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+
+    bool softwareLowGear =
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
     if (m_driveMode == DriveMode::Cheesy) {
-        if (lowGear) {
+        if (softwareLowGear) {
             m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
         }
         else {
@@ -59,17 +58,26 @@ void Teleop::TeleopPeriodic() {
         }
     }
     else if (m_driveMode == DriveMode::Openloop) {
-        if (lowGear) {
+        if (softwareLowGear) {
             m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
         }
         else {
             m_drive->OpenloopArcadeDrive(y, x);
+
+            if (m_driveMode == DriveMode::Openloop) {
+                /* if (softwareLowGear) {
+                     x /= 3.0;
+                     y /= 3.0;
+                 }
+                 m_drive->OpenloopArcadeDrive(y, x);
+                 */
+            }
+
+            /**
+             * Operator Joystick
+             */
         }
     }
-
-    /**
-     * Operator Joystick
-     */
 }
 
 void Teleop::TeleopStop() {
