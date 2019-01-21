@@ -20,11 +20,9 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
         , m_hatchIntake(hatchIntake)
-        , m_endGameSignal(
-              new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
-        , m_endGameSignalSent(false)
         , m_limelightCargo(limelightCargo)
-        , m_limelightHatch(limelightHatch) {
+        , m_limelightHatch(limelightHatch)
+        , m_rumble(Rumble::off) {
 }
 
 Teleop::~Teleop() {
@@ -35,11 +33,6 @@ void Teleop::TeleopInit() {
 }
 
 void Teleop::TeleopPeriodic() {
-    if (!m_endGameSignalSent && Timer::GetMatchTime() < 40) {
-        m_endGameSignalSent = true;
-        m_endGameSignal->Reset();
-    }
-
     /**
      * Driver Joystick
      */
@@ -77,6 +70,21 @@ void Teleop::TeleopPeriodic() {
             break;
         case DriveMode::AssistedCheesy:
             m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+            break;
+    }
+
+    switch (m_rumble) {
+        case Rumble::on:
+            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kRightRumble,
+                                          1);
+            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kLeftRumble,
+                                          1);
+            break;
+        case Rumble::off:
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kRightRumble,
+                                          0);
+            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kLeftRumble,
+                                          0);
             break;
     }
 
@@ -136,17 +144,18 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
-                    m_limelightHatch->SetPipelineIndex(2);
-                    m_driveMode = DriveMode::LimelightHatch;
+                    m_limelightHatch->SetLightMode(Limelight::LightMode::blink);
                 }
                 else {
-                    m_driveMode = DriveMode::Cheesy;
+                    m_limelightHatch->SetLightMode(Limelight::LightMode::off);
                 }
                 break;
             case Xbox::BtnX:

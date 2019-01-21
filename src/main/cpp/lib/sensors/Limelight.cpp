@@ -154,7 +154,7 @@ double Limelight::GetVerticalLength() {
 }
 
 double Limelight::FindTargetSkew() {
-    return (180.0 / PI) *
+    return (180.0 / Constants::PI) *
            asin(Util::bound((GetHorizontalLength() / GetVerticalLength()) *
                                 TARGET_ASPECT_RATIO,
                             0.0, 1.0));
@@ -162,6 +162,6 @@ double Limelight::FindTargetSkew() {
 
 double Limelight::GetHorizontalDistance() {
     return (TARGET_HEIGHT - CAMERA_HEIGHT) /
-           tan(CAMERA_ANGLE + this->GetYOffset() * (PI / 180.0));
+           tan(CAMERA_ANGLE + this->GetYOffset() * (Constants::PI / 180.0));
 }
 }

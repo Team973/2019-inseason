@@ -42,7 +42,8 @@ void LimelightDriveController::CalcDriveOutput(
     else {
         double turnPidOut = m_turnPid->CalcOutputWithError(offset);
         double throttlePidOut = m_throttlePid->CalcOutputWithError(
-            distError * (pow(cos((offset * PI / 180.0) * PERIOD), 5)));
+            distError *
+            (pow(cos((offset * Constants::PI / 180.0) * PERIOD), 5)));
         m_leftSetpoint = throttlePidOut + turnPidOut;
         m_rightSetpoint = throttlePidOut - turnPidOut;
     }

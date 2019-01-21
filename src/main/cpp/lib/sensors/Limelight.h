@@ -23,6 +23,7 @@ class Limelight {
 public:
     /**
      * Constuct a Limelight Camera.
+     * @param name The name of the limelight being constructed
      */
     Limelight(const char *name);
     virtual ~Limelight();
@@ -92,7 +93,7 @@ public:
 
     /**
      * Sets the limelight's pipeline index.
-     * @param pipeline The pipeline index.
+     * @param index The pipeline index.
      */
     void SetPipelineIndex(int index);
 
@@ -194,18 +195,20 @@ public:
 
     /**
      * Finds the angle skew of the robot in reference to the target
+     * @return targets skew
      */
     double FindTargetSkew();
 
     /**
      * Finds the horizontal distance of the robot in reference to the target
+     * @return The targest distance in inches
      */
     double GetHorizontalDistance();
 
     static constexpr double TARGET_HEIGHT = 24.25;  // in inches from ground
     static constexpr double CAMERA_HEIGHT = 4.75;   // in inches from ground
     static constexpr double CAMERA_ANGLE =
-        40.0 * (PI / 180.0);  // in degrees wrt ground
+        40.0 * (Constants::PI / 180.0);  // in degrees wrt ground
 
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight

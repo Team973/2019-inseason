@@ -7,9 +7,21 @@
                 "maxValue": 27.0,
                 "show": true
             },
-            "title": "Limelight Error",
+            "title": "Limelight Hatch Error",
             "keys": [
-                "/SmartDashboard/drive/limelight/error"
+                "/SmartDashboard/drive/limelight/hatch/error"
+            ]
+        },
+        {
+            "settings": {
+                "tooltip": false,
+                "minValue": -27.0,
+                "maxValue": 27.0,
+                "show": true
+            },
+            "title": "Limelight Cargo Error",
+            "keys": [
+                "/SmartDashboard/drive/limelight/cargo/error"
             ]
         },
         {

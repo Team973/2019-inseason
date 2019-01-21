@@ -45,14 +45,13 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
-                                  m_greylight, m_limelightCargo,
-                                  m_limelightHatch))
-        , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro, m_greylight))
+                                  m_limelightCargo, m_limelightHatch))
+        , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
                               m_hatchIntake, m_limelightCargo,
                               m_limelightHatch))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_hatchIntake, m_greylight)) {
+                          m_hatchIntake)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -133,7 +132,8 @@ void Robot::AllStateContinuous() {
                    m_limelightHatch->GetHorizontalDistance());
     DBStringPrintf(
         DBStringPos::DB_LINE8, "Pow(cos(offset)): %3.2lf",
-        (pow(cos(m_limelightHatch->GetXOffset() * PI / 180 * 3.0), 5)));
+        (pow(cos(m_limelightHatch->GetXOffset() * Constants::PI / 180 * 3.0),
+             5)));
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
@@ -172,7 +172,6 @@ void Robot::ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
     }
 }
 }
-
 int main() {
     return StartRobot<frc973::Robot>();
 }
