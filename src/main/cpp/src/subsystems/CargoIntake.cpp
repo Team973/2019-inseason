@@ -23,7 +23,12 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
     this->m_scheduler->RegisterTask("CargoIntake", this, TASK_PERIODIC);
     m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
     m_cargoIntakeMotor->SetNeutralMode(NeutralMode::Coast);
-    m_cargoIntakeMotor->EnableCurrentLimit(false);
+
+    m_cargoIntakeMotor->EnableCurrentLimit(true);
+    m_cargoIntakeMotor->ConfigPeakCurrentDuration(0, 10);
+    m_cargoIntakeMotor->ConfigPeakCurrentLimit(0, 10);
+    m_cargoIntakeMotor->ConfigContinuousCurrentLimit(40, 10);
+    m_cargoIntakeMotor->EnableVoltageCompensation(false);
 
     m_current = new LogCell("CargoIntake Current", 32, true);
     m_logger->RegisterCell(m_current);
@@ -35,6 +40,10 @@ CargoIntake::~CargoIntake() {
 
 void CargoIntake::RunIntake() {
     GoToIntakeState(CargoIntakeState::running);
+}
+
+void CargoIntake::HoldCargo() {
+    GoToIntakeState(CargoIntakeState::holding);
 }
 
 void CargoIntake::StopIntake() {
@@ -118,6 +127,9 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
     switch (m_cargoIntakeState) {
         case CargoIntakeState::running:
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 1.0);
+            break;
+        case CargoIntakeState::holding:
+            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.2);
             break;
         case CargoIntakeState::notRunning:
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);

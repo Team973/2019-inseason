@@ -25,7 +25,7 @@ public:
      * @param cargoIntakeMotor The cargo intake motor.
      * @param cargoWristLock The cargo wrist lock solenoid.
      * @param cargoWrist The cargo wrist solenoid.
-     * @param cargoPlatformWheel The cargo platform wheel solenoid.
+     * @param cargoWheelPiston The cargo platform wheel solenoid.
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoWristLock,
@@ -38,9 +38,9 @@ public:
     enum class CargoIntakeState
     {
         running,    /**< Intaking state. */
+        holding,    /**< Holding state. */
         notRunning, /**< Stopped state. */
-        reverse,    /**< Outtaking state. */
-        platform    /**< Endgame Platform state. */
+        reverse     /**< Outtaking state. */
     };
 
     /**
@@ -105,7 +105,8 @@ public:
     };
 
     void RunIntake();  /**< Set the CargoIntakeState to running. */
-    void StopIntake(); /**< Set the CargoIntakeState to stop. */
+    void HoldCargo();  /**< Set the CargoIntakeState to holding. */
+    void StopIntake(); /**< Set the CargoIntakeState to notRunning. */
     void Exhaust();    /**< Set the CargoIntakeState to reverse. */
 
     void UnlockWrist(); /**< Set the CargoWristLockState to unlocked. */
@@ -114,8 +115,8 @@ public:
     void ExtendWrist();  /**< Set the CargoWristState to extended. */
     void RetractWrist(); /**< Set the CargoWristState to retracted. */
 
-    void DeployPlatformWheel();  /**< Set the CargoPlatformWheelState to
-                                    deployed */
+    void DeployPlatformWheel();  /**< Set the CargoPlatformWheelState
+                                    to deployed */
     void RetractPlatformWheel(); /**< Set the CargoPlatformWheelState to
                                     retracted */
 
@@ -157,31 +158,31 @@ public:
 
     /**
      * Sets the desired cargo intake state
-     * @param The desired Cargo Intake state.
+     * @param newState The desired Cargo Intake state.
      */
     void GoToIntakeState(CargoIntakeState newState);
 
     /**
      * Go to the wrist lock state
-     * @param The Wrist Lock state.
+     * @param newState The Wrist Lock state.
      */
     void GoToWristLockState(CargoWristLockState newState);
 
     /**
      * Go to the desired wrist state
-     * @param The desired Wrist state.
+     * @param newState The desired Wrist state.
      */
     void GoToWristState(CargoWristState newState);
 
     /**
      * Go to the platform wheel state
-     * @param The Platform Wheel state.
+     * @param newState The Platform Wheel state.
      */
     void GoToPlatformWheelState(CargoPlatformWheelState newState);
 
     /**
      * Go to the desired end game state
-     * @param The desired End Game state.
+     * @param newState The desired End Game state.
      */
     void GoToEndgameState(CargoEndgameState newState);
 
