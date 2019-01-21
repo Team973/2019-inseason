@@ -25,10 +25,9 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
-     * @param greylight The GreyLight system.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, GreyLight *greylight);
+         Drive *drive);
     virtual ~Test();
 
     /**
@@ -86,9 +85,5 @@ private:
 
     Drive *m_drive;
     DriveMode m_driveMode;
-
-    GreyLight *m_greylight;
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
 };
 }
