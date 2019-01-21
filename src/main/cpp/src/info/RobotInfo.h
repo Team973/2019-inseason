@@ -11,8 +11,8 @@ using namespace frc;
 
 namespace frc973 {
 // Constants
-static constexpr double DRIVE_WIDTH = 25.205;
-static constexpr double DRIVE_WHEEL_DIAMETER = 5.0;
+static constexpr double DRIVE_WIDTH = 24.0;
+static constexpr double DRIVE_WHEEL_DIAMETER = 4.0;
 static constexpr double DRIVE_ENCODER_COUNT = 4096;
 static constexpr double DRIVE_DIST_PER_REVOLUTION =
     DRIVE_WHEEL_DIAMETER * Constants::PI;
@@ -33,15 +33,17 @@ static const int COMPRESSOR_RELAY = 0;
  **/
 static const int RIGHT_DRIVE_A_CAN_ID = 1;
 static const int RIGHT_DRIVE_B_VICTOR_ID = 2;
-static const int RIGHT_DRIVE_C_VICTOR_ID = 3;
 static const int LEFT_DRIVE_A_CAN_ID = 16;
 static const int LEFT_DRIVE_B_VICTOR_ID = 15;
-static const int LEFT_DRIVE_C_VICTOR_ID = 14;
 
 /**
  * Intake Subsystem
  **/
 static const int INTAKE_CAN_ID = 4;
+static const int HATCH_PUNCHER_PCM_ID = 1;
+static const int HATCH_CLAW_PCM_ID = 2;
+static const int LEFT_HATCH_SENSOR_ID = 2;
+static const int RIGHT_HATCH_SENSOR_ID = 3;
 
 /**
  * Digital Sensors
