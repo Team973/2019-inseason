@@ -41,22 +41,30 @@ void HatchIntake::Exhaust() {
 
 void HatchIntake::OpenClaw() {
     GoToPneumaticState(HatchPneumaticState::release);
-}
-
-void HatchIntake::GrabHatch() {
-    GoToPneumaticState(HatchPneumaticState::grab);
+    GoToIntakeState(HatchIntakeState::manual);
 }
 
 void HatchIntake::LaunchHatch() {
     GoToPneumaticState(HatchPneumaticState::launch);
 }
 
+void HatchIntake::GrabHatch() {
+    GoToPneumaticState(HatchPneumaticState::grab);
+    GoToIntakeState(HatchIntakeState::manual);
+}
+
 void HatchIntake::ManualPuncherActivate() {
     GoToPneumaticState(HatchPneumaticState::manualPunch);
+    GoToIntakeState(HatchIntakeState::manual);
 }
 
 void HatchIntake::ManualPuncherRetract() {
     GoToPneumaticState(HatchPneumaticState::manualRetract);
+    GoToIntakeState(HatchIntakeState::manual);
+}
+
+bool HatchIntake::IsHatchInIntake() {
+    return (m_leftHatchSensor->Get() && m_rightHatchSensor->Get());
 }
 
 void HatchIntake::GoToIntakeState(HatchIntake::HatchIntakeState newState) {
@@ -76,7 +84,7 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
             break;
         case HatchIntakeState::intaking:
             OpenClaw();
-            if (m_leftHatchSensor->Get() && m_rightHatchSensor->Get()) {
+            if (IsHatchInIntake()) {
                 HoldHatch();
             }
             break;
@@ -85,7 +93,7 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
             break;
         case HatchIntakeState::exhaust:
             LaunchHatch();
-            if (m_leftHatchSensor->Get() && m_rightHatchSensor->Get()) {
+            if (IsHatchInIntake()) {
                 HoldHatch();
             }
             else {

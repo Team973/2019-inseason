@@ -106,6 +106,8 @@ public:
      */
     void LaunchHatch();
 
+    bool IsHatchInIntake();
+
     /**
      * Manually punch, regardless of grab state.
      */
