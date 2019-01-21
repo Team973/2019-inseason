@@ -158,6 +158,13 @@ public:
      */
     LimelightDriveController *LimelightHatchDrive();
 
+    /*
+     * Set drive controller to use limelight and driver input to steer and drive
+     * @param trottle Joysticks left y-axis input
+     * @param turn Joysticks right x-axis input
+     * @param isQuickTurn 1 or 0 for if quickturn is enabled
+     * @param isHighGear 1 or 0 for if high gear is enabled
+     */
     AssistedCheesyDriveController *AssistedCheesyDrive(double throttle,
                                                        double turn,
                                                        bool isQuickTurn,

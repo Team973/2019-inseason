@@ -4,14 +4,10 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, GreyLight *greylight)
+           Drive *drive)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
-        , m_drive(drive)
-        , m_greylight(greylight)
-        , m_endGameSignal(
-              new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
-        , m_endGameSignalSent(false) {
+        , m_drive(drive) {
 }
 
 Test::~Test() {
@@ -23,12 +19,6 @@ void Test::TestInit() {
 }
 
 void Test::TestPeriodic() {
-    if (!m_endGameSignalSent && Timer::GetMatchTime() < 40) {
-        m_endGameSignalSent = true;
-        m_endGameSignal->Reset();
-        m_greylight->SetPixelStateProcessor(m_endGameSignal);
-    }
-
     /**
      * Driver Joystick
      */
