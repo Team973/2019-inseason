@@ -23,9 +23,10 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Elevator.h"
-#include <iostream>
+#include "src/subsystems/HatchIntake.h"
+    #include <iostream>
 
-using namespace frc;
+    using namespace frc;
 using namespace ctre;
 using namespace cs;
 
@@ -83,10 +84,8 @@ private:
 
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
-    VictorSPX *m_leftDriveVictorC;
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
-    VictorSPX *m_rightDriveVictorC;
 
     GreyTalonSRX *m_elevatorMotorA;
     VictorSPX *m_elevatorMotorB;
@@ -101,6 +100,7 @@ private:
 
     Drive *m_drive;
     Elevator *m_elevator;
+    HatchIntake *m_hatchIntake;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;

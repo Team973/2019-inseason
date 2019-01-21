@@ -24,10 +24,8 @@ Robot::Robot()
               new ObservableXboxJoystick(OPERATOR_JOYSTICK_PORT, this, this))
         , m_leftDriveTalonA(new GreyTalonSRX(LEFT_DRIVE_A_CAN_ID))
         , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
-        , m_leftDriveVictorC(new VictorSPX(LEFT_DRIVE_C_VICTOR_ID))
         , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
-        , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
         , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
         , m_gyro(new ADXRS450_Gyro())
@@ -37,11 +35,11 @@ Robot::Robot()
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
-                            m_leftDriveVictorB, m_leftDriveVictorC,
-                            m_rightDriveTalonA, m_rightDriveVictorB,
-                            m_rightDriveVictorC, m_gyro, m_limelight))
+                            m_leftDriveVictorB, m_rightDriveTalonA,
+                            m_rightDriveVictorB, m_gyro, m_limelight))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_limelight))
+        , m_hatchIntake(new HatchIntake(this, m_logger))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
@@ -51,9 +49,9 @@ Robot::Robot()
               new Disabled(m_driverJoystick, m_operatorJoystick, m_greylight))
         , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro, m_greylight))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
-                              m_greylight))
+                              m_hatchIntake, m_greylight))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_greylight)) {
+                          m_hatchIntake, m_greylight)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
