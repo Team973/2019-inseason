@@ -54,10 +54,8 @@ public:
      * @param logger LogSpreadsheet object.
      * @param leftDriveTalonA The first left drive motor controller.
      * @param leftDriveVictorB The second left drive motor controller.
-     * @param leftDriveVictorC The third left drive motor controller.
      * @param rightDriveTalonA The first right drive motor controller.
      * @param rightDriveVictorB The second right drive motor controller.
-     * @param rightDriveVictorC The third right drive motor controller.
      * @param gyro The gyro object.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
