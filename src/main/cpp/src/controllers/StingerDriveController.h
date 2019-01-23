@@ -15,7 +15,7 @@ using namespace frc;
 namespace frc973 {
 
 /**
- * Openloop Arcade Drive controller.
+ * Stinger Drive controller.
  */
 class StingerDriveController : public DriveController {
 public:

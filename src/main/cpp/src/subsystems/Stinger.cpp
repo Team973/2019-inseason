@@ -62,27 +62,27 @@ void Stinger::SetPower(double power) {
     }
 }
 
-void Stinger::SetPosition(double position) {
+void Stinger::SetPositionInches(double position) {
     GoToStingerState(StingerState::motionMagic);
     int position_clicks = position / STINGER_INCHES_PER_CLICK;
     m_stingerElevatorMotor->Set(ControlMode::MotionMagic, position_clicks);
 }
 
-double Stinger::GetPosition() {
+double Stinger::GetPositionInches() {
     return STINGER_INCHES_PER_CLICK *
            m_stingerElevatorMotor->GetSelectedSensorPosition(0);
 }
 
 void Stinger::Stow() {
-    SetPosition(STOW);
+    SetPositionInches(STOW);
 }
 
 void Stinger::SetMiddle() {
-    SetPosition(MIDDLE);
+    SetPositionInches(MIDDLE);
 }
 
 void Stinger::Deploy() {
-    SetPosition(BOTTOM);
+    SetPositionInches(BOTTOM);
 }
 
 bool Stinger::GetLowerHall() {
@@ -121,8 +121,8 @@ void Stinger::GoToStingerState(Stinger::StingerState newState) {
 
 void Stinger::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_stingerElevatorMotor->GetOutputCurrent());
-    m_positionCell->LogDouble(GetPosition());
-    SmartDashboard::PutNumber("stinger/encoders/encoder", GetPosition());
+    m_positionCell->LogDouble(GetPositionInches());
+    SmartDashboard::PutNumber("stinger/encoders/encoder", GetPositionInches());
     SmartDashboard::PutNumber("stinger/outputs/current",
                               m_stingerElevatorMotor->GetOutputCurrent());
     switch (m_stingerState) {

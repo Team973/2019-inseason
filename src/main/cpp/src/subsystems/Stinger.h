@@ -70,15 +70,15 @@ public:
 
     /**
      * Set the postion of the stinger elevator.
-     * @param position The position preset.
+     * @param position The position preset in inches.
      */
-    void SetPosition(double position);
+    void SetPositionInches(double position);
 
     /**
      * Get the current stinger elevator position.
      * @return The current stinger elevator position in inches.
      */
-    double GetPosition();
+    double GetPositionInches();
 
     void Stow();      /**< Set the stinger elevator to the stowed preset. */
     void SetMiddle(); /**< Set the stinger elevator to the middle preset. */
