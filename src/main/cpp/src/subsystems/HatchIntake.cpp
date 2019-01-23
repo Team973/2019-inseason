@@ -15,7 +15,7 @@ HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_leftHatchSensor(leftHatchSensor)
         , m_rightHatchSensor(rightHatchSensor)
         , m_hatchIntakeState(HatchIntakeState::idle)
-        , m_hatchPneumaticState(HatchPneumaticState::grab) {
+        , m_hatchSolenoidState(HatchSolenoidState::grab) {
     this->m_scheduler->RegisterTask("HatchIntake", this, TASK_PERIODIC);
 }
 
@@ -40,26 +40,26 @@ void HatchIntake::Exhaust() {
 }
 
 void HatchIntake::OpenClaw() {
-    GoToPneumaticState(HatchPneumaticState::release);
+    GoToPneumaticState(HatchSolenoidState::release);
     GoToIntakeState(HatchIntakeState::manual);
 }
 
 void HatchIntake::LaunchHatch() {
-    GoToPneumaticState(HatchPneumaticState::launch);
+    GoToPneumaticState(HatchSolenoidState::launch);
 }
 
 void HatchIntake::GrabHatch() {
-    GoToPneumaticState(HatchPneumaticState::grab);
+    GoToPneumaticState(HatchSolenoidState::grab);
     GoToIntakeState(HatchIntakeState::manual);
 }
 
 void HatchIntake::ManualPuncherActivate() {
-    GoToPneumaticState(HatchPneumaticState::manualPunch);
+    GoToPneumaticState(HatchSolenoidState::manualPunch);
     GoToIntakeState(HatchIntakeState::manual);
 }
 
 void HatchIntake::ManualPuncherRetract() {
-    GoToPneumaticState(HatchPneumaticState::manualRetract);
+    GoToPneumaticState(HatchSolenoidState::manualRetract);
     GoToIntakeState(HatchIntakeState::manual);
 }
 
@@ -71,10 +71,9 @@ void HatchIntake::GoToIntakeState(HatchIntake::HatchIntakeState newState) {
     m_hatchIntakeState = newState;
 }
 
-void HatchIntake::GoToPneumaticState(
-    HatchIntake::HatchPneumaticState newState) {
-    m_hatchPneumaticStateTimer = GetMsecTime();
-    m_hatchPneumaticState = newState;
+void HatchIntake::GoToPneumaticState(HatchIntake::HatchSolenoidState newState) {
+    m_hatchSolenoidStateTimer = GetMsecTime();
+    m_hatchSolenoidState = newState;
 }
 
 void HatchIntake::TaskPeriodic(RobotMode mode) {
@@ -92,9 +91,8 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
             GrabHatch();
             break;
         case HatchIntakeState::exhaust:
-            LaunchHatch();
             if (IsHatchInIntake()) {
-                HoldHatch();
+                LaunchHatch();
             }
             else {
                 SetIdle();
@@ -105,28 +103,28 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
             break;
     }
 
-    switch (m_hatchPneumaticState) {
-        case HatchPneumaticState::release:
+    switch (m_hatchSolenoidState) {
+        case HatchSolenoidState::release:
             m_hatchClaw->Set(HatchClawSolenoidStates::release);
             m_hatchPuncher->Set(HatchPuncherSolenoidStates::retract);
             break;
-        case HatchPneumaticState::grab:
+        case HatchSolenoidState::grab:
             m_hatchClaw->Set(HatchClawSolenoidStates::grab);
             m_hatchPuncher->Set(HatchPuncherSolenoidStates::retract);
             break;
-        case HatchPneumaticState::launch:
+        case HatchSolenoidState::launch:
             m_hatchClaw->Set(HatchClawSolenoidStates::grab);
-            if (m_hatchPneumaticStateTimer - GetMsecTime() >= 100) {
+            if (m_hatchSolenoidStateTimer - GetMsecTime() >= 100) {
                 m_hatchPuncher->Set(HatchPuncherSolenoidStates::punch);
             }
             break;
-        case HatchPneumaticState::manualPunch:
+        case HatchSolenoidState::manualPunch:
             m_hatchPuncher->Set(HatchPuncherSolenoidStates::punch);
             break;
-        case HatchPneumaticState::manualRetract:
+        case HatchSolenoidState::manualRetract:
             m_hatchPuncher->Set(HatchPuncherSolenoidStates::retract);
             break;
-        case HatchPneumaticState::manual:
+        case HatchSolenoidState::manual:
             // Do nothing
             break;
     }

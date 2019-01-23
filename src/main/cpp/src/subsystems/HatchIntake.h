@@ -43,7 +43,7 @@ public:
     /**
      * Hatch intake pneumatic states.
      */
-    enum class HatchPneumaticState
+    enum class HatchSolenoidState
     {
         release,       /**< Release the hatch. */
         grab,          /**< Grab the hatch. */
@@ -58,8 +58,8 @@ public:
      */
     enum HatchClawSolenoidStates
     {
-        grab = true,
-        release = false,
+        grab = true,    /**< Grab hatch. */
+        release = false /**< Release hatch. */
     };
 
     /**
@@ -67,8 +67,8 @@ public:
      */
     enum HatchPuncherSolenoidStates
     {
-        punch = true,
-        retract = false
+        punch = true,   /**< Punches hatch. */
+        retract = false /**< Retract puncher. */
     };
 
     /**
@@ -134,11 +134,11 @@ private:
     DigitalInput *m_rightHatchSensor;
 
     HatchIntakeState m_hatchIntakeState;
-    HatchPneumaticState m_hatchPneumaticState;
+    HatchSolenoidState m_hatchSolenoidState;
 
-    void GoToPneumaticState(HatchPneumaticState newState);
+    void GoToPneumaticState(HatchSolenoidState newState);
     void GoToIntakeState(HatchIntakeState newState);
 
-    uint32_t m_hatchPneumaticStateTimer;
+    uint32_t m_hatchSolenoidStateTimer;
 };
 }
