@@ -41,13 +41,11 @@ public:
         limelight
     };
 
-    static constexpr double GROUND = 0.0;      /**< Ground preset. */
-    static constexpr double VAULT = 4.5;       /**< Vault preset. */
-    static constexpr double LOW_GOAL = 24.0;   /**< Switch preset. */
-    static constexpr double HANGING = 55.0;    /**< Hang preset. */
-    static constexpr double SCALE_LOW = 58.0;  /**< Lower scale preset. */
-    static constexpr double SCALE_MID = 70.0;  /**< Middle scale preset. */
-    static constexpr double SCALE_HIGH = 77.5; /**< Higher scale preset. */
+    static constexpr double GROUND = 0.0;       /**< Ground preset. */
+    static constexpr double LOW_GOAL = 24.0;    /**< Low preset. */
+    static constexpr double MIDDLE_GOAL = 48.0; /**< Middle preset. */
+    static constexpr double HIGH_GOAL = 96.0;   /**< High preset. */
+    static constexpr double PLATFORM = 24.0;    /**< Platform preset. */
 
     static constexpr double ELEVATOR_SOFT_HEIGHT_LIMIT =
         80.5; /**< Soft elevator height. */
@@ -63,7 +61,8 @@ public:
      * @param elevatorMotor The elevator Talon.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreyTalonSRX *elevatorMotor, Limelight *limelight);
+             GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
+             Limelight *limelight);
     virtual ~Elevator();
 
     /**
@@ -78,6 +77,9 @@ public:
      */
     void SetPower(double power);
 
+    /**
+     * Enable Limelight control.
+     */
     void EnableLimelightControl();
 
     /**
@@ -111,7 +113,8 @@ public:
 private:
     TaskMgr *m_scheduler;
 
-    GreyTalonSRX *m_elevatorMotor;
+    GreyTalonSRX *m_elevatorMotorA;
+    VictorSPX *m_elevatorMotorB;
 
     double m_position;
     uint32_t m_zeroingTime;

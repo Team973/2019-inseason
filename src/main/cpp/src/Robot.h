@@ -22,10 +22,11 @@
 #include "src/TestMode.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
-#include <iostream>
+    #include <iostream>
 
-using namespace frc;
+    using namespace frc;
 using namespace ctre;
 using namespace cs;
 
@@ -86,6 +87,9 @@ private:
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
 
+    GreyTalonSRX *m_elevatorMotorA;
+    VictorSPX *m_elevatorMotorB;
+
     ADXRS450_Gyro *m_gyro;
     Limelight *m_limelight;
 
@@ -94,6 +98,7 @@ private:
     LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
+    Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
 
     DigitalInput *m_airPressureSwitch;

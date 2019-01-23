@@ -26,6 +26,8 @@ Robot::Robot()
         , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
         , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
+        , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
+        , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_limelight(new Limelight())
         , m_logger(new LogSpreadsheet(this))
@@ -34,6 +36,8 @@ Robot::Robot()
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
                             m_rightDriveVictorB, m_gyro, m_limelight))
+        , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
+                                  m_elevatorMotorB, m_limelight))
         , m_hatchIntake(new HatchIntake(this, m_logger))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
