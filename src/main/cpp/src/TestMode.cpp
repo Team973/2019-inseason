@@ -4,12 +4,14 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, HatchIntake *hatchIntake, GreyLight *greylight)
+           Drive *drive, HatchIntake *hatchIntake, GreyLight *greylight,
+           Stinger *stinger)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_hatchIntake(hatchIntake)
         , m_greylight(greylight)
+        , m_stinger(stinger)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
         , m_endGameSignalSent(false) {
@@ -111,12 +113,14 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnX:
                 if (pressedP) {
+                    m_stinger->Stow();
                 }
                 else {
                 }
                 break;
             case Xbox::BtnB:
                 if (pressedP) {
+                    m_stinger->SetMiddle();
                 }
                 else {
                 }

@@ -45,9 +45,9 @@ public:
     static constexpr double BOTTOM = -10.0; /**< Bottom preset. */
 
     static constexpr double STINGER_SOFT_HEIGHT_LIMIT =
-        10.0; /**< Soft stinger height. */
+        20.0; /**< Soft stinger height. */
     static constexpr double STINGER_INCHES_PER_CLICK =
-        8.0 / 4096.0; /**< Encoder in/click */
+        (1.0 / 4096.0) * (18.0 / 50.0) * 22.0 * 0.25; /**< Encoder in/click */
     static constexpr double STINGER_FEED_FORWARD =
         0.1; /**< The stinger's feed forward. */
 
@@ -117,6 +117,7 @@ private:
     GreyTalonSRX *m_stingerElevatorMotor;
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
+    Stinger *m_stinger;
 
     LogCell *m_current;
     LogCell *m_positionCell;

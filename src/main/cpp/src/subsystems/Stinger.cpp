@@ -125,6 +125,7 @@ void Stinger::TaskPeriodic(RobotMode mode) {
     SmartDashboard::PutNumber("stinger/encoders/encoder", GetPositionInches());
     SmartDashboard::PutNumber("stinger/outputs/current",
                               m_stingerElevatorMotor->GetOutputCurrent());
+
     switch (m_stingerState) {
         case StingerState::manualVoltage:
             break;

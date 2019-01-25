@@ -10,6 +10,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/HatchIntake.h"
+#include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
@@ -29,7 +30,8 @@ public:
      * @param greylight The GreyLight system.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, HatchIntake *hatchIntake, GreyLight *greylight);
+         Drive *drive, HatchIntake *hatchIntake, GreyLight *greylight,
+         Stinger *stinger);
     virtual ~Test();
 
     /**
@@ -91,6 +93,7 @@ private:
     HatchIntake *m_hatchIntake;
 
     GreyLight *m_greylight;
+    Stinger *m_stinger;
     LightPattern::Flash *m_endGameSignal;
     bool m_endGameSignalSent;
 };
