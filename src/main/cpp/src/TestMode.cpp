@@ -199,8 +199,10 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::BtnX:
             if (pressedP) {
+                m_cargoIntake->LockWrist();
             }
             else {
+                m_cargoIntake->UnlockWrist();
             }
             break;
         case DualAction::BtnY:
@@ -227,14 +229,18 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::RightBumper:
             if (pressedP) {
+                m_cargoIntake->ExtendWrist();
             }
             else {
+                m_cargoIntake->RetractWrist();
             }
             break;
         case DualAction::RightTrigger:
             if (pressedP) {
+                m_cargoIntake->DeployPlatformWheel();
             }
             else {
+                m_cargoIntake->RetractPlatformWheel();
             }
             break;
         case DualAction::DPadUpVirtBtn:
