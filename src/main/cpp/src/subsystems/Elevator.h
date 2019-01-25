@@ -41,14 +41,25 @@ public:
         limelight
     };
 
-    static constexpr double GROUND = 0.0;       /**< Ground preset. */
-    static constexpr double LOW_GOAL = 24.0;    /**< Low preset. */
-    static constexpr double MIDDLE_GOAL = 48.0; /**< Middle preset. */
-    static constexpr double HIGH_GOAL = 96.0;   /**< High preset. */
-    static constexpr double PLATFORM = 24.0;    /**< Platform preset. */
+    static constexpr double GROUND = 0.0; /**< Ground preset. */
+    static constexpr double LOW_ROCKET_HATCH =
+        1.5; /**< Low rocket hatch preset. */
+    static constexpr double MIDDLE_ROCKET_HATCH =
+        29.5; /**< Middle rocket hatch preset. */
+    static constexpr double HIGH_ROCKET_HATCH =
+        57.5; /**< High rocket hatch preset. */
+    static constexpr double LOW_ROCKET_CARGO =
+        19.5; /**< Low rocket cargo preset. */
+    static constexpr double MIDDLE_ROCKET_CARGO =
+        47.5; /**< Middle rocket cargo preset. */
+    static constexpr double HIGH_ROCKET_CARGO =
+        75.4; /**< High rocket cargo preset. */
+    static constexpr double CARGO_SHIP_HATCH = 1.7;  /**< Hatch hatch preset. */
+    static constexpr double CARGO_SHIP_CARGO = 32.0; /**< Cargo hatch preset. */
+    static constexpr double PLATFORM = 30.0;         /**< Platform preset. */
 
-    static constexpr double ELEVATOR_SOFT_HEIGHT_LIMIT =
-        80.5; /**< Soft elevator height. */
+    static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
+        61.0; /**< Soft elevator height. */
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         8.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =

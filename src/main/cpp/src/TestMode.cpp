@@ -4,12 +4,12 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, HatchIntake *hatchIntake, GreyLight *greylight)
+           Drive *drive, Elevator *elevator, HatchIntake *hatchIntake)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
-        , m_greylight(greylight)
         , m_endGameSignal(
               new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
         , m_endGameSignalSent(false) {
@@ -24,12 +24,6 @@ void Test::TestInit() {
 }
 
 void Test::TestPeriodic() {
-    if (!m_endGameSignalSent && Timer::GetMatchTime() < 40) {
-        m_endGameSignalSent = true;
-        m_endGameSignal->Reset();
-        m_greylight->SetPixelStateProcessor(m_endGameSignal);
-    }
-
     /**
      * Driver Joystick
      */
@@ -50,6 +44,8 @@ void Test::TestPeriodic() {
     /**
      * Operator Joystick
      */
+    double elevatorManualOutput =
+        -m_operatorJoystick->GetRawAxisWithDeadband(DualAction::LeftYAxis);
 }
 
 void Test::TestStop() {
