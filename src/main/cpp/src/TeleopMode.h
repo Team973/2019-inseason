@@ -19,9 +19,7 @@
 #include <iostream>
 
 using namespace frc;
-
 namespace frc973 {
-
 /**
  * Controls the teleop mode.
  */

@@ -9,11 +9,11 @@
 #include "src/DisabledMode.h"
 #include "src/Robot.h"
 #include "src/subsystems/Drive.h"
-#include "lib/pixelprocessors/AutoIndicator.h"
+#include "src/subsystems/Elevator.h"
+#include "src/subsystems/HatchIntake.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/pixelprocessors/Flash.h"
 #include "ctre/Phoenix.h"
 #include "lib/helpers/GreyTalon.h"
 #include "lib/managers/CoopTask.h"
@@ -39,7 +39,8 @@ public:
      * @param drive The drive subsystem.
      * @param gyro The gyro.
      */
-    Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
+    Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
+               HatchIntake *hatchintake, ADXRS450_Gyro *gyro,
                ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver);
     virtual ~Autonomous();
@@ -93,6 +94,8 @@ private:
     AutoRoutineBase *m_routine;
 
     Drive *m_drive;
+    Elevator *m_elevator;
+    HatchIntake *m_hatchintake;
     ADXRS450_Gyro *m_gyro;
 
     ObservablePoofsJoystick *m_driverJoystick;

@@ -5,11 +5,14 @@
 using namespace frc;
 
 namespace frc973 {
-Autonomous::Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
+Autonomous::Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
+                       HatchIntake *hatchIntake, ADXRS450_Gyro *gyro,
                        ObservablePoofsJoystick *driver,
                        ObservableXboxJoystick *codriver)
         : m_disabled(disabled)
         , m_drive(drive)
+        , m_elevator(elevator)
+        , m_hatchintake(hatchIntake)
         , m_gyro(gyro)
         , m_driveMode(DriveMode::Cheesy)
         , m_driverJoystick(driver)
