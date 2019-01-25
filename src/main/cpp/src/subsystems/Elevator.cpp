@@ -55,7 +55,6 @@ Elevator::~Elevator() {
 
 void Elevator::SetPower(double power) {
     m_elevatorState = ElevatorState::manualVoltage;
-    power = Util::bound(power, -0.6, 1.0);
     m_elevatorMotorA->Set(ControlMode::PercentOutput, power);
 }
 

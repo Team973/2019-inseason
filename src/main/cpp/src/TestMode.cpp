@@ -48,7 +48,7 @@ void Test::TestPeriodic() {
     double elevatorManualOutput =
         -m_operatorJoystick->GetRawAxisWithDeadband(DualAction::LeftYAxis);
 
-    m_elevator->SetPosition(elevatorManualOutput);
+    m_elevator->SetPower(elevatorManualOutput);
 }
 
 void Test::TestStop() {
@@ -120,72 +120,45 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::LOW_ROCKET_HATCH);
                 }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
-                }
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::MIDDLE_ROCKET_HATCH);
-                }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
                 }
                 break;
             case Xbox::LJoystickBtn:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::HIGH_ROCKET_HATCH);
                 }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
-                }
                 break;
             case Xbox::RJoystickBtn:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::LOW_ROCKET_CARGO);
-                }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
                 }
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::MIDDLE_ROCKET_CARGO);
                 }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
-                }
                 break;
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::HIGH_ROCKET_CARGO);
-                }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
                 }
                 break;
             case Xbox::DPadDownVirtBtn:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::CARGO_SHIP_HATCH);
                 }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
-                }
                 break;
             case Xbox::DPadLeftVirtBtn:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::CARGO_SHIP_CARGO);
                 }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
-                }
                 break;
             case Xbox::DPadRightVirtBtn:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::PLATFORM);
-                }
-                else {
-                    m_elevator->SetPosition(Elevator::GROUND);
                 }
                 break;
             case Xbox::Back:
