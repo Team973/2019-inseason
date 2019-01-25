@@ -40,7 +40,7 @@ bool TaskMgr::RegisterTask(const char *taskName, CoopTask *task,
     }
 
     fprintf(stderr, "Task %s registered to %p with result %d (1 is go0d)\n",
-            taskName, this, success);
+            taskName, (void *)this, success);
 
     return success;
 }
