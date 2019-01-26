@@ -4,16 +4,12 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, HatchIntake *hatchIntake, GreyLight *greylight)
+           Drive *drive, HatchIntake *hatchIntake)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Openloop)
-        , m_hatchIntake(hatchIntake)
-        , m_greylight(greylight)
-        , m_endGameSignal(
-              new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
-        , m_endGameSignalSent(false) {
+        , m_hatchIntake(hatchIntake) {
 }
 
 Test::~Test() {
@@ -25,12 +21,6 @@ void Test::TestInit() {
 }
 
 void Test::TestPeriodic() {
-    if (!m_endGameSignalSent && Timer::GetMatchTime() < 40) {
-        m_endGameSignalSent = true;
-        m_endGameSignal->Reset();
-        m_greylight->SetPixelStateProcessor(m_endGameSignal);
-    }
-
     /**
      * Driver Joystick
      */
@@ -94,7 +84,7 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_hatchIntake->SetIntaking();
                 }
                 else {
-                    m_hatchIntake->SetIdle();
+                    m_hatchIntake->HoldHatch();
                 }
                 break;
             case Xbox::BtnA:
@@ -107,10 +97,9 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnX:
                 if (pressedP) {
-                    m_hatchIntake->OpenClaw();
+                    m_hatchIntake->LaunchHatch();
                 }
                 else {
-                    m_hatchIntake->GrabHatch();
                 }
                 break;
             case Xbox::BtnB:
@@ -123,10 +112,8 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
-                    m_hatchIntake->ManualPuncherActivate();
                 }
                 else {
-                    m_hatchIntake->ManualPuncherRetract();
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -143,10 +130,8 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
-                    m_hatchIntake->OpenClaw();
                 }
                 else {
-                    m_hatchIntake->GrabHatch();
                 }
                 break;
             case Xbox::DPadUpVirtBtn:
@@ -194,15 +179,12 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
     switch (button) {
         case DualAction::BtnA:
             if (pressedP) {
-                m_hatchIntake->OpenClaw();
             }
             else {
-                m_hatchIntake->GrabHatch();
             }
             break;
         case DualAction::BtnB:
             if (pressedP) {
-                m_hatchIntake->LaunchHatch();
             }
             else {
             }
@@ -221,10 +203,8 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::LeftBumper:
             if (pressedP) {
-                m_hatchIntake->ManualPuncherActivate();
             }
             else {
-                m_hatchIntake->ManualPuncherRetract();
             }
             break;
         case DualAction::LeftTrigger:
@@ -235,10 +215,8 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::RightBumper:
             if (pressedP) {
-                m_hatchIntake->OpenClaw();
             }
             else {
-                m_hatchIntake->GrabHatch();
             }
             break;
         case DualAction::RightTrigger:

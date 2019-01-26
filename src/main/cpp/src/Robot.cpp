@@ -27,10 +27,8 @@ Robot::Robot()
         , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
         , m_gyro(new ADXRS450_Gyro())
-        , m_hatchClaw(new Solenoid(PCM_CAN_ID, HATCH_CLAW_PCM_ID))
+        , m_hatchRollers(new GreyTalonSRX(HATCH_ROLLER_CAN_ID))
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
-        , m_leftHatchSensor(new DigitalInput(LEFT_HATCH_SENSOR_ID))
-        , m_rightHatchSensor(new DigitalInput(RIGHT_HATCH_SENSOR_ID))
         , m_greylight(new GreyLight(NUM_LED))
         , m_limelight(new Limelight())
         , m_logger(new LogSpreadsheet(this))
@@ -39,21 +37,19 @@ Robot::Robot()
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
                             m_rightDriveVictorB, m_gyro, m_limelight))
-        , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchClaw,
-                                        m_hatchPuncher, m_leftHatchSensor,
-                                        m_rightHatchSensor))
+        , m_hatchIntake(
+              new HatchIntake(this, m_logger, m_hatchRollers, m_hatchPuncher))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
-        , m_disabled(
-              new Disabled(m_driverJoystick, m_operatorJoystick, m_greylight))
+        , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick))
         , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro, m_greylight))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
-                              m_hatchIntake, m_greylight))
+                              m_hatchIntake))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_hatchIntake, m_greylight)) {
+                          m_hatchIntake)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 

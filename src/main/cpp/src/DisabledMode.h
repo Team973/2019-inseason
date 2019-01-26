@@ -27,10 +27,8 @@ public:
      * Constuct a disabled mode.
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
-     * @param greylight The GreyLight system.
      */
-    Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             GreyLight *greylight);
+    Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver);
     virtual ~Disabled();
 
     /**
@@ -73,14 +71,8 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color DISABLED_RED = {
-        255, 0, 0}; /**< Default red disabled color. */
-
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
-
-    GreyLight *m_greylight;
-    LightPattern::SolidColor *m_disabledSignal;
 };
 }

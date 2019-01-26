@@ -4,6 +4,7 @@
 #include "lib/managers/CoopTask.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "src/info/RobotInfo.h"
+#include "lib/helpers/GreyTalon.h"
 
 using namespace frc;
 
@@ -18,14 +19,11 @@ public:
      * Hatch intake constructor.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
-     * @param hatchClaw The hatch intake's claw.
+     * @param hatchRoller The hatch intake's roller.
      * @param hatchPuncher The hatch intake's puncher.
-     * @param leftHatchSensor The hatch intake's left hatch sensor.
-     * @param rightHatchSensor The hatch intake's right hatch sensor.
      */
-    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger, Solenoid *hatchClaw,
-                Solenoid *hatchPuncher, DigitalInput *leftHatchSensor,
-                DigitalInput *rightHatchSensor);
+    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
+                GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher);
     virtual ~HatchIntake();
 
     /**
@@ -37,6 +35,7 @@ public:
         intaking, /**< Prime hatch intake for intaking. */
         hold,     /**< Hold the hatch. */
         exhaust,  /**< Place the hatch. */
+        launch,   /**< Launch the hatch. */
         manual    /**< Manual hatch intake control. */
     };
 
@@ -45,21 +44,10 @@ public:
      */
     enum class HatchSolenoidState
     {
-        release,       /**< Release the hatch. */
-        grab,          /**< Grab the hatch. */
         launch,        /**< Launch the hatch. */
         manualPunch,   /**< Manually punch the hatch. */
         manualRetract, /**< Manually retract the puncher. */
         manual         /**< Manual pneumatic control. */
-    };
-
-    /**
-     * Hatch claw solenoid definitions.
-     */
-    enum HatchClawSolenoidStates
-    {
-        grab = true,    /**< Grab hatch. */
-        release = false /**< Release hatch. */
     };
 
     /**
@@ -128,10 +116,8 @@ private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
 
-    Solenoid *m_hatchClaw;
+    GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
-    DigitalInput *m_leftHatchSensor;
-    DigitalInput *m_rightHatchSensor;
 
     HatchIntakeState m_hatchIntakeState;
     HatchSolenoidState m_hatchSolenoidState;
@@ -140,5 +126,6 @@ private:
     void GoToIntakeState(HatchIntakeState newState);
 
     uint32_t m_hatchSolenoidStateTimer;
+    uint32_t m_hatchIntakeStateTimer;
 };
 }

@@ -32,10 +32,9 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
-     * @param greylight The GreyLight system.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, HatchIntake *hatchintake, GreyLight *greylight);
+           Drive *drive, HatchIntake *hatchintake);
 
     virtual ~Teleop();
 
@@ -96,9 +95,5 @@ private:
     DriveMode m_driveMode;
 
     HatchIntake *m_hatchIntake;
-
-    GreyLight *m_greylight;
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
 };
 }
