@@ -54,9 +54,11 @@ public:
         47.5; /**< Middle rocket cargo preset. */
     static constexpr double HIGH_ROCKET_CARGO =
         75.4; /**< High rocket cargo preset. */
-    static constexpr double CARGO_SHIP_HATCH = 1.7;  /**< Hatch hatch preset. */
-    static constexpr double CARGO_SHIP_CARGO = 32.0; /**< Cargo hatch preset. */
-    static constexpr double PLATFORM = 30.0;         /**< Platform preset. */
+    static constexpr double CARGO_SHIP_HATCH =
+        1.7; /**< Cargo ship hatch preset. */
+    static constexpr double CARGO_SHIP_CARGO =
+        36.0;                                /**< Cargo ship cargo preset. */
+    static constexpr double PLATFORM = 97.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
         61.0; /**< Soft elevator height. */

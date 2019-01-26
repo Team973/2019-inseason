@@ -46,9 +46,13 @@ void Test::TestPeriodic() {
      */
 
     double elevatorManualOutput =
-        -m_operatorJoystick->GetRawAxisWithDeadband(DualAction::LeftYAxis);
+        m_operatorJoystick->GetRawAxisWithDeadband(DualAction::LeftYAxis);
 
-    m_elevator->SetPower(elevatorManualOutput);
+    if (fabs(elevatorManualOutput) > 0.1) {  // manual
+        m_elevator->SetPower(elevatorManualOutput);
+    }
+    else {  // motionmagic
+    }
 }
 
 void Test::TestStop() {
