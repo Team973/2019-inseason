@@ -116,9 +116,6 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::GROUND);
                 }
-                else {
-                    m_elevator->SetPosition(1.0);
-                }
                 break;
             case Xbox::BtnB:
                 if (pressedP) {

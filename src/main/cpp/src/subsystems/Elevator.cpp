@@ -38,10 +38,10 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->EnableVoltageCompensation(false);
     m_elevatorMotorA->ConfigForwardSoftLimitEnable(true, 10);
     m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
-        ELEVATOR_INCHES_PER_CLICK / ELEVATOR_HEIGHT_SOFT_LIMIT, 10);
+        ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
-    m_elevatorMotorB->SetInverted(false);
+    m_elevatorMotorB->SetInverted(true);
 
     m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
 
@@ -90,6 +90,10 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     SmartDashboard::PutNumber("elevator/encoders/encoder", GetPosition());
     SmartDashboard::PutNumber("elevator/outputs/current",
                               m_elevatorMotorA->GetOutputCurrent());
+    SmartDashboard::PutNumber("elevator/motorA/velocity",
+                              m_elevatorMotorA->GetSelectedSensorVelocity(0));
+    SmartDashboard::PutNumber("elevator/motorB/velocity",
+                              m_elevatorMotorB->GetSelectedSensorVelocity(0));
     switch (m_elevatorState) {
         case manualVoltage:
             break;
