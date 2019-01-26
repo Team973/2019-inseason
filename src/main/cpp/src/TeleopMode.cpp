@@ -18,7 +18,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
-        , m_driveMode(DriveMode::Cheesy)
+        , m_driveMode(DriveMode::Openloop)
         , m_hatchIntake(hatchIntake)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
@@ -36,9 +36,9 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
+    double y = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
     //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x = -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
+    double x = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
     //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
@@ -54,6 +54,7 @@ void Teleop::TeleopPeriodic() {
             else {
                 m_drive->CheesyDrive(y, x, quickturn, false);
             }
+            break;
         case DriveMode::Openloop:
             if (softwareLowGear) {
                 m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
