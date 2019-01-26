@@ -24,9 +24,9 @@
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
-    #include <iostream>
+#include <iostream>
 
-    using namespace frc;
+using namespace frc;
 using namespace ctre;
 using namespace cs;
 

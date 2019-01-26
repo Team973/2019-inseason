@@ -16,8 +16,6 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/sensors/Limelight.h"
-#include "src/controllers/LimelightVerticalController.h"
 #include "lib/util/Util.h"
 
 using namespace frc;
@@ -58,14 +56,14 @@ public:
         1.7; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
         36.0;                                /**< Cargo ship cargo preset. */
-    static constexpr double PLATFORM = 97.0; /**< Platform preset. */
+    static constexpr double PLATFORM = 31.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
         61.0; /**< Soft elevator height. */
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         8.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
-        0.1; /**< The elevator's feed forward. */
+        0.0; /**< The elevator's feed forward. */
 
     /**
      * Contruct an elevator.
@@ -75,7 +73,7 @@ public:
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
-             Limelight *limelight);
+             ObservableXboxJoystick *operatorJoystick);
     virtual ~Elevator();
 
     /**
@@ -88,12 +86,7 @@ public:
      * Set the elevator power.
      * @param power The power being sent to the motor from -1.0 to 1.0
      */
-    void SetPower(double power);
-
-    /**
-     * Enable Limelight control.
-     */
-    void EnableLimelightControl();
+    void SetManualInput();
 
     /**
      * Get the current position.
@@ -128,11 +121,11 @@ private:
 
     GreyTalonSRX *m_elevatorMotorA;
     VictorSPX *m_elevatorMotorB;
+    ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;
-    LimelightVerticalController *m_limelightVerticalController;
     LogCell *m_positionCell;
 };
 }

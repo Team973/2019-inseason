@@ -8,15 +8,14 @@ using namespace frc;
 namespace frc973 {
 Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
                    GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
-                   Limelight *limelight)
+                   ObservableXboxJoystick *operatorJoystick)
         : m_scheduler(scheduler)
         , m_elevatorMotorA(elevatorMotorA)
         , m_elevatorMotorB(elevatorMotorB)
+        , m_operatorJoystick(operatorJoystick)
         , m_position(0.0)
         , m_zeroingTime(0)
-        , m_elevatorState(ElevatorState::manualVoltage)
-        , m_limelightVerticalController(
-              new LimelightVerticalController(limelight, elevatorMotorA)) {
+        , m_elevatorState(ElevatorState::manualVoltage) {
     this->m_scheduler->RegisterTask("Elevator", this, TASK_PERIODIC);
 
     m_elevatorMotorA->ConfigSelectedFeedbackSensor(
@@ -41,7 +40,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
-    m_elevatorMotorB->SetInverted(true);
+    m_elevatorMotorB->SetInverted(false);
 
     m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
 
@@ -53,19 +52,14 @@ Elevator::~Elevator() {
     m_scheduler->UnregisterTask(this);
 }
 
-void Elevator::SetPower(double power) {
+void Elevator::SetManualInput() {
     m_elevatorState = ElevatorState::manualVoltage;
-    m_elevatorMotorA->Set(ControlMode::PercentOutput, power);
 }
 
 void Elevator::SetPosition(double position) {
     m_elevatorState = ElevatorState::motionMagic;
     int position_clicks = position / ELEVATOR_INCHES_PER_CLICK;
     m_elevatorMotorA->Set(ControlMode::MotionMagic, position_clicks);
-}
-
-void Elevator::EnableLimelightControl() {
-    m_elevatorState = ElevatorState::limelight;
 }
 
 float Elevator::GetPosition() const {
@@ -96,11 +90,12 @@ void Elevator::TaskPeriodic(RobotMode mode) {
                               m_elevatorMotorB->GetSelectedSensorVelocity(0));
     switch (m_elevatorState) {
         case manualVoltage:
+            m_elevatorMotorA->Set(
+                ControlMode::PercentOutput,
+                m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis) +
+                    0.2);
             break;
         case motionMagic:
-            break;
-        case limelight:
-            m_limelightVerticalController->CalcOutput();
             break;
         default:
             break;
