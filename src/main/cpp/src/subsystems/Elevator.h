@@ -50,7 +50,7 @@ public:
     static constexpr double MIDDLE_ROCKET_CARGO =
         47.5; /**< Middle rocket cargo preset. */
     static constexpr double HIGH_ROCKET_CARGO =
-        75.4; /**< High rocket cargo preset. */
+        59.4; /**< High rocket cargo preset. */
     static constexpr double CARGO_SHIP_HATCH =
         1.7; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
