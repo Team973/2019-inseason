@@ -21,9 +21,9 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->ConfigSelectedFeedbackSensor(
         ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder, 0,
         10);  // 0 = Not cascaded PID Loop; 10 = in constructor, not in a loop
-    m_elevatorMotorA->SetSensorPhase(true);
+    m_elevatorMotorA->SetSensorPhase(false);
     m_elevatorMotorA->SetNeutralMode(NeutralMode::Coast);
-    m_elevatorMotorA->SetInverted(true);
+    m_elevatorMotorA->SetInverted(false);
 
     m_elevatorMotorA->Config_PID(0, 1.5, 0.0, 0.0, 0.0, 10);
     m_elevatorMotorA->ConfigMotionCruiseVelocity(3750.0, 10);
@@ -40,7 +40,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
-    m_elevatorMotorB->SetInverted(false);
+    m_elevatorMotorB->SetInverted(true);
 
     m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
 
@@ -92,8 +92,8 @@ void Elevator::TaskPeriodic(RobotMode mode) {
         case manualVoltage:
             m_elevatorMotorA->Set(
                 ControlMode::PercentOutput,
-                m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis) +
-                    0.2);
+                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis) +
+                    ELEVATOR_FEED_FORWARD);
             break;
         case motionMagic:
             break;

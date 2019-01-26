@@ -60,7 +60,6 @@ Robot::~Robot() {
 void Robot::Initialize() {
     m_compressor->Enable();
     m_logger->RegisterCell(m_matchIdentifier);
-    m_logger->RegisterCell(m_gameSpecificMessage);
     m_logger->Start();
 }
 
@@ -121,8 +120,6 @@ void Robot::AllStateContinuous() {
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
-    m_gameSpecificMessage->LogText(
-        DriverStation::GetInstance().GetGameSpecificMessage().c_str());
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

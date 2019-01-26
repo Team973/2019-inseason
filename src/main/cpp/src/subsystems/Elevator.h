@@ -62,7 +62,7 @@ public:
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         8.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
-        0.0; /**< The elevator's feed forward. */
+        0.1; /**< The elevator's feed forward. */
 
     /**
      * Contruct an elevator.

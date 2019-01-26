@@ -96,7 +96,6 @@ private:
 
     LogSpreadsheet *m_logger;
     LogCell *m_matchIdentifier;
-    LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
     Elevator *m_elevator;
