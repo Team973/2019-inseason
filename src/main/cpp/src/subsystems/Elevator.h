@@ -36,7 +36,6 @@ public:
     {
         manualVoltage, /**< Control the motors with manual voltage. */
         motionMagic, /**< Control the motors using position w/ Motion Magic. */
-        limelight
     };
 
     static constexpr double GROUND = 0.0; /**< Ground preset. */
