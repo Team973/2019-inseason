@@ -127,15 +127,20 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
     switch (m_cargoIntakeState) {
         case CargoIntakeState::running:
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 1.0);
+            if (m_cargoIntakeMotor->GetOutputCurrent() > 20) {
+                m_cargoIntakeState = CargoIntakeState::holding;
+            }
             break;
         case CargoIntakeState::holding:
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.2);
+            this->RetractWrist();
             break;
         case CargoIntakeState::notRunning:
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
             break;
         case CargoIntakeState::reverse:
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, -1.0);
+            this->ExtendWrist();
             break;
     }
 
