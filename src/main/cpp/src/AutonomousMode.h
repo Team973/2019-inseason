@@ -8,6 +8,7 @@
 #include "src/auto/ForwardAuto.h"
 #include "lib/util/WrapDash.h"
 #include "src/DisabledMode.h"
+#include "src/subsystems/Elevator.h"
 #include "src/Robot.h"
 #include "src/subsystems/Drive.h"
 #include "lib/helpers/GreyLight.h"
@@ -30,8 +31,8 @@ public:
      * @param gyro The gyro.
      * @param greylight The GreyLight system.
      */
-    Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
-               GreyLight *greylight);
+    Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
+               ADXRS450_Gyro *gyro);
     virtual ~Autonomous();
 
     /**
@@ -58,9 +59,7 @@ private:
     AutoRoutineBase *m_routine;
 
     Drive *m_drive;
+    Elevator *m_elevator;
     ADXRS450_Gyro *m_gyro;
-
-    GreyLight *m_greylight;
-    LightPattern::AutoIndicator *m_autoSignal;
 };
 }

@@ -30,16 +30,18 @@ Robot::Robot()
         , m_stingerElevatorMotor(new GreyTalonSRX(STINGER_ELEVATOR_CAN_ID))
         , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
         , m_stingerUpperHall(new DigitalInput(STINGER_UPPER_HALL_DIN_ID))
+        , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
+        , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
         , m_gyro(new ADXRS450_Gyro())
-        , m_greylight(new GreyLight(NUM_LED))
         , m_limelight(new Limelight())
         , m_logger(new LogSpreadsheet(this))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
-        , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
                             m_rightDriveVictorB, m_stingerDriveMotor, m_gyro,
                             m_limelight))
+        , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
+                                  m_elevatorMotorB, m_operatorJoystick))
         , m_hatchIntake(new HatchIntake(this, m_logger))
         , m_stinger(new Stinger(this, m_logger, m_stingerElevatorMotor,
                                 m_stingerLowerHall, m_stingerUpperHall))
@@ -49,12 +51,12 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(
-              new Disabled(m_driverJoystick, m_operatorJoystick, m_greylight))
-        , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro, m_greylight))
+              new Disabled(m_driverJoystick, m_elevator, m_operatorJoystick))
+        , m_autonomous(new Autonomous(m_disabled, m_drive, m_elevator, m_gyro))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
-                              m_hatchIntake, m_greylight))
+                              m_elevator, m_hatchIntake, m_stinger))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_hatchIntake, m_greylight, m_stinger)) {
+                          m_elevator, m_hatchIntake, m_stinger)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -64,7 +66,6 @@ Robot::~Robot() {
 void Robot::Initialize() {
     m_compressor->Enable();
     m_logger->RegisterCell(m_matchIdentifier);
-    m_logger->RegisterCell(m_gameSpecificMessage);
     m_logger->Start();
 }
 
@@ -125,8 +126,6 @@ void Robot::AllStateContinuous() {
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
-    m_gameSpecificMessage->LogText(
-        DriverStation::GetInstance().GetGameSpecificMessage().c_str());
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

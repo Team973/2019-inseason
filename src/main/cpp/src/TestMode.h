@@ -2,13 +2,13 @@
 
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/Util.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include "src/subsystems/Stinger.h"
 #include <iostream>
@@ -30,7 +30,7 @@ public:
      * @param greylight The GreyLight system.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, HatchIntake *hatchIntake, GreyLight *greylight,
+         Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
          Stinger *stinger);
     virtual ~Test();
 
@@ -90,9 +90,9 @@ private:
     Drive *m_drive;
     DriveMode m_driveMode;
 
+    Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
 
-    GreyLight *m_greylight;
     Stinger *m_stinger;
     LightPattern::Flash *m_endGameSignal;
     bool m_endGameSignalSent;

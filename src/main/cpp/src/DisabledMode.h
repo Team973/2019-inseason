@@ -2,7 +2,7 @@
 
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
+#include "src/subsystems/Elevator.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/SolidColor.h"
@@ -27,10 +27,9 @@ public:
      * Constuct a disabled mode.
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
-     * @param greylight The GreyLight system.
      */
-    Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             GreyLight *greylight);
+    Disabled(ObservablePoofsJoystick *driver, Elevator *elevator,
+             ObservableXboxJoystick *codriver);
     virtual ~Disabled();
 
     /**
@@ -80,7 +79,6 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
-    GreyLight *m_greylight;
-    LightPattern::SolidColor *m_disabledSignal;
+    Elevator *m_elevator;
 };
 }

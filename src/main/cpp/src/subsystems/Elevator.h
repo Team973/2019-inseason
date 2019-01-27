@@ -16,8 +16,6 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/sensors/Limelight.h"
-#include "src/controllers/LimelightVerticalController.h"
 #include "lib/util/Util.h"
 
 using namespace frc;
@@ -38,19 +36,30 @@ public:
     {
         manualVoltage, /**< Control the motors with manual voltage. */
         motionMagic, /**< Control the motors using position w/ Motion Magic. */
-        limelight
+        joystickControl
     };
 
-    static constexpr double GROUND = 0.0;      /**< Ground preset. */
-    static constexpr double VAULT = 4.5;       /**< Vault preset. */
-    static constexpr double LOW_GOAL = 24.0;   /**< Switch preset. */
-    static constexpr double HANGING = 55.0;    /**< Hang preset. */
-    static constexpr double SCALE_LOW = 58.0;  /**< Lower scale preset. */
-    static constexpr double SCALE_MID = 70.0;  /**< Middle scale preset. */
-    static constexpr double SCALE_HIGH = 77.5; /**< Higher scale preset. */
+    static constexpr double GROUND = 0.0; /**< Ground preset. */
+    static constexpr double LOW_ROCKET_HATCH =
+        1.5; /**< Low rocket hatch preset. */
+    static constexpr double MIDDLE_ROCKET_HATCH =
+        29.5; /**< Middle rocket hatch preset. */
+    static constexpr double HIGH_ROCKET_HATCH =
+        57.5; /**< High rocket hatch preset. */
+    static constexpr double LOW_ROCKET_CARGO =
+        19.5; /**< Low rocket cargo preset. */
+    static constexpr double MIDDLE_ROCKET_CARGO =
+        47.5; /**< Middle rocket cargo preset. */
+    static constexpr double HIGH_ROCKET_CARGO =
+        59.4; /**< High rocket cargo preset. */
+    static constexpr double CARGO_SHIP_HATCH =
+        1.7; /**< Cargo ship hatch preset. */
+    static constexpr double CARGO_SHIP_CARGO =
+        36.0;                                /**< Cargo ship cargo preset. */
+    static constexpr double PLATFORM = 31.0; /**< Platform preset. */
 
-    static constexpr double ELEVATOR_SOFT_HEIGHT_LIMIT =
-        80.5; /**< Soft elevator height. */
+    static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
+        61.0; /**< Soft elevator height. */
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         8.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
@@ -63,7 +72,8 @@ public:
      * @param elevatorMotor The elevator Talon.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreyTalonSRX *elevatorMotor, Limelight *limelight);
+             GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
+             ObservableXboxJoystick *operatorJoystick);
     virtual ~Elevator();
 
     /**
@@ -73,12 +83,15 @@ public:
     void SetPosition(double position);
 
     /**
+     * Set to manual mode with joystick control
+     */
+    void SetManualInput();
+
+    /**
      * Set the elevator power.
      * @param power The power being sent to the motor from -1.0 to 1.0
      */
     void SetPower(double power);
-
-    void EnableLimelightControl();
 
     /**
      * Get the current position.
@@ -111,12 +124,13 @@ public:
 private:
     TaskMgr *m_scheduler;
 
-    GreyTalonSRX *m_elevatorMotor;
+    GreyTalonSRX *m_elevatorMotorA;
+    VictorSPX *m_elevatorMotorB;
+    ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;
-    LimelightVerticalController *m_limelightVerticalController;
     LogCell *m_positionCell;
 };
 }
