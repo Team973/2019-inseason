@@ -20,6 +20,7 @@ Test::~Test() {
 
 void Test::TestInit() {
     std::cout << "Test Start" << std::endl;
+    m_elevator->EnableCoastMode();
     m_driveMode = DriveMode::Openloop;
 }
 

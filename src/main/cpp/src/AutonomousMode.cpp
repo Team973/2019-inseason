@@ -5,13 +5,14 @@
 using namespace frc;
 
 namespace frc973 {
-Autonomous::Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
-                       GreyLight *greylight)
+Autonomous::Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
+                       ADXRS450_Gyro *gyro, GreyLight *greylight)
         : m_noAuto(new NoAuto())
         , m_forwardAuto(new ForwardAuto(drive))
         , m_disabled(disabled)
         , m_routine(m_noAuto)
         , m_drive(drive)
+        , m_elevator(elevator)
         , m_gyro(gyro)
         , m_greylight(greylight)
         , m_autoSignal(new LightPattern::AutoIndicator()) {
@@ -23,6 +24,7 @@ Autonomous::~Autonomous() {
 void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
     m_gyro->Reset();
+    m_elevator->EnableCoastMode();
     std::cout << "Autonomous Start" << std::endl;
 
     m_forwardAuto->Reset();

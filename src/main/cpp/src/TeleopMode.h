@@ -14,6 +14,7 @@
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
+#include "src/subsystems/Elevator.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
@@ -35,7 +36,8 @@ public:
      * @param greylight The GreyLight system.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, HatchIntake *hatchintake, GreyLight *greylight);
+           Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
+           GreyLight *greylight);
 
     virtual ~Teleop();
 
@@ -96,6 +98,7 @@ private:
     DriveMode m_driveMode;
 
     HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
 
     GreyLight *m_greylight;
     LightPattern::Flash *m_endGameSignal;
