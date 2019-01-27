@@ -1,4 +1,5 @@
 #include "src/subsystems/CargoIntake.h"
+#include "lib/util/WrapDash.h"
 
 namespace frc973 {
 CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
@@ -19,7 +20,8 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_cargoPlatformWheelState(CargoPlatformWheelState::retracted)
         , m_cargoPlatfromWheelPneumaticState(
               CargoPlatformWheelPneumaticState::retracted)
-        , m_cargoEndgameState(CargoEndgameState::notEndgame) {
+        , m_cargoEndgameState(CargoEndgameState::notEndgame)
+        , m_intakeCurentFilter(new MovingAverageFilter(0.8)) {
     this->m_scheduler->RegisterTask("CargoIntake", this, TASK_PERIODIC);
     m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
     m_cargoIntakeMotor->SetNeutralMode(NeutralMode::Coast);
@@ -29,6 +31,8 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_cargoIntakeMotor->ConfigPeakCurrentLimit(0, 10);
     m_cargoIntakeMotor->ConfigContinuousCurrentLimit(40, 10);
     m_cargoIntakeMotor->EnableVoltageCompensation(false);
+    m_cargoIntakeMotor->SetInverted(true);
+    m_cargoIntakeMotor->ConfigNeutralDeadband(0.01);
 
     m_current = new LogCell("CargoIntake Current", 32, true);
     m_logger->RegisterCell(m_current);
@@ -36,6 +40,10 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
 
 CargoIntake::~CargoIntake() {
     m_scheduler->UnregisterTask(this);
+}
+
+void CargoIntake::RunIntake(double power) {
+    m_cargoIntakeMotor->Set(ControlMode::PercentOutput, power);
 }
 
 void CargoIntake::RunIntake() {
@@ -123,17 +131,20 @@ void CargoIntake::GoToEndgameState(CargoIntake::CargoEndgameState newState) {
 
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_cargoIntakeMotor->GetOutputCurrent());
-
+    DBStringPrintf(DBStringPos::DB_LINE6, "curr: %2.2lf",
+                   m_cargoIntakeMotor->GetOutputCurrent());
+    double filteredCurrent =
+        m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {
         case CargoIntakeState::running:
-            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 1.0);
+            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.3);
             ExtendWrist();
-            if (m_cargoIntakeMotor->GetOutputCurrent() > 20) {
+            if (filteredCurrent > 30.0) {
                 m_cargoIntakeState = CargoIntakeState::holding;
             }
             break;
         case CargoIntakeState::holding:
-            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.2);
+            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.1);
             this->RetractWrist();
             break;
         case CargoIntakeState::notRunning:

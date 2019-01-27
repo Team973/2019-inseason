@@ -105,20 +105,26 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnX:
                 if (pressedP) {
+                    m_cargoIntake->LockWrist();
                 }
                 else {
+                    m_cargoIntake->UnlockWrist();
                 }
                 break;
             case Xbox::BtnB:
                 if (pressedP) {
+                    m_cargoIntake->ExtendWrist();
                 }
                 else {
+                    m_cargoIntake->RetractWrist();
                 }
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
+                    m_cargoIntake->RunIntake();
                 }
                 else {
+                    m_cargoIntake->StopIntake();
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -135,8 +141,10 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
+                    m_cargoIntake->Exhaust();
                 }
                 else {
+                    m_cargoIntake->StopIntake();
                 }
                 break;
             case Xbox::DPadUpVirtBtn:
@@ -147,8 +155,10 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadDownVirtBtn:
                 if (pressedP) {
+                    m_cargoIntake->RunIntake(0.5);
                 }
                 else {
+                    m_cargoIntake->RunIntake(0.0);
                 }
                 break;
             case Xbox::DPadLeftVirtBtn:

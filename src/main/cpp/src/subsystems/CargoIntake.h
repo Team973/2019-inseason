@@ -7,6 +7,7 @@
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
 #include "lib/logging/LogSpreadsheet.h"
+#include "lib/filters/MovingAverageFilter.h"
 
 using namespace frc;
 using namespace ctre;
@@ -104,6 +105,7 @@ public:
         deployed    /**< Deployed state. */
     };
 
+    void RunIntake(double power);
     void RunIntake();  /**< Set the CargoIntakeState to running. */
     void HoldCargo();  /**< Set the CargoIntakeState to holding. */
     void StopIntake(); /**< Set the CargoIntakeState to notRunning. */
@@ -213,5 +215,7 @@ private:
     CargoEndgameState m_cargoEndgameState;
 
     LogCell *m_current;
+
+    MovingAverageFilter *m_intakeCurentFilter;
 };
 }
