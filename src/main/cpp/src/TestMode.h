@@ -74,10 +74,6 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color END_GAME_RED = {
-        255, 0, 0}; /**< Display red during end game. */
-    static constexpr Color NO_COLOR = {0, 0, 0}; /**< Turn off the LED strip. */
-
 private:
     enum class DriveMode
     {
@@ -94,7 +90,5 @@ private:
     HatchIntake *m_hatchIntake;
 
     Stinger *m_stinger;
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
 };
 }

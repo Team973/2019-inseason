@@ -44,7 +44,8 @@ Robot::Robot()
                                   m_elevatorMotorB, m_operatorJoystick))
         , m_hatchIntake(new HatchIntake(this, m_logger))
         , m_stinger(new Stinger(this, m_logger, m_stingerElevatorMotor,
-                                m_stingerLowerHall, m_stingerUpperHall))
+                                m_stingerDriveMotor, m_stingerLowerHall,
+                                m_stingerUpperHall))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))

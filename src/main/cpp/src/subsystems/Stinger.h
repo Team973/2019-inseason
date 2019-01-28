@@ -7,6 +7,7 @@
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
 #include "lib/logging/LogSpreadsheet.h"
+#include "lib/util/WrapDash.h"
 
 using namespace frc;
 using namespace ctre;
@@ -27,8 +28,8 @@ public:
      * @param stingerUpperHall The stinger upper hall.
      */
     Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
-            GreyTalonSRX *stingerElevatorMotor, DigitalInput *stingerLowerHall,
-            DigitalInput *stingerUpperHall);
+            GreyTalonSRX *stingerElevatorMotor, GreyTalonSRX *stingerDriveMotor,
+            DigitalInput *stingerLowerHall, DigitalInput *stingerUpperHall);
     virtual ~Stinger();
 
     /**
@@ -115,9 +116,10 @@ private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
     GreyTalonSRX *m_stingerElevatorMotor;
+    GreyTalonSRX *m_stingerDriveMotor;
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
-    Stinger *m_stinger;
+    double m_power;
 
     LogCell *m_current;
     LogCell *m_positionCell;

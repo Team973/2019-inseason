@@ -11,10 +11,7 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
         , m_drive(drive)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
-        , m_stinger(stinger)
-        , m_endGameSignal(
-              new LightPattern::Flash(END_GAME_RED, NO_COLOR, 50, 15))
-        , m_endGameSignalSent(false) {
+        , m_stinger(stinger) {
 }
 
 Test::~Test() {
@@ -114,9 +111,10 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnX:
                 if (pressedP) {
-                    m_stinger->Stow();
+                    m_elevator->SetPower(-0.4);
                 }
                 else {
+                    m_elevator->SetPower(0.0);
                 }
                 break;
             case Xbox::BtnB:
@@ -148,7 +146,7 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
                     m_stinger->SetPower(-1.0);
-                    m_elevator->SetPower(0.6);
+                    m_elevator->SetPower(-0.5);
                 }
                 else {
                     m_stinger->SetPower(0.0);
