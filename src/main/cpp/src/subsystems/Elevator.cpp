@@ -88,11 +88,13 @@ void Elevator::TaskPeriodic(RobotMode mode) {
                               m_elevatorMotorA->GetSelectedSensorVelocity(0));
     SmartDashboard::PutNumber("elevator/motorB/velocity",
                               m_elevatorMotorB->GetSelectedSensorVelocity(0));
+    DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
     switch (m_elevatorState) {
         case manualVoltage:
             m_elevatorMotorA->Set(
                 ControlMode::PercentOutput,
-                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis) +
+                0.2 * (-m_operatorJoystick->GetRawAxisWithDeadband(
+                          Xbox::LeftYAxis)) +
                     ELEVATOR_FEED_FORWARD);
             break;
         case motionMagic:
