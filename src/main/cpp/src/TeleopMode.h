@@ -13,6 +13,7 @@
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
+#include "src/subsystems/Elevator.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
@@ -34,7 +35,8 @@ public:
      * @param greylight The GreyLight system.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, HatchIntake *hatchIntake);
+           Drive *drive, Elevator *elevator, HatchIntake *hatchintake);
+
     virtual ~Teleop();
 
     /**
@@ -100,6 +102,8 @@ private:
         EndGame,
     };
     GameMode m_gameMode;
+    Elevator *m_elevator;
+    HatchIntake *m_hatchIntake;
 
     enum class Rumble
     {
@@ -109,7 +113,5 @@ private:
     Rumble m_rumble;
 
     uint32_t m_rumbleTimer;
-
-    HatchIntake *m_hatchIntake;
 };
 }
