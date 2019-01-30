@@ -11,6 +11,7 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/logging/LogSpreadsheet.h"
@@ -21,6 +22,7 @@
 #include "src/TestMode.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
@@ -86,7 +88,9 @@ private:
     VictorSPX *m_rightDriveVictorB;
 
     ADXRS450_Gyro *m_gyro;
-    Limelight *m_limelight;
+    GreyLight *m_greylight;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 
     LogSpreadsheet *m_logger;
     LogCell *m_matchIdentifier;

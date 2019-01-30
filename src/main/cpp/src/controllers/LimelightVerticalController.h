@@ -26,6 +26,11 @@ public:
     virtual ~LimelightVerticalController();
 
     /**
+     * Start the controller.
+     */
+    void Start();
+
+    /**
      * Calculate motor output given the most recent limelight updates.
      */
     void CalcOutput();

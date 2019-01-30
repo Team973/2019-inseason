@@ -5,8 +5,12 @@ using namespace frc;
 
 namespace frc973 {
 Disabled::Disabled(ObservablePoofsJoystick *driver,
-                   ObservableXboxJoystick *codriver)
-        : m_driverJoystick(driver), m_operatorJoystick(codriver) {
+                   ObservableXboxJoystick *codriver, Limelight *limelightCargo,
+                   Limelight *limelightHatch)
+        : m_driverJoystick(driver)
+        , m_operatorJoystick(codriver)
+        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch) {
 }
 
 Disabled::~Disabled() {
@@ -14,9 +18,23 @@ Disabled::~Disabled() {
 
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
+
+    m_limelightCargo->SetCameraDriver();
+    m_limelightHatch->SetCameraVision();
 }
 
 void Disabled::DisabledPeriodic() {
+    DBStringPrintf(DBStringPos::DB_LINE2, "tv %3.1lf th %3.1lf",
+                   m_limelightHatch->GetVerticalLength(),
+                   m_limelightHatch->GetHorizontalLength());
+    DBStringPrintf(DBStringPos::DB_LINE1, "xd %3.2lf",
+                   m_limelightHatch->GetHorizontalDistance());
+    DBStringPrintf(DBStringPos::DB_LINE3, "HI: %f",
+                   m_limelightHatch->FindTargetSkew());
+    DBStringPrintf(DBStringPos::DB_LINE0, "Ratios: %f",
+                   (m_limelightHatch->GetHorizontalLength() /
+                    m_limelightHatch->GetVerticalLength()) *
+                       (6.0 / 15.0));
 }
 
 void Disabled::DisabledStop() {

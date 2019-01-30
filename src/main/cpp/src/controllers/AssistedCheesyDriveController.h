@@ -1,14 +1,15 @@
 /*
- * CheesyDriveController.h
+ * AssistedCheesyDriveController.h
  *
- *  Created on: Jan 15, 2018
- *      Author: Chris
+ *  Created on: Jan 17, 2019
+ *      Author: Kyle
  */
 
 #pragma once
 
 #include "lib/bases/DriveBase.h"
 #include "lib/sensors/Limelight.h"
+#include "lib/helpers/PID.h"
 #include <stdio.h>
 
 using namespace frc;
@@ -18,13 +19,13 @@ namespace frc973 {
 /**
  * Cheesy Drive controller.
  */
-class CheesyDriveController : public DriveController {
+class AssistedCheesyDriveController : public DriveController {
 public:
     /**
      * Construct a Cheesy Drive controller.
      */
-    CheesyDriveController(Limelight *limelightCargo, Limelight *LimelightHatch);
-    virtual ~CheesyDriveController();
+    AssistedCheesyDriveController(Limelight *limelight);
+    virtual ~AssistedCheesyDriveController();
 
     /**
      * Calculate motor output given the most recent joystick commands. In this
@@ -75,9 +76,12 @@ public:
         return m_rightOutput;
     }
 
+    static constexpr double VISION_MULTIPLIER = 1.0;
+
 private:
-    Limelight *m_limelightCargo;
-    Limelight *m_limelightHatch;
+    Limelight *m_limelight;
+
+    PID *m_visionTurnPID;
 
     double m_leftOutput;
     double m_rightOutput;

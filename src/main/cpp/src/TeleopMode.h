@@ -10,6 +10,7 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
@@ -31,10 +32,13 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
-     * @param greylight The GreyLight system.
+     * @param limelightCargo The Limelight for the cargo.
+     * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, HatchIntake *hatchIntake);
+           Drive *drive, HatchIntake *hatchintake, Limelight *limelightCargo,
+           Limelight *limelightHatch);
+
     virtual ~Teleop();
 
     /**
@@ -77,10 +81,6 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color END_GAME_RED = {
-        255, 0, 0}; /**< Display red during end game. */
-    static constexpr Color NO_COLOR = {0, 0, 0}; /**< Turn off the LED strip. */
-
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
@@ -89,6 +89,9 @@ private:
     enum class DriveMode
     {
         Openloop,
+        LimelightCargo,
+        LimelightHatch,
+        AssistedCheesy,
         Cheesy
     };
     DriveMode m_driveMode;
@@ -101,6 +104,10 @@ private:
     };
     GameMode m_gameMode;
 
+    HatchIntake *m_hatchIntake;
+
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
     enum class Rumble
     {
         on,
@@ -109,7 +116,7 @@ private:
     Rumble m_rumble;
 
     uint32_t m_rumbleTimer;
-
-    HatchIntake *m_hatchIntake;
+    u_int32_t m_limelightCargoTimer;
+    u_int32_t m_limelightHatchTimer;
 };
 }
