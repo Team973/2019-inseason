@@ -3,6 +3,7 @@
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyLight.h"
+#include "src/subsystems/Elevator.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/SolidColor.h"
@@ -30,7 +31,8 @@ public:
      * @param codriver The co-driver's joystick.
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             Limelight *limelightCargo, Limelight *limelightHatch);
+             Elevator *elevator, Limelight *limelightCargo,
+             Limelight *limelightHatch);
     virtual ~Disabled();
 
     /**
@@ -76,6 +78,8 @@ public:
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+
+    Elevator *m_elevator;
 
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;

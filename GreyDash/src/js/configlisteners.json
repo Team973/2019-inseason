@@ -158,6 +158,17 @@
                 "default": false,
                 "debug": true
             },
+            "title": "elevator Encoder",
+            "unit": "in",
+            "key": "/SmartDashboard/elevator/encoders/encoder"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
             "title": "Left Drive Percentage",
             "unit": "%",
             "key": "/SmartDashboard/drive/percentages/leftpercent"

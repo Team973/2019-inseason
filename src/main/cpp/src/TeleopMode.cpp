@@ -1,7 +1,7 @@
 /*
  * TeleopMode.cpp
  *
- *  Created on: January 7, 2018
+ *  Created on: January 7, 2019
  *      Authors: Kyle, Chris
  *
  */
@@ -13,12 +13,13 @@ using namespace frc;
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
-               HatchIntake *hatchIntake, Limelight *limelightCargo,
-               Limelight *limelightHatch)
+               Elevator *elevator, HatchIntake *hatchIntake,
+               Limelight *limelightCargo, Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Openloop)
+        , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
@@ -30,6 +31,7 @@ Teleop::~Teleop() {
 
 void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
+    m_elevator->EnableCoastMode();
 }
 
 void Teleop::TeleopPeriodic() {
