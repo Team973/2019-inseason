@@ -14,6 +14,7 @@ Autonomous::Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
         , m_elevator(elevator)
         , m_hatchintake(hatchIntake)
         , m_gyro(gyro)
+        , m_routine(m_noAuto)
         , m_driveMode(DriveMode::Cheesy)
         , m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
@@ -27,6 +28,7 @@ Autonomous::~Autonomous() {
 void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
     m_gyro->Reset();
+    m_elevator->EnableCoastMode();
     std::cout << "Autonomous Start" << std::endl;
 
     m_forwardAuto->Reset();

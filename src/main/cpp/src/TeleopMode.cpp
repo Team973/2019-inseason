@@ -13,10 +13,11 @@ using namespace frc;
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
-               HatchIntake *hatchIntake)
+               Elevator *elevator, HatchIntake *hatchIntake)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_elevator(elevator)
         , m_driveMode(DriveMode::Cheesy)
         , m_hatchIntake(hatchIntake) {
 }
@@ -26,6 +27,7 @@ Teleop::~Teleop() {
 
 void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
+    m_elevator->EnableCoastMode();
 }
 
 void Teleop::TeleopPeriodic() {

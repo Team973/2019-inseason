@@ -24,9 +24,9 @@
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
-    #include <iostream>
+#include <iostream>
 
-    using namespace frc;
+using namespace frc;
 using namespace ctre;
 using namespace cs;
 
@@ -95,7 +95,6 @@ private:
 
     LogSpreadsheet *m_logger;
     LogCell *m_matchIdentifier;
-    LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
     Elevator *m_elevator;

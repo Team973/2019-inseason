@@ -7,6 +7,7 @@
 #include "src/auto/ForwardAuto.h"
 #include "lib/util/WrapDash.h"
 #include "src/DisabledMode.h"
+#include "src/subsystems/Elevator.h"
 #include "src/Robot.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Elevator.h"
@@ -40,7 +41,7 @@ public:
      * @param gyro The gyro.
      */
     Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
-               HatchIntake *hatchintake, ADXRS450_Gyro *gyro,
+               HatchIntake *hatchIntake, ADXRS450_Gyro *gyro,
                ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver);
     virtual ~Autonomous();
