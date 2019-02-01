@@ -1,25 +1,38 @@
 #include "src/subsystems/CargoIntake.h"
+#include "lib/util/WrapDash.h"
 
 namespace frc973 {
 CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                          GreyTalonSRX *cargoIntakeMotor,
                          Solenoid *cargoWristLock, Solenoid *cargoWrist,
-                         Solenoid *cargoWheelPiston)
+                         Solenoid *cargoPlatformWheel)
         : m_scheduler(scheduler)
         , m_logger(logger)
         , m_cargoIntakeMotor(cargoIntakeMotor)
         , m_cargoWrist(cargoWrist)
         , m_cargoWristLock(cargoWristLock)
-        , m_cargoWheelPiston(cargoWheelPiston)
+        , m_cargoPlatformWheel(cargoPlatformWheel)
         , m_cargoIntakeState(CargoIntakeState::notRunning)
         , m_cargoWristLockState(CargoWristLockState::unlocked)
+        , m_cargoWristLockPneumaticState(CargoWristLockPneumaticState::unlocked)
         , m_cargoWristState(CargoWristState::retracted)
-        , m_cargoWheelPistonState(CargoWheelPistonState::retracted)
-        , m_cargoEndgameState(CargoEndgameState::notEndgame) {
+        , m_cargoWristPneumaticState(CargoWristPneumaticState::retracted)
+        , m_cargoPlatformWheelState(CargoPlatformWheelState::retracted)
+        , m_cargoPlatfromWheelPneumaticState(
+              CargoPlatformWheelPneumaticState::retracted)
+        , m_cargoEndgameState(CargoEndgameState::notEndgame)
+        , m_intakeCurentFilter(new MovingAverageFilter(0.8)) {
     this->m_scheduler->RegisterTask("CargoIntake", this, TASK_PERIODIC);
     m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
     m_cargoIntakeMotor->SetNeutralMode(NeutralMode::Coast);
-    m_cargoIntakeMotor->EnableCurrentLimit(false);
+
+    m_cargoIntakeMotor->EnableCurrentLimit(true);
+    m_cargoIntakeMotor->ConfigPeakCurrentDuration(0, 10);
+    m_cargoIntakeMotor->ConfigPeakCurrentLimit(0, 10);
+    m_cargoIntakeMotor->ConfigContinuousCurrentLimit(40, 10);
+    m_cargoIntakeMotor->EnableVoltageCompensation(false);
+    m_cargoIntakeMotor->SetInverted(true);
+    m_cargoIntakeMotor->ConfigNeutralDeadband(0.01);
 
     m_current = new LogCell("CargoIntake Current", 32, true);
     m_logger->RegisterCell(m_current);
@@ -27,6 +40,10 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
 
 CargoIntake::~CargoIntake() {
     m_scheduler->UnregisterTask(this);
+}
+
+void CargoIntake::RunIntake(double power) {
+    m_cargoIntakeMotor->Set(ControlMode::PercentOutput, power);
 }
 
 void CargoIntake::RunIntake() {
@@ -61,12 +78,12 @@ void CargoIntake::RetractWrist() {
     GoToWristState(CargoWristState::retracted);
 }
 
-void CargoIntake::DeployWheelPiston() {
-    GoToWheelPistonState(CargoWheelPistonState::deployed);
+void CargoIntake::DeployPlatformWheel() {
+    GoToPlatformWheelState(CargoPlatformWheelState::deployed);
 }
 
-void CargoIntake::RetractWheelPiston() {
-    GoToWheelPistonState(CargoWheelPistonState::retracted);
+void CargoIntake::RetractPlatformWheel() {
+    GoToPlatformWheelState(CargoPlatformWheelState::retracted);
 }
 
 double CargoIntake::GetIntakeCurrent() {
@@ -85,8 +102,8 @@ CargoIntake::CargoWristState CargoIntake::GetWristState() {
     return m_cargoWristState;
 }
 
-CargoIntake::CargoWheelPistonState CargoIntake::GetWheelPistonState() {
-    return m_cargoWheelPistonState;
+CargoIntake::CargoPlatformWheelState CargoIntake::GetPlatformWheelState() {
+    return m_cargoPlatformWheelState;
 }
 
 void CargoIntake::GoToIntakeState(CargoIntake::CargoIntakeState newState) {
@@ -102,9 +119,9 @@ void CargoIntake::GoToWristState(CargoIntake::CargoWristState newState) {
     m_cargoWristState = newState;
 }
 
-void CargoIntake::GoToWheelPistonState(
-    CargoIntake::CargoWheelPistonState newState) {
-    m_cargoWheelPistonState = newState;
+void CargoIntake::GoToPlatformWheelState(
+    CargoIntake::CargoPlatformWheelState newState) {
+    m_cargoPlatformWheelState = newState;
 }
 
 void CargoIntake::GoToEndgameState(CargoIntake::CargoEndgameState newState) {
@@ -114,46 +131,85 @@ void CargoIntake::GoToEndgameState(CargoIntake::CargoEndgameState newState) {
 
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_cargoIntakeMotor->GetOutputCurrent());
-
+    DBStringPrintf(DBStringPos::DB_LINE6, "curr: %2.2lf",
+                   m_cargoIntakeMotor->GetOutputCurrent());
+    double filteredCurrent =
+        m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {
         case CargoIntakeState::running:
-            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 1.0);
+            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.3);
+            ExtendWrist();
+            if (filteredCurrent > 30.0) {
+                m_cargoIntakeState = CargoIntakeState::holding;
+            }
             break;
         case CargoIntakeState::holding:
-            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.2);
+            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.1);
+            this->RetractWrist();
             break;
         case CargoIntakeState::notRunning:
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
             break;
         case CargoIntakeState::reverse:
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, -1.0);
+            this->RetractWrist();
             break;
     }
 
     switch (m_cargoWristLockState) {
         case CargoWristLockState::unlocked:
-            m_cargoWristLock->Set(false);
+            m_cargoWristLockPneumaticState =
+                CargoWristLockPneumaticState::unlocked;
             break;
         case CargoWristLockState::locked:
-            m_cargoWristLock->Set(true);
+            m_cargoWristLockPneumaticState =
+                CargoWristLockPneumaticState::locked;
             break;
+    }
+
+    switch (m_cargoWristLockPneumaticState) {
+        case CargoWristLockPneumaticState::unlocked:
+            m_cargoWristLock->Set(false);
+            break;
+        case CargoWristLockPneumaticState::locked:
+            m_cargoWristLock->Set(true);
     }
 
     switch (m_cargoWristState) {
         case CargoWristState::extended:
-            m_cargoWrist->Set(true);
+            m_cargoWristPneumaticState = CargoWristPneumaticState::extended;
             break;
         case CargoWristState::retracted:
+            m_cargoWristPneumaticState = CargoWristPneumaticState::retracted;
+            break;
+    }
+
+    switch (m_cargoWristPneumaticState) {
+        case CargoWristPneumaticState::extended:
+            m_cargoWrist->Set(true);
+            break;
+        case CargoWristPneumaticState::retracted:
             m_cargoWrist->Set(false);
             break;
     }
 
-    switch (m_cargoWheelPistonState) {
-        case CargoWheelPistonState::retracted:
-            m_cargoWheelPiston->Set(false);
+    switch (m_cargoPlatformWheelState) {
+        case CargoPlatformWheelState::retracted:
+            m_cargoPlatfromWheelPneumaticState =
+                CargoPlatformWheelPneumaticState::retracted;
             break;
-        case CargoWheelPistonState::deployed:
-            m_cargoWheelPiston->Set(true);
+        case CargoPlatformWheelState::deployed:
+            m_cargoPlatfromWheelPneumaticState =
+                CargoPlatformWheelPneumaticState::deployed;
+            break;
+    }
+
+    switch (m_cargoPlatfromWheelPneumaticState) {
+        case CargoPlatformWheelPneumaticState::retracted:
+            m_cargoPlatformWheel->Set(false);
+            break;
+        case CargoPlatformWheelPneumaticState::deployed:
+            m_cargoPlatformWheel->Set(true);
             break;
     }
 
@@ -162,7 +218,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             // Do nothing
             break;
         case CargoEndgameState::stowed:
-            RetractWheelPiston();
+            RetractPlatformWheel();
             UnlockWrist();
             if (m_cargoEndgameTimer - GetMsecTime() >= 100) {
                 RetractWrist();
@@ -172,7 +228,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             ExtendWrist();
             if (m_cargoEndgameTimer - GetMsecTime() >= 100) {
                 LockWrist();
-                DeployWheelPiston();
+                DeployPlatformWheel();
             }
             break;
     }

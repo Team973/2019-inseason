@@ -7,6 +7,7 @@
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
 #include "lib/logging/LogSpreadsheet.h"
+#include "lib/util/WrapDash.h"
 
 using namespace frc;
 using namespace ctre;
@@ -27,8 +28,8 @@ public:
      * @param stingerUpperHall The stinger upper hall.
      */
     Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
-            GreyTalonSRX *stingerElevatorMotor, DigitalInput *stingerLowerHall,
-            DigitalInput *stingerUpperHall);
+            GreyTalonSRX *stingerElevatorMotor, GreyTalonSRX *stingerDriveMotor,
+            DigitalInput *stingerLowerHall, DigitalInput *stingerUpperHall);
     virtual ~Stinger();
 
     /**
@@ -45,9 +46,9 @@ public:
     static constexpr double BOTTOM = -10.0; /**< Bottom preset. */
 
     static constexpr double STINGER_SOFT_HEIGHT_LIMIT =
-        10.0; /**< Soft stinger height. */
+        20.0; /**< Soft stinger height. */
     static constexpr double STINGER_INCHES_PER_CLICK =
-        8.0 / 4096.0; /**< Encoder in/click */
+        (1.0 / 4096.0) * (18.0 / 50.0) * 22.0 * 0.25; /**< Encoder in/click */
     static constexpr double STINGER_FEED_FORWARD =
         0.1; /**< The stinger's feed forward. */
 
@@ -70,15 +71,15 @@ public:
 
     /**
      * Set the postion of the stinger elevator.
-     * @param position The position preset.
+     * @param position The position preset in inches.
      */
-    void SetPosition(double position);
+    void SetPositionInches(double position);
 
     /**
      * Get the current stinger elevator position.
      * @return The current stinger elevator position in inches.
      */
-    double GetPosition();
+    double GetPositionInches();
 
     void Stow();      /**< Set the stinger elevator to the stowed preset. */
     void SetMiddle(); /**< Set the stinger elevator to the middle preset. */
@@ -115,6 +116,7 @@ private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
     GreyTalonSRX *m_stingerElevatorMotor;
+    GreyTalonSRX *m_stingerDriveMotor;
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
 

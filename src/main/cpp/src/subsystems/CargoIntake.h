@@ -7,6 +7,7 @@
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
 #include "lib/logging/LogSpreadsheet.h"
+#include "lib/filters/MovingAverageFilter.h"
 
 using namespace frc;
 using namespace ctre;
@@ -29,7 +30,7 @@ public:
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoWristLock,
-                Solenoid *cargoWrist, Solenoid *cargoWheelPiston);
+                Solenoid *cargoWrist, Solenoid *cargoPlatformWheel);
     virtual ~CargoIntake();
 
     /**
@@ -53,6 +54,16 @@ public:
     };
 
     /**
+     * Cargo Wrist Lock Pneumatics State
+     */
+
+    enum class CargoWristLockPneumaticState
+    {
+        unlocked, /**< Unlocked Wrist State. */
+        locked    /**< Locked Wrist State. */
+    };
+
+    /**
      * Cargo Wrist states.
      */
     enum class CargoWristState
@@ -62,14 +73,28 @@ public:
     };
 
     /**
+     * Cargo Wrist Pneumatic State
+     */
+    enum class CargoWristPneumaticState
+    {
+        extended, /**<Extended Wrist State. */
+        retracted /**<Retracted Wrist State. */
+    };
+
+    /**
      * Cargo Platform Wheel states.
      */
-    enum class CargoWheelPistonState
+    enum class CargoPlatformWheelState
     {
         retracted, /**< Retracted wheel state. */
         deployed   /**< Deployed wheel state. */
     };
 
+    enum class CargoPlatformWheelPneumaticState
+    {
+        retracted, /**<Retracted Wheel State. */
+        deployed   /**<Deployed Wheel State. */
+    };
     /**
      * Cargo Endgame state.
      */
@@ -80,6 +105,7 @@ public:
         deployed    /**< Deployed state. */
     };
 
+    void RunIntake(double power);
     void RunIntake();  /**< Set the CargoIntakeState to running. */
     void HoldCargo();  /**< Set the CargoIntakeState to holding. */
     void StopIntake(); /**< Set the CargoIntakeState to notRunning. */
@@ -91,9 +117,9 @@ public:
     void ExtendWrist();  /**< Set the CargoWristState to extended. */
     void RetractWrist(); /**< Set the CargoWristState to retracted. */
 
-    void DeployWheelPiston();  /**< Set the CargoWheelPistonState
+    void DeployPlatformWheel();  /**< Set the CargoPlatformWheelState
                                     to deployed */
-    void RetractWheelPiston(); /**< Set the CargoWheelPistonState to
+    void RetractPlatformWheel(); /**< Set the CargoPlatformWheelState to
                                     retracted */
 
     /**
@@ -121,39 +147,16 @@ public:
     CargoWristState GetWristState();
 
     /**
-     * Get the current CargoWheelPistonState.
-     * @returns The current CargoWheelPistonState.
+     * Get the current CargoPlatformWheelState.
+     * @returns The current CargoPlatformWheelState.
      */
-    CargoWheelPistonState GetWheelPistonState();
+    CargoPlatformWheelState GetPlatformWheelState();
 
     /**
      * Get the current CargoEndgameState.
      * @returns The current CargoEndgameState.
      */
     CargoEndgameState GetEndgameState();
-
-    /**
-     * The looping task periodic.
-     * @param mode The current robot mode.
-     */
-    void TaskPeriodic(RobotMode mode) override;
-
-private:
-    TaskMgr *m_scheduler;
-    LogSpreadsheet *m_logger;
-
-    GreyTalonSRX *m_cargoIntakeMotor;
-    Solenoid *m_cargoWrist;
-    Solenoid *m_cargoWristLock;
-    Solenoid *m_cargoWheelPiston;
-
-    uint32_t m_cargoEndgameTimer;
-
-    CargoIntakeState m_cargoIntakeState;
-    CargoWristState m_cargoWristState;
-    CargoWristLockState m_cargoWristLockState;
-    CargoWheelPistonState m_cargoWheelPistonState;
-    CargoEndgameState m_cargoEndgameState;
 
     /**
      * Sets the desired cargo intake state
@@ -177,7 +180,7 @@ private:
      * Go to the platform wheel state
      * @param newState The Platform Wheel state.
      */
-    void GoToWheelPistonState(CargoWheelPistonState newState);
+    void GoToPlatformWheelState(CargoPlatformWheelState newState);
 
     /**
      * Go to the desired end game state
@@ -185,6 +188,34 @@ private:
      */
     void GoToEndgameState(CargoEndgameState newState);
 
+    /**
+     * The looping task periodic.
+     * @param mode The current robot mode.
+     */
+    void TaskPeriodic(RobotMode mode) override;
+
+private:
+    TaskMgr *m_scheduler;
+    LogSpreadsheet *m_logger;
+
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoWristLock;
+    Solenoid *m_cargoPlatformWheel;
+
+    uint32_t m_cargoEndgameTimer;
+
+    CargoIntakeState m_cargoIntakeState;
+    CargoWristState m_cargoWristState;
+    CargoWristPneumaticState m_cargoWristPneumaticState;
+    CargoWristLockState m_cargoWristLockState;
+    CargoWristLockPneumaticState m_cargoWristLockPneumaticState;
+    CargoPlatformWheelState m_cargoPlatformWheelState;
+    CargoPlatformWheelPneumaticState m_cargoPlatfromWheelPneumaticState;
+    CargoEndgameState m_cargoEndgameState;
+
     LogCell *m_current;
+
+    MovingAverageFilter *m_intakeCurentFilter;
 };
 }

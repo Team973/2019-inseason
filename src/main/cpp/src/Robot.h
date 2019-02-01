@@ -10,7 +10,6 @@
 #include "lib/bases/CoopMTRobot.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/GreyTalon.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
@@ -22,9 +21,10 @@
 #include "src/TestMode.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
-#include "src/subsystems/Elevator.h"
-#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Stinger.h"
+#include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/Elevator.h"
+#include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
 using namespace frc;
@@ -86,37 +86,33 @@ private:
 
     LogSpreadsheet *m_logger;
 
-    GreyTalonSRX *m_cargoIntakeMotor;
-    Solenoid *m_cargoWrist;
-    Solenoid *m_cargoWristLock;
-    Solenoid *m_cargoWheelPiston;
-
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
-    VictorSPX *m_leftDriveVictorC;
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
-    VictorSPX *m_rightDriveVictorC;
-
-    GreyTalonSRX *m_elevatorMotor;
 
     GreyTalonSRX *m_stingerDriveMotor;
     GreyTalonSRX *m_stingerElevatorMotor;
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
+    GreyTalonSRX *m_elevatorMotorA;
+    VictorSPX *m_elevatorMotorB;
 
     ADXRS450_Gyro *m_gyro;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 
-    Limelight *m_limelight;
-
-    GreyLight *m_greylight;
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoWristLock;
+    Solenoid *m_cargoPlatformWheel;
 
     LogCell *m_matchIdentifier;
-    LogCell *m_gameSpecificMessage;
 
     CargoIntake *m_cargoIntake;
     Drive *m_drive;
     Elevator *m_elevator;
+    HatchIntake *m_hatchIntake;
     Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;

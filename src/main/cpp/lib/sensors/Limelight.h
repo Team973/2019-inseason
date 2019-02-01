@@ -6,10 +6,14 @@
 #pragma once
 
 #include "frc/WPILib.h"
+#include <iostream>
+#include "math.h"
 #include "lib/util/WrapDash.h"
+#include "lib/filters/BullshitFilter.h"
 #include "networktables/NetworkTable.h"
 #include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableEntry.h"
+#include "src/info/RobotInfo.h"
 
 using namespace frc;
 
@@ -19,8 +23,9 @@ class Limelight {
 public:
     /**
      * Constuct a Limelight Camera.
+     * @param name The name of the limelight being constructed
      */
-    Limelight();
+    Limelight(const char *name);
     virtual ~Limelight();
 
     /**
@@ -45,6 +50,35 @@ public:
     };
 
     /**
+     *  Limelight stream modes.
+     */
+    enum class StreamMode
+    {
+        standard,    /**< Side by side Limelight/USB camera. */
+        pipMain,     /**< Picture in picture w/ USB camera in lower right. */
+        pipSecondary /**< Picture in picture w/ Limelight in lower right. */
+    };
+
+    /**
+     *  Limelight snapshot modes.
+     */
+    enum class SnapshotMode
+    {
+        stop, /**< Stop taking snapshots. */
+        start /**< Take snapshots. */
+    };
+
+    /**
+     *  Limelight pipeline modes.
+     */
+    enum class PipelineMode
+    {
+        drive,          /**< The limelight drive pipeline */
+        default_vision, /**< The limelight default vision pipeline */
+        target_vision   /**< The limelight target vision pipeline */
+    };
+
+    /**
      * Sets the limelight's LEDs to on, off, or blink
      * @param mode the LED mode
      */
@@ -56,6 +90,30 @@ public:
      * @param mode the camera mode
      */
     void SetCameraMode(CameraMode mode);
+
+    /**
+     * Sets the limelight's pipeline index.
+     * @param index The pipeline index.
+     */
+    void SetPipelineIndex(int index);
+
+    /**
+     * Set the pipeline mode.
+     * @param mode The pipeline mode.
+     */
+    void SetPipeline(PipelineMode mode);
+
+    /**
+     * Sets the limelight's stream mode.
+     * @param mode The stream mode.
+     */
+    void SetStreamMode(StreamMode mode);
+
+    /**
+     * Sets the limelight's snapshot mode.
+     * @param mode The snapshot mode.
+     */
+    void SetSnapshotMode(SnapshotMode mode);
 
     /**
      * Sets the limelight's LEDs to on
@@ -73,7 +131,7 @@ public:
     void SetLightBlink();
 
     /**
-     * Sets the limelight's camera to use vision settings
+     * Sets the limelight's camera to use target vision settings
      */
     void SetCameraVision();
 
@@ -81,6 +139,11 @@ public:
      * Sets the limelight's cameras to use driver settings (just raw feedback)
      */
     void SetCameraDriver();
+
+    /**
+     * Sets the limelight's camera to use default vision settings
+     */
+    void SetCameraDefaultVision();
 
     /**
      * Checks if target is present or not
@@ -118,8 +181,38 @@ public:
      */
     double GetLatency();
 
+    /**
+     * Gets the target's horizontal length
+     * @return target's horizontal length
+     */
+    double GetHorizontalLength();
+
+    /**
+     * Gets the target's vertical length
+     * @return target's vertical length
+     */
+    double GetVerticalLength();
+
+    /**
+     * Finds the angle skew of the robot in reference to the target
+     * @return targets skew
+     */
+    double FindTargetSkew();
+
+    /**
+     * Finds the horizontal distance of the robot in reference to the target
+     * @return The targest distance in inches
+     */
+    double GetHorizontalDistance();
+
+    static constexpr double TARGET_HEIGHT = 24.25;  // in inches from ground
+    static constexpr double CAMERA_HEIGHT = 4.75;   // in inches from ground
+    static constexpr double CAMERA_ANGLE =
+        40.0 * (Constants::PI / 180.0);  // in degrees wrt ground
+
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight
+    const char *m_camName;
 
     LightMode m_lightMode;    // enum for LED state
     CameraMode m_cameraMode;  // enum for camera state
@@ -132,5 +225,8 @@ private:
     double m_targetSkew;      // target skew or rotation [-90, 0]
     double m_latency;  // The pipeline’s latency contribution (ms) Add at least
                        // 11ms for image capture latency.
+
+    static constexpr double TARGET_ASPECT_RATIO =
+        6.0 / 15.0;  // Constant for the targets aspect ratio
 };
 }
