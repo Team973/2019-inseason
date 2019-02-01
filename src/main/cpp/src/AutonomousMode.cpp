@@ -13,7 +13,7 @@ Autonomous::Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
         , m_routine(m_noAuto)
         , m_drive(drive)
         , m_elevator(elevator)
-        , m_gyro(gyro){
+        , m_gyro(gyro) {
 }
 
 Autonomous::~Autonomous() {

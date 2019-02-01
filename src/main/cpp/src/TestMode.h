@@ -8,6 +8,7 @@
 #include "lib/util/Util.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include "src/subsystems/Stinger.h"
@@ -27,11 +28,10 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
-     * @param greylight The GreyLight system.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
          Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-         Stinger *stinger);
+         CargoIntake *cargoIntake, Stinger *stinger);
     virtual ~Test();
 
     /**
@@ -84,6 +84,7 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     Drive *m_drive;
+    CargoIntake *m_cargoIntake;
     DriveMode m_driveMode;
 
     Elevator *m_elevator;

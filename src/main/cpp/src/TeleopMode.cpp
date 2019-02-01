@@ -13,14 +13,16 @@ using namespace frc;
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
-               Elevator *elevator, HatchIntake *hatchIntake, Stinger *stinger)
+               Elevator *elevator, HatchIntake *hatchIntake,
+               CargoIntake *cargoIntake, Stinger *stinger)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_elevator(elevator)
         , m_driveMode(DriveMode::Cheesy)
         , m_hatchIntake(hatchIntake)
-        , m_stinger(stinger){
+        , m_cargoIntake(cargoIntake)
+        , m_stinger(stinger) {
 }
 
 Teleop::~Teleop() {

@@ -28,8 +28,8 @@ public:
      * Constuct an autonomous mode.
      * @param disabled The disabled mode.
      * @param drive The drive subsystem.
+     * @param elevator The elevator subsystem
      * @param gyro The gyro.
-     * @param greylight The GreyLight system.
      */
     Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
                ADXRS450_Gyro *gyro);

@@ -5,12 +5,14 @@ using namespace frc;
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
            Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-           Stinger *stinger)
+           CargoIntake *cargoIntake, Stinger *stinger)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_driveMode(DriveMode::Openloop)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
+        , m_cargoIntake(cargoIntake)
         , m_stinger(stinger) {
 }
 
@@ -112,22 +114,30 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::BtnX:
                 if (pressedP) {
                     m_elevator->SetPower(-0.4);
+                    m_cargoIntake->LockWrist();
                 }
                 else {
                     m_elevator->SetPower(0.0);
+                    m_cargoIntake->UnlockWrist();
                 }
                 break;
             case Xbox::BtnB:
                 if (pressedP) {
                     m_stinger->SetPower(0.5);
+                    m_cargoIntake->ExtendWrist();
                 }
                 else {
                     m_stinger->SetPower(0.0);
+                    m_cargoIntake->RetractWrist();
                 }
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::MIDDLE_ROCKET_HATCH);
+                    m_cargoIntake->RunIntake();
+                }
+                else {
+                    m_cargoIntake->StopIntake();
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -141,6 +151,10 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::RightBumper:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::MIDDLE_ROCKET_CARGO);
+                    m_cargoIntake->Exhaust();
+                }
+                else {
+                    m_cargoIntake->StopIntake();
                 }
                 break;
             case Xbox::DPadUpVirtBtn:
@@ -156,6 +170,10 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadDownVirtBtn:
                 if (pressedP) {
                     m_elevator->SetPosition(Elevator::CARGO_SHIP_HATCH);
+                    m_cargoIntake->RunIntake(0.5);
+                }
+                else {
+                    m_cargoIntake->RunIntake(0.0);
                 }
                 break;
             case Xbox::DPadLeftVirtBtn:
@@ -204,8 +222,10 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::BtnX:
             if (pressedP) {
+                m_cargoIntake->LockWrist();
             }
             else {
+                m_cargoIntake->UnlockWrist();
             }
             break;
         case DualAction::BtnY:
@@ -216,26 +236,34 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::LeftBumper:
             if (pressedP) {
+                m_cargoIntake->RunIntake();
             }
             else {
+                m_cargoIntake->StopIntake();
             }
             break;
         case DualAction::LeftTrigger:
             if (pressedP) {
+                m_cargoIntake->Exhaust();
             }
             else {
+                m_cargoIntake->StopIntake();
             }
             break;
         case DualAction::RightBumper:
             if (pressedP) {
+                m_cargoIntake->ExtendWrist();
             }
             else {
+                m_cargoIntake->RetractWrist();
             }
             break;
         case DualAction::RightTrigger:
             if (pressedP) {
+                m_cargoIntake->DeployPlatformWheel();
             }
             else {
+                m_cargoIntake->RetractPlatformWheel();
             }
             break;
         case DualAction::DPadUpVirtBtn:

@@ -22,6 +22,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Stinger.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
@@ -34,6 +35,7 @@ namespace frc973 {
 class Disabled;
 class Autonomous;
 class Drive;
+class Elevator;
 
 /**
  * Defines the robot.
@@ -82,6 +84,8 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
+    LogSpreadsheet *m_logger;
+
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
     GreyTalonSRX *m_rightDriveTalonA;
@@ -97,12 +101,19 @@ private:
     ADXRS450_Gyro *m_gyro;
     Limelight *m_limelight;
 
-    LogSpreadsheet *m_logger;
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoWristLock;
+    Solenoid *m_cargoPlatformWheel;
+
+    GreyLight *m_greylight;
+
     LogCell *m_matchIdentifier;
 
     Drive *m_drive;
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
+    CargoIntake *m_cargoIntake;
     Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;
