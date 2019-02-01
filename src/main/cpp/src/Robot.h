@@ -92,7 +92,8 @@ private:
 
     ADXRS450_Gyro *m_gyro;
     GreyLight *m_greylight;
-    Limelight *m_limelight;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 
     LogSpreadsheet *m_logger;
     LogCell *m_matchIdentifier;

@@ -7,6 +7,7 @@
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/SolidColor.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/util/WrapDash.h"
 #include "src/AutonomousMode.h"
 #include "src/Robot.h"
@@ -28,10 +29,10 @@ public:
      * Constuct a disabled mode.
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
-     * @param greylight The GreyLight system.
      */
-    Disabled(ObservablePoofsJoystick *driver, Elevator *elevator,
-             ObservableXboxJoystick *codriver, GreyLight *greylight);
+    Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
+             Elevator *elevator, Limelight *limelightCargo,
+             Limelight *limelightHatch);
     virtual ~Disabled();
 
     /**
@@ -74,16 +75,13 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color DISABLED_RED = {
-        255, 0, 0}; /**< Default red disabled color. */
-
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
     Elevator *m_elevator;
 
-    GreyLight *m_greylight;
-    LightPattern::SolidColor *m_disabledSignal;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 };
 }

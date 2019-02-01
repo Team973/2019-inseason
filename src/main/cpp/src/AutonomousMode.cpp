@@ -6,16 +6,14 @@ using namespace frc;
 
 namespace frc973 {
 Autonomous::Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
-                       ADXRS450_Gyro *gyro, GreyLight *greylight)
+                       ADXRS450_Gyro *gyro)
         : m_noAuto(new NoAuto())
         , m_forwardAuto(new ForwardAuto(drive))
         , m_disabled(disabled)
         , m_routine(m_noAuto)
         , m_drive(drive)
         , m_elevator(elevator)
-        , m_gyro(gyro)
-        , m_greylight(greylight)
-        , m_autoSignal(new LightPattern::AutoIndicator()) {
+        , m_gyro(gyro) {
 }
 
 Autonomous::~Autonomous() {

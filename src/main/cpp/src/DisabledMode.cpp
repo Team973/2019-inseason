@@ -4,24 +4,38 @@
 using namespace frc;
 
 namespace frc973 {
-Disabled::Disabled(ObservablePoofsJoystick *driver, Elevator *elevator,
-                   ObservableXboxJoystick *codriver, GreyLight *greylight)
+Disabled::Disabled(ObservablePoofsJoystick *driver,
+                   ObservableXboxJoystick *codriver, Elevator *elevator,
+                   Limelight *limelightCargo, Limelight *limelightHatch)
         : m_driverJoystick(driver)
-        , m_elevator(elevator)
         , m_operatorJoystick(codriver)
-        , m_greylight(greylight)
-        , m_disabledSignal(new LightPattern::SolidColor(DISABLED_RED)) {
+        , m_elevator(elevator)
+        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch) {
 }
 
 Disabled::~Disabled() {
 }
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
-    m_greylight->SetPixelStateProcessor(m_disabledSignal);
+
+    m_limelightCargo->SetCameraDriver();
+    m_limelightHatch->SetCameraVision();
     m_elevator->EnableBrakeMode();
 }
 
 void Disabled::DisabledPeriodic() {
+    DBStringPrintf(DBStringPos::DB_LINE2, "tv %3.1lf th %3.1lf",
+                   m_limelightHatch->GetVerticalLength(),
+                   m_limelightHatch->GetHorizontalLength());
+    DBStringPrintf(DBStringPos::DB_LINE1, "xd %3.2lf",
+                   m_limelightHatch->GetHorizontalDistance());
+    DBStringPrintf(DBStringPos::DB_LINE3, "HI: %f",
+                   m_limelightHatch->FindTargetSkew());
+    DBStringPrintf(DBStringPos::DB_LINE0, "Ratios: %f",
+                   (m_limelightHatch->GetHorizontalLength() /
+                    m_limelightHatch->GetVerticalLength()) *
+                       (6.0 / 15.0));
 }
 
 void Disabled::DisabledStop() {
