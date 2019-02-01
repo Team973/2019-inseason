@@ -1,8 +1,8 @@
 /*
  * Drive.cpp
  *
- *  Created on: January 7, 2018
- *      Authors: Chris
+ *  Created on: January 7, 2019
+ *      Authors: Luis and Dylan
  */
 
 #include <stdio.h>
@@ -14,6 +14,7 @@
 #include "src/controllers/SplineDriveController.h"
 #include "src/controllers/VelocityArcadeDriveController.h"
 #include "src/controllers/LimelightDriveController.h"
+#include "src/controllers/AssistedCheesyDriveController.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "lib/util/Util.h"
@@ -30,7 +31,8 @@ namespace frc973 {
 Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
              GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
-             ADXRS450_Gyro *gyro, Limelight *limelight)
+             ADXRS450_Gyro *gyro, Limelight *limelightCargo,
+             Limelight *limelightHatch)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveTalonA(leftDriveTalonA)
@@ -48,13 +50,20 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_rightPosZero(0.0)
         , m_gyro(gyro)
         , m_gyroZero(0.0)
-        , m_limelight(limelight)
-        , m_cheesyDriveController(new CheesyDriveController())
+        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch)
+        , m_cheesyDriveController(
+              new CheesyDriveController(limelightCargo, limelightHatch))
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
-        , m_limelightDriveController(new LimelightDriveController(limelight))
+        , m_limelightCargoDriveController(
+              new LimelightDriveController(limelightCargo))
+        , m_limelightHatchDriveController(
+              new LimelightDriveController(limelightHatch))
+        , m_assistedCheesyDriveController(
+              new AssistedCheesyDriveController(m_limelightHatch))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))
@@ -145,10 +154,26 @@ void Drive::VelocityArcadeDrive(double throttle, double turn) {
     m_velocityArcadeDriveController->SetJoysticks(throttle, turn);
 }
 
-LimelightDriveController *Drive::LimelightDrive() {
-    this->SetDriveController(m_limelightDriveController);
+LimelightDriveController *Drive::LimelightCargoDrive() {
+    this->SetDriveController(m_limelightCargoDriveController);
 
-    return m_limelightDriveController;
+    return m_limelightCargoDriveController;
+}
+
+LimelightDriveController *Drive::LimelightHatchDrive() {
+    this->SetDriveController(m_limelightHatchDriveController);
+
+    return m_limelightHatchDriveController;
+}
+
+AssistedCheesyDriveController *Drive::AssistedCheesyDrive(double throttle,
+                                                          double turn,
+                                                          bool isQuickTurn,
+                                                          bool isHighGear) {
+    this->SetDriveController(m_assistedCheesyDriveController);
+    m_assistedCheesyDriveController->SetJoysticks(throttle, turn, isQuickTurn,
+                                                  isHighGear);
+    return m_assistedCheesyDriveController;
 }
 
 double Drive::GetLeftDist() const {
@@ -187,31 +212,14 @@ double Drive::GetDriveCurrent() const {
            2.0;
 }
 
-/**
- * Returns calculated current angle thorugh gyro translation
- *
- * @return  Current angle position with respect to initial position
- */
 double Drive::GetAngle() const {
     return -(m_angle - m_gyroZero);
 }
 
-/**
- * Returns calculated current anglular rate thorugh gyro translation
- *
- * @return  Current angular rate
- */
 double Drive::GetAngularRate() const {
     return -m_angleRate;
 }
 
-/**
- * Calculates Drive Output in Velocity (IPS) and sets it from driver input or
- * closed control loop
- *
- * @param left  desired left Output
- * @param right desired right Output
- */
 void Drive::SetDriveOutputIPS(double left, double right) {
     m_leftDriveOutput = left;
     m_rightDriveOutput = right;
@@ -275,9 +283,9 @@ void Drive::DisableDriveCurrentLimit() {
 void Drive::TaskPeriodic(RobotMode mode) {
     // NetworkTable Voltages
     SmartDashboard::PutNumber("drive/voltages/leftvoltage",
-                              m_leftDriveTalonA->GetMotorOutputVoltage());
+                              m_leftDriveTalonA->GetBusVoltage() / 12.0);
     SmartDashboard::PutNumber("drive/voltages/rightvoltage",
-                              m_rightDriveTalonA->GetMotorOutputVoltage());
+                              m_rightDriveTalonA->GetBusVoltage() / 12.0);
 
     // NetworkTable Currents
     SmartDashboard::PutNumber("drive/currents/leftcurrent",
@@ -299,6 +307,13 @@ void Drive::TaskPeriodic(RobotMode mode) {
                               m_rightDriveOutput * DRIVE_IPS_FROM_CPDS);
     SmartDashboard::PutNumber("drive/outputs/rightrateactual",
                               Drive::GetRightRate());
+
+    // NetworkTable Limelight
+    SmartDashboard::PutNumber("drive/limelight/hatch/error",
+                              m_limelightHatch->GetXOffset());
+
+    SmartDashboard::PutNumber("drive/limelight/cargo/error",
+                              m_limelightCargo->GetXOffset());
 
     // NetworkTable Gyro
     SmartDashboard::PutNumber("drive/gyro/angle", this->GetAngle());

@@ -2,7 +2,6 @@
 
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/Flash.h"
@@ -86,7 +85,6 @@ private:
     Drive *m_drive;
     CargoIntake *m_cargoIntake;
     DriveMode m_driveMode;
-
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
 };
