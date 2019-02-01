@@ -27,8 +27,9 @@ Robot::Robot()
         , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
         , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
+        , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
+        , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
         , m_gyro(new ADXRS450_Gyro())
-        , m_greylight(new GreyLight(NUM_LED))
         , m_limelightCargo(new Limelight("limelight-cargo"))
         , m_limelightHatch(new Limelight("limelight-hatch"))
         , m_logger(new LogSpreadsheet(this))
@@ -38,6 +39,8 @@ Robot::Robot()
                             m_leftDriveVictorB, m_rightDriveTalonA,
                             m_rightDriveVictorB, m_gyro, m_limelightCargo,
                             m_limelightHatch))
+        , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
+                                  m_elevatorMotorB, m_operatorJoystick))
         , m_hatchIntake(new HatchIntake(this, m_logger))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
@@ -45,13 +48,14 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
-                                  m_limelightCargo, m_limelightHatch))
-        , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro))
+                                  m_elevator, m_limelightCargo,
+                                  m_limelightHatch))
+        , m_autonomous(new Autonomous(m_disabled, m_drive, m_elevator, m_gyro))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
-                              m_hatchIntake, m_limelightCargo,
+                              m_elevator, m_hatchIntake, m_limelightCargo,
                               m_limelightHatch))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_hatchIntake)) {
+                          m_elevator, m_hatchIntake)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -61,7 +65,6 @@ Robot::~Robot() {
 void Robot::Initialize() {
     m_compressor->Enable();
     m_logger->RegisterCell(m_matchIdentifier);
-    m_logger->RegisterCell(m_gameSpecificMessage);
     m_logger->Start();
 }
 

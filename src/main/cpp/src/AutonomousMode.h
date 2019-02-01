@@ -8,9 +8,9 @@
 #include "src/auto/ForwardAuto.h"
 #include "lib/util/WrapDash.h"
 #include "src/DisabledMode.h"
+#include "src/subsystems/Elevator.h"
 #include "src/Robot.h"
 #include "src/subsystems/Drive.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/pixelprocessors/AutoIndicator.h"
 
 using namespace frc;
@@ -29,7 +29,8 @@ public:
      * @param drive The drive subsystem.
      * @param gyro The gyro.
      */
-    Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro);
+    Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
+               ADXRS450_Gyro *gyro);
     virtual ~Autonomous();
 
     /**
@@ -56,6 +57,7 @@ private:
     AutoRoutineBase *m_routine;
 
     Drive *m_drive;
+    Elevator *m_elevator;
     ADXRS450_Gyro *m_gyro;
 };
 }

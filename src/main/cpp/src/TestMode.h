@@ -8,6 +8,7 @@
 #include "lib/util/Util.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
@@ -27,7 +28,7 @@ public:
      * @param drive The drive subsystem.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, HatchIntake *hatchIntake);
+         Drive *drive, Elevator *elevator, HatchIntake *hatchIntake);
     virtual ~Test();
 
     /**
@@ -81,6 +82,11 @@ private:
 
     Drive *m_drive;
     DriveMode m_driveMode;
+
+    Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
+
+    LightPattern::Flash *m_endGameSignal;
+    bool m_endGameSignalSent;
 };
 }

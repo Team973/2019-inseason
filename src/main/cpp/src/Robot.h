@@ -87,8 +87,10 @@ private:
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
 
+    GreyTalonSRX *m_elevatorMotorA;
+    VictorSPX *m_elevatorMotorB;
+
     ADXRS450_Gyro *m_gyro;
-    GreyLight *m_greylight;
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
@@ -97,6 +99,7 @@ private:
     LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
+    Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
 
     DigitalInput *m_airPressureSwitch;
