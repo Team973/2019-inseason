@@ -99,14 +99,13 @@ private:
     VictorSPX *m_elevatorMotorB;
 
     ADXRS450_Gyro *m_gyro;
-    Limelight *m_limelight;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 
     GreyTalonSRX *m_cargoIntakeMotor;
     Solenoid *m_cargoWrist;
     Solenoid *m_cargoWristLock;
     Solenoid *m_cargoPlatformWheel;
-
-    GreyLight *m_greylight;
 
     LogCell *m_matchIdentifier;
 

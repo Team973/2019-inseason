@@ -11,6 +11,7 @@
 #include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
@@ -35,10 +36,13 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
+     * @param limelightCargo The Limelight for the cargo.
+     * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
            Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
-           CargoIntake *cargoIntake, Stinger *stinger);
+           CargoIntake *cargoIntake, Stinger *stinger,
+           Limelight *limelightCargo, Limelight *limelightHatch);
 
     virtual ~Teleop();
 
@@ -90,6 +94,9 @@ private:
     enum class DriveMode
     {
         Openloop,
+        LimelightCargo,
+        LimelightHatch,
+        AssistedCheesy,
         Cheesy
     };
     DriveMode m_driveMode;
@@ -98,5 +105,18 @@ private:
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
     Stinger *m_stinger;
+
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
+
+    enum class Rumble
+    {
+        on,
+        off
+    };
+    Rumble m_rumble;
+
+    u_int32_t m_limelightCargoTimer;
+    u_int32_t m_limelightHatchTimer;
 };
 }

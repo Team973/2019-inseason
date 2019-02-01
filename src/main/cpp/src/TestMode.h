@@ -86,7 +86,6 @@ private:
     Drive *m_drive;
     CargoIntake *m_cargoIntake;
     DriveMode m_driveMode;
-
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
 

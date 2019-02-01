@@ -15,7 +15,8 @@ const ui = {
         timer: document.getElementById('timer'),
         robotState: document.getElementById('robotState').firstChild,
         autoSelect: document.getElementById('autoSelect'),
-        camera: document.getElementById('cameraContainer')
+        cameraOne: document.getElementById('cameraOneContainer'),
+        cameraTwo: document.getElementById('cameraTwoContainer')
     },
     debugCharts: document.getElementById('debugCharts'),
     indicators: document.getElementById('indicators'),
@@ -333,21 +334,38 @@ function render () {
 
 openPage('default')
 
-const cameraUrl = 'http://limelight.local:5800'
+const cameraOneUrl = 'http://limelight-hatch.local:5800'
+const cameraTwoUrl = 'http://limelight-cargo.local:5800'
 
-function reloadCamera () {
-    const content = ui.misc.camera.innerHTML
-    ui.misc.camera.innerHTML = content
+function reloadCameraOne () {
+    const content = ui.misc.cameraOne.innerHTML
+    ui.misc.cameraOne.innerHTML = content
 }
 
-function createCamera (url) {
+function reloadCameraTwo () {
+    const content = ui.misc.cameraTwo.innerHTML
+    ui.misc.cameraTwo.innerHTML = content
+}
+
+function createCameraOne (url) {
     const cameraImg = document.createElement('img')
     cameraImg.setAttribute('src', url)
-    cameraImg.setAttribute('id', 'camera')
+    cameraImg.setAttribute('id', 'cameraOne')
     cameraImg.addEventListener('onerror', () => {
-        reloadCamera()
+        reloadCameraOne()
     })
-    ui.misc.camera.insertBefore(cameraImg, ui.misc.camera.firstChild)
+    ui.misc.cameraOne.insertBefore(cameraImg, ui.misc.cameraOne.firstChild)
 }
 
-window.setTimeout(createCamera(cameraUrl), 2000)
+function createCameraTwo(url) {
+    const cameraImg = document.createElement('img')
+    cameraImg.setAttribute('src', url)
+    cameraImg.setAttribute('id', 'cameraTwo')
+    cameraImg.addEventListener('onerror', () => {
+        reloadCameraTwo()
+    })
+    ui.misc.cameraTwo.insertBefore(cameraImg, ui.misc.cameraTwo.firstChild)
+}
+
+window.setTimeout(createCameraOne(cameraOneUrl), 2000)
+window.setTimeout(createCameraOne(cameraTwoUrl), 2000)

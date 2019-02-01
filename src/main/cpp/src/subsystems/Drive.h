@@ -1,7 +1,7 @@
 /*
  * Drive.h
  *
- *  Created on: January 7, 2018
+ *  Created on: January 7, 2019
  *      Authors: Kyle, Chris
  */
 #pragma once
@@ -28,6 +28,9 @@ class PIDDriveController;
 class SplineDriveController;
 class StingerDriveController;
 class VelocityArcadeDriveController;
+class LimelightDriveController;
+class AssistedCheesyDriveController;
+class Limelight;
 class LogSpreadsheet;
 
 /**
@@ -65,7 +68,7 @@ public:
           GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
           GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
-          Limelight *limelight);
+          Limelight *limelightCargo, Limelight *limelightHatch);
     virtual ~Drive();
 
     /**
@@ -158,6 +161,24 @@ public:
      * @param turn Left/right amount.
      */
     void VelocityArcadeDrive(double throttle, double turn);
+    LimelightDriveController *LimelightCargoDrive();
+
+    /**
+     * Set drive controller to use limelight in following a target
+     */
+    LimelightDriveController *LimelightHatchDrive();
+
+    /*
+     * Set drive controller to use limelight and driver input to steer and drive
+     * @param trottle Joysticks left y-axis input
+     * @param turn Joysticks right x-axis input
+     * @param isQuickTurn 1 or 0 for if quickturn is enabled
+     * @param isHighGear 1 or 0 for if high gear is enabled
+     */
+    AssistedCheesyDriveController *AssistedCheesyDrive(double throttle,
+                                                       double turn,
+                                                       bool isQuickTurn,
+                                                       bool isHighGear);
 
     /**
      * Return the left distance from the encoder in inches.
@@ -278,7 +299,8 @@ private:
 
     ADXRS450_Gyro *m_gyro;
     double m_gyroZero;
-    Limelight *m_limelight;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 
     CheesyDriveController *m_cheesyDriveController;
     LimelightDriveController *m_limelightDriveController;
@@ -287,6 +309,9 @@ private:
     SplineDriveController *m_splineDriveController;
     StingerDriveController *m_stingerDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
+    LimelightDriveController *m_limelightCargoDriveController;
+    LimelightDriveController *m_limelightHatchDriveController;
+    AssistedCheesyDriveController *m_assistedCheesyDriveController;
 
     double m_angle;
     double m_angleRate;
