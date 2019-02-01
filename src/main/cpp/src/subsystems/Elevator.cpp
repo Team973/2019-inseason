@@ -8,11 +8,13 @@ using namespace frc;
 namespace frc973 {
 Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
                    GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
-                   ObservableXboxJoystick *operatorJoystick)
+                   ObservableXboxJoystick *operatorJoystick,
+                   DigitalInput *elevatorHall)
         : m_scheduler(scheduler)
         , m_elevatorMotorA(elevatorMotorA)
         , m_elevatorMotorB(elevatorMotorB)
         , m_operatorJoystick(operatorJoystick)
+        , m_elevatorHall(elevatorHall)
         , m_position(0.0)
         , m_zeroingTime(0)
         , m_elevatorState(ElevatorState::manualVoltage) {
@@ -79,6 +81,16 @@ void Elevator::EnableCoastMode() {
     m_elevatorMotorA->SetNeutralMode(NeutralMode::Coast);
 }
 
+bool Elevator::GetElevatorHall() {
+    return m_elevatorHall->Get();
+}
+
+void Elevator::HallZero() {
+    if (!GetElevatorHall()) {
+        ZeroPosition();
+    }
+}
+
 void Elevator::TaskPeriodic(RobotMode mode) {
     m_positionCell->LogDouble(GetPosition());
     SmartDashboard::PutNumber("elevator/encoders/encoder", GetPosition());
@@ -100,5 +112,7 @@ void Elevator::TaskPeriodic(RobotMode mode) {
         default:
             break;
     }
+
+    HallZero();  // Auto runs the auto zeroing from the hall
 }
 }
