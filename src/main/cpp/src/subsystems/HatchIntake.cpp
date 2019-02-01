@@ -57,14 +57,11 @@ bool HatchIntake::IsHatchInIntake() {
     return (m_hatchRollers->GetOutputCurrent() > 25);
 }
 
-void HatchIntake::GoToIntakeState(HatchIntake::HatchIntakeState newState) {
-    m_hatchIntakeStateTimer = GetMsecTime();
-    m_hatchIntakeState = newState;
-}
-
-void HatchIntake::GoToPneumaticState(HatchIntake::HatchSolenoidState newState) {
-    m_hatchSolenoidStateTimer = GetMsecTime();
+void HatchIntake::GoToPneumaticState(HatchSolenoidState newState) {
     m_hatchSolenoidState = newState;
+}
+void HatchIntake::GoToIntakeState(HatchIntakeState newState) {
+    m_hatchIntakeState = newState;
 }
 
 void HatchIntake::TaskPeriodic(RobotMode mode) {
@@ -75,7 +72,7 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
         case HatchIntakeState::intaking:
             m_hatchRollers->Set(ControlMode::PercentOutput, -1.0);
             if (IsHatchInIntake()) {
-                GoToIntakeState(HatchIntakeState::hold);
+                // GoToIntakeState(HatchIntakeState::hold);
             }
             break;
         case HatchIntakeState::hold:
@@ -86,10 +83,7 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
             break;
         case HatchIntakeState::launch:
             m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
-            GoToPneumaticState(HatchSolenoidState::launch);
-            if ((m_hatchIntakeStateTimer - GetMsecTime()) > 500) {
-                GoToIntakeState(HatchIntakeState::idle);
-            }
+            // GoToPneumaticState(HatchSolenoidState::launch);
             break;
         case HatchIntakeState::manual:
             // Do Nothing
@@ -98,9 +92,6 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
 
     switch (m_hatchSolenoidState) {
         case HatchSolenoidState::launch:
-            if (m_hatchSolenoidStateTimer - GetMsecTime() >= 100) {
-                m_hatchPuncher->Set(HatchPuncherSolenoidStates::punch);
-            }
             break;
         case HatchSolenoidState::manualPunch:
             m_hatchPuncher->Set(HatchPuncherSolenoidStates::punch);

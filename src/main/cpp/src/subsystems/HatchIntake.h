@@ -31,7 +31,7 @@ public:
      */
     enum class HatchIntakeState
     {
-        idle,     /**< Idle hatch intake. */
+        idle,     /**< Idle hatch intakeintaking. */
         intaking, /**< Prime hatch intake for intaking. */
         hold,     /**< Hold the hatch. */
         exhaust,  /**< Place the hatch. */
@@ -124,8 +124,5 @@ private:
 
     void GoToPneumaticState(HatchSolenoidState newState);
     void GoToIntakeState(HatchIntakeState newState);
-
-    uint32_t m_hatchSolenoidStateTimer;
-    uint32_t m_hatchIntakeStateTimer;
 };
 }
