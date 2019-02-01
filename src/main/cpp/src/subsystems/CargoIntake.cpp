@@ -137,7 +137,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
         m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {
         case CargoIntakeState::running:
-            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.3);
+            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 1.0);
             ExtendWrist();
             if (filteredCurrent > 30.0) {
                 m_cargoIntakeState = CargoIntakeState::holding;
