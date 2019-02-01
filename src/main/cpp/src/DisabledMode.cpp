@@ -4,16 +4,18 @@
 using namespace frc;
 
 namespace frc973 {
-Disabled::Disabled(ObservablePoofsJoystick *driver,
+Disabled::Disabled(ObservablePoofsJoystick *driver, Elevator *elevator,
                    ObservableXboxJoystick *codriver)
-        : m_driverJoystick(driver), m_operatorJoystick(codriver) {
+        : m_driverJoystick(driver)
+        , m_elevator(elevator)
+        , m_operatorJoystick(codriver) {
 }
 
 Disabled::~Disabled() {
 }
-
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
+    m_elevator->EnableBrakeMode();
 }
 
 void Disabled::DisabledPeriodic() {
