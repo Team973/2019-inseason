@@ -96,7 +96,8 @@ private:
     Solenoid *m_hatchPuncher;
 
     GreyLight *m_greylight;
-    Limelight *m_limelight;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 
     LogSpreadsheet *m_logger;
     LogCell *m_matchIdentifier;

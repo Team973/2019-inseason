@@ -78,11 +78,7 @@ private:
 
     Drive *m_drive;
     DriveMode m_driveMode;
-
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
-
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
 };
 }

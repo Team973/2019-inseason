@@ -7,8 +7,10 @@
 
 #include "lib/bases/DriveBase.h"
 #include "stdio.h"
+#include "math.h"
 #include "lib/util/Util.h"
 #include "lib/sensors/Limelight.h"
+#include "src/info/RobotInfo.h"
 
 namespace frc973 {
 
@@ -45,15 +47,30 @@ public:
         return m_onTarget;
     };
 
+    /**
+     * Stop the drive controller.
+     * @param out The signal receiver for handling outgoing messages.
+     */
+    void Stop(DriveControlSignalReceiver *out) override {
+        printf("Turning off Limelight Drive Mode\n");
+    }
+
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
-        500.0;  // in native units per degree
+        1.0;  // in native units per degree
+    static constexpr double DISTANCE_SETPOINT =
+        20.0;  // in inches from target to robot bumper
+    static constexpr double PERIOD = 3.0;
 
 private:
     bool m_onTarget;
     double m_leftSetpoint;
     double m_rightSetpoint;
 
+    double m_throttle;
+    double m_turn;
+
     Limelight *m_limelight;
-    PID *m_pid;
+    PID *m_turnPid;
+    PID *m_throttlePid;
 };
 }

@@ -29,7 +29,6 @@ public:
      * @param disabled The disabled mode.
      * @param drive The drive subsystem.
      * @param gyro The gyro.
-     * @param greylight The GreyLight system.
      */
     Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
                ADXRS450_Gyro *gyro);

@@ -1,7 +1,7 @@
 /*
  * RobotInfo.h
  * Created: January 9, 2018
- * Author: Kyle
+ * Author: One of the Chris's probably
  */
 #pragma once
 

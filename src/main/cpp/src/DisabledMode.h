@@ -7,6 +7,7 @@
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/SolidColor.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/util/WrapDash.h"
 #include "src/AutonomousMode.h"
 #include "src/Robot.h"
@@ -29,8 +30,9 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      */
-    Disabled(ObservablePoofsJoystick *driver, Elevator *elevator,
-             ObservableXboxJoystick *codriver);
+    Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
+             Elevator *elevator, Limelight *limelightCargo,
+             Limelight *limelightHatch);
     virtual ~Disabled();
 
     /**
@@ -78,5 +80,8 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     Elevator *m_elevator;
+
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 };
 }

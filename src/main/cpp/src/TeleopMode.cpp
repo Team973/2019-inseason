@@ -1,7 +1,7 @@
 /*
  * TeleopMode.cpp
  *
- *  Created on: January 7, 2018
+ *  Created on: January 7, 2019
  *      Authors: Kyle, Chris
  *
  */
@@ -13,13 +13,17 @@ using namespace frc;
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
-               Elevator *elevator, HatchIntake *hatchIntake)
+               Elevator *elevator, HatchIntake *hatchIntake,
+               Limelight *limelightCargo, Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_driveMode(DriveMode::Openloop)
         , m_elevator(elevator)
-        , m_driveMode(DriveMode::Cheesy)
-        , m_hatchIntake(hatchIntake) {
+        , m_hatchIntake(hatchIntake)
+        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch)
+        , m_rumble(Rumble::off) {
 }
 
 Teleop::~Teleop() {
@@ -34,44 +38,72 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y =
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x =
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+    double y = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
+    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+    double x = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
+    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
 
     bool softwareLowGear =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
-    if (m_driveMode == DriveMode::Cheesy) {
-        if (softwareLowGear) {
-            m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
-        }
-        else {
-            m_drive->CheesyDrive(y, x, quickturn, false);
-        }
-    }
-    else if (m_driveMode == DriveMode::Openloop) {
-        if (softwareLowGear) {
-            m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
-        }
-        else {
-            m_drive->OpenloopArcadeDrive(y, x);
-
-            if (m_driveMode == DriveMode::Openloop) {
-                /* if (softwareLowGear) {
-                     x /= 3.0;
-                     y /= 3.0;
-                 }
-                 m_drive->OpenloopArcadeDrive(y, x);
-                 */
+    switch (m_driveMode) {
+        case DriveMode::Cheesy:
+            if (softwareLowGear) {
+                m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
             }
+            else {
+                m_drive->CheesyDrive(y, x, quickturn, false);
+            }
+            break;
+        case DriveMode::Openloop:
+            if (softwareLowGear) {
+                m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
+            }
+            else {
+                m_drive->OpenloopArcadeDrive(y, x);
+            }
+            break;
+        case DriveMode::LimelightCargo:
+            m_drive->LimelightCargoDrive();
+            break;
+        case DriveMode::LimelightHatch:
+            m_drive->LimelightHatchDrive();
+            break;
+        case DriveMode::AssistedCheesy:
+            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+            break;
+    }
 
-            /**
-             * Operator Joystick
-             */
-        }
+    switch (m_rumble) {
+        case Rumble::on:
+            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kRightRumble,
+                                          1);
+            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kLeftRumble,
+                                          1);
+            break;
+        case Rumble::off:
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kRightRumble,
+                                          0);
+            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kLeftRumble,
+                                          0);
+            break;
+    }
+
+    /**
+     * Operator Joystick
+     */
+
+    if (m_operatorJoystick->GetRawButton(Xbox::LeftBumper) &&
+        m_limelightCargo->isTargetValid() == 1) {
+        printf("got a Cargo target\n");
+        printf("%d\n", (GetMsecTime() - m_limelightCargoTimer));
+    }
+    if (m_operatorJoystick->GetRawButton(Xbox::RightBumper) &&
+        m_limelightHatch->isTargetValid() == 1) {
+        printf("got a hatch target\n");
+        printf("%d\n", (GetMsecTime() - m_limelightHatchTimer));
     }
 }
 
@@ -115,14 +147,18 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
+                    m_limelightHatch->SetLightMode(Limelight::LightMode::blink);
                 }
                 else {
+                    m_limelightHatch->SetLightMode(Limelight::LightMode::off);
                 }
                 break;
             case Xbox::BtnX:
@@ -139,8 +175,11 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
+                    // m_limelightCargoTimer = GetMsecTime();
+                    // m_driveMode = DriveMode::LimelightCargo;
                 }
                 else {
+                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -157,8 +196,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
+                    m_driveMode = DriveMode::AssistedCheesy;
                 }
                 else {
+                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::DPadUpVirtBtn:
@@ -206,14 +247,19 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
     switch (button) {
         case DualAction::BtnA:
             if (pressedP) {
+                m_limelightHatch->SetPipelineIndex(2);
+                m_driveMode = DriveMode::LimelightHatch;
             }
             else {
+                m_driveMode = DriveMode::Cheesy;
             }
             break;
         case DualAction::BtnB:
             if (pressedP) {
+                m_driveMode = DriveMode::LimelightCargo;
             }
             else {
+                m_driveMode = DriveMode::Cheesy;
             }
             break;
         case DualAction::BtnX:
@@ -224,8 +270,10 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::BtnY:
             if (pressedP) {
+                m_driveMode = DriveMode::AssistedCheesy;
             }
             else {
+                m_driveMode = DriveMode::Cheesy;
             }
             break;
         case DualAction::LeftBumper:

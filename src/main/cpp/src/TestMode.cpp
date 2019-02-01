@@ -9,8 +9,7 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_elevator(elevator)
-        , m_hatchIntake(hatchIntake)
-        , m_endGameSignalSent(false) {
+        , m_hatchIntake(hatchIntake) {
 }
 
 Test::~Test() {
