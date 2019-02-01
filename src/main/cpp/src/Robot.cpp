@@ -44,6 +44,7 @@ Robot::Robot()
         , m_limelightCargo(new Limelight("limelight-cargo"))
         , m_limelightHatch(new Limelight("limelight-hatch"))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
+        , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
                             m_rightDriveVictorB, m_stingerDriveMotor, m_gyro,

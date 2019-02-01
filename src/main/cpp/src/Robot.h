@@ -11,6 +11,7 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/logging/LogSpreadsheet.h"
@@ -108,6 +109,7 @@ private:
     Solenoid *m_cargoPlatformWheel;
 
     LogCell *m_matchIdentifier;
+    LogCell *m_gameSpecificMessage;
 
     CargoIntake *m_cargoIntake;
     Drive *m_drive;

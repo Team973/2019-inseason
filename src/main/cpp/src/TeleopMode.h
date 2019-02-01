@@ -8,7 +8,6 @@
 
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/sensors/Limelight.h"
@@ -102,13 +101,20 @@ private:
     DriveMode m_driveMode;
     CargoIntake *m_cargoIntake;
 
+    enum class GameMode
+    {
+        Cargo,
+        Hatch,
+        EndGame,
+    };
+    GameMode m_gameMode;
+
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
     Stinger *m_stinger;
 
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
-
     enum class Rumble
     {
         on,
@@ -116,6 +122,7 @@ private:
     };
     Rumble m_rumble;
 
+    uint32_t m_rumbleTimer;
     u_int32_t m_limelightCargoTimer;
     u_int32_t m_limelightHatchTimer;
 };

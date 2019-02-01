@@ -24,6 +24,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
         , m_stinger(stinger)
+        , m_gameMode(GameMode::Hatch)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_rumble(Rumble::off) {
@@ -79,6 +80,21 @@ void Teleop::TeleopPeriodic() {
             break;
     }
 
+    switch (m_gameMode) {
+        case GameMode::Cargo:
+            m_limelightCargo->SetLightOn();
+            m_limelightHatch->SetLightOff();
+            break;
+        case GameMode::Hatch:
+            m_limelightCargo->SetLightOff();
+            m_limelightHatch->SetLightOn();
+            break;
+        case GameMode::EndGame:
+            m_limelightCargo->SetLightBlink();
+            m_limelightHatch->SetLightBlink();
+            break;
+    }
+
     switch (m_rumble) {
         case Rumble::on:
             m_operatorJoystick->SetRumble(GenericHID::RumbleType::kRightRumble,
@@ -108,6 +124,27 @@ void Teleop::TeleopPeriodic() {
         printf("got a hatch target\n");
         printf("%d\n", (GetMsecTime() - m_limelightHatchTimer));
     }
+
+    switch (m_rumble) {
+        case Rumble::on:
+            m_rumbleTimer = GetMsecTime();
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kRightRumble,
+                                          1);
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kLeftRumble,
+                                          0);
+            break;
+        case Rumble::off:
+            if ((GetMsecTime() - m_rumbleTimer) > 150) {
+                m_operatorJoystick->SetRumble(
+                    GenericHID ::RumbleType::kRightRumble, 0);
+                m_operatorJoystick->SetRumble(
+                    GenericHID ::RumbleType::kLeftRumble, 0);
+            }
+            break;
+    }
+    /**
+     * Operator Joystick
+     */
 }
 
 void Teleop::TeleopStop() {
@@ -178,8 +215,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
-                    // m_limelightCargoTimer = GetMsecTime();
-                    // m_driveMode = DriveMode::LimelightCargo;
+                    m_gameMode = GameMode::Hatch;
                 }
                 else {
                     m_driveMode = DriveMode::Cheesy;
@@ -207,8 +243,11 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
+                    m_gameMode = GameMode::EndGame;
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::DPadDownVirtBtn:
@@ -219,14 +258,20 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadLeftVirtBtn:
                 if (pressedP) {
+                    m_gameMode = GameMode::Cargo;
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::DPadRightVirtBtn:
                 if (pressedP) {
+                    m_gameMode = GameMode::Hatch;
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::Back:
