@@ -11,8 +11,7 @@ Stinger::Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_stingerDriveMotor(stingerDriveMotor)
         , m_stingerLowerHall(stingerLowerHall)
         , m_stingerUpperHall(stingerUpperHall)
-        , m_stingerState(StingerState::manualVoltage)
-        , m_power(0.0) {
+        , m_stingerState(StingerState::manualVoltage) {
     this->m_scheduler->RegisterTask("Stinger", this, TASK_PERIODIC);
     m_stingerElevatorMotor->ConfigSelectedFeedbackSensor(
         ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder, 0,
@@ -51,18 +50,17 @@ Stinger::~Stinger() {
 void Stinger::SetPower(double power) {
     GoToStingerState(StingerState::manualVoltage);
     power = Util::bound(power, -1.0, 1.0);
-    m_power = power;
-    // if (power > 0.0 &&
-    //     GetStingerElevatorHallState() == StingerElevatorHallState::top) {
-    //     m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
-    // }
-    // if (power < 0.0 &&
-    //     GetStingerElevatorHallState() == StingerElevatorHallState::bottom) {
-    //     m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
-    // }
-    // if (GetStingerElevatorHallState() == StingerElevatorHallState::middle) {
-    //     m_stingerElevatorMotor->Set(ControlMode::PercentOutput, power);
-    // }
+    if (power > 0.0 &&
+        GetStingerElevatorHallState() == StingerElevatorHallState::top) {
+        m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
+    }
+    if (power < 0.0 &&
+        GetStingerElevatorHallState() == StingerElevatorHallState::bottom) {
+        m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
+    }
+    if (GetStingerElevatorHallState() == StingerElevatorHallState::middle) {
+        m_stingerElevatorMotor->Set(ControlMode::PercentOutput, power);
+    }
 }
 
 void Stinger::SetPositionInches(double position) {
@@ -131,8 +129,6 @@ void Stinger::TaskPeriodic(RobotMode mode) {
 
     switch (m_stingerState) {
         case StingerState::manualVoltage:
-            m_stingerElevatorMotor->Set(ControlMode::PercentOutput, m_power);
-            DBStringPrintf(DBStringPos::DB_LINE5, "pow: %2.2lf", m_power);
             break;
         case StingerState::motionMagic:
             break;

@@ -119,7 +119,6 @@ private:
     GreyTalonSRX *m_stingerDriveMotor;
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
-    double m_power;
 
     LogCell *m_current;
     LogCell *m_positionCell;
