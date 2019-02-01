@@ -54,7 +54,7 @@ void HatchIntake::ManualPuncherRetract() {
 }
 
 bool HatchIntake::IsHatchInIntake() {
-    return (m_hatchRollers->GetOutputCurrent() > 20);
+    return (m_hatchRollers->GetOutputCurrent() > 25);
 }
 
 void HatchIntake::GoToIntakeState(HatchIntake::HatchIntakeState newState) {
