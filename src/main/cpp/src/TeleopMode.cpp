@@ -79,7 +79,12 @@ void Teleop::TeleopPeriodic() {
             m_drive->AssistedCheesyDrive(y, x, quickturn, false);
             break;
         case DriveMode::StingerDrive:
-            m_drive->StingerDrive(y, x, quickturn, false);
+            if (softwareLowGear) {
+                m_drive->StingerDrive(y / 2.0, x / 2.0, quickturn, false);
+            }
+            else {
+                m_drive->StingerDrive(y, x, quickturn, false);
+            }
             break;
     }
 
@@ -104,6 +109,21 @@ void Teleop::TeleopPeriodic() {
             break;
         case GameMode::EndGamePeriodic:
             m_driveMode = DriveMode::StingerDrive;
+            if (m_stinger->GetPositionInches() < 1.0) {
+                softwareLowGear = true;
+            }
+            break;
+        case GameMode::RaiseIntake:
+            m_elevator->SetPosition(6.0);
+            m_cargoIntake->RetractPlatformWheel();
+            m_cargoIntake->UnlockWrist();
+            m_gameMode = GameMode::ResetIntake;
+            break;
+        case GameMode::ResetIntake:
+            if (fabs(m_elevator->GetPosition() - 6.0) < 1.0) {
+                m_cargoIntake->RetractWrist();
+                m_gameMode = GameMode::EndGamePeriodic;
+            }
             break;
     }
 
@@ -125,18 +145,6 @@ void Teleop::TeleopPeriodic() {
     /**
      * Operator Joystick
      */
-
-    if (m_operatorJoystick->GetRawButton(Xbox::LeftBumper) &&
-        m_limelightCargo->isTargetValid() == 1) {
-        printf("got a Cargo target\n");
-        printf("%d\n", (GetMsecTime() - m_limelightCargoTimer));
-    }
-    if (m_operatorJoystick->GetRawButton(Xbox::RightBumper) &&
-        m_limelightHatch->isTargetValid() == 1) {
-        printf("got a hatch target\n");
-        printf("%d\n", (GetMsecTime() - m_limelightHatchTimer));
-    }
-
     switch (m_rumble) {
         case Rumble::on:
             m_rumbleTimer = GetMsecTime();
@@ -154,9 +162,6 @@ void Teleop::TeleopPeriodic() {
             }
             break;
     }
-    /**
-     * Operator Joystick
-     */
 }
 
 void Teleop::TeleopStop() {
@@ -168,26 +173,45 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
         switch (button) {
             case PoofsJoysticks::LeftTrigger:
                 if (pressedP) {
+                    if (m_gameMode == GameMode::EndGamePeriodic &&
+                        m_cargoIntake->GetWristState() ==
+                            CargoIntake::CargoWristState::extended) {
+                        m_elevator->SetPower(ELEVATOR_STINGER_VOLTAGE_RATIO *
+                                             0.3);
+                        m_stinger->SetPower(0.3);
+                    }
+                    else if (m_gameMode == GameMode::EndGamePeriodic &&
+                             m_cargoIntake->GetWristState() ==
+                                 CargoIntake::CargoWristState::retracted) {
+                        m_elevator->SetPosition(6.0);
+                        m_stinger->SetPower(0.5);
+                    }
                 }
                 else {
                 }
                 break;
             case PoofsJoysticks::RightTrigger:
                 if (pressedP) {
+                    if (m_gameMode == GameMode::EndGamePeriodic) {
+                        m_gameMode = GameMode::RaiseIntake;
+                    }
                 }
                 else {
                 }
                 break;
             case PoofsJoysticks::LeftBumper:
                 if (pressedP) {
+                    if (m_gameMode == GameMode::EndGamePeriodic) {
+                        m_elevator->SetPower(-ELEVATOR_STINGER_VOLTAGE_RATIO);
+                        m_stinger->SetPower(-1.0);
+                    }
                 }
                 else {
                 }
                 break;
             case PoofsJoysticks::RightBumper:
                 if (pressedP) {
-                }
-                else {
+                    // quickturn
                 }
                 break;
         }

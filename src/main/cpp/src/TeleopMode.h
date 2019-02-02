@@ -84,6 +84,7 @@ public:
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
+    static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 0.55;
 
 private:
     ObservablePoofsJoystick *m_driverJoystick;
@@ -107,7 +108,9 @@ private:
         Cargo,
         Hatch,
         EndGameInit,
-        EndGamePeriodic
+        EndGamePeriodic,
+        RaiseIntake,
+        ResetIntake
     };
     GameMode m_gameMode;
 
@@ -125,7 +128,7 @@ private:
     Rumble m_rumble;
 
     uint32_t m_rumbleTimer;
-    u_int32_t m_limelightCargoTimer;
-    u_int32_t m_limelightHatchTimer;
+    uint32_t m_limelightCargoTimer;
+    uint32_t m_limelightHatchTimer;
 };
 }
