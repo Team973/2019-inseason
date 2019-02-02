@@ -16,7 +16,7 @@ HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_hatchRollers->Set(ControlMode::PercentOutput, 0.0);
     m_hatchRollers->SetNeutralMode(NeutralMode::Coast);
 
-    m_hatchRollers->EnableCurrentLimit(true);
+    m_hatchRollers->EnableCurrentLimit(false);
     m_hatchRollers->ConfigPeakCurrentDuration(0, 10);
     m_hatchRollers->ConfigPeakCurrentLimit(0, 10);
     m_hatchRollers->ConfigContinuousCurrentLimit(100, 10);
