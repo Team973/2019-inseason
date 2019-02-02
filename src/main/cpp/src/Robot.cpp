@@ -118,6 +118,8 @@ void Robot::AllStateContinuous() {
     // NetworkTable Battery Voltage
     SmartDashboard::PutNumber("misc/pdp/batteryvoltage", m_pdp->GetVoltage());
 
+    m_elevator->HallZero();
+
     m_matchIdentifier->LogPrintf(
         "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),

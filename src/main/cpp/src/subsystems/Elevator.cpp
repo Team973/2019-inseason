@@ -112,7 +112,5 @@ void Elevator::TaskPeriodic(RobotMode mode) {
         default:
             break;
     }
-
-    HallZero();  // Auto runs the auto zeroing from the hall
 }
 }
