@@ -6,6 +6,7 @@
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/Util.h"
+#include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
@@ -87,5 +88,7 @@ private:
     DriveMode m_driveMode;
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
+
+    GreyTalonSRX *m_cargoIntakeMotor;
 };
 }

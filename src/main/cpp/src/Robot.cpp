@@ -33,10 +33,8 @@ Robot::Robot()
         , m_gyro(new ADXRS450_Gyro())
         , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
         , m_cargoWrist(new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_PCM_ID))
-        , m_cargoWristLock(
-              new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_LOCK_PCM_ID))
-        , m_cargoPlatformWheel(
-              new Solenoid(PCM_CAN_ID, CARGO_PLATFORM_WHEEL_PCM_ID))
+        , m_cargoPlatformLock(
+              new Solenoid(PCM_CAN_ID, CARGO_PLATFORM_LOCK_PCM_ID))
         , m_limelightCargo(new Limelight("limelight-cargo"))
         , m_limelightHatch(new Limelight("limelight-hatch"))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
@@ -48,8 +46,7 @@ Robot::Robot()
                                   m_elevatorMotorB, m_operatorJoystick))
         , m_hatchIntake(new HatchIntake(this, m_logger))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
-                                        m_cargoWristLock, m_cargoWrist,
-                                        m_cargoPlatformWheel))
+                                        m_cargoPlatformLock, m_cargoWrist))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))

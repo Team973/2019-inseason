@@ -29,8 +29,8 @@ public:
      * @param cargoWheelPiston The cargo platform wheel solenoid.
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
-                GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoWristLock,
-                Solenoid *cargoWrist, Solenoid *cargoPlatformWheel);
+                GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoPlatformLock,
+                Solenoid *cargoWrist);
     virtual ~CargoIntake();
 
     /**
@@ -45,64 +45,21 @@ public:
     };
 
     /**
-     * Cargo Wrist Lock states.
-     */
-    enum class CargoWristLockState
-    {
-        unlocked, /**< Unlocked wrist state. */
-        locked    /**< Locked wrist state. */
-    };
-
-    /**
-     * Cargo Wrist Lock Pneumatics State
-     */
-
-    enum class CargoWristLockPneumaticState
-    {
-        unlocked, /**< Unlocked Wrist State. */
-        locked    /**< Locked Wrist State. */
-    };
-
-    /**
      * Cargo Wrist states.
      */
     enum class CargoWristState
     {
-        extended, /**< Extended wrist state. */
-        retracted /**< Retracted wrist state. */
-    };
-
-    /**
-     * Cargo Wrist Pneumatic State
-     */
-    enum class CargoWristPneumaticState
-    {
-        extended, /**<Extended Wrist State. */
-        retracted /**<Retracted Wrist State. */
+        extended = true,  /**< Extended wrist state. */
+        retracted = false /**< Retracted wrist state. */
     };
 
     /**
      * Cargo Platform Wheel states.
      */
-    enum class CargoPlatformWheelState
+    enum class CargoPlatformLockState
     {
-        retracted, /**< Retracted wheel state. */
-        deployed   /**< Deployed wheel state. */
-    };
-
-    enum class CargoPlatformWheelPneumaticState
-    {
-        retracted, /**<Retracted Wheel State. */
-        deployed   /**<Deployed Wheel State. */
-    };
-    /**
-     * Cargo Endgame state.
-     */
-    enum class CargoEndgameState
-    {
-        notEndgame, /**< Default, not endgame state. */
-        stowed,     /**< Stowed state. */
-        deployed    /**< Deployed state. */
+        retracted = true, /**< Retracted wheel state. */
+        deployed = false  /**< Deployed wheel state. */
     };
 
     void RunIntake(double power);
@@ -111,15 +68,12 @@ public:
     void StopIntake(); /**< Set the CargoIntakeState to notRunning. */
     void Exhaust();    /**< Set the CargoIntakeState to reverse. */
 
-    void UnlockWrist(); /**< Set the CargoWristLockState to unlocked. */
-    void LockWrist();   /**< Set the CargoWristLockState to locked. */
-
     void ExtendWrist();  /**< Set the CargoWristState to extended. */
     void RetractWrist(); /**< Set the CargoWristState to retracted. */
 
-    void DeployPlatformWheel();  /**< Set the CargoPlatformWheelState
+    void DeployPlatformWheel();  /**< Set the CargoPlatformLockState
                                     to deployed */
-    void RetractPlatformWheel(); /**< Set the CargoPlatformWheelState to
+    void RetractPlatformWheel(); /**< Set the CargoPlatformLockState to
                                     retracted */
 
     /**
@@ -135,12 +89,6 @@ public:
     CargoIntakeState GetIntakeState();
 
     /**
-     * Get the current CargoWristLockState.
-     * @returns The current CargoWristLockState.
-     */
-    CargoWristLockState GetWristLockState();
-
-    /**
      * Get the current CargoWristState.
      * @returns The current CargoWristState.
      */
@@ -150,13 +98,7 @@ public:
      * Get the current CargoPlatformWheelState.
      * @returns The current CargoPlatformWheelState.
      */
-    CargoPlatformWheelState GetPlatformWheelState();
-
-    /**
-     * Get the current CargoEndgameState.
-     * @returns The current CargoEndgameState.
-     */
-    CargoEndgameState GetEndgameState();
+    CargoPlatformLockState GetPlatformLockState();
 
     /**
      * Sets the desired cargo intake state
@@ -165,28 +107,16 @@ public:
     void GoToIntakeState(CargoIntakeState newState);
 
     /**
-     * Go to the wrist lock state
-     * @param newState The Wrist Lock state.
-     */
-    void GoToWristLockState(CargoWristLockState newState);
-
-    /**
      * Go to the desired wrist state
      * @param newState The desired Wrist state.
      */
     void GoToWristState(CargoWristState newState);
 
     /**
-     * Go to the platform wheel state
+     * Go to the platform lock state
      * @param newState The Platform Wheel state.
      */
-    void GoToPlatformWheelState(CargoPlatformWheelState newState);
-
-    /**
-     * Go to the desired end game state
-     * @param newState The desired End Game state.
-     */
-    void GoToEndgameState(CargoEndgameState newState);
+    void GoToPlatformLockState(CargoPlatformLockState newState);
 
     /**
      * The looping task periodic.
@@ -200,19 +130,11 @@ private:
 
     GreyTalonSRX *m_cargoIntakeMotor;
     Solenoid *m_cargoWrist;
-    Solenoid *m_cargoWristLock;
-    Solenoid *m_cargoPlatformWheel;
-
-    uint32_t m_cargoEndgameTimer;
+    Solenoid *m_cargoPlatformLock;
 
     CargoIntakeState m_cargoIntakeState;
     CargoWristState m_cargoWristState;
-    CargoWristPneumaticState m_cargoWristPneumaticState;
-    CargoWristLockState m_cargoWristLockState;
-    CargoWristLockPneumaticState m_cargoWristLockPneumaticState;
-    CargoPlatformWheelState m_cargoPlatformWheelState;
-    CargoPlatformWheelPneumaticState m_cargoPlatfromWheelPneumaticState;
-    CargoEndgameState m_cargoEndgameState;
+    CargoPlatformLockState m_cargoPlatformLockState;
 
     LogCell *m_current;
 
