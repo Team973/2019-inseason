@@ -78,6 +78,9 @@ void Teleop::TeleopPeriodic() {
         case DriveMode::AssistedCheesy:
             m_drive->AssistedCheesyDrive(y, x, quickturn, false);
             break;
+        case DriveMode::StingerDrive:
+            m_drive->StingerDrive(y, x);
+            break;
     }
 
     switch (m_gameMode) {
@@ -89,9 +92,18 @@ void Teleop::TeleopPeriodic() {
             m_limelightCargo->SetLightOff();
             m_limelightHatch->SetLightOn();
             break;
-        case GameMode::EndGame:
+        case GameMode::EndGameInit:
             m_limelightCargo->SetLightBlink();
             m_limelightHatch->SetLightBlink();
+            m_elevator->SetPosition(Elevator::PLATFORM);
+            m_cargoIntake->LockWrist();
+            m_cargoIntake->DeployPlatformWheel();
+            if (m_elevator->GetPosition() > 25.0) {
+                m_gameMode = GameMode::EndGamePeriodic;
+            }
+            break;
+        case GameMode::EndGamePeriodic:
+            m_driveMode = DriveMode::StingerDrive;
             break;
     }
 
@@ -243,7 +255,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
-                    m_gameMode = GameMode::EndGame;
+                    m_gameMode = GameMode::EndGameInit;
                     m_rumble = Rumble::on;
                 }
                 else {

@@ -96,7 +96,8 @@ private:
         LimelightCargo,
         LimelightHatch,
         AssistedCheesy,
-        Cheesy
+        Cheesy,
+        StingerDrive
     };
     DriveMode m_driveMode;
     CargoIntake *m_cargoIntake;
@@ -105,7 +106,8 @@ private:
     {
         Cargo,
         Hatch,
-        EndGame,
+        EndGameInit,
+        EndGamePeriodic
     };
     GameMode m_gameMode;
 
