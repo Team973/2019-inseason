@@ -41,8 +41,7 @@ public:
      * @param gyro The gyro.
      */
     Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
-               HatchIntake *hatchIntake, ADXRS450_Gyro *gyro,
-               ObservablePoofsJoystick *driver,
+               HatchIntake *hatchIntake, ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver);
     virtual ~Autonomous();
 
@@ -97,7 +96,6 @@ private:
     Drive *m_drive;
     Elevator *m_elevator;
     HatchIntake *m_hatchintake;
-    ADXRS450_Gyro *m_gyro;
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;

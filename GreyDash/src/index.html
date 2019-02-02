@@ -34,7 +34,8 @@
                 <li>Startup <a href="https://pynetworktables2js.readthedocs.io/en/stable/">pynetworktables2js</a>.</li>
                 <li>Open http://localhost:8888 in a web browser.</li>
             </ol>
-            <p>More information can be found at <a href="https://github.com/Team973/greybots-skeleton/blob/master/docs/DashboardGuide.md">this guide</a>.</p>
+            <p>More information can be found at <a href="https://github.com/Team973/greybots-skeleton/blob/master/docs/DashboardGuide.md">this
+                    guide</a>.</p>
         </div>
 
         <div class="mdl-dialog__actions">
@@ -70,14 +71,23 @@
             -->
             <section id="default" class="tabcontent">
                 <div class="mdl-grid content">
-                    <div id="cameraContainer" class="cameraContainer mdl-card mdl-cell mdl-cell--7-col mdl-color--grey-400">
-                        <button id="refresh" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="reloadCamera()">
+                    <div id="cameraOneContainer" class="cameraContainer mdl-card mdl-cell mdl-cell--7-col mdl-color--grey-400">
+                        <button id="refresh" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                            onclick="reloadCameraOne()">
+                            <i class="material-icons">autorenew</i>
+                        </button>
+                    </div>
+
+                    <div id="cameraTwoContainer" class="cameraContainer mdl-card mdl-cell mdl-cell--7-col mdl-color--grey-400">
+                        <button id="refresh" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                            onclick="reloadCameraTwo()">
                             <i class="material-icons">autorenew</i>
                         </button>
                     </div>
 
                     <div class="cards mdl-cell mdl-cell--2-col">
-                        <div id="indicators" class="indicators mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400"><span>Robot Status: <span id="robotState">Unknown State</span></span>
+                        <div id="indicators" class="indicators mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400"><span>Robot
+                                Status: <span id="robotState">Unknown State</span></span>
                         </div>
 
                         <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">

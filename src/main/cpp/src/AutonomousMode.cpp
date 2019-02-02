@@ -6,14 +6,13 @@ using namespace frc;
 
 namespace frc973 {
 Autonomous::Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
-                       HatchIntake *hatchIntake, ADXRS450_Gyro *gyro,
+                       HatchIntake *hatchIntake,
                        ObservablePoofsJoystick *driver,
                        ObservableXboxJoystick *codriver)
         : m_disabled(disabled)
         , m_drive(drive)
         , m_elevator(elevator)
         , m_hatchintake(hatchIntake)
-        , m_gyro(gyro)
         , m_routine(m_noAuto)
         , m_driveMode(DriveMode::Cheesy)
         , m_driverJoystick(driver)
@@ -27,7 +26,6 @@ Autonomous::~Autonomous() {
 
 void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
-    m_gyro->Reset();
     m_elevator->EnableCoastMode();
     std::cout << "Autonomous Start" << std::endl;
 
