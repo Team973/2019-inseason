@@ -11,8 +11,7 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
         , m_drive(drive)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
-        , m_cargoIntake(cargoIntake)
-        , m_cargoIntakeMotor(new GreyTalonSRX(5)) {
+        , m_cargoIntake(cargoIntake) {
 }
 
 Test::~Test() {
@@ -53,10 +52,6 @@ void Test::TestPeriodic() {
     }
     else {  // motionmagic
     }
-
-    DBStringPrintf(DBStringPos::DB_LINE4, "curr: %1.2lf out: %2.2lf",
-                   m_cargoIntakeMotor->GetOutputCurrent(),
-                   m_cargoIntakeMotor->GetBusVoltage());
 }
 
 void Test::TestStop() {
@@ -130,7 +125,6 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_cargoIntake->RunIntake();
                 }
                 else {
-                    m_cargoIntake->StopIntake();
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -151,12 +145,18 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
+                    m_cargoIntake->RunIntake(1.0);
+                }
+                else {
+                    m_cargoIntake->RunIntake(0.0);
                 }
                 break;
             case Xbox::DPadDownVirtBtn:
                 if (pressedP) {
+                    m_cargoIntake->RunIntake(-1.0);
                 }
                 else {
+                    m_cargoIntake->RunIntake(0.0);
                 }
                 break;
             case Xbox::DPadLeftVirtBtn:

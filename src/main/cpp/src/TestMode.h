@@ -88,7 +88,5 @@ private:
     DriveMode m_driveMode;
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
-
-    GreyTalonSRX *m_cargoIntakeMotor;
 };
 }

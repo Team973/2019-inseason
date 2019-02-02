@@ -107,13 +107,15 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
         m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {
         case CargoIntakeState::running:
+            m_cargoIntakeMotor->ConfigContinuousCurrentLimit(40, 10);
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 1.0);
             ExtendWrist();
-            if (filteredCurrent > 30.0) {
+            if (filteredCurrent > 25.0) {
                 m_cargoIntakeState = CargoIntakeState::holding;
             }
             break;
         case CargoIntakeState::holding:
+            m_cargoIntakeMotor->ConfigContinuousCurrentLimit(100, 10);
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.35);
             this->RetractWrist();
             break;
@@ -121,6 +123,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
             break;
         case CargoIntakeState::reverse:
+            m_cargoIntakeMotor->ConfigContinuousCurrentLimit(40, 10);
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, -1.0);
             this->RetractWrist();
             break;
@@ -137,10 +140,10 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
 
     switch (m_cargoPlatformLockState) {
         case CargoPlatformLockState::retracted:
-            m_cargoPlatformLock->Set(true);
+            m_cargoPlatformLock->Set(false);
             break;
         case CargoPlatformLockState::deployed:
-            m_cargoPlatformLock->Set(false);
+            m_cargoPlatformLock->Set(true);
             break;
     }
 }
