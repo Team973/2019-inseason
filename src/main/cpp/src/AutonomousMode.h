@@ -11,7 +11,6 @@
 #include "src/subsystems/Elevator.h"
 #include "src/Robot.h"
 #include "src/subsystems/Drive.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/pixelprocessors/AutoIndicator.h"
 
 using namespace frc;

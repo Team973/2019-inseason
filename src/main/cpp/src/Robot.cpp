@@ -8,6 +8,7 @@
 #include "src/Robot.h"
 #include "ctre/Phoenix.h"
 #include "lib/util/WrapDash.h"
+#include "src/controllers/LimelightDriveController.h"
 
 using namespace frc;
 using namespace ctre;
@@ -29,12 +30,15 @@ Robot::Robot()
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
         , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
         , m_gyro(new ADXRS450_Gyro())
-        , m_limelight(new Limelight())
+        , m_limelightCargo(new Limelight("limelight-cargo"))
+        , m_limelightHatch(new Limelight("limelight-hatch"))
         , m_logger(new LogSpreadsheet(this))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
+        , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
-                            m_rightDriveVictorB, m_gyro, m_limelight))
+                            m_rightDriveVictorB, m_gyro, m_limelightCargo,
+                            m_limelightHatch))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick))
         , m_hatchIntake(new HatchIntake(this, m_logger))
@@ -43,13 +47,16 @@ Robot::Robot()
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
-        , m_disabled(
-              new Disabled(m_driverJoystick, m_elevator, m_operatorJoystick))
+        , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
+                                  m_elevator, m_limelightCargo,
+                                  m_limelightHatch))
         , m_autonomous(new Autonomous(m_disabled, m_drive, m_elevator, m_gyro))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
-                              m_elevator, m_hatchIntake))
+                              m_elevator, m_hatchIntake, m_limelightCargo,
+                              m_limelightHatch))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_elevator, m_hatchIntake)) {
+                          m_elevator, m_hatchIntake, m_limelightCargo,
+                          m_limelightHatch)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -113,12 +120,24 @@ void Robot::TestStop() {
 void Robot::AllStateContinuous() {
     // NetworkTable Battery Voltage
     SmartDashboard::PutNumber("misc/pdp/batteryvoltage", m_pdp->GetVoltage());
+    SmartDashboard::PutNumber("misc/limelight/cargo/target",
+                              m_limelightCargo->isTargetValid());
+    SmartDashboard::PutNumber("misc/limelight/hatch/target",
+                              m_limelightHatch->isTargetValid());
 
     m_matchIdentifier->LogPrintf(
         "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
+    m_gameSpecificMessage->LogText(
+        DriverStation::GetInstance().GetGameSpecificMessage().c_str());
+    DBStringPrintf(DBStringPos::DB_LINE7, "Distance : %3.2lf",
+                   m_limelightHatch->GetHorizontalDistance());
+    DBStringPrintf(
+        DBStringPos::DB_LINE8, "Pow(cos(offset)): %3.2lf",
+        (pow(cos(m_limelightHatch->GetXOffset() * Constants::PI / 180 * 3.0),
+             5)));
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
@@ -157,7 +176,6 @@ void Robot::ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
     }
 }
 }
-
 int main() {
     return StartRobot<frc973::Robot>();
 }

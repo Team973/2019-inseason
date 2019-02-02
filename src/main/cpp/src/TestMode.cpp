@@ -4,12 +4,18 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, HatchIntake *hatchIntake)
+           Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+           Limelight *limelightCargo, Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_elevator(elevator)
-        , m_hatchIntake(hatchIntake) {
+        , m_driveMode(DriveMode::Cheesy)
+        , m_hatchIntake(hatchIntake)
+        , m_gameMode(GameMode::Hatch)
+        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch)
+        , m_rumble(Rumble::off) {
 }
 
 Test::~Test() {
@@ -25,23 +31,91 @@ void Test::TestPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = -m_driverJoystick->GetRawAxisWithDeadband(DualAction::LeftYAxis);
-    double x =
-        -m_driverJoystick->GetRawAxisWithDeadband(DualAction::RightXAxis);
-    bool softwareLowGear =
-        m_driverJoystick->GetRawButton(DualAction::RightTrigger);
+    double y = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
+    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+    double x = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
+    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+    bool quickturn =
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
 
-    if (m_driveMode == DriveMode::Openloop) {
-        if (softwareLowGear) {
-            x /= 3.0;
-            y /= 3.0;
-        }
-        m_drive->OpenloopArcadeDrive(y, x);
+    bool softwareLowGear =
+        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+
+    switch (m_driveMode) {
+        case DriveMode::Cheesy:
+            if (softwareLowGear) {
+                m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
+            }
+            else {
+                m_drive->CheesyDrive(y, x, quickturn, false);
+            }
+            break;
+        case DriveMode::Openloop:
+            if (softwareLowGear) {
+                m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
+            }
+            else {
+                m_drive->OpenloopArcadeDrive(y, x);
+            }
+            break;
+        case DriveMode::LimelightCargo:
+            m_drive->LimelightCargoDrive();
+            break;
+        case DriveMode::LimelightHatch:
+            m_drive->LimelightHatchDrive();
+            break;
+        case DriveMode::AssistedCheesy:
+            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+            break;
+    }
+
+    switch (m_gameMode) {
+        case GameMode::Cargo:
+            m_limelightCargo->SetLightOn();
+            m_limelightHatch->SetLightOff();
+            break;
+        case GameMode::Hatch:
+            m_limelightCargo->SetLightOff();
+            m_limelightHatch->SetLightOn();
+            break;
+        case GameMode::EndGame:
+            m_limelightCargo->SetLightBlink();
+            m_limelightHatch->SetLightBlink();
+            break;
     }
 
     /**
      * Operator Joystick
      */
+
+    if (m_operatorJoystick->GetRawButton(Xbox::LeftBumper) &&
+        m_limelightCargo->isTargetValid() == 1) {
+        printf("got a Cargo target\n");
+        printf("%d\n", (GetMsecTime() - m_limelightCargoTimer));
+    }
+    if (m_operatorJoystick->GetRawButton(Xbox::RightBumper) &&
+        m_limelightHatch->isTargetValid() == 1) {
+        printf("got a hatch target\n");
+        printf("%d\n", (GetMsecTime() - m_limelightHatchTimer));
+    }
+
+    switch (m_rumble) {
+        case Rumble::on:
+            m_rumbleTimer = GetMsecTime();
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kRightRumble,
+                                          1);
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kLeftRumble,
+                                          0);
+            break;
+        case Rumble::off:
+            if ((GetMsecTime() - m_rumbleTimer) > 150) {
+                m_operatorJoystick->SetRumble(
+                    GenericHID ::RumbleType::kRightRumble, 0);
+                m_operatorJoystick->SetRumble(
+                    GenericHID ::RumbleType::kLeftRumble, 0);
+            }
+            break;
+    }
 
     double elevatorManualOutput =
         -m_operatorJoystick->GetRawAxisWithDeadband(DualAction::LeftYAxis);
@@ -60,23 +134,89 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case PoofsJoysticks::LeftTrigger:
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Assisted Cheesy
+                            m_driveMode = DriveMode::AssistedCheesy;
+                            break;
+                        case GameMode::Hatch:  // Assisted Cheesy
+                            m_driveMode = DriveMode::AssistedCheesy;
+                            break;
+                        case GameMode::EndGame:  // Climb Down
+                            // Task
+                            break;
+                    }
                 }
                 else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            m_driveMode = DriveMode::Cheesy;
+                            break;
+                        case GameMode::Hatch:
+                            m_driveMode = DriveMode::Cheesy;
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case PoofsJoysticks::RightTrigger:
+            case PoofsJoysticks::RightTrigger:  // Score
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Score Cargo
+                            // Task
+                            break;
+                        case GameMode::Hatch:  // Score Hatch
+                            // Task
+                            break;
+                        case GameMode::EndGame:  // Raise Intake
+                            // Task
+                            break;
+                    }
                 }
                 else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
             case PoofsJoysticks::LeftBumper:
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Auto Score Cargo
+                            m_driveMode = DriveMode::LimelightCargo;
+                            break;
+                        case GameMode::Hatch:  // Auto Score Hatch
+                            m_driveMode = DriveMode::LimelightHatch;
+                            break;
+                        case GameMode::EndGame:  // Climb Up Stinger
+                            // Task
+                            break;
+                    }
                 }
                 else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case PoofsJoysticks::RightBumper:
+            case PoofsJoysticks::RightBumper:  // Quickturn
                 if (pressedP) {
                 }
                 else {
@@ -89,86 +229,345 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
 void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == OPERATOR_JOYSTICK_PORT) {
         switch (button) {
-            case Xbox::BtnY:
+            case Xbox::BtnY:  // High Elevator Preset
                 if (pressedP) {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::intaking);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // High Rocket Cargo Preset
+                            m_elevator->SetPosition(
+                                Elevator::HIGH_ROCKET_CARGO);
+                            break;
+                        case GameMode::Hatch:  // High Rocket Hatch Preset
+                            m_elevator->SetPosition(
+                                Elevator::HIGH_ROCKET_HATCH);
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 else {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::idle);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case Xbox::BtnA:
+            case Xbox::BtnA:  // Low Preset
                 if (pressedP) {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::exhaust);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Low Rocket Cargo Preset
+                            m_elevator->SetPosition(Elevator::LOW_ROCKET_CARGO);
+                            break;
+                        case GameMode::Hatch:  // Low Rocket Hatch Preset
+                            m_elevator->SetPosition(Elevator::LOW_ROCKET_HATCH);
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 else {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::idle);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case Xbox::BtnX:
+            case Xbox::BtnX:  // Cargo Bay Preset
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::GROUND);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Cargo Bay Cargo Preset
+                            m_elevator->SetPosition(Elevator::CARGO_SHIP_CARGO);
+                            break;
+                        case GameMode::Hatch:  // Cargo Bay Hatch Preset
+                            m_elevator->SetPosition(Elevator::CARGO_SHIP_HATCH);
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
+                }
+                else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case Xbox::BtnB:
+            case Xbox::BtnB:  // Middle Elevator Preset
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::LOW_ROCKET_HATCH);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Middle Rocket Cargo Preset
+                            m_elevator->SetPosition(
+                                Elevator::MIDDLE_ROCKET_CARGO);
+                            break;
+                        case GameMode::Hatch:  // Middle Rocket Hatch Preset
+                            m_elevator->SetPosition(
+                                Elevator::MIDDLE_ROCKET_HATCH);
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
+                }
+                else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case Xbox::LeftBumper:
+            case Xbox::LeftBumper:  // Extend Intake
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::MIDDLE_ROCKET_HATCH);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Extend Cargo Intake
+                            // Task
+                            break;
+                        case GameMode::Hatch:  // Extend Hatch Intake
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
+                }
+                else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
             case Xbox::LJoystickBtn:
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::HIGH_ROCKET_HATCH);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
+                }
+                else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
             case Xbox::RJoystickBtn:
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::LOW_ROCKET_CARGO);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
+                }
+                else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case Xbox::RightBumper:
+            case Xbox::RightBumper:  // Intake
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::MIDDLE_ROCKET_CARGO);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Intake Elevator Preset and
+                                               // Intaking for Cargo
+                            // Task
+                            break;
+                        case GameMode::Hatch:  // Intake Elevator Preset and
+                                               // Intaking for Hatch
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
+                }
+                else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case Xbox::DPadUpVirtBtn:
+            case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::HIGH_ROCKET_CARGO);
+                    m_gameMode = GameMode::EndGame;
+                    m_rumble = Rumble::on;
+                }
+                else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::DPadDownVirtBtn:
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::CARGO_SHIP_HATCH);
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
+                }
+                else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case Xbox::DPadLeftVirtBtn:
+            case Xbox::DPadLeftVirtBtn:  // Changes game mode to Cargo
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::CARGO_SHIP_CARGO);
+                    m_gameMode = GameMode::Cargo;
+                    m_rumble = Rumble::on;
+                }
+                else {
+                    m_rumble = Rumble::off;
                 }
                 break;
-            case Xbox::DPadRightVirtBtn:
+            case Xbox::DPadRightVirtBtn:  // Changes game mode to Hatch
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::PLATFORM);
+                    m_gameMode = GameMode::Hatch;
+                    m_rumble = Rumble::on;
+                }
+                else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::Back:
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
             case Xbox::Start:
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
         }
