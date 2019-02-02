@@ -46,8 +46,8 @@ static const int ELEVATOR_B_CAN_ID = 4;
  * Intake Subsystem
  **/
 static const int INTAKE_CAN_ID = 4;
-static const int HATCH_PUNCHER_PCM_ID = 4;
-static const int HATCH_ROLLER_CAN_ID = 6;
+static const int HATCH_PUNCHER_PCM_ID = 2;
+static const int HATCH_ROLLER_CAN_ID = 14;
 static const int LEFT_HATCH_SENSOR_ID = 2;
 static const int RIGHT_HATCH_SENSOR_ID = 3;
 

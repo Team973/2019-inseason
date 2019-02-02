@@ -13,6 +13,16 @@ HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_hatchSolenoidState(HatchSolenoidState::manual)
         , m_hatchIntakeState(HatchIntakeState::idle) {
     this->m_scheduler->RegisterTask("HatchIntake", this, TASK_PERIODIC);
+    m_hatchRollers->Set(ControlMode::PercentOutput, 0.0);
+    m_hatchRollers->SetNeutralMode(NeutralMode::Coast);
+
+    m_hatchRollers->EnableCurrentLimit(true);
+    m_hatchRollers->ConfigPeakCurrentDuration(0, 10);
+    m_hatchRollers->ConfigPeakCurrentLimit(0, 10);
+    m_hatchRollers->ConfigContinuousCurrentLimit(100, 10);
+    m_hatchRollers->EnableVoltageCompensation(false);
+    m_hatchRollers->SetInverted(false);
+    m_hatchRollers->ConfigNeutralDeadband(0.01);
 }
 
 HatchIntake::~HatchIntake() {
@@ -72,18 +82,18 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
         case HatchIntakeState::intaking:
             m_hatchRollers->Set(ControlMode::PercentOutput, -1.0);
             if (IsHatchInIntake()) {
-                // GoToIntakeState(HatchIntakeState::hold);
+                GoToIntakeState(HatchIntakeState::hold);
             }
             break;
         case HatchIntakeState::hold:
-            m_hatchRollers->Set(ControlMode::PercentOutput, -0.05);
+            m_hatchRollers->Set(ControlMode::PercentOutput, -0.1);
             break;
         case HatchIntakeState::exhaust:
             m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
             break;
         case HatchIntakeState::launch:
             m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
-            // GoToPneumaticState(HatchSolenoidState::launch);
+            GoToPneumaticState(HatchSolenoidState::launch);
             break;
         case HatchIntakeState::manual:
             // Do Nothing
