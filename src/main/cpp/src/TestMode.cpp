@@ -11,7 +11,8 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
         , m_drive(drive)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
-        , m_cargoIntake(cargoIntake) {
+        , m_cargoIntake(cargoIntake)
+        , m_cargoIntakeMotor(new GreyTalonSRX(5)) {
 }
 
 Test::~Test() {
@@ -52,6 +53,10 @@ void Test::TestPeriodic() {
     }
     else {  // motionmagic
     }
+
+    DBStringPrintf(DBStringPos::DB_LINE4, "curr: %1.2lf out: %2.2lf",
+                   m_cargoIntakeMotor->GetOutputCurrent(),
+                   m_cargoIntakeMotor->GetBusVoltage());
 }
 
 void Test::TestStop() {
@@ -93,40 +98,31 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::intaking);
+                    m_cargoIntake->ExtendWrist();
                 }
                 else {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::idle);
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::exhaust);
+                    m_cargoIntake->RetractWrist();
                 }
                 else {
-                    m_hatchIntake->SetIntakeState(
-                        HatchIntake::HatchIntakeState::idle);
                 }
                 break;
             case Xbox::BtnX:
                 if (pressedP) {
-                    m_cargoIntake->LockWrist();
+                    m_cargoIntake->DeployPlatformWheel();
                 }
                 else {
-                    m_cargoIntake->UnlockWrist();
-                    m_elevator->SetPosition(Elevator::GROUND);
+                    m_cargoIntake->RetractPlatformWheel();
                 }
-                break;
             case Xbox::BtnB:
                 if (pressedP) {
                     m_cargoIntake->ExtendWrist();
                 }
                 else {
                     m_cargoIntake->RetractWrist();
-                    m_elevator->SetPosition(Elevator::LOW_ROCKET_HATCH);
                 }
                 break;
             case Xbox::LeftBumper:
@@ -135,17 +131,14 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 }
                 else {
                     m_cargoIntake->StopIntake();
-                    m_elevator->SetPosition(Elevator::MIDDLE_ROCKET_HATCH);
                 }
                 break;
             case Xbox::LJoystickBtn:
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::HIGH_ROCKET_HATCH);
                 }
                 break;
             case Xbox::RJoystickBtn:
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::LOW_ROCKET_CARGO);
                 }
                 break;
             case Xbox::RightBumper:
@@ -154,31 +147,24 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 }
                 else {
                     m_cargoIntake->StopIntake();
-                    m_elevator->SetPosition(Elevator::MIDDLE_ROCKET_CARGO);
                 }
                 break;
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::HIGH_ROCKET_CARGO);
                 }
                 break;
             case Xbox::DPadDownVirtBtn:
                 if (pressedP) {
-                    m_cargoIntake->RunIntake(0.5);
                 }
                 else {
-                    m_cargoIntake->RunIntake(0.0);
-                    m_elevator->SetPosition(Elevator::CARGO_SHIP_HATCH);
                 }
                 break;
             case Xbox::DPadLeftVirtBtn:
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::CARGO_SHIP_CARGO);
                 }
                 break;
             case Xbox::DPadRightVirtBtn:
                 if (pressedP) {
-                    m_elevator->SetPosition(Elevator::PLATFORM);
                 }
                 break;
             case Xbox::Back:
@@ -217,10 +203,8 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::BtnX:
             if (pressedP) {
-                m_cargoIntake->LockWrist();
             }
             else {
-                m_cargoIntake->UnlockWrist();
             }
             break;
         case DualAction::BtnY:
