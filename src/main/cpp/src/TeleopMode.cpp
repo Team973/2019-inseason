@@ -79,7 +79,7 @@ void Teleop::TeleopPeriodic() {
             m_drive->AssistedCheesyDrive(y, x, quickturn, false);
             break;
         case DriveMode::StingerDrive:
-            m_drive->StingerDrive(y, x);
+            m_drive->StingerDrive(y, x, quickturn, false);
             break;
     }
 

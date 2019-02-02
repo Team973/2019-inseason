@@ -151,7 +151,8 @@ public:
      * @param throttle Forward/backwards amount.
      * @param turn Left/right amount.
      */
-    void StingerDrive(double throttle, double turn);
+    void StingerDrive(double throttle, double turn, bool isQuickTurn,
+                      bool isHighGear);
 
     /**
      * Set drive to use the velocity arcade drive controller.

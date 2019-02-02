@@ -173,9 +173,11 @@ double Drive::GetSplinePercentComplete() {
     return m_splineDriveController->GetSplinePercentComplete();
 }
 
-void Drive::StingerDrive(double throttle, double turn) {
+void Drive::StingerDrive(double throttle, double turn, bool isQuickTurn,
+                         bool isHighGear) {
     this->SetDriveController(m_stingerDriveController);
-    m_stingerDriveController->SetJoysticks(throttle, turn);
+    m_stingerDriveController->SetJoysticks(throttle, turn, isQuickTurn,
+                                           isHighGear);
 
     if (std::isnan(m_stingerDriveController->GetStingerMotorOutput())) {
         m_stingerDriveMotor->Set(ControlMode::PercentOutput, 0.0);
