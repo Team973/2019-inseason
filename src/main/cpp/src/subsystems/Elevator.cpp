@@ -38,6 +38,9 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->ConfigForwardSoftLimitEnable(true, 10);
     m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
         ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
+    m_elevatorMotorA->ConfigReverseSoftLimitEnable(true, 10);
+    m_elevatorMotorA->ConfigReverseSoftLimitThreshold(
+        ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
     m_elevatorMotorB->SetInverted(true);
@@ -92,11 +95,17 @@ void Elevator::TaskPeriodic(RobotMode mode) {
 
     switch (m_elevatorState) {
         case manualVoltage:
-            m_elevatorMotorA->Set(
-                ControlMode::PercentOutput,
-                (-m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis) /
-                 3.0) +
-                    ELEVATOR_FEED_FORWARD);
+            if (GetPosition() < 15.0) {
+                m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
+            }
+            else {
+                m_elevatorMotorA->Set(
+                    ControlMode::PercentOutput,
+                    (-m_operatorJoystick->GetRawAxisWithDeadband(
+                         Xbox::RightYAxis) /
+                     3.0) +
+                        ELEVATOR_FEED_FORWARD);
+            }
             break;
         case motionMagic:
             break;
