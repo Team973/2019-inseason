@@ -89,6 +89,7 @@ private:
 
     GreyTalonSRX *m_elevatorMotorA;
     VictorSPX *m_elevatorMotorB;
+    DigitalInput *m_elevatorHall;
 
     ADXRS450_Gyro *m_gyro;
     GreyLight *m_greylight;
@@ -101,7 +102,6 @@ private:
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
 
-    DigitalInput *m_elevatorHall;
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;
     GreyCompressor *m_compressor;
