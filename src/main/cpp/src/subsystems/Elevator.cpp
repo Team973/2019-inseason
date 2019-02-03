@@ -93,7 +93,7 @@ void Elevator::TaskPeriodic(RobotMode mode) {
         case manualVoltage:
             m_elevatorMotorA->Set(
                 ControlMode::PercentOutput,
-                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis) +
+                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis) +
                     ELEVATOR_FEED_FORWARD);
             break;
         case motionMagic:
