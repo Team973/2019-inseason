@@ -27,17 +27,16 @@ void Test::TestPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = -m_driverJoystick->GetRawAxisWithDeadband(DualAction::LeftYAxis);
-    double x =
-        -m_driverJoystick->GetRawAxisWithDeadband(DualAction::RightXAxis);
-    bool softwareLowGear =
-        m_driverJoystick->GetRawButton(DualAction::RightTrigger);
+    double y = -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
+    double x = -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
+    // bool softwareLowGear =
+    // m_operatorJoystick->GetRawButton(Xbox::RightTrigger);
 
     if (m_driveMode == DriveMode::Openloop) {
-        if (softwareLowGear) {
+        /*if (softwareLowGear) {
             x /= 3.0;
             y /= 3.0;
-        }
+        }*/
         m_drive->OpenloopArcadeDrive(y, x);
     }
 
@@ -93,16 +92,18 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
-                    m_cargoIntake->ExtendWrist();
+                    m_hatchIntake->SetIntaking();
                 }
                 else {
+                    m_hatchIntake->HoldHatch();
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
-                    m_cargoIntake->RetractWrist();
+                    m_hatchIntake->Exhaust();
                 }
                 else {
+                    m_hatchIntake->SetIdle();
                 }
                 break;
             case Xbox::BtnX:
@@ -114,10 +115,10 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 }
             case Xbox::BtnB:
                 if (pressedP) {
-                    m_cargoIntake->ExtendWrist();
+                    m_hatchIntake->ManualPuncherActivate();
                 }
                 else {
-                    m_cargoIntake->RetractWrist();
+                    m_hatchIntake->ManualPuncherRetract();
                 }
                 break;
             case Xbox::LeftBumper:
@@ -188,15 +189,12 @@ void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
     switch (button) {
         case DualAction::BtnA:
             if (pressedP) {
-                m_hatchIntake->HatchOpen();
             }
             else {
-                m_hatchIntake->HatchGrab();
             }
             break;
         case DualAction::BtnB:
             if (pressedP) {
-                m_hatchIntake->HatchLaunch();
             }
             else {
             }

@@ -33,10 +33,6 @@ public:
          Drive *drive, HatchIntake *hatchIntake, Elevator *elevator,
          CargoIntake *cargoIntake);
     virtual ~Test();
-
-    /**
-     * Start of test.
-     */
     void TestInit();
 
     /**
