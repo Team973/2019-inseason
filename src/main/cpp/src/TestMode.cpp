@@ -124,11 +124,9 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::BtnB:
                 if (pressedP) {
                     m_stinger->SetPower(0.5);
-                    m_cargoIntake->ExtendWrist();
                 }
                 else {
                     m_stinger->SetPower(0.0);
-                    m_cargoIntake->RetractWrist();
                 }
                 break;
             case Xbox::LeftBumper:

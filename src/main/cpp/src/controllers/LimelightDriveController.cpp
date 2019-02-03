@@ -51,11 +51,6 @@ void LimelightDriveController::CalcDriveOutput(
     out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
                             m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
 
-    DBStringPrintf(DBStringPos::DB_LINE5, "LS: %3.2lf RS: %3.2lf",
-                   m_leftSetpoint, m_rightSetpoint);
-    DBStringPrintf(DBStringPos::DB_LINE6, "LimeError: %3.2lf",
-                   m_limelight->GetXOffset());
-
     if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 5.0) &&
         (fabs(distError) < 3.0 && fabs(state->GetRate() < 3.0))) {
         m_onTarget = true;
