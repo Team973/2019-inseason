@@ -4,6 +4,7 @@
 #include "lib/managers/CoopTask.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "src/info/RobotInfo.h"
+#include "lib/helpers/GreyTalon.h"
 
 using namespace frc;
 
@@ -18,115 +19,110 @@ public:
      * Hatch intake constructor.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
+     * @param hatchRoller The hatch intake's roller.
+     * @param hatchPuncher The hatch intake's puncher.
      */
-    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger);
+    HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
+                GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher);
     virtual ~HatchIntake();
 
-    enum ClawState
+    /**
+     * Hatch intake states.
+     */
+    enum class HatchIntakeState
     {
-        clawOpen = true,
-        clawClosed = false
+        idle,     /**< Idle hatch intakeintaking. */
+        intaking, /**< Prime hatch intake for intaking. */
+        hold,     /**< Hold the hatch. */
+        exhaust,  /**< Place the hatch. */
+        launch,   /**< Launch the hatch. */
+        manual    /**< Manual hatch intake control. */
     };
 
-    enum PuncherState
+    /**
+     * Hatch intake pneumatic states.
+     */
+    enum class HatchSolenoidState
     {
-        active = true,
-        puncherIdle = false
+        launch,        /**< Launch the hatch. */
+        manualPunch,   /**< Manually punch the hatch. */
+        manualRetract, /**< Manually retract the puncher. */
+        manual         /**< Manual pneumatic control. */
     };
 
-    enum HatchIntakeState
+    /**
+     * Hatch puncher solenoid definitions.
+     */
+    enum HatchPuncherSolenoidStates
     {
-        idle,
-        intaking,
-        hold,
-        exhaust
-
+        punch = true,   /**< Punches hatch. */
+        retract = false /**< Retract puncher. */
     };
 
-    enum PneumaticState
-    {
-        release,
-        grab,
-        close,
-        pushOpen,
-        pushClose,
-        launch,
-        manual
-    };
-
-    /*
-     * When called, opens the claw arms
+    /**
+     * Set hatch intake to idle.
      */
-    void HatchOpen();
+    void SetIdle();
 
-    /*
-     * When called, closes claw arms, and
-     * has all claw solenoids set to idle
+    /**
+     * Set hatch intake to intaking.
      */
-    void HatchGrab();
+    void SetIntaking();
 
-    /*
-     * When called, opens claw arms and
-     * activates kicker
+    /**
+     * Set hatch intake to holding.
      */
-    void HatchPush();
+    void HoldHatch();
 
-    /*
-     * When called, activates kicker
+    /**
+     * Set hatch intake to exhausting.
      */
-    void HatchPuncherOn();
+    void Exhaust();
 
-    /*
-     * When called, deactivates clawKicker
+    /**
+     * Open the claw arms.
      */
-    void HatchPuncherOff();
+    void OpenClaw();
 
-    /*
-     * When called, launches cube
+    /**
+     * Grab the hatch.
      */
-    void HatchLaunch();
+    void GrabHatch();
 
-    /*
-     * When called, closes claw
+    /**
+     * Launch the hatch.
      */
-    void ClawClose();
+    void LaunchHatch();
 
-    /*
-     * Whe called, opens claw
-     */
-    void ClawOpen();
+    bool IsHatchInIntake();
 
-    /*
-     * When called, activates kicker
+    /**
+     * Manually punch, regardless of grab state.
      */
     void ManualPuncherActivate();
 
-    /*
-     * When called, deactivates Kicker
+    /**
+     * Manually retract puncher, regardless of grab state.
      */
-
-    void ManualPuncherIdle();
-
-    void SetIntakeState(HatchIntakeState state);
+    void ManualPuncherRetract();
 
     /**
-     * Periodically update information about the drive.
+     * Periodically update information about the hatch intake.
      * @param mode The current robot mode.
      */
-
     void TaskPeriodic(RobotMode mode);
 
 private:
-    void GoToState(PneumaticState state);
-
     TaskMgr *m_scheduler;
-    DigitalInput *m_rightHatchSensor;
-    DigitalInput *m_leftHatchSensor;
     LogSpreadsheet *m_logger;
-    Solenoid *m_hatchClaw;
-    Solenoid *m_hatchPuncher;
-    HatchIntakeState m_hatchIntakeState;
 
-    uint32_t m_stateStartTimeMs;
+    GreyTalonSRX *m_hatchRollers;
+    Solenoid *m_hatchPuncher;
+
+    HatchIntakeState m_hatchIntakeState;
+    HatchSolenoidState m_hatchSolenoidState;
+
+    void GoToPneumaticState(HatchSolenoidState newState);
+    void GoToIntakeState(HatchIntakeState newState);
 };
 }

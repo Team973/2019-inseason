@@ -79,8 +79,9 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
+    Elevator *m_elevator;
+
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
-    Elevator *m_elevator;
 };
 }

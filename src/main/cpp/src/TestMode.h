@@ -8,8 +8,10 @@
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/WrapDash.h"
 #include "lib/util/Util.h"
+#include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
@@ -31,12 +33,9 @@ public:
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
          Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-         Limelight *limelightCargo, Limelight *limelightHatch);
+         CargoIntake *cargoIntake, Limelight *limelightCargo,
+         Limelight *limelightHatch);
     virtual ~Test();
-
-    /**
-     * Start of test.
-     */
     void TestInit();
 
     /**
@@ -89,16 +88,9 @@ private:
     };
     DriveMode m_driveMode;
 
-    enum class GameMode
-    {
-        Cargo,
-        Hatch,
-        EndGame
-    };
-    GameMode m_gameMode;
-
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
+    CargoIntake *m_cargoIntake;
 
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
@@ -111,7 +103,5 @@ private:
     Rumble m_rumble;
 
     uint32_t m_rumbleTimer;
-    u_int32_t m_limelightCargoTimer;
-    u_int32_t m_limelightHatchTimer;
 };
 }

@@ -1,7 +1,7 @@
 /*
  * TeleopMode.cpp
  *
- *  Created on: January 7, 2018
+ *  Created on: January 7, 2019
  *      Authors: Kyle, Chris
  *
  */
@@ -14,13 +14,15 @@ namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
-               Limelight *limelightCargo, Limelight *limelightHatch)
+               CargoIntake *cargoIntake, Limelight *limelightCargo,
+               Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_driveMode(DriveMode::Openloop)
         , m_elevator(elevator)
-        , m_driveMode(DriveMode::Cheesy)
         , m_hatchIntake(hatchIntake)
+        , m_cargoIntake(cargoIntake)
         , m_gameMode(GameMode::Hatch)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
@@ -40,9 +42,11 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
+    double y =
+        0.0;  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
     //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
+    double x =
+        0.0;  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
     //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
@@ -251,17 +255,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     }
                 }
                 else {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            // Task
-                            break;
-                        case GameMode::Hatch:
-                            // Task
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
                 }
                 break;
             case Xbox::BtnA:  // Low Preset
@@ -279,17 +272,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     }
                 }
                 else {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            // Task
-                            break;
-                        case GameMode::Hatch:
-                            // Task
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
                 }
                 break;
             case Xbox::BtnX:  // Cargo Bay Preset
@@ -307,17 +289,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     }
                 }
                 else {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            // Task
-                            break;
-                        case GameMode::Hatch:
-                            // Task
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
                 }
                 break;
             case Xbox::BtnB:  // Middle Elevator Preset
@@ -337,17 +308,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     }
                 }
                 else {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            // Task
-                            break;
-                        case GameMode::Hatch:
-                            // Task
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
                 }
                 break;
             case Xbox::LeftBumper:  // Extend Intake
@@ -380,58 +340,14 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LJoystickBtn:
                 if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            // Task
-                            break;
-                        case GameMode::Hatch:
-                            // Task
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
                 }
                 else {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            // Task
-                            break;
-                        case GameMode::Hatch:
-                            // Task
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
                 }
                 break;
             case Xbox::RJoystickBtn:
                 if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            // Task
-                            break;
-                        case GameMode::Hatch:
-                            // Task
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
                 }
                 else {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            // Task
-                            break;
-                        case GameMode::Hatch:
-                            // Task
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
                 }
                 break;
             case Xbox::RightBumper:  // Intake
