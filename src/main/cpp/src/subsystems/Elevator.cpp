@@ -89,6 +89,7 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     SmartDashboard::PutNumber("elevator/motorB/velocity",
                               m_elevatorMotorB->GetSelectedSensorVelocity(0));
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
+
     switch (m_elevatorState) {
         case manualVoltage:
             m_elevatorMotorA->Set(

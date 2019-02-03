@@ -97,6 +97,10 @@ void Teleop::TeleopPeriodic() {
     /**
      * Operator Joystick
      */
+    if (m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis) > 0.2) {
+        m_elevator->SetManualInput();
+    }
+
     switch (m_rumble) {
         case Rumble::on:
             m_rumbleTimer = GetMsecTime();
@@ -377,6 +381,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadLeftVirtBtn:  // Changes game mode to Cargo
                 if (pressedP) {
                     m_gameMode = GameMode::Cargo;
+                    m_hatchIntake->SetIdle();
+                    m_hatchIntake->ManualPuncherRetract();
                     m_rumble = Rumble::on;
                 }
                 else {
@@ -386,6 +392,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadRightVirtBtn:  // Changes game mode to Hatch
                 if (pressedP) {
                     m_gameMode = GameMode::Hatch;
+                    m_cargoIntake->StopIntake();
+                    m_cargoIntake->RetractWrist();
                     m_rumble = Rumble::on;
                 }
                 else {
