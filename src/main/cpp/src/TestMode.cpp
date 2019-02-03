@@ -139,7 +139,7 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
-                    m_hatchIntake->SetIntaking();
+                    m_hatchIntake->RunIntake();
                 }
                 else {
                     m_hatchIntake->HoldHatch();
