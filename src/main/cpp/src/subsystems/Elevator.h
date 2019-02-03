@@ -40,17 +40,17 @@ public:
 
     static constexpr double GROUND = 0.0; /**< Ground preset. */
     static constexpr double LOW_ROCKET_HATCH =
-        1.5; /**< Low rocket hatch preset. */
+        0.0; /**< Low rocket hatch preset. */
     static constexpr double MIDDLE_ROCKET_HATCH =
         28.0; /**< Middle rocket hatch preset. */
     static constexpr double HIGH_ROCKET_HATCH =
-        57.75; /**< High rocket hatch preset. */
+        56.0; /**< High rocket hatch preset. */
     static constexpr double LOW_ROCKET_CARGO =
-        1.5; /**< Low rocket cargo preset. */
+        5.0; /**< Low rocket cargo preset. */
     static constexpr double MIDDLE_ROCKET_CARGO =
-        28.0; /**< Middle rocket cargo preset. */
+        33.0; /**< Middle rocket cargo preset. */
     static constexpr double HIGH_ROCKET_CARGO =
-        58.0; /**< High rocket cargo preset. */
+        57.75; /**< High rocket cargo preset. */
     static constexpr double CARGO_SHIP_HATCH =
         15.0; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
@@ -58,7 +58,7 @@ public:
     static constexpr double PLATFORM = 26.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
-        61.0; /**< Soft elevator height. */
+        58.0; /**< Soft elevator height. */
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         8.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
