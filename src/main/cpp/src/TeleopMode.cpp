@@ -48,9 +48,13 @@ void Teleop::TeleopPeriodic() {
     //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
-
     bool softwareLowGear =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+
+    if (m_stinger->GetPositionInches() < 1.0 &&
+        m_gameMode == GameMode::EndGamePeriodic) {
+        softwareLowGear = true;
+    }
 
     switch (m_driveMode) {
         case DriveMode::Cheesy:
@@ -109,9 +113,6 @@ void Teleop::TeleopPeriodic() {
             break;
         case GameMode::EndGamePeriodic:
             m_driveMode = DriveMode::StingerDrive;
-            if (m_stinger->GetPositionInches() < 1.0) {
-                softwareLowGear = true;
-            }
             break;
         case GameMode::RaiseIntake:
             m_elevator->SetPosition(6.0);
