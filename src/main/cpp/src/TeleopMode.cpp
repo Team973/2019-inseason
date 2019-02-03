@@ -38,9 +38,11 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
+    double y =
+        0.0;  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
     //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
+    double x =
+        0.0;  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
     //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
