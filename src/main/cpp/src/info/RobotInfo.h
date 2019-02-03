@@ -58,6 +58,7 @@ static const int RIGHT_HATCH_SENSOR_ID = 3;
  * Digital Sensors
  **/
 static const int PRESSURE_DIN_ID = 1;
+static const int ELEVATOR_HALL_ID = 7;
 
 /**
  * Analog Sensors
