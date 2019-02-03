@@ -14,13 +14,15 @@ namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
-               Limelight *limelightCargo, Limelight *limelightHatch)
+               CargoIntake *cargoIntake, Limelight *limelightCargo,
+               Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
         , m_driveMode(DriveMode::Openloop)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
+        , m_cargoIntake(cargoIntake)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_rumble(Rumble::off) {
@@ -38,10 +40,10 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
-    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
-    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+    double y =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+    double x =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
 
@@ -147,24 +149,26 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
-                    m_rumble = Rumble::on;
+                    m_hatchIntake->SetIntaking();
                 }
                 else {
-                    m_rumble = Rumble::off;
+                    m_hatchIntake->SetIdle();
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
-                    m_limelightHatch->SetLightMode(Limelight::LightMode::blink);
+                    m_hatchIntake->Exhaust();
                 }
                 else {
-                    m_limelightHatch->SetLightMode(Limelight::LightMode::off);
+                    m_hatchIntake->SetIdle();
                 }
                 break;
             case Xbox::BtnX:
                 if (pressedP) {
+                    m_hatchIntake->ManualPuncherActivate();
                 }
                 else {
+                    m_hatchIntake->ManualPuncherRetract();
                 }
                 break;
             case Xbox::BtnB:
@@ -175,11 +179,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
-                    // m_limelightCargoTimer = GetMsecTime();
-                    // m_driveMode = DriveMode::LimelightCargo;
+                    m_hatchIntake->ManualPuncherActivate();
                 }
                 else {
-                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -196,10 +198,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
-                    m_driveMode = DriveMode::AssistedCheesy;
+                    m_hatchIntake->ManualPuncherRetract();
                 }
                 else {
-                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::DPadUpVirtBtn:

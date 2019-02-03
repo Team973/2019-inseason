@@ -6,8 +6,10 @@
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/Util.h"
+#include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
@@ -28,12 +30,9 @@ public:
      * @param drive The drive subsystem.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, Elevator *elevator, HatchIntake *hatchIntake);
+         Drive *drive, HatchIntake *hatchIntake, Elevator *elevator,
+         CargoIntake *cargoIntake);
     virtual ~Test();
-
-    /**
-     * Start of test.
-     */
     void TestInit();
 
     /**
@@ -81,6 +80,7 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     Drive *m_drive;
+    CargoIntake *m_cargoIntake;
     DriveMode m_driveMode;
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
