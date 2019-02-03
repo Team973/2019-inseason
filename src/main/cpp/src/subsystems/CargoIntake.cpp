@@ -13,7 +13,7 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_cargoIntakeState(CargoIntakeState::notRunning)
         , m_cargoWristState(CargoWristState::retracted)
         , m_cargoPlatformLockState(CargoPlatformLockState::retracted)
-        , m_intakeCurentFilter(new MovingAverageFilter(0.8)) {
+        , m_intakeCurentFilter(new MovingAverageFilter(0.4)) {
     this->m_scheduler->RegisterTask("CargoIntake", this, TASK_PERIODIC);
     m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
     m_cargoIntakeMotor->SetNeutralMode(NeutralMode::Coast);
