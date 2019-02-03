@@ -101,9 +101,10 @@ void Elevator::TaskPeriodic(RobotMode mode) {
             else {
                 m_elevatorMotorA->Set(
                     ControlMode::PercentOutput,
-                    (-m_operatorJoystick->GetRawAxisWithDeadband(
-                         Xbox::RightYAxis) /
-                     3.0) +
+                    pow(-m_operatorJoystick->GetRawAxisWithDeadband(
+                            Xbox::RightYAxis),
+                        3.0) /
+                            3.0 +
                         ELEVATOR_FEED_FORWARD);
             }
             break;
