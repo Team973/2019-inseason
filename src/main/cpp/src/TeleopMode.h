@@ -11,11 +11,13 @@
 #include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
@@ -33,11 +35,13 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
-     * @param greylight The GreyLight system.
+     * @param limelightCargo The Limelight for the cargo.
+     * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
-           GreyLight *greylight);
+           Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+           CargoIntake *cargoIntake, Limelight *limelightCargo,
+           Limelight *limelightHatch);
 
     virtual ~Teleop();
 
@@ -81,10 +85,6 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color END_GAME_RED = {
-        255, 0, 0}; /**< Display red during end game. */
-    static constexpr Color NO_COLOR = {0, 0, 0}; /**< Turn off the LED strip. */
-
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
@@ -93,15 +93,27 @@ private:
     enum class DriveMode
     {
         Openloop,
+        LimelightCargo,
+        LimelightHatch,
+        AssistedCheesy,
         Cheesy
     };
     DriveMode m_driveMode;
-
     HatchIntake *m_hatchIntake;
+    CargoIntake *m_cargoIntake;
     Elevator *m_elevator;
 
-    GreyLight *m_greylight;
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
+
+    enum class Rumble
+    {
+        on,
+        off
+    };
+    Rumble m_rumble;
+
+    u_int32_t m_limelightCargoTimer;
+    u_int32_t m_limelightHatchTimer;
 };
 }

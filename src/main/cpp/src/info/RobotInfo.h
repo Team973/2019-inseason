@@ -1,7 +1,7 @@
 /*
  * RobotInfo.h
  * Created: January 9, 2018
- * Author: Kyle
+ * Author: One of the Chris's probably
  */
 #pragma once
 
@@ -45,9 +45,12 @@ static const int ELEVATOR_B_CAN_ID = 4;
 /**
  * Intake Subsystem
  **/
+static const int CARGO_INTAKE_CAN_ID = 5;
+static const int CARGO_INTAKE_WRIST_PCM_ID = 1;
+static const int CARGO_PLATFORM_LOCK_PCM_ID = 0;
 static const int INTAKE_CAN_ID = 4;
-static const int HATCH_PUNCHER_PCM_ID = 1;
-static const int HATCH_CLAW_PCM_ID = 2;
+static const int HATCH_PUNCHER_PCM_ID = 2;
+static const int HATCH_ROLLER_CAN_ID = 14;
 static const int LEFT_HATCH_SENSOR_ID = 2;
 static const int RIGHT_HATCH_SENSOR_ID = 3;
 

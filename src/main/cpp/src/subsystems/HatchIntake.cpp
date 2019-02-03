@@ -4,107 +4,113 @@
 #include "lib/util/WrapDash.h"
 
 namespace frc973 {
-HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger)
+HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
+                         GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher)
         : m_scheduler(scheduler)
-        , m_rightHatchSensor(new DigitalInput(RIGHT_HATCH_SENSOR_ID))
-        , m_leftHatchSensor(new DigitalInput(LEFT_HATCH_SENSOR_ID))
         , m_logger(logger)
-        , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
-        , m_hatchClaw(new Solenoid(PCM_CAN_ID, HATCH_CLAW_PCM_ID))
+        , m_hatchRollers(hatchRollers)
+        , m_hatchPuncher(hatchPuncher)
+        , m_hatchSolenoidState(HatchSolenoidState::manual)
         , m_hatchIntakeState(HatchIntakeState::idle) {
     this->m_scheduler->RegisterTask("HatchIntake", this, TASK_PERIODIC);
+    m_hatchRollers->Set(ControlMode::PercentOutput, 0.0);
+    m_hatchRollers->SetNeutralMode(NeutralMode::Coast);
+
+    m_hatchRollers->EnableCurrentLimit(false);
+    m_hatchRollers->ConfigPeakCurrentDuration(0, 10);
+    m_hatchRollers->ConfigPeakCurrentLimit(0, 10);
+    m_hatchRollers->ConfigContinuousCurrentLimit(100, 10);
+    m_hatchRollers->EnableVoltageCompensation(false);
+    m_hatchRollers->SetInverted(false);
+    m_hatchRollers->ConfigNeutralDeadband(0.01);
 }
 
 HatchIntake::~HatchIntake() {
     m_scheduler->UnregisterTask(this);
 }
 
-void HatchIntake::HatchOpen() {
-    GoToState(PneumaticState::release);
+void HatchIntake::SetIdle() {
+    GoToIntakeState(HatchIntakeState::idle);
 }
 
-void HatchIntake::HatchGrab() {
-    GoToState(PneumaticState::grab);
+void HatchIntake::SetIntaking() {
+    GoToIntakeState(HatchIntakeState::intaking);
 }
 
-void HatchIntake::HatchPush() {
-    GoToState(PneumaticState::pushOpen);
+void HatchIntake::HoldHatch() {
+    GoToIntakeState(HatchIntakeState::hold);
 }
 
-void HatchIntake::HatchPuncherOn() {
-    m_hatchPuncher->Set(active);
+void HatchIntake::Exhaust() {
+    GoToIntakeState(HatchIntakeState::exhaust);
 }
 
-void HatchIntake::HatchLaunch() {
-    GoToState(PneumaticState::launch);
+void HatchIntake::LaunchHatch() {
+    GoToIntakeState(HatchIntakeState::launch);
 }
 
-void HatchIntake::ClawClose() {
-    m_hatchClaw->Set(clawClosed);
+void HatchIntake::GrabHatch() {
+    GoToIntakeState(HatchIntakeState::intaking);
 }
 
-void HatchIntake::ClawOpen() {
-    m_hatchClaw->Set(clawOpen);
-}
 void HatchIntake::ManualPuncherActivate() {
-    GoToState(PneumaticState::manual);
-    m_hatchPuncher->Set(active);
+    GoToPneumaticState(HatchSolenoidState::manualPunch);
+    GoToIntakeState(HatchIntakeState::manual);
 }
 
-void HatchIntake::SetIntakeState(HatchIntakeState state) {
-    m_hatchIntakeState = state;
+void HatchIntake::ManualPuncherRetract() {
+    GoToPneumaticState(HatchSolenoidState::manualRetract);
+    GoToIntakeState(HatchIntakeState::manual);
+}
+
+bool HatchIntake::IsHatchInIntake() {
+    return (m_hatchRollers->GetOutputCurrent() > 30);
+}
+
+void HatchIntake::GoToPneumaticState(HatchSolenoidState newState) {
+    m_hatchSolenoidState = newState;
+}
+void HatchIntake::GoToIntakeState(HatchIntakeState newState) {
+    m_hatchIntakeState = newState;
 }
 
 void HatchIntake::TaskPeriodic(RobotMode mode) {
     switch (m_hatchIntakeState) {
         case HatchIntakeState::idle:
-            GoToState(PneumaticState::grab);
+            m_hatchRollers->Set(ControlMode::PercentOutput, 0.0);
             break;
         case HatchIntakeState::intaking:
-            GoToState(PneumaticState::release);
-            if (m_leftHatchSensor->Get() && m_rightHatchSensor->Get()) {
-                m_hatchIntakeState = HatchIntakeState::hold;
+            m_hatchRollers->Set(ControlMode::PercentOutput, -1.0);
+            if (IsHatchInIntake()) {
+                GoToIntakeState(HatchIntakeState::hold);
             }
             break;
         case HatchIntakeState::hold:
-            GoToState(PneumaticState::grab);
+            m_hatchRollers->Set(ControlMode::PercentOutput, -0.1);
             break;
         case HatchIntakeState::exhaust:
-            GoToState(PneumaticState::launch);
-            if (m_leftHatchSensor->Get() && m_rightHatchSensor->Get()) {
-                m_hatchIntakeState = HatchIntakeState::hold;
-            }
-            else {
-                m_hatchIntakeState = HatchIntakeState::idle;
-            }
+            m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
+            break;
+        case HatchIntakeState::launch:
+            m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
+            GoToPneumaticState(HatchSolenoidState::launch);
+            break;
+        case HatchIntakeState::manual:
+            // Do Nothing
             break;
     }
-}
 
-void HatchIntake::GoToState(PneumaticState state) {
-    m_stateStartTimeMs = GetMsecTime();
-    switch (state) {
-        case PneumaticState::release:
-            m_hatchClaw->Set(clawOpen);
-            m_hatchPuncher->Set(puncherIdle);
+    switch (m_hatchSolenoidState) {
+        case HatchSolenoidState::launch:
             break;
-        case PneumaticState::grab:
-            m_hatchClaw->Set(clawClosed);
-            m_hatchPuncher->Set(puncherIdle);
+        case HatchSolenoidState::manualPunch:
+            m_hatchPuncher->Set(HatchPuncherSolenoidStates::punch);
             break;
-        case PneumaticState::pushOpen:
-            m_hatchClaw->Set(clawOpen);
-            m_hatchPuncher->Set(active);
+        case HatchSolenoidState::manualRetract:
+            m_hatchPuncher->Set(HatchPuncherSolenoidStates::retract);
             break;
-        case PneumaticState::pushClose:
-            m_hatchClaw->Set(clawClosed);
-            m_hatchPuncher->Set(puncherIdle);
-            break;
-        case PneumaticState::launch:
-            m_hatchClaw->Set(clawOpen);
-            m_hatchPuncher->Set(active);
-            break;
-        case PneumaticState::manual:
+        case HatchSolenoidState::manual:
+            // Do nothing
             break;
     }
 }
