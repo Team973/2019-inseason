@@ -30,10 +30,6 @@ public:
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
          Drive *drive, Elevator *elevator, HatchIntake *hatchIntake);
     virtual ~Test();
-
-    /**
-     * Start of test.
-     */
     void TestInit();
 
     /**
