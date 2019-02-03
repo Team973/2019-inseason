@@ -2,6 +2,7 @@
 
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
+#include "lib/helpers/GreyLight.h"
 #include "src/subsystems/Elevator.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
@@ -78,10 +79,9 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
-    Limelight *m_limelightCargo;
-    Limelight *m_limelightHatch;
     Elevator *m_elevator;
 
-    LightPattern::SolidColor *m_disabledSignal;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
 };
 }

@@ -8,8 +8,8 @@ Disabled::Disabled(ObservablePoofsJoystick *driver,
                    ObservableXboxJoystick *codriver, Elevator *elevator,
                    Limelight *limelightCargo, Limelight *limelightHatch)
         : m_driverJoystick(driver)
-        , m_elevator(elevator)
         , m_operatorJoystick(codriver)
+        , m_elevator(elevator)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch) {
 }

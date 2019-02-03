@@ -4,10 +4,14 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/pixelprocessors/Flash.h"
+#include "lib/util/WrapDash.h"
 #include "lib/util/Util.h"
+#include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
@@ -28,12 +32,10 @@ public:
      * @param drive The drive subsystem.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, Elevator *elevator, HatchIntake *hatchIntake);
+         Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+         CargoIntake *cargoIntake, Limelight *limelightCargo,
+         Limelight *limelightHatch);
     virtual ~Test();
-
-    /**
-     * Start of test.
-     */
     void TestInit();
 
     /**
@@ -72,21 +74,34 @@ public:
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
 private:
-    enum class DriveMode
-    {
-        Openloop
-    };
-
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
     Drive *m_drive;
+    enum class DriveMode
+    {
+        Openloop,
+        LimelightCargo,
+        LimelightHatch,
+        AssistedCheesy,
+        Cheesy
+    };
     DriveMode m_driveMode;
 
-    Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
+    CargoIntake *m_cargoIntake;
 
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
+
+    enum class Rumble
+    {
+        on,
+        off
+    };
+    Rumble m_rumble;
+
+    uint32_t m_rumbleTimer;
 };
 }
