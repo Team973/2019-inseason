@@ -17,6 +17,7 @@
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
 
@@ -38,8 +39,9 @@ public:
      * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
-           Limelight *limelightCargo, Limelight *limelightHatch);
+           Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+           CargoIntake *cargoIntake, Limelight *limelightCargo,
+           Limelight *limelightHatch);
 
     virtual ~Teleop();
 
@@ -98,6 +100,7 @@ private:
     };
     DriveMode m_driveMode;
     HatchIntake *m_hatchIntake;
+    CargoIntake *m_cargoIntake;
     Elevator *m_elevator;
 
     Limelight *m_limelightCargo;

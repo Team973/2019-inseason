@@ -22,6 +22,7 @@
 #include "src/TestMode.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include <iostream>
@@ -34,6 +35,7 @@ namespace frc973 {
 class Disabled;
 class Autonomous;
 class Drive;
+class Elevator;
 
 /**
  * Defines the robot.
@@ -82,6 +84,8 @@ private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
+    LogSpreadsheet *m_logger;
+
     GreyTalonSRX *m_leftDriveTalonA;
     VictorSPX *m_leftDriveVictorB;
     GreyTalonSRX *m_rightDriveTalonA;
@@ -95,16 +99,21 @@ private:
     GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
 
-    GreyLight *m_greylight;
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
-    LogSpreadsheet *m_logger;
+    GreyTalonSRX *m_cargoIntakeMotor;
+    Solenoid *m_cargoWrist;
+    Solenoid *m_cargoPlatformLock;
+
+    GreyLight *m_greylight;
+
     LogCell *m_matchIdentifier;
 
     Drive *m_drive;
-    Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
+    CargoIntake *m_cargoIntake;
+    Elevator *m_elevator;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;

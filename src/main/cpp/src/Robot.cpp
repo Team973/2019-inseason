@@ -23,6 +23,7 @@ Robot::Robot()
               new ObservablePoofsJoystick(DRIVER_JOYSTICK_PORT, this, this))
         , m_operatorJoystick(
               new ObservableXboxJoystick(OPERATOR_JOYSTICK_PORT, this, this))
+        , m_logger(new LogSpreadsheet(this))
         , m_leftDriveTalonA(new GreyTalonSRX(LEFT_DRIVE_A_CAN_ID))
         , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
         , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
@@ -30,11 +31,14 @@ Robot::Robot()
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
         , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
         , m_gyro(new ADXRS450_Gyro())
+        , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
+        , m_cargoWrist(new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_PCM_ID))
+        , m_cargoPlatformLock(
+              new Solenoid(PCM_CAN_ID, CARGO_PLATFORM_LOCK_PCM_ID))
         , m_hatchRollers(new GreyTalonSRX(HATCH_ROLLER_CAN_ID))
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
         , m_limelightCargo(new Limelight("limelight-cargo"))
         , m_limelightHatch(new Limelight("limelight-hatch"))
-        , m_logger(new LogSpreadsheet(this))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
@@ -42,6 +46,8 @@ Robot::Robot()
                             m_limelightHatch))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick))
+        , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
+                                        m_cargoPlatformLock, m_cargoWrist))
         , m_hatchIntake(
               new HatchIntake(this, m_logger, m_hatchRollers, m_hatchPuncher))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
@@ -54,10 +60,10 @@ Robot::Robot()
                                   m_limelightHatch))
         , m_autonomous(new Autonomous(m_disabled, m_drive, m_elevator, m_gyro))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
-                              m_elevator, m_hatchIntake, m_limelightCargo,
-                              m_limelightHatch))
+                              m_elevator, m_hatchIntake, m_cargoIntake,
+                              m_limelightCargo, m_limelightHatch))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_elevator, m_hatchIntake)) {
+                          m_hatchIntake, m_elevator, m_cargoIntake)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
