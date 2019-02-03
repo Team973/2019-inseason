@@ -30,6 +30,7 @@ Robot::Robot()
         , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
         , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
+        , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
         , m_cargoWrist(new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_PCM_ID))
@@ -46,7 +47,8 @@ Robot::Robot()
                             m_rightDriveVictorB, m_gyro, m_limelightCargo,
                             m_limelightHatch))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
-                                  m_elevatorMotorB, m_operatorJoystick))
+                                  m_elevatorMotorB, m_operatorJoystick,
+                                  m_elevatorHall))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoPlatformLock, m_cargoWrist))
         , m_hatchIntake(
@@ -133,6 +135,8 @@ void Robot::AllStateContinuous() {
                               m_limelightCargo->isTargetValid());
     SmartDashboard::PutNumber("misc/limelight/hatch/target",
                               m_limelightHatch->isTargetValid());
+
+    m_elevator->HallZero();
 
     m_matchIdentifier->LogPrintf(
         "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),

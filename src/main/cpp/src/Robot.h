@@ -99,6 +99,7 @@ private:
 
     GreyTalonSRX *m_elevatorMotorA;
     VictorSPX *m_elevatorMotorB;
+    DigitalInput *m_elevatorHall;
 
     ADXRS450_Gyro *m_gyro;
 

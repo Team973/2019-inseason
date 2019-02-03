@@ -72,7 +72,8 @@ public:
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
-             ObservableXboxJoystick *operatorJoystick);
+             ObservableXboxJoystick *operatorJoystick,
+             DigitalInput *elevatorHall);
     virtual ~Elevator();
 
     /**
@@ -109,6 +110,17 @@ public:
     void EnableCoastMode();
 
     /**
+     * Gets the state of the elevator hall
+     * @Return The state of the hall
+     */
+    bool GetElevatorHall();
+
+    /**
+     * Checks for halls state and auto zeros if its false
+     */
+    void HallZero();
+
+    /**
      * Update function synonymous to TeleopContinuous that gets called
      * continuously.
      * @param mode The current robot mode.
@@ -126,5 +138,6 @@ private:
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;
     LogCell *m_positionCell;
+    DigitalInput *m_elevatorHall;
 };
 }
