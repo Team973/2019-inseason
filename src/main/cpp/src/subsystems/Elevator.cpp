@@ -95,7 +95,9 @@ void Elevator::TaskPeriodic(RobotMode mode) {
 
     switch (m_elevatorState) {
         case manualVoltage:
-            if (GetPosition() < 15.0) {
+            if (GetPosition() < 15.0 &&
+                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis) <
+                    0.0) {
                 m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
             }
             else {
