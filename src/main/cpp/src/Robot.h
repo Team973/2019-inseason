@@ -1,6 +1,12 @@
 /**
- * [year] Contributors:
- * - Person (@username)
+ * 2019 Contributors:
+ * - Kyle D
+ * - Chris M
+ * - Chris L
+ * - Luis V
+ * - Dylan F
+ * - Allen B
+ * - Andrew N
  **/
 
 #pragma once

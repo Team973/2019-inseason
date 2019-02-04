@@ -4,7 +4,9 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/pixelprocessors/Flash.h"
+#include "lib/util/WrapDash.h"
 #include "lib/util/Util.h"
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
@@ -36,7 +38,8 @@ public:
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
          Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-         CargoIntake *cargoIntake, Stinger *stinger);
+         CargoIntake *cargoIntake, Stinger *stinger, Limelight *limelightCargo,
+         Limelight *limelightHatch);
     virtual ~Test();
     void TestInit();
 
@@ -76,22 +79,35 @@ public:
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
 private:
-    enum class DriveMode
-    {
-        Openloop
-    };
-
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
-    CargoIntake *m_cargoIntake;
-    CargoIntake::CargoIntakeState m_cargoIntakeState;
-
     Drive *m_drive;
+    enum class DriveMode
+    {
+        Openloop,
+        LimelightCargo,
+        LimelightHatch,
+        AssistedCheesy,
+        Cheesy
+    };
     DriveMode m_driveMode;
-    Elevator *m_elevator;
-    HatchIntake *m_hatchIntake;
 
+    HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
+    CargoIntake *m_cargoIntake;
     Stinger *m_stinger;
+
+    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
+
+    enum class Rumble
+    {
+        on,
+        off
+    };
+    Rumble m_rumble;
+
+    uint32_t m_rumbleTimer;
 };
 }

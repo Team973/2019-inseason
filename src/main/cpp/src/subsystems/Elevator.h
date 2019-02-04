@@ -41,25 +41,26 @@ public:
 
     static constexpr double GROUND = 0.0; /**< Ground preset. */
     static constexpr double LOW_ROCKET_HATCH =
-        1.5; /**< Low rocket hatch preset. */
+        0.0; /**< Low rocket hatch preset. */
     static constexpr double MIDDLE_ROCKET_HATCH =
-        29.5; /**< Middle rocket hatch preset. */
+        28.0; /**< Middle rocket hatch preset. */
     static constexpr double HIGH_ROCKET_HATCH =
-        57.5; /**< High rocket hatch preset. */
+        56.0; /**< High rocket hatch preset. */
     static constexpr double LOW_ROCKET_CARGO =
-        19.5; /**< Low rocket cargo preset. */
+        5.0; /**< Low rocket cargo preset. */
     static constexpr double MIDDLE_ROCKET_CARGO =
-        47.5; /**< Middle rocket cargo preset. */
+        33.0; /**< Middle rocket cargo preset. */
     static constexpr double HIGH_ROCKET_CARGO =
-        59.4; /**< High rocket cargo preset. */
+        57.75; /**< High rocket cargo preset. */
     static constexpr double CARGO_SHIP_HATCH =
-        1.7; /**< Cargo ship hatch preset. */
+        15.0; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
-        36.0;                                /**< Cargo ship cargo preset. */
-    static constexpr double PLATFORM = 31.0; /**< Platform preset. */
+        15.0;                                /**< Cargo ship cargo preset. */
+    static constexpr double PLATFORM = 26.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
-        61.0; /**< Soft elevator height. */
+        58.0; /**< Soft elevator height. */
+    static constexpr double ELEVATOR_HALL_HEIGHT_OFFSET = 1.35;
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         8.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
@@ -141,6 +142,7 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
+    bool m_prevHall;
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;
     LogCell *m_positionCell;

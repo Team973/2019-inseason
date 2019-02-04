@@ -16,6 +16,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_operatorJoystick(operatorJoystick)
         , m_elevatorHall(elevatorHall)
         , m_position(0.0)
+        , m_prevHall(true)
         , m_zeroingTime(0)
         , m_elevatorState(ElevatorState::manualVoltage) {
     this->m_scheduler->RegisterTask("Elevator", this, TASK_PERIODIC);
@@ -39,6 +40,9 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->EnableVoltageCompensation(false);
     m_elevatorMotorA->ConfigForwardSoftLimitEnable(true, 10);
     m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
+        ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
+    m_elevatorMotorA->ConfigReverseSoftLimitEnable(true, 10);
+    m_elevatorMotorA->ConfigReverseSoftLimitThreshold(
         ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
@@ -75,7 +79,8 @@ float Elevator::GetPosition() const {
 }
 
 void Elevator::ZeroPosition() {
-    m_elevatorMotorA->GetSensorCollection().SetQuadraturePosition(0, 0);
+    m_elevatorMotorA->GetSensorCollection().SetQuadraturePosition(
+        ELEVATOR_HALL_HEIGHT_OFFSET / ELEVATOR_INCHES_PER_CLICK, 0);
 }
 
 void Elevator::EnableBrakeMode() {
@@ -87,12 +92,13 @@ void Elevator::EnableCoastMode() {
 }
 
 bool Elevator::GetElevatorHall() {
-    return m_elevatorHall->Get();
+    return !m_elevatorHall->Get();
 }
 
 void Elevator::HallZero() {
-    if (!GetElevatorHall()) {
+    if (m_prevHall != GetElevatorHall()) {
         ZeroPosition();
+        m_prevHall = GetElevatorHall();
     }
 }
 
@@ -106,11 +112,24 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     SmartDashboard::PutNumber("elevator/motorB/velocity",
                               m_elevatorMotorB->GetSelectedSensorVelocity(0));
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
+
+    HallZero();
+
     switch (m_elevatorState) {
         case joystickControl:
-            this->SetPower(
-                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis) +
-                ELEVATOR_FEED_FORWARD);
+            if (GetPosition() < 15.0) {
+                SetPower(pow(-m_operatorJoystick->GetRawAxisWithDeadband(
+                                 Xbox::RightYAxis),
+                             3.0) /
+                         3.0);
+            }
+            else {
+                SetPower(pow(-m_operatorJoystick->GetRawAxisWithDeadband(
+                                 Xbox::RightYAxis),
+                             3.0) /
+                             3.0 +
+                         ELEVATOR_FEED_FORWARD);
+            }
             break;
         case motionMagic:
             break;

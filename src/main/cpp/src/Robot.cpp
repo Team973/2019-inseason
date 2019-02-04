@@ -73,8 +73,8 @@ Robot::Robot()
                               m_elevator, m_hatchIntake, m_cargoIntake,
                               m_stinger, m_limelightCargo, m_limelightHatch))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_elevator, m_hatchIntake, m_cargoIntake,
-                          m_stinger)) {
+                          m_elevator, m_hatchIntake, m_cargoIntake, m_stinger,
+                          m_limelightCargo, m_limelightHatch)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -142,20 +142,11 @@ void Robot::AllStateContinuous() {
                               m_limelightCargo->isTargetValid());
     SmartDashboard::PutNumber("misc/limelight/hatch/target",
                               m_limelightHatch->isTargetValid());
-
-    m_elevator->HallZero();
-
     m_matchIdentifier->LogPrintf(
         "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
-    DBStringPrintf(DBStringPos::DB_LINE7, "Distance : %3.2lf",
-                   m_limelightHatch->GetHorizontalDistance());
-    DBStringPrintf(
-        DBStringPos::DB_LINE8, "Pow(cos(offset)): %3.2lf",
-        (pow(cos(m_limelightHatch->GetXOffset() * Constants::PI / 180 * 3.0),
-             5)));
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

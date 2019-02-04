@@ -67,7 +67,7 @@ public:
     /**
      * Set hatch intake to intaking.
      */
-    void SetIntaking();
+    void RunIntake();
 
     /**
      * Set hatch intake to holding.
