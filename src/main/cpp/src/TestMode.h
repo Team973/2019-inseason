@@ -12,6 +12,7 @@
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
+#include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
@@ -30,8 +31,8 @@ public:
      * @param drive The drive subsystem.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, HatchIntake *hatchIntake, Elevator *elevator,
-         CargoIntake *cargoIntake);
+         Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+         CargoIntake *cargoIntake, Stinger *stinger);
     virtual ~Test();
     void TestInit();
 
@@ -84,5 +85,7 @@ private:
     DriveMode m_driveMode;
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
+
+    Stinger *m_stinger;
 };
 }

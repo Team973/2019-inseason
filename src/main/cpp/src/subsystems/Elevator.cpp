@@ -55,7 +55,12 @@ Elevator::~Elevator() {
 }
 
 void Elevator::SetManualInput() {
+    m_elevatorState = ElevatorState::joystickControl;
+}
+
+void Elevator::SetPower(double power) {
     m_elevatorState = ElevatorState::manualVoltage;
+    m_elevatorMotorA->Set(ControlMode::PercentOutput, power);
 }
 
 void Elevator::SetPosition(double position) {
@@ -102,13 +107,14 @@ void Elevator::TaskPeriodic(RobotMode mode) {
                               m_elevatorMotorB->GetSelectedSensorVelocity(0));
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
     switch (m_elevatorState) {
-        case manualVoltage:
-            m_elevatorMotorA->Set(
-                ControlMode::PercentOutput,
+        case joystickControl:
+            this->SetPower(
                 -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis) +
-                    ELEVATOR_FEED_FORWARD);
+                ELEVATOR_FEED_FORWARD);
             break;
         case motionMagic:
+            break;
+        case manualVoltage:
             break;
         default:
             break;

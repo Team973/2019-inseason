@@ -10,7 +10,6 @@
 #include "lib/bases/CoopMTRobot.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/GreyTalon.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
@@ -22,6 +21,7 @@
 #include "src/TestMode.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/Stinger.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
@@ -91,6 +91,10 @@ private:
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
 
+    GreyTalonSRX *m_stingerDriveMotor;
+    GreyTalonSRX *m_stingerElevatorMotor;
+    DigitalInput *m_stingerLowerHall;
+    DigitalInput *m_stingerUpperHall;
     GreyTalonSRX *m_elevatorMotorA;
     VictorSPX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;
@@ -107,14 +111,13 @@ private:
     Solenoid *m_cargoWrist;
     Solenoid *m_cargoPlatformLock;
 
-    GreyLight *m_greylight;
-
     LogCell *m_matchIdentifier;
 
     Drive *m_drive;
+    Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
     CargoIntake *m_cargoIntake;
-    Elevator *m_elevator;
+    Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;

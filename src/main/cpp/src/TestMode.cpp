@@ -4,14 +4,16 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, HatchIntake *hatchIntake, Elevator *elevator,
-           CargoIntake *cargoIntake)
+           Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+           CargoIntake *cargoIntake, Stinger *stinger)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
+        , m_driveMode(DriveMode::Openloop)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
-        , m_cargoIntake(cargoIntake) {
+        , m_cargoIntake(cargoIntake)
+        , m_stinger(stinger) {
 }
 
 Test::~Test() {
@@ -146,10 +148,12 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadUpVirtBtn:
                 if (pressedP) {
-                    m_cargoIntake->RunIntake(1.0);
+                    m_stinger->SetPower(-1.0);
+                    m_elevator->SetPower(-0.5);
                 }
                 else {
-                    m_cargoIntake->RunIntake(0.0);
+                    m_stinger->SetPower(0.0);
+                    m_elevator->SetPower(0.0);
                 }
                 break;
             case Xbox::DPadDownVirtBtn:

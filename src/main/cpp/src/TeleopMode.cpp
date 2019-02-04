@@ -14,8 +14,8 @@ namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
-               CargoIntake *cargoIntake, Limelight *limelightCargo,
-               Limelight *limelightHatch)
+               CargoIntake *cargoIntake, Stinger *stinger,
+               Limelight *limelightCargo, Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
@@ -23,6 +23,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
+        , m_stinger(stinger)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_rumble(Rumble::off) {
