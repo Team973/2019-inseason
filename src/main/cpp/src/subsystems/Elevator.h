@@ -59,6 +59,7 @@ public:
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
         58.0; /**< Soft elevator height. */
+    static constexpr double ELEVATOR_HALL_HEIGHT_OFFSET = 1.35;
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         8.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
@@ -135,6 +136,7 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
+    bool m_prevHall;
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;
     LogCell *m_positionCell;

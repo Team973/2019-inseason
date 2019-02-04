@@ -16,6 +16,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_operatorJoystick(operatorJoystick)
         , m_elevatorHall(elevatorHall)
         , m_position(0.0)
+        , m_prevHall(true)
         , m_zeroingTime(0)
         , m_elevatorState(ElevatorState::manualVoltage) {
     this->m_scheduler->RegisterTask("Elevator", this, TASK_PERIODIC);
@@ -73,7 +74,8 @@ float Elevator::GetPosition() const {
 }
 
 void Elevator::ZeroPosition() {
-    m_elevatorMotorA->GetSensorCollection().SetQuadraturePosition(0, 0);
+    m_elevatorMotorA->GetSensorCollection().SetQuadraturePosition(
+        ELEVATOR_HALL_HEIGHT_OFFSET / ELEVATOR_INCHES_PER_CLICK, 0);
 }
 
 void Elevator::EnableBrakeMode() {
@@ -85,12 +87,13 @@ void Elevator::EnableCoastMode() {
 }
 
 bool Elevator::GetElevatorHall() {
-    return m_elevatorHall->Get();
+    return !m_elevatorHall->Get();
 }
 
 void Elevator::HallZero() {
-    if (!GetElevatorHall()) {
+    if (m_prevHall != GetElevatorHall()) {
         ZeroPosition();
+        m_prevHall = GetElevatorHall();
     }
 }
 
@@ -105,12 +108,17 @@ void Elevator::TaskPeriodic(RobotMode mode) {
                               m_elevatorMotorB->GetSelectedSensorVelocity(0));
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
 
+    HallZero();
+
     switch (m_elevatorState) {
         case manualVoltage:
-            if (GetPosition() < 15.0 &&
-                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis) <
-                    0.0) {
-                m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
+            if (GetPosition() < 15.0) {
+                m_elevatorMotorA->Set(
+                    ControlMode::PercentOutput,
+                    pow(-m_operatorJoystick->GetRawAxisWithDeadband(
+                            Xbox::RightYAxis),
+                        3.0) /
+                        3.0);
             }
             else {
                 m_elevatorMotorA->Set(

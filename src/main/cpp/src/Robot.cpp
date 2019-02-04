@@ -135,9 +135,6 @@ void Robot::AllStateContinuous() {
                               m_limelightCargo->isTargetValid());
     SmartDashboard::PutNumber("misc/limelight/hatch/target",
                               m_limelightHatch->isTargetValid());
-
-    m_elevator->HallZero();
-
     m_matchIdentifier->LogPrintf(
         "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
