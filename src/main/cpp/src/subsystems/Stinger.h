@@ -38,7 +38,8 @@ public:
     enum class StingerState
     {
         manualVoltage, /**< Control the motors with manual voltage. */
-        motionMagic /**< Control the motors using position w/ Motion Magic. */
+        motionMagic, /**< Control the motors using position w/ Motion Magic. */
+        idle
     };
 
     static constexpr double STOW = 0.0;     /**< Stow preset. */
@@ -74,12 +75,6 @@ public:
      * @param position The position preset in inches.
      */
     void SetPositionInches(double position);
-
-    /**
-     * Get the current stinger elevator position.
-     * @return The current stinger elevator position in inches.
-     */
-    double GetPositionInches();
 
     void Stow();      /**< Set the stinger elevator to the stowed preset. */
     void SetMiddle(); /**< Set the stinger elevator to the middle preset. */
@@ -120,8 +115,9 @@ private:
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
 
+    double m_power;
+
     LogCell *m_current;
-    LogCell *m_positionCell;
 
     StingerState m_stingerState;
 };

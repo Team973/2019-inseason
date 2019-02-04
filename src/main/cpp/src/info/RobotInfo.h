@@ -47,11 +47,10 @@ static const int ELEVATOR_B_CAN_ID = 4;
  **/
 static const int CARGO_INTAKE_CAN_ID = 5;
 static const int CARGO_INTAKE_WRIST_PCM_ID = 1;
-static const int CARGO_INTAKE_WRIST_LOCK_PCM_ID = 0;
-static const int CARGO_PLATFORM_WHEEL_PCM_ID = 3;
+static const int CARGO_PLATFORM_LOCK_PCM_ID = 0;
 static const int INTAKE_CAN_ID = 4;
-static const int HATCH_PUNCHER_PCM_ID = 1;
-static const int HATCH_CLAW_PCM_ID = 2;
+static const int HATCH_PUNCHER_PCM_ID = 2;
+static const int HATCH_ROLLER_CAN_ID = 14;
 static const int LEFT_HATCH_SENSOR_ID = 2;
 static const int RIGHT_HATCH_SENSOR_ID = 3;
 
@@ -61,13 +60,14 @@ static const int RIGHT_HATCH_SENSOR_ID = 3;
 static const int STINGER_ELEVATOR_CAN_ID = 12;
 static const int STINGER_DRIVE_CAN_ID = 13;
 // note: stinger drive motor is in drive subsystem
-static const int STINGER_LOWER_HALL_DIN_ID = 3;
-static const int STINGER_UPPER_HALL_DIN_ID = 4;
+static const int STINGER_LOWER_HALL_DIN_ID = 8;
+static const int STINGER_UPPER_HALL_DIN_ID = 9;
 
 /**
  * Digital Sensors
  **/
 static const int PRESSURE_DIN_ID = 1;
+static const int ELEVATOR_HALL_ID = 7;
 
 /**
  * Analog Sensors

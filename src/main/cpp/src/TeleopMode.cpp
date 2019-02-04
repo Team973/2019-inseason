@@ -42,17 +42,16 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
-    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
-    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+    double y =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+    double x =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
     bool softwareLowGear =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
-    if (m_stinger->GetPositionInches() < 1.0 &&
-        m_gameMode == GameMode::EndGamePeriodic) {
+    if (m_stinger->GetLowerHall() && m_gameMode == GameMode::EndGamePeriodic) {
         softwareLowGear = true;
     }
 
@@ -105,7 +104,6 @@ void Teleop::TeleopPeriodic() {
             m_limelightCargo->SetLightBlink();
             m_limelightHatch->SetLightBlink();
             m_elevator->SetPosition(Elevator::PLATFORM);
-            m_cargoIntake->LockWrist();
             m_cargoIntake->DeployPlatformWheel();
             if (m_elevator->GetPosition() > 25.0) {
                 m_gameMode = GameMode::EndGamePeriodic;
@@ -117,7 +115,6 @@ void Teleop::TeleopPeriodic() {
         case GameMode::RaiseIntake:
             m_elevator->SetPosition(6.0);
             m_cargoIntake->RetractPlatformWheel();
-            m_cargoIntake->UnlockWrist();
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
@@ -224,24 +221,26 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 if (pressedP) {
-                    m_rumble = Rumble::on;
+                    m_hatchIntake->SetIntaking();
                 }
                 else {
-                    m_rumble = Rumble::off;
+                    m_hatchIntake->SetIdle();
                 }
                 break;
             case Xbox::BtnA:
                 if (pressedP) {
-                    m_limelightHatch->SetLightMode(Limelight::LightMode::blink);
+                    m_hatchIntake->Exhaust();
                 }
                 else {
-                    m_limelightHatch->SetLightMode(Limelight::LightMode::off);
+                    m_hatchIntake->SetIdle();
                 }
                 break;
             case Xbox::BtnX:
                 if (pressedP) {
+                    m_hatchIntake->ManualPuncherActivate();
                 }
                 else {
+                    m_hatchIntake->ManualPuncherRetract();
                 }
                 break;
             case Xbox::BtnB:
@@ -252,10 +251,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:
                 if (pressedP) {
-                    m_gameMode = GameMode::Hatch;
+                    m_hatchIntake->ManualPuncherActivate();
                 }
                 else {
-                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::LJoystickBtn:
@@ -272,10 +270,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::RightBumper:
                 if (pressedP) {
-                    m_driveMode = DriveMode::AssistedCheesy;
+                    m_hatchIntake->ManualPuncherRetract();
                 }
                 else {
-                    m_driveMode = DriveMode::Cheesy;
                 }
                 break;
             case Xbox::DPadUpVirtBtn:

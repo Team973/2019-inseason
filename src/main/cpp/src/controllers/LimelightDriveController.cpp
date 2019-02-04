@@ -31,9 +31,6 @@ void LimelightDriveController::CalcDriveOutput(
     double offset = m_limelight->GetXOffset();
     double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError = distance - DISTANCE_SETPOINT;
-    /*if (fabs(offset) < 3.0) {
-        offset = 0.0;
-    }*/
 
     if (!m_limelight->isTargetValid() || m_onTarget) {
         m_leftSetpoint = 0.0;
@@ -50,11 +47,6 @@ void LimelightDriveController::CalcDriveOutput(
 
     out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
                             m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
-
-    DBStringPrintf(DBStringPos::DB_LINE5, "LS: %3.2lf RS: %3.2lf",
-                   m_leftSetpoint, m_rightSetpoint);
-    DBStringPrintf(DBStringPos::DB_LINE6, "LimeError: %3.2lf",
-                   m_limelight->GetXOffset());
 
     if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 5.0) &&
         (fabs(distError) < 3.0 && fabs(state->GetRate() < 3.0))) {

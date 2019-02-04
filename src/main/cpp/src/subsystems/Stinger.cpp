@@ -11,13 +11,11 @@ Stinger::Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_stingerDriveMotor(stingerDriveMotor)
         , m_stingerLowerHall(stingerLowerHall)
         , m_stingerUpperHall(stingerUpperHall)
+        , m_power(0.0)
         , m_stingerState(StingerState::manualVoltage) {
     this->m_scheduler->RegisterTask("Stinger", this, TASK_PERIODIC);
-    m_stingerElevatorMotor->ConfigSelectedFeedbackSensor(
-        ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder, 0,
-        10);  // 0 = Not cascaded PID Loop; 10 = in constructor, not in a loop
     m_stingerElevatorMotor->SetSensorPhase(true);
-    m_stingerElevatorMotor->SetNeutralMode(NeutralMode::Coast);
+    m_stingerElevatorMotor->SetNeutralMode(NeutralMode::Brake);
     m_stingerElevatorMotor->SetInverted(true);
 
     m_stingerElevatorMotor->Config_PID(0, 0.0, 0.0, 0.0, 0.0, 10);
@@ -30,17 +28,11 @@ Stinger::Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_stingerElevatorMotor->ConfigPeakCurrentLimit(0, 10);
     m_stingerElevatorMotor->ConfigContinuousCurrentLimit(50, 10);
     m_stingerElevatorMotor->EnableVoltageCompensation(false);
-    //  m_stingerElevatorMotor->ConfigForwardSoftLimitThreshold(
-    //       STINGER_SOFT_HEIGHT_LIMIT / STINGER_INCHES_PER_CLICK, 10);
-    // m_stingerElevatorMotor->ConfigForwardSoftLimitEnable(true, 10);
 
     m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
 
     m_current = new LogCell("Stinger Current", 32, true);
     m_logger->RegisterCell(m_current);
-
-    m_positionCell = new LogCell("Stinger Position", 32, true);
-    m_logger->RegisterCell(m_positionCell);
 }
 
 Stinger::~Stinger() {
@@ -48,30 +40,15 @@ Stinger::~Stinger() {
 }
 
 void Stinger::SetPower(double power) {
-    GoToStingerState(StingerState::manualVoltage);
     power = Util::bound(power, -1.0, 1.0);
-    if (power > 0.0 &&
-        GetStingerElevatorHallState() == StingerElevatorHallState::top) {
-        m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
-    }
-    if (power < 0.0 &&
-        GetStingerElevatorHallState() == StingerElevatorHallState::bottom) {
-        m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
-    }
-    if (GetStingerElevatorHallState() == StingerElevatorHallState::middle) {
-        m_stingerElevatorMotor->Set(ControlMode::PercentOutput, power);
-    }
+    m_power = power;
+    GoToStingerState(StingerState::manualVoltage);
 }
 
 void Stinger::SetPositionInches(double position) {
     GoToStingerState(StingerState::motionMagic);
     int position_clicks = position / STINGER_INCHES_PER_CLICK;
     m_stingerElevatorMotor->Set(ControlMode::MotionMagic, position_clicks);
-}
-
-double Stinger::GetPositionInches() {
-    return STINGER_INCHES_PER_CLICK *
-           m_stingerElevatorMotor->GetSelectedSensorPosition(0);
 }
 
 void Stinger::Stow() {
@@ -87,11 +64,11 @@ void Stinger::Deploy() {
 }
 
 bool Stinger::GetLowerHall() {
-    return m_stingerLowerHall->Get();
+    return !m_stingerLowerHall->Get();
 }
 
 bool Stinger::GetUpperHall() {
-    return m_stingerUpperHall->Get();
+    return !m_stingerUpperHall->Get();
 }
 
 Stinger::StingerElevatorHallState Stinger::GetStingerElevatorHallState() {
@@ -122,15 +99,29 @@ void Stinger::GoToStingerState(Stinger::StingerState newState) {
 
 void Stinger::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_stingerElevatorMotor->GetOutputCurrent());
-    m_positionCell->LogDouble(GetPositionInches());
-    SmartDashboard::PutNumber("stinger/encoders/encoder", GetPositionInches());
     SmartDashboard::PutNumber("stinger/outputs/current",
                               m_stingerElevatorMotor->GetOutputCurrent());
-
+    DBStringPrintf(DBStringPos::DB_LINE5, "u:%d l:%d", GetUpperHall(),
+                   GetLowerHall());
     switch (m_stingerState) {
         case StingerState::manualVoltage:
+            if (m_power > 0.0 && GetStingerElevatorHallState() ==
+                                     StingerElevatorHallState::top) {
+                m_stingerState = StingerState::idle;
+            }
+            else if (m_power < 0.0 && GetStingerElevatorHallState() ==
+                                          StingerElevatorHallState::bottom) {
+                m_stingerState = StingerState::idle;
+            }
+            else {
+                m_stingerElevatorMotor->Set(ControlMode::PercentOutput,
+                                            m_power);
+            }
             break;
         case StingerState::motionMagic:
+            break;
+        case StingerState::idle:
+            m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
             break;
     }
 }
