@@ -31,9 +31,6 @@ void LimelightDriveController::CalcDriveOutput(
     double offset = m_limelight->GetXOffset();
     double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError = distance - DISTANCE_SETPOINT;
-    /*if (fabs(offset) < 3.0) {
-        offset = 0.0;
-    }*/
 
     if (!m_limelight->isTargetValid() || m_onTarget) {
         m_leftSetpoint = 0.0;
