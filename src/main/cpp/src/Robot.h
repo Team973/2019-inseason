@@ -97,15 +97,19 @@ private:
     DigitalInput *m_stingerUpperHall;
     GreyTalonSRX *m_elevatorMotorA;
     VictorSPX *m_elevatorMotorB;
+    DigitalInput *m_elevatorHall;
 
     ADXRS450_Gyro *m_gyro;
+
+    GreyTalonSRX *m_hatchRollers;
+    Solenoid *m_hatchPuncher;
+
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
     GreyTalonSRX *m_cargoIntakeMotor;
     Solenoid *m_cargoWrist;
-    Solenoid *m_cargoWristLock;
-    Solenoid *m_cargoPlatformWheel;
+    Solenoid *m_cargoPlatformLock;
 
     LogCell *m_matchIdentifier;
 

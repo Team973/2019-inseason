@@ -6,6 +6,7 @@
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/Flash.h"
 #include "lib/util/Util.h"
+#include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
@@ -33,10 +34,6 @@ public:
          Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
          CargoIntake *cargoIntake, Stinger *stinger);
     virtual ~Test();
-
-    /**
-     * Start of test.
-     */
     void TestInit();
 
     /**
