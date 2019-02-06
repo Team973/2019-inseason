@@ -36,6 +36,7 @@ public:
     {
         manualVoltage, /**< Control the motors with manual voltage. */
         motionMagic, /**< Control the motors using position w/ Motion Magic. */
+        idle
     };
 
     static constexpr double GROUND = 0.0; /**< Ground preset. */
@@ -136,6 +137,7 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
+    double m_joystickControl;
     bool m_prevHall;
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;

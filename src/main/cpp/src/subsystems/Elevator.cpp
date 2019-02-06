@@ -16,9 +16,10 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_operatorJoystick(operatorJoystick)
         , m_elevatorHall(elevatorHall)
         , m_position(0.0)
+        , m_joystickControl(0.0)
         , m_prevHall(true)
         , m_zeroingTime(0)
-        , m_elevatorState(ElevatorState::manualVoltage) {
+        , m_elevatorState(ElevatorState::idle) {
     this->m_scheduler->RegisterTask("Elevator", this, TASK_PERIODIC);
 
     m_elevatorMotorA->ConfigSelectedFeedbackSensor(
@@ -112,25 +113,28 @@ void Elevator::TaskPeriodic(RobotMode mode) {
 
     switch (m_elevatorState) {
         case manualVoltage:
-            if (GetPosition() < 15.0) {
+            m_joystickControl =
+                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis);
+            if (GetElevatorHall()) {
                 m_elevatorMotorA->Set(
                     ControlMode::PercentOutput,
-                    pow(-m_operatorJoystick->GetRawAxisWithDeadband(
-                            Xbox::RightYAxis),
-                        3.0) /
-                        3.0);
+                    pow(Util::bound(m_joystickControl, 0.0, 1.0), 3.0) / 3.0);
+            }
+            else if (GetPosition() < 15.0) {
+                m_elevatorMotorA->Set(
+                    ControlMode::PercentOutput,
+                    pow(Util::bound(m_joystickControl, -0.67, 1.0), 3.0) / 3.0 +
+                        ELEVATOR_FEED_FORWARD);
             }
             else {
                 m_elevatorMotorA->Set(
                     ControlMode::PercentOutput,
-                    pow(-m_operatorJoystick->GetRawAxisWithDeadband(
-                            Xbox::RightYAxis),
-                        3.0) /
-                            3.0 +
-                        ELEVATOR_FEED_FORWARD);
+                    pow(m_joystickControl, 3.0) / 3.0 + ELEVATOR_FEED_FORWARD);
             }
             break;
         case motionMagic:
+            break;
+        case idle:
             break;
         default:
             break;
