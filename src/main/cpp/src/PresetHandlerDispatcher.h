@@ -14,7 +14,6 @@ namespace frc973 {
 class Teleop;
 class Test;
 class Autonomous;
-enum class GameMode;
 
 /**
  * Handles the elevator preset dispatching for the "main" operation mode
