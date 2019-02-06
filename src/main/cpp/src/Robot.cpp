@@ -2,6 +2,7 @@
 #include <iostream>
 #include "src/info/RobotInfo.h"
 #include "src/DisabledMode.h"
+#include "src/PresetHandlerDispatcher.h"
 #include "src/AutonomousMode.h"
 #include "src/TeleopMode.h"
 #include "src/TestMode.h"
@@ -61,13 +62,17 @@ Robot::Robot()
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
                                   m_elevator, m_limelightCargo,
                                   m_limelightHatch))
-        , m_autonomous(new Autonomous(m_disabled, m_drive, m_elevator, m_gyro))
+        , m_presetDispatcher(new PresetHandlerDispatcher())
+        , m_autonomous(new Autonomous(m_disabled, m_drive, m_elevator, m_gyro,
+                                      m_presetDispatcher))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
                               m_elevator, m_hatchIntake, m_cargoIntake,
-                              m_limelightCargo, m_limelightHatch))
+                              m_limelightCargo, m_limelightHatch,
+                              m_presetDispatcher))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
                           m_elevator, m_hatchIntake, m_cargoIntake,
-                          m_limelightCargo, m_limelightHatch)) {
+                          m_limelightCargo, m_limelightHatch,
+                          m_presetDispatcher)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 

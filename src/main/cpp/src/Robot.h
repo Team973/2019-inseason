@@ -42,6 +42,7 @@ class Disabled;
 class Autonomous;
 class Drive;
 class Elevator;
+class PresetHandlerDispatcher;
 
 /**
  * Defines the robot.
@@ -122,6 +123,7 @@ private:
     HatchIntake *m_hatchIntake;
     CargoIntake *m_cargoIntake;
     Elevator *m_elevator;
+    PresetHandlerDispatcher *m_presetDispatcher;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;
