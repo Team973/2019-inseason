@@ -26,7 +26,6 @@ class Limelight;
 class OpenloopArcadeDriveController;
 class PIDDriveController;
 class SplineDriveController;
-class StingerDriveController;
 class VelocityArcadeDriveController;
 class LimelightDriveController;
 class AssistedCheesyDriveController;
@@ -145,14 +144,6 @@ public:
      * @return Percent of trajectory done.
      */
     double GetSplinePercentComplete();
-
-    /**
-     * Set a drive to use the Cheesy drive controller.
-     * @param throttle Forward/backwards amount.
-     * @param turn Left/right amount.
-     */
-    void StingerDrive(double throttle, double turn, bool isQuickTurn,
-                      bool isHighGear);
 
     void SetStingerOutput(double power);
     /**
@@ -307,7 +298,6 @@ private:
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
-    StingerDriveController *m_stingerDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
     LimelightDriveController *m_limelightCargoDriveController;
     LimelightDriveController *m_limelightHatchDriveController;

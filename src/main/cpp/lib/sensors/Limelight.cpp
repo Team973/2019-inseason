@@ -14,7 +14,6 @@ Limelight::Limelight(const char *name)
         , m_targetArea(0.0)
         , m_targetSkew(0.0)
         , m_latency(0.0) {
-    SetCameraDriver();
 }
 
 Limelight::~Limelight() {
@@ -23,7 +22,7 @@ Limelight::~Limelight() {
 void Limelight::SetLightMode(LightMode mode) {
     switch (mode) {
         case LightMode::on:
-            m_limelight->PutNumber("ledMode", 0);
+            m_limelight->PutNumber("ledMode", 3);
             break;
         case LightMode::off:
             m_limelight->PutNumber("ledMode", 1);
@@ -103,6 +102,8 @@ void Limelight::SetLightOff() {
 }
 
 void Limelight::SetLightBlink() {
+    DBStringPrintf(DBStringPos::DB_LINE1, "%f",
+                   m_limelight->GetNumber("ledMode", 0));
     SetLightMode(LightMode::blink);
 }
 

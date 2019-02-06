@@ -97,8 +97,7 @@ private:
         LimelightCargo,
         LimelightHatch,
         AssistedCheesy,
-        Cheesy,
-        StingerDrive
+        Cheesy
     };
     DriveMode m_driveMode;
     CargoIntake *m_cargoIntake;

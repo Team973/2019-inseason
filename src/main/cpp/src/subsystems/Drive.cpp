@@ -13,7 +13,6 @@
 #include "src/controllers/OpenloopArcadeDriveController.h"
 #include "src/controllers/PIDDriveController.h"
 #include "src/controllers/SplineDriveController.h"
-#include "src/controllers/StingerDriveController.h"
 #include "src/controllers/VelocityArcadeDriveController.h"
 #include "src/controllers/LimelightDriveController.h"
 #include "src/controllers/AssistedCheesyDriveController.h"
@@ -63,7 +62,6 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
-        , m_stingerDriveController(new StingerDriveController())
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
         , m_limelightCargoDriveController(
               new LimelightDriveController(limelightCargo))
@@ -168,22 +166,6 @@ SplineDriveController *Drive::SplineDrive(
 
 double Drive::GetSplinePercentComplete() {
     return m_splineDriveController->GetSplinePercentComplete();
-}
-
-void Drive::StingerDrive(double throttle, double turn, bool isQuickTurn,
-                         bool isHighGear) {
-    this->SetDriveController(m_stingerDriveController);
-    m_stingerDriveController->SetJoysticks(throttle, turn, isQuickTurn,
-                                           isHighGear);
-
-    if (std::isnan(m_stingerDriveController->GetStingerMotorOutput())) {
-        m_stingerDriveMotor->Set(ControlMode::PercentOutput, 0.0);
-    }
-    else {
-        m_stingerDriveMotor->Set(
-            ControlMode::PercentOutput,
-            m_stingerDriveController->GetStingerMotorOutput());
-    }
 }
 
 void Drive::SetStingerOutput(double power) {

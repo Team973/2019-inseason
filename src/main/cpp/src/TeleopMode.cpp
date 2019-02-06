@@ -6,9 +6,13 @@
  *
  */
 #include "src/TeleopMode.h"
+#include "networktables/NetworkTable.h"
+#include "networktables/NetworkTableInstance.h"
+#include "networktables/NetworkTableEntry.h"
 #include <cmath>
 
 using namespace frc;
+using namespace nt;
 
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
@@ -82,13 +86,8 @@ void Teleop::TeleopPeriodic() {
         case DriveMode::AssistedCheesy:
             m_drive->AssistedCheesyDrive(y, x, quickturn, false);
             break;
-        case DriveMode::StingerDrive:
-            if (softwareLowGear) {
-                m_drive->StingerDrive(y / 2.0, x / 2.0, quickturn, false);
-            }
-            else {
-                m_drive->StingerDrive(y, x, quickturn, false);
-            }
+        default:
+            m_drive->CheesyDrive(y, x, quickturn, false);
             break;
     }
 
@@ -117,7 +116,7 @@ void Teleop::TeleopPeriodic() {
             m_limelightCargo->SetLightBlink();
             m_limelightHatch->SetLightBlink();
             m_drive->SetStingerOutput(y);
-            // m_driveMode = DriveMode::StingerDrive;
+            m_driveMode = DriveMode::Cheesy;
             break;
         case GameMode::RaiseIntake:
             m_elevator->SetPosition(6.0);
@@ -192,9 +191,18 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                             m_driveMode = DriveMode::AssistedCheesy;
                             break;
                         case GameMode::EndGamePeriodic:  // Climb Down
-                            m_elevator->SetPower(
-                                ELEVATOR_STINGER_VOLTAGE_RATIO);
-                            m_stinger->SetPower(1.0);
+                            if (m_cargoIntake->GetWristState() ==
+                                CargoIntake::CargoWristState::extended) {
+                                m_elevator->SetPower(
+                                    ELEVATOR_STINGER_VOLTAGE_RATIO * 0.3);
+                                m_stinger->SetPower(0.3);
+                            }
+                            else if (m_cargoIntake->GetWristState() ==
+                                     CargoIntake::CargoWristState::retracted) {
+                                m_elevator->SetPower(
+                                    ELEVATOR_STINGER_VOLTAGE_RATIO);
+                                m_stinger->SetPower(1.0);
+                            }
                             break;
                     }
                 }
