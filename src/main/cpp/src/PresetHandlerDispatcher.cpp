@@ -2,7 +2,7 @@
  * PresetHandlerDispatcher.h
  *
  *  Created on: February 5, 2019
- *      Authors: John P, Luis, Dillan
+ *      Authors: John P, Luis, Dylan
  */
 #include "src/PresetHandlerDispatcher.h"
 #include "src/GameMode.h"
