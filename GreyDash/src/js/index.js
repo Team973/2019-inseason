@@ -368,4 +368,4 @@ function createCameraTwo(url) {
 }
 
 window.setTimeout(createCameraOne(cameraOneUrl), 2000)
-window.setTimeout(createCameraOne(cameraTwoUrl), 2000)
+window.setTimeout(createCameraTwo(cameraTwoUrl), 2000)
