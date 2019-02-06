@@ -16,6 +16,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_operatorJoystick(operatorJoystick)
         , m_elevatorHall(elevatorHall)
         , m_position(0.0)
+        , m_power(0.0)
         , m_prevHall(true)
         , m_zeroingTime(0)
         , m_elevatorState(ElevatorState::manualVoltage) {
@@ -64,7 +65,7 @@ void Elevator::SetManualInput() {
 
 void Elevator::SetPower(double power) {
     m_elevatorState = ElevatorState::manualVoltage;
-    m_elevatorMotorA->Set(ControlMode::PercentOutput, power);
+    m_power = power;
 }
 
 void Elevator::SetPosition(double position) {
@@ -134,6 +135,12 @@ void Elevator::TaskPeriodic(RobotMode mode) {
         case motionMagic:
             break;
         case manualVoltage:
+            if (GetElevatorHall()) {
+                m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
+            }
+            else {
+                m_elevatorMotorA->Set(ControlMode::PercentOutput, m_power);
+            }
             break;
         default:
             break;

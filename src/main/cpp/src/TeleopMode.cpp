@@ -96,22 +96,28 @@ void Teleop::TeleopPeriodic() {
         case GameMode::Cargo:
             m_limelightCargo->SetLightOn();
             m_limelightHatch->SetLightOff();
+            m_cargoIntake->RetractPlatformWheel();
             break;
         case GameMode::Hatch:
             m_limelightCargo->SetLightOff();
             m_limelightHatch->SetLightOn();
+            m_cargoIntake->RetractPlatformWheel();
             break;
         case GameMode::EndGameInit:
             m_limelightCargo->SetLightBlink();
             m_limelightHatch->SetLightBlink();
             m_elevator->SetPosition(Elevator::PLATFORM);
             m_cargoIntake->DeployPlatformWheel();
+            m_cargoIntake->ExtendWrist();
             if (m_elevator->GetPosition() > 25.0) {
                 m_gameMode = GameMode::EndGamePeriodic;
             }
             break;
         case GameMode::EndGamePeriodic:
-            m_driveMode = DriveMode::StingerDrive;
+            m_limelightCargo->SetLightBlink();
+            m_limelightHatch->SetLightBlink();
+            m_drive->SetStingerOutput(y);
+            // m_driveMode = DriveMode::StingerDrive;
             break;
         case GameMode::RaiseIntake:
             m_elevator->SetPosition(6.0);
@@ -186,7 +192,9 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                             m_driveMode = DriveMode::AssistedCheesy;
                             break;
                         case GameMode::EndGamePeriodic:  // Climb Down
-                            // Task
+                            m_elevator->SetPower(
+                                ELEVATOR_STINGER_VOLTAGE_RATIO);
+                            m_stinger->SetPower(1.0);
                             break;
                     }
                 }
@@ -199,7 +207,8 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                             m_driveMode = DriveMode::Cheesy;
                             break;
                         case GameMode::EndGamePeriodic:  // Climb Down
-                            // Task
+                            m_elevator->SetPower(0.0);
+                            m_stinger->SetPower(0.0);
                             break;
                     }
                 }
@@ -257,7 +266,8 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                             m_driveMode = DriveMode::Cheesy;
                             break;
                         case GameMode::EndGamePeriodic:
-                            // Task
+                            m_elevator->SetPower(0.0);
+                            m_stinger->SetPower(0.0);
                             break;
                     }
                 }

@@ -42,6 +42,8 @@ void StingerDriveController::SetJoysticks(double throttle, double turn,
     throttle *= kStingerThrottleScale;
     turn *= kStingerTurnScale;
 
+    m_stingerOutput = throttle;
+
     double negInertia = turn - m_oldWheel;
     if (isQuickTurn) {
         turn = Util::signSquare(turn);

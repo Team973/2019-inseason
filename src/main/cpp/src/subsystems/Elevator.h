@@ -142,6 +142,7 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
+    double m_power;
     bool m_prevHall;
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;

@@ -102,15 +102,12 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_rightDriveVictorB->SetInverted(false);
 
     m_stingerDriveMotor->SetNeutralMode(Coast);
-    m_stingerDriveMotor->SetSensorPhase(false);
     m_stingerDriveMotor->SetInverted(false);
-    m_stingerDriveMotor->SelectProfileSlot(0, 0);
 
     m_stingerDriveMotor->EnableCurrentLimit(true);
     m_stingerDriveMotor->ConfigPeakCurrentDuration(0, 10);
     m_stingerDriveMotor->ConfigPeakCurrentLimit(0, 10);
     m_stingerDriveMotor->ConfigContinuousCurrentLimit(40, 10);
-    m_stingerDriveMotor->EnableVoltageCompensation(false);
 
     logger->RegisterCell(m_angleLog);
     logger->RegisterCell(m_angularRateLog);
@@ -187,6 +184,10 @@ void Drive::StingerDrive(double throttle, double turn, bool isQuickTurn,
             ControlMode::PercentOutput,
             m_stingerDriveController->GetStingerMotorOutput());
     }
+}
+
+void Drive::SetStingerOutput(double power) {
+    m_stingerDriveMotor->Set(ControlMode::PercentOutput, power);
 }
 
 void Drive::VelocityArcadeDrive(double throttle, double turn) {
