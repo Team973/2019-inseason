@@ -26,20 +26,20 @@ public:
      * Select and use the elevator preset for Autonomouse "mode", dispatched by
      * the GameMode (Cargo, Hartch, EndGame).
      */
-    void DispatchPressedButtonToPreset(Autonomous *mode, uint32_t button,
-                                       bool pressedP);
+    void ElevatorDispatchPressedButtonToPreset(Autonomous *mode,
+                                               uint32_t button, bool pressedP);
     /**
      * Select and use the elevator preset for Teleop "mode", dispatched by the
      * GameMode (Cargo, Hartch, EndGame).
      */
-    void DispatchPressedButtonToPreset(Teleop *mode, uint32_t button,
-                                       bool pressedP);
+    void ElevatorDispatchPressedButtonToPreset(Teleop *mode, uint32_t button,
+                                               bool pressedP);
     /**
      * Select and use the elevator preset for Test "mode", dispatched by
      * the GameMode (Cargo, Hartch, EndGame).
      */
-    void DispatchPressedButtonToPreset(Test *mode, uint32_t button,
-                                       bool pressedP);
+    void ElevatorDispatchPressedButtonToPreset(Test *mode, uint32_t button,
+                                               bool pressedP);
 
     void PresetPeriodic(Teleop *mode);
 

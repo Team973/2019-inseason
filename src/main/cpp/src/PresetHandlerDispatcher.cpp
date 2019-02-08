@@ -95,9 +95,8 @@ double PresetHandlerDispatcher::GetEndGamePresetFromButton(uint32_t button,
     }
 }
 
-void PresetHandlerDispatcher::DispatchPressedButtonToPreset(Autonomous *mode,
-                                                            uint32_t button,
-                                                            bool pressedP) {
+void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
+    Autonomous *mode, uint32_t button, bool pressedP) {
     switch (mode->m_gameMode) {
         case GameMode::Cargo:
             mode->m_elevator->SetPosition(
@@ -116,9 +115,8 @@ void PresetHandlerDispatcher::DispatchPressedButtonToPreset(Autonomous *mode,
     }
 }
 
-void PresetHandlerDispatcher::DispatchPressedButtonToPreset(Teleop *mode,
-                                                            uint32_t button,
-                                                            bool pressedP) {
+void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
+    Teleop *mode, uint32_t button, bool pressedP) {
     switch (mode->m_gameMode) {
         case GameMode::Cargo:
             mode->m_elevator->SetPosition(
@@ -137,9 +135,8 @@ void PresetHandlerDispatcher::DispatchPressedButtonToPreset(Teleop *mode,
     }
 }
 
-void PresetHandlerDispatcher::DispatchPressedButtonToPreset(Test *mode,
-                                                            uint32_t button,
-                                                            bool pressedP) {
+void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
+    Test *mode, uint32_t button, bool pressedP) {
     switch (mode->m_gameMode) {
         case GameMode::Cargo:
             mode->m_elevator->SetPosition(
@@ -160,7 +157,7 @@ void PresetHandlerDispatcher::DispatchPressedButtonToPreset(Test *mode,
 
 void PresetHandlerDispatcher::PresetPeriodic(Teleop *mode) {
     if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
-            Xbox::LeftBumper)) > 0.25) {
+            Xbox::LeftTriggerAxis)) > 0.25) {
         switch (mode->m_gameMode) {
             case GameMode::Cargo:
                 mode->m_cargoIntake->GoToWristState(

@@ -232,8 +232,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::BtnA:  // Low Preset
             case Xbox::BtnX:  // Cargo Bay Preset
             case Xbox::BtnB:  // Middle Elevator Preset
-                m_presetDispatcher->DispatchPressedButtonToPreset(this, button,
-                                                                  pressedP);
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
                 break;
             case Xbox::LeftBumper:   // Extend Intake
             case Xbox::RightBumper:  // Intake

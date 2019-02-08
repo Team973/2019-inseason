@@ -142,8 +142,8 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::BtnY:
                 // Elevator to preset height, then...
-                m_presetDispatcher->DispatchPressedButtonToPreset(this, button,
-                                                                  pressedP);
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
 
                 if (pressedP) {
                     m_hatchIntake->RunIntake();
@@ -154,8 +154,8 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnA:
                 // Elevator to preset height, then...
-                m_presetDispatcher->DispatchPressedButtonToPreset(this, button,
-                                                                  pressedP);
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
 
                 if (pressedP) {
                     m_hatchIntake->Exhaust();
@@ -166,8 +166,8 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnX:
                 // Elevator to preset height, then...
-                m_presetDispatcher->DispatchPressedButtonToPreset(this, button,
-                                                                  pressedP);
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
 
                 if (pressedP) {
                     m_cargoIntake->DeployPlatformWheel();
@@ -178,8 +178,8 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::BtnB:
                 // Elevator to preset height, then...
-                m_presetDispatcher->DispatchPressedButtonToPreset(this, button,
-                                                                  pressedP);
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
 
                 if (pressedP) {
                     m_hatchIntake->ManualPuncherActivate();
