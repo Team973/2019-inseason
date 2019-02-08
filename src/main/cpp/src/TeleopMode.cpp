@@ -235,59 +235,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 m_presetDispatcher->DispatchPressedButtonToPreset(this, button,
                                                                   pressedP);
                 break;
-
-                // case Xbox::LeftBumper:   // Extend Intake
-                // case Xbox::RightBumper:  // Intake
-                //     m_presetDispatcher->IntakePresets(this, button,
-                //     pressedP); break;
-
-            case Xbox::LeftBumper:  // Extend Intake
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            m_cargoIntake->GoToWristState(
-                                CargoIntake::CargoWristState::extended);
-                            break;
-                        case GameMode::Hatch:
-                            m_hatchIntake->ManualPuncherActivate();
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
-                else {
-                }
-                break;
+            case Xbox::LeftBumper:   // Extend Intake
             case Xbox::RightBumper:  // Intake
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            m_cargoIntake->RunIntake();
-                            m_elevator->SetPosition(Elevator::GROUND);
-                            break;
-                        case GameMode::Hatch:
-                            m_hatchIntake->RunIntake();
-                            m_elevator->SetPosition(Elevator::GROUND);
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
-                else {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            m_cargoIntake->HoldCargo();
-                            break;
-                        case GameMode::Hatch:
-                            m_hatchIntake->HoldHatch();
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
+                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
                 break;
             case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
                 if (pressedP) {

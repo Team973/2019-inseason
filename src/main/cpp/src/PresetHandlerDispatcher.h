@@ -43,6 +43,8 @@ public:
 
     void PresetPeriodic(Teleop *mode);
 
+    void IntakeBumperPresets(Teleop *mode, uint32_t button, bool pressedP);
+
 private:
     double GetCargoPresetFromButton(uint32_t button, bool pressedP);
     double GetHatchPresetFromButton(uint32_t button, bool pressedP);

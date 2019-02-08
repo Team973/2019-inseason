@@ -175,4 +175,46 @@ void PresetHandlerDispatcher::PresetPeriodic(Teleop *mode) {
         }
     }
 }
+
+void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
+                                                  bool pressedP) {
+    switch (mode->m_gameMode) {
+        case GameMode::Cargo:
+            if (pressedP) {
+                if (button == Xbox::LeftBumper) {
+                    mode->m_cargoIntake->GoToWristState(
+                        CargoIntake::CargoWristState::extended);
+                }
+                else {  // button == Xbox::RightBumper
+                    mode->m_cargoIntake->RunIntake();
+                    mode->m_elevator->SetPosition(Elevator::GROUND);
+                }
+            }
+            else {
+                if (button == Xbox::RightBumper) {
+                    mode->m_cargoIntake->HoldCargo();
+                }
+            }
+
+            break;
+        case GameMode::Hatch:
+            if (pressedP) {
+                if (button == Xbox::LeftBumper) {
+                    mode->m_hatchIntake->ManualPuncherActivate();
+                }
+                else {  // button == Xbox::RightBumper
+                    mode->m_hatchIntake->RunIntake();
+                    mode->m_elevator->SetPosition(Elevator::GROUND);
+                }
+            }
+            else {
+                if (button == Xbox::RightBumper) {
+                    mode->m_hatchIntake->HoldHatch();
+                }
+            }
+            break;
+        case GameMode::EndGame:
+            break;
+    }
+}
 }
