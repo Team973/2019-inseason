@@ -30,6 +30,8 @@ void Limelight::SetLightMode(LightMode mode) {
             break;
         case LightMode::blink:
             m_limelight->PutNumber("ledMode", 2);
+            DBStringPrintf(DBStringPos::DB_LINE6, "%f",
+                           m_limelight->GetNumber("ledMode", 0));
             break;
     }
 }
@@ -109,16 +111,19 @@ void Limelight::SetLightBlink() {
 void Limelight::SetCameraVision() {
     SetPipeline(PipelineMode::target_vision);
     SetCameraMode(CameraMode::onVision);
+    SetStreamMode(StreamMode::pipMain);
 }
 
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
     SetCameraMode(CameraMode::onDriver);
+    SetStreamMode(StreamMode::pipSecondary);
 }
 
 void Limelight::SetCameraDefaultVision() {
     SetPipeline(PipelineMode::default_vision);
     SetCameraMode(CameraMode::onVision);
+    SetStreamMode(StreamMode::pipMain);
 }
 
 bool Limelight::isTargetValid() {

@@ -78,6 +78,8 @@ void Robot::Initialize() {
     m_compressor->Enable();
     m_logger->RegisterCell(m_matchIdentifier);
     m_logger->Start();
+
+    SmartDashboard::PutString("misc/limelight/currentLimelight", "hatch");
 }
 
 void Robot::DisabledStart() {
