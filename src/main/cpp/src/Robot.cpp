@@ -38,6 +38,9 @@ Robot::Robot()
               new Solenoid(PCM_CAN_ID, CARGO_PLATFORM_LOCK_PCM_ID))
         , m_hatchRollers(new GreyTalonSRX(HATCH_ROLLER_CAN_ID))
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
+        , m_hatchCamera(UsbCamera("USB Camera 0", 0))
+        , m_cameraServer(CameraServer::GetInstance())
+        , m_greyCam(m_cameraServer->AddServer("serve_GreyCam", 1181))
         , m_limelightCargo(new Limelight("limelight-cargo"))
         , m_limelightHatch(new Limelight("limelight-hatch"))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
@@ -78,6 +81,10 @@ void Robot::Initialize() {
     m_compressor->Enable();
     m_logger->RegisterCell(m_matchIdentifier);
     m_logger->Start();
+
+    m_cameraServer->AddCamera(m_hatchCamera);
+    m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 320, 240, 10);
+    m_greyCam.SetSource(m_hatchCamera);
 
     SmartDashboard::PutString("misc/limelight/currentLimelight", "hatch");
 }

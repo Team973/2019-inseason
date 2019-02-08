@@ -19,7 +19,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
-        , m_driveMode(DriveMode::Openloop)
+        , m_driveMode(DriveMode::Cheesy)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
