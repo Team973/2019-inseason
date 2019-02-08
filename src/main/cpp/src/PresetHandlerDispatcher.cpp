@@ -157,4 +157,22 @@ void PresetHandlerDispatcher::DispatchPressedButtonToPreset(Test *mode,
             break;
     }
 }
+
+void PresetHandlerDispatcher::PresetPeriodic(Teleop *mode) {
+    if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
+            Xbox::LeftBumper)) > 0.25) {
+        switch (mode->m_gameMode) {
+            case GameMode::Cargo:
+                mode->m_cargoIntake->GoToWristState(
+                    CargoIntake::CargoWristState::retracted);
+                break;
+            case GameMode::Hatch:
+                mode->m_hatchIntake->ManualPuncherRetract();
+                break;
+            case GameMode::EndGame:
+                // Task
+                break;
+        }
+    }
+}
 }

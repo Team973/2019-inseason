@@ -105,21 +105,7 @@ void Teleop::TeleopPeriodic() {
         m_elevator->SetManualInput();
     }
 
-    if (fabs(m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftBumper)) >
-        0.25) {
-        switch (m_gameMode) {
-            case GameMode::Cargo:
-                m_cargoIntake->GoToWristState(
-                    CargoIntake::CargoWristState::retracted);
-                break;
-            case GameMode::Hatch:
-                m_hatchIntake->ManualPuncherRetract();
-                break;
-            case GameMode::EndGame:
-                // Task
-                break;
-        }
-    }
+    m_presetDispatcher->PresetPeriodic(this);
 
     switch (m_rumble) {
         case Rumble::on:
@@ -249,6 +235,12 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 m_presetDispatcher->DispatchPressedButtonToPreset(this, button,
                                                                   pressedP);
                 break;
+
+                // case Xbox::LeftBumper:   // Extend Intake
+                // case Xbox::RightBumper:  // Intake
+                //     m_presetDispatcher->IntakePresets(this, button,
+                //     pressedP); break;
+
             case Xbox::LeftBumper:  // Extend Intake
                 if (pressedP) {
                     switch (m_gameMode) {

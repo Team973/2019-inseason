@@ -41,6 +41,8 @@ public:
     void DispatchPressedButtonToPreset(Test *mode, uint32_t button,
                                        bool pressedP);
 
+    void PresetPeriodic(Teleop *mode);
+
 private:
     double GetCargoPresetFromButton(uint32_t button, bool pressedP);
     double GetHatchPresetFromButton(uint32_t button, bool pressedP);
