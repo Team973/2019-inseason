@@ -36,6 +36,8 @@ Teleop::~Teleop() {
 void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
     m_elevator->EnableCoastMode();
+    m_driveMode = DriveMode::Openloop;
+    m_limelightCargo->SetCameraDriver();
 }
 
 void Teleop::TeleopPeriodic() {

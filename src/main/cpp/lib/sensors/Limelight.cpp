@@ -7,7 +7,7 @@ Limelight::Limelight(const char *name)
         : m_limelight(nt::NetworkTableInstance::GetDefault().GetTable(name))
         , m_camName(name)
         , m_lightMode(LightMode::on)
-        , m_cameraMode(CameraMode::onVision)
+        , m_cameraMode(CameraMode::onDriver)
         , m_targetStatus(false)
         , m_horizontalOffset(0.0)
         , m_verticalOffset(0.0)
@@ -75,12 +75,17 @@ void Limelight::SetStreamMode(StreamMode mode) {
     switch (mode) {
         case StreamMode::standard:
             m_limelight->PutNumber("stream", 0);
+            SmartDashboard::PutString("misc/limelight/currentCamera",
+                                      "limelight");
             break;
         case StreamMode::pipMain:
             m_limelight->PutNumber("stream", 1);
+            SmartDashboard::PutString("misc/limelight/currentCamera",
+                                      "limelight");
             break;
         case StreamMode::pipSecondary:
             m_limelight->PutNumber("stream", 2);
+            SmartDashboard::PutString("misc/limelight/currentCamera", "usb");
             break;
     }
 }
@@ -117,7 +122,7 @@ void Limelight::SetCameraVision() {
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
     SetCameraMode(CameraMode::onDriver);
-    SetStreamMode(StreamMode::pipSecondary);
+    SetStreamMode(StreamMode::pipMain);
 }
 
 void Limelight::SetCameraDefaultVision() {
