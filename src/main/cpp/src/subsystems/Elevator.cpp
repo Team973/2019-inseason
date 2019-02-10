@@ -94,6 +94,10 @@ void Elevator::HallZero() {
     if (m_prevHall != GetElevatorHall()) {
         ZeroPosition();
         m_prevHall = GetElevatorHall();
+        DBStringPrintf(DBStringPos::DB_LINE7, "1");
+    }
+    else {
+        DBStringPrintf(DBStringPos::DB_LINE7, "0");
     }
 }
 
