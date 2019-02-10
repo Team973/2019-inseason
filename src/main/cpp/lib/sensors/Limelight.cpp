@@ -7,7 +7,7 @@ Limelight::Limelight(const char *name)
         : m_limelight(nt::NetworkTableInstance::GetDefault().GetTable(name))
         , m_camName(name)
         , m_lightMode(LightMode::on)
-        , m_cameraMode(CameraMode::onVision)
+        , m_cameraMode(CameraMode::onDriver)
         , m_targetStatus(false)
         , m_horizontalOffset(0.0)
         , m_verticalOffset(0.0)
@@ -30,6 +30,8 @@ void Limelight::SetLightMode(LightMode mode) {
             break;
         case LightMode::blink:
             m_limelight->PutNumber("ledMode", 2);
+            DBStringPrintf(DBStringPos::DB_LINE6, "%f",
+                           m_limelight->GetNumber("ledMode", 0));
             break;
     }
 }
@@ -73,12 +75,17 @@ void Limelight::SetStreamMode(StreamMode mode) {
     switch (mode) {
         case StreamMode::standard:
             m_limelight->PutNumber("stream", 0);
+            SmartDashboard::PutString("misc/limelight/currentCamera",
+                                      "limelight");
             break;
         case StreamMode::pipMain:
             m_limelight->PutNumber("stream", 1);
+            SmartDashboard::PutString("misc/limelight/currentCamera",
+                                      "limelight");
             break;
         case StreamMode::pipSecondary:
             m_limelight->PutNumber("stream", 2);
+            SmartDashboard::PutString("misc/limelight/currentCamera", "usb");
             break;
     }
 }
@@ -109,16 +116,19 @@ void Limelight::SetLightBlink() {
 void Limelight::SetCameraVision() {
     SetPipeline(PipelineMode::target_vision);
     SetCameraMode(CameraMode::onVision);
+    SetStreamMode(StreamMode::pipMain);
 }
 
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
     SetCameraMode(CameraMode::onDriver);
+    SetStreamMode(StreamMode::pipMain);
 }
 
 void Limelight::SetCameraDefaultVision() {
     SetPipeline(PipelineMode::default_vision);
     SetCameraMode(CameraMode::onVision);
+    SetStreamMode(StreamMode::pipMain);
 }
 
 bool Limelight::isTargetValid() {

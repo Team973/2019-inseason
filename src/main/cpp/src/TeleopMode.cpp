@@ -14,16 +14,17 @@ namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
-               CargoIntake *cargoIntake, Limelight *limelightCargo,
-               Limelight *limelightHatch)
+               CargoIntake *cargoIntake, Stinger *stinger,
+               Limelight *limelightCargo, Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
-        , m_driveMode(DriveMode::Openloop)
+        , m_driveMode(DriveMode::Cheesy)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
         , m_gameMode(GameMode::Hatch)
+        , m_stinger(stinger)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_rumble(Rumble::off) {
@@ -36,6 +37,7 @@ void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
     m_elevator->EnableCoastMode();
     m_driveMode = DriveMode::Openloop;
+    m_limelightCargo->SetCameraDriver();
 }
 
 void Teleop::TeleopPeriodic() {
@@ -83,14 +85,20 @@ void Teleop::TeleopPeriodic() {
         case GameMode::Cargo:
             m_limelightCargo->SetLightOn();
             m_limelightHatch->SetLightOff();
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "cargo");
             break;
         case GameMode::Hatch:
             m_limelightCargo->SetLightOff();
             m_limelightHatch->SetLightOn();
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "hatch");
             break;
         case GameMode::EndGame:
-            m_limelightCargo->SetLightBlink();
             m_limelightHatch->SetLightBlink();
+            m_limelightCargo->SetLightBlink();
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "cargo");
             break;
     }
 
