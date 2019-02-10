@@ -74,8 +74,11 @@ void Teleop::TeleopPeriodic() {
         case DriveMode::LimelightHatch:
             m_drive->LimelightHatchDrive();
             break;
-        case DriveMode::AssistedCheesy:
-            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+        case DriveMode::AssistedCheesyHatch:
+            m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
+            break;
+        case DriveMode::AssistedCheesyCargo:
+            m_drive->AssistedCheesyCargoDrive(y, x, quickturn, false);
             break;
     }
 
@@ -154,10 +157,10 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::Cargo:  // Assisted Cheesy
-                            m_driveMode = DriveMode::AssistedCheesy;
+                            m_driveMode = DriveMode::AssistedCheesyCargo;
                             break;
                         case GameMode::Hatch:  // Assisted Cheesy
-                            m_driveMode = DriveMode::AssistedCheesy;
+                            m_driveMode = DriveMode::AssistedCheesyHatch;
                             break;
                         case GameMode::EndGame:  // Climb Down
                             // Task

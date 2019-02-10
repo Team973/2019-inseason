@@ -16,8 +16,9 @@ using namespace frc;
 namespace frc973 {
 
 AssistedCheesyDriveController::AssistedCheesyDriveController(
-    Limelight *limelight)
+    Limelight *limelight, bool inverted)
         : m_limelight(limelight)
+        , m_isInverted(inverted)
         , m_visionTurnPID(new PID(0.15, 0.0, 0.0))
         , m_leftOutput(0.0)
         , m_rightOutput(0.0)
@@ -166,7 +167,13 @@ void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
         rightPwm = -1.0;
     }
 
-    m_leftOutput = -leftPwm;
-    m_rightOutput = -rightPwm;
+    if (m_isInverted) {
+        m_leftOutput = leftPwm;
+        m_rightOutput = rightPwm;
+    }
+    else {
+        m_leftOutput = -leftPwm;
+        m_rightOutput = -rightPwm;
+    }
 }
 }
