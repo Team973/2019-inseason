@@ -36,7 +36,8 @@ public:
     {
         manualVoltage, /**< Control the motors with manual voltage. */
         motionMagic, /**< Control the motors using position w/ Motion Magic. */
-        idle
+        idle,
+        joystickControl
     };
 
     static constexpr double GROUND = 0.0; /**< Ground preset. */
@@ -85,10 +86,15 @@ public:
     void SetPosition(double position);
 
     /**
+     * Set to manual mode with joystick control
+     */
+    void SetManualInput();
+
+    /**
      * Set the elevator power.
      * @param power The power being sent to the motor from -1.0 to 1.0
      */
-    void SetManualInput();
+    void SetPower(double power);
 
     /**
      * Get the current position.

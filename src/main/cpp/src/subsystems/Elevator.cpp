@@ -60,7 +60,12 @@ Elevator::~Elevator() {
 }
 
 void Elevator::SetManualInput() {
+    m_elevatorState = ElevatorState::joystickControl;
+}
+
+void Elevator::SetPower(double power) {
     m_elevatorState = ElevatorState::manualVoltage;
+    m_elevatorMotorA->Set(ControlMode::PercentOutput, power);
 }
 
 void Elevator::SetPosition(double position) {
@@ -112,7 +117,7 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     HallZero();
 
     switch (m_elevatorState) {
-        case manualVoltage:
+        case joystickControl:
             m_joystickControl =
                 -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis);
             if (GetElevatorHall()) {
@@ -131,6 +136,8 @@ void Elevator::TaskPeriodic(RobotMode mode) {
                     ControlMode::PercentOutput,
                     pow(m_joystickControl, 3.0) / 3.0 + ELEVATOR_FEED_FORWARD);
             }
+            break;
+        case manualVoltage:
             break;
         case motionMagic:
             break;
