@@ -15,8 +15,10 @@ const ui = {
         timer: document.getElementById('timer'),
         robotState: document.getElementById('robotState').firstChild,
         autoSelect: document.getElementById('autoSelect'),
-        cameraOne: document.getElementById('cameraOneContainer'),
-        cameraTwo: document.getElementById('cameraTwoContainer')
+        camera: {
+            cameraImg: document.getElementById('camera'),
+            container: document.getElementById('cameraContainer')
+        }
     },
     debugCharts: document.getElementById('debugCharts'),
     indicators: document.getElementById('indicators'),
@@ -132,13 +134,13 @@ function render () {
     for (let i = 0; i < config.charts.length; i += 1) {
         if (config.charts[i].settings.show) {
             config.charts[i].div = document.createElement('div')
-            config.charts[i].div.setAttribute('class', 'chartContainer')
+            config.charts[i].div.setAttribute('class', 'chart')
 
             config.charts[i].displayTitle = document.createElement('span')
             config.charts[i].displayTitle.innerText = `${config.charts[i].title}`
 
             config.charts[i].displayChart = document.createElement('canvas')
-            config.charts[i].displayChart.setAttribute('class', 'responsiveCharts')
+            config.charts[i].displayChart.setAttribute('class', 'responsiveChart')
             config.charts[i].displayChart.setAttribute('name', `chart${i}`)
 
             config.charts[i].chart = new SmoothieChart({
@@ -334,38 +336,34 @@ function render () {
 
 openPage('default')
 
-const cameraOneUrl = 'http://limelight-hatch.local:5800'
-const cameraTwoUrl = 'http://limelight-cargo.local:5800'
+NetworkTables.addKeyListener('/SmartDashboard/misc/limelight/currentLimelight', (key, value) => {
+    var cameraUrl = `http://limelight-${value}.local:5800`
+    setupCamera(cameraUrl);
+})
 
-function reloadCameraOne () {
-    const content = ui.misc.cameraOne.innerHTML
-    ui.misc.cameraOne.innerHTML = content
+NetworkTables.addKeyListener('/SmartDashboard/misc/limelight/currentCamera', (key, value) => {
+    if (value == 'limelight') {
+        rotateCamera(0)
+    } else if (value == 'usb') {
+        rotateCamera(0)
+    } else {
+        throw new TypeError("Invalid current camera value.")
+    }
+})
+
+function reloadCamera () {
+    const content = ui.misc.camera.container.innerHTML
+    ui.misc.camera.container.innerHTML = content
 }
 
-function reloadCameraTwo () {
-    const content = ui.misc.cameraTwo.innerHTML
-    ui.misc.cameraTwo.innerHTML = content
+function rotateCamera (deg) {
+    ui.misc.camera.cameraImg.setAttribute('style', `transform: rotate(${deg}deg)`)
 }
 
-function createCameraOne (url) {
-    const cameraImg = document.createElement('img')
-    cameraImg.setAttribute('src', url)
-    cameraImg.setAttribute('id', 'cameraOne')
-    cameraImg.addEventListener('onerror', () => {
-        reloadCameraOne()
+function setupCamera (url) {
+    ui.misc.camera.cameraImg.setAttribute('src', url)
+    ui.misc.camera.cameraImg.setAttribute('class', 'camera')
+    ui.misc.camera.cameraImg.addEventListener('onerror', () => {
+        reloadCamera()
     })
-    ui.misc.cameraOne.insertBefore(cameraImg, ui.misc.cameraOne.firstChild)
 }
-
-function createCameraTwo(url) {
-    const cameraImg = document.createElement('img')
-    cameraImg.setAttribute('src', url)
-    cameraImg.setAttribute('id', 'cameraTwo')
-    cameraImg.addEventListener('onerror', () => {
-        reloadCameraTwo()
-    })
-    ui.misc.cameraTwo.insertBefore(cameraImg, ui.misc.cameraTwo.firstChild)
-}
-
-window.setTimeout(createCameraOne(cameraOneUrl), 2000)
-window.setTimeout(createCameraTwo(cameraTwoUrl), 2000)
