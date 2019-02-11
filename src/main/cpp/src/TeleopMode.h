@@ -105,6 +105,8 @@ private:
         Cargo,
         Hatch,
         EndGame,
+        HatchVision,
+        CargoVision
     };
     GameMode m_gameMode;
 

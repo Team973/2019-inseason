@@ -18,7 +18,7 @@ namespace frc973 {
 AssistedCheesyDriveController::AssistedCheesyDriveController(
     Limelight *limelight)
         : m_limelight(limelight)
-        , m_visionTurnPID(new PID(0.15, 0.0, 0.0))
+        , m_visionTurnPID(new PID(0.1, 0.0, 0.0))
         , m_leftOutput(0.0)
         , m_rightOutput(0.0)
         , m_oldWheel(0.0)
@@ -31,8 +31,6 @@ AssistedCheesyDriveController::~AssistedCheesyDriveController() {
 
 void AssistedCheesyDriveController::Start(DriveControlSignalReceiver *out) {
     printf("Turning on Cheesy Mode\n");
-    m_limelight->SetCameraVision();
-    m_limelight->SetLightOn();
 }
 
 void AssistedCheesyDriveController::CalcDriveOutput(
@@ -166,7 +164,7 @@ void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
         rightPwm = -1.0;
     }
 
-    m_leftOutput = -leftPwm;
-    m_rightOutput = -rightPwm;
+    m_leftOutput = leftPwm;
+    m_rightOutput = rightPwm;
 }
 }
