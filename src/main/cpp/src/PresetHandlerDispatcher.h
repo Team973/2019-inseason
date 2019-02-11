@@ -8,6 +8,8 @@
 
 #include "frc/WPILib.h"
 
+#define NO_PRESET_NO_CHANGE -1
+
 using namespace frc;
 
 namespace frc973 {
