@@ -39,7 +39,7 @@ public:
     {
         manualVoltage, /**< Control the motors with manual voltage. */
         motionMagic, /**< Control the motors using position w/ Motion Magic. */
-        idle
+        idle         /**< Stays in the position that was assigned. */
     };
 
     static constexpr double STOW = 0.0;     /**< Stow preset. */
