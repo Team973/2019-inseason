@@ -81,30 +81,24 @@ void Teleop::TeleopPeriodic() {
 
     switch (m_gameMode) {
         case GameMode::Cargo:
-            m_limelightCargo->SetCameraDriver();
-            m_limelightHatch->SetCameraOff();
-            m_limelightCargo->SetPipelineIndex(0);
-            m_limelightHatch->SetPipelineIndex(3);
+            //m_limelightCargo->SetCameraDriver();
+            //m_limelightHatch->SetCameraOff();
             SmartDashboard::PutString("misc/limelight/currentLimelight",
-                                      "cargo");
+                                      "hatch"); //cargo
             break;
         case GameMode::Hatch:
             m_limelightCargo->SetCameraOff();
             m_limelightHatch->SetCameraDriver();
-            m_limelightCargo->SetPipelineIndex(3);
-            m_limelightHatch->SetPipelineIndex(0);
             SmartDashboard::PutString("misc/limelight/currentLimelight",
                                       "hatch");
             break;
         case GameMode::EndGame:
-            m_limelightCargo->SetCameraDriver();
-            m_limelightHatch->SetCameraOff();
+            m_limelightCargo->SetCameraOff(); //Driver
+            m_limelightHatch->SetCameraDriver(); //Off
             m_limelightHatch->SetLightBlink();
             m_limelightCargo->SetLightBlink();
-            m_limelightCargo->SetPipelineIndex(0);
-            m_limelightHatch->SetPipelineIndex(3);
             SmartDashboard::PutString("misc/limelight/currentLimelight",
-                                      "cargo");
+                                      "hatch"); //cargo
             break;
     }
 
