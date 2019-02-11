@@ -16,6 +16,8 @@ namespace frc973 {
 
 double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
                                                          bool pressedP) {
+    double ret = -1;
+
     switch (button) {
         case Xbox::BtnY:  // High Elevator Preset
             if (pressedP) {
@@ -37,10 +39,14 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
             }
             break;
     }
+
+    return ret;
 }
 
 double PresetHandlerDispatcher::GetHatchPresetFromButton(uint32_t button,
                                                          bool pressedP) {
+    double ret = -1;
+
     switch (button) {
         case Xbox::BtnY:  // High Elevator Preset
             if (pressedP) {
@@ -63,10 +69,14 @@ double PresetHandlerDispatcher::GetHatchPresetFromButton(uint32_t button,
             }
             break;
     }
+
+    return ret;
 }
 
 double PresetHandlerDispatcher::GetEndGamePresetFromButton(uint32_t button,
                                                            bool pressedP) {
+    double ret = -1;
+
     switch (button) {
         case Xbox::BtnY:  // High Elevator Preset
             if (pressedP) {
@@ -93,45 +103,53 @@ double PresetHandlerDispatcher::GetEndGamePresetFromButton(uint32_t button,
             }
             break;
     }
+
+    return ret;
 }
 
 void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     Autonomous *mode, uint32_t button, bool pressedP) {
+    double height = -1;
+
     switch (mode->m_gameMode) {
         case GameMode::Cargo:
-            mode->m_elevator->SetPosition(
-                GetCargoPresetFromButton(button, pressedP));
+            height = GetCargoPresetFromButton(button, pressedP);
             break;
         case GameMode::Hatch:
-            mode->m_elevator->SetPosition(
-                GetHatchPresetFromButton(button, pressedP));
+            height = GetHatchPresetFromButton(button, pressedP);
             break;
         case GameMode::EndGame:
-            mode->m_elevator->SetPosition(
-                GetEndGamePresetFromButton(button, pressedP));
+            height = GetEndGamePresetFromButton(button, pressedP);
             break;
         default:
             break;
+    }
+
+    if (height != -1) {
+        mode->m_elevator->SetPosition(height);
     }
 }
 
 void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     Teleop *mode, uint32_t button, bool pressedP) {
+    double height = -1;
+
     switch (mode->m_gameMode) {
         case GameMode::Cargo:
-            mode->m_elevator->SetPosition(
-                GetCargoPresetFromButton(button, pressedP));
+            height = GetCargoPresetFromButton(button, pressedP);
             break;
         case GameMode::Hatch:
-            mode->m_elevator->SetPosition(
-                GetHatchPresetFromButton(button, pressedP));
+            height = GetHatchPresetFromButton(button, pressedP);
             break;
         case GameMode::EndGame:
-            mode->m_elevator->SetPosition(
-                GetEndGamePresetFromButton(button, pressedP));
+            height = GetEndGamePresetFromButton(button, pressedP);
             break;
         default:
             break;
+    }
+
+    if (height != -1) {
+        mode->m_elevator->SetPosition(height);
     }
 }
 
