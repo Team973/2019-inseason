@@ -6,7 +6,7 @@ namespace frc973 {
 Limelight::Limelight(const char *name)
         : m_limelight(nt::NetworkTableInstance::GetDefault().GetTable(name))
         , m_camName(name)
-        , m_lightMode(LightMode::on)
+        , m_lightMode(LightMode::off)
         , m_cameraMode(CameraMode::onDriver)
         , m_targetStatus(false)
         , m_horizontalOffset(0.0)
