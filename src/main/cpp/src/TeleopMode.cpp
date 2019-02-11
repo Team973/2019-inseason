@@ -36,7 +36,6 @@ Teleop::~Teleop() {
 void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
     m_elevator->EnableCoastMode();
-    m_driveMode = DriveMode::Openloop;
 }
 
 void Teleop::TeleopPeriodic() {
@@ -82,22 +81,24 @@ void Teleop::TeleopPeriodic() {
 
     switch (m_gameMode) {
         case GameMode::Cargo:
-            m_limelightCargo->SetLightOn();
-            m_limelightHatch->SetLightOff();
+            // m_limelightCargo->SetCameraDriver();
+            // m_limelightHatch->SetCameraOff();
             SmartDashboard::PutString("misc/limelight/currentLimelight",
-                                      "cargo");
+                                      "hatch");  // cargo
             break;
         case GameMode::Hatch:
-            m_limelightCargo->SetLightOff();
-            m_limelightHatch->SetLightOn();
+            m_limelightCargo->SetCameraOff();
+            m_limelightHatch->SetCameraDriver();
             SmartDashboard::PutString("misc/limelight/currentLimelight",
                                       "hatch");
             break;
         case GameMode::EndGame:
+            m_limelightCargo->SetCameraOff();     // Driver
+            m_limelightHatch->SetCameraDriver();  // Off
             m_limelightHatch->SetLightBlink();
             m_limelightCargo->SetLightBlink();
             SmartDashboard::PutString("misc/limelight/currentLimelight",
-                                      "cargo");
+                                      "hatch");  // cargo
             break;
     }
 
