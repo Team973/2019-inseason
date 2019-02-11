@@ -97,9 +97,10 @@ bool Elevator::GetElevatorHall() {
 }
 
 void Elevator::HallZero() {
-    if (m_prevHall != GetElevatorHall()) {
+    bool hallState = GetElevatorHall();
+    if (m_prevHall != hallState) {
         ZeroPosition();
-        m_prevHall = GetElevatorHall();
+        m_prevHall = hallState;
         DBStringPrintf(DBStringPos::DB_LINE7, "1");
     }
     else {
