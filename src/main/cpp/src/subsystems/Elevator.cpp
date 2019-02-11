@@ -42,9 +42,6 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->ConfigForwardSoftLimitEnable(true, 10);
     m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
         ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
-    m_elevatorMotorA->ConfigReverseSoftLimitEnable(true, 10);
-    m_elevatorMotorA->ConfigReverseSoftLimitThreshold(
-        ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
     m_elevatorMotorB->SetInverted(true);
@@ -94,6 +91,11 @@ void Elevator::EnableCoastMode() {
 
 bool Elevator::GetElevatorHall() {
     return !m_elevatorHall->Get();
+}
+
+void Elevator::SetSoftLimit(double limit) {
+    m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
+        limit / ELEVATOR_INCHES_PER_CLICK, 10);
 }
 
 void Elevator::HallZero() {

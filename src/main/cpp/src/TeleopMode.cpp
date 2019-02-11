@@ -414,6 +414,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
                 if (pressedP) {
                     m_gameMode = GameMode::EndGameInit;
+                    m_elevator->SetSoftLimit(24.5);
                     m_rumble = Rumble::on;
                 }
                 else {
@@ -442,6 +443,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_gameMode = GameMode::Cargo;
                     m_hatchIntake->SetIdle();
                     m_hatchIntake->ManualPuncherRetract();
+                    m_elevator->SetSoftLimit(10.0);
                     m_rumble = Rumble::on;
                 }
                 else {
@@ -453,6 +455,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_gameMode = GameMode::Hatch;
                     m_cargoIntake->StopIntake();
                     m_cargoIntake->RetractWrist();
+                    m_elevator->SetSoftLimit(10.0);
                     m_rumble = Rumble::on;
                 }
                 else {
