@@ -3,30 +3,6 @@
         {
             "settings": {
                 "tooltip": false,
-                "minValue": -27.0,
-                "maxValue": 27.0,
-                "show": true
-            },
-            "title": "Limelight Hatch Error",
-            "keys": [
-                "/SmartDashboard/drive/limelight/hatch/error"
-            ]
-        },
-        {
-            "settings": {
-                "tooltip": false,
-                "minValue": -27.0,
-                "maxValue": 27.0,
-                "show": true
-            },
-            "title": "Limelight Cargo Error",
-            "keys": [
-                "/SmartDashboard/drive/limelight/cargo/error"
-            ]
-        },
-        {
-            "settings": {
-                "tooltip": false,
                 "minValue": -1,
                 "maxValue": 1,
                 "show": true
@@ -158,7 +134,7 @@
                 "default": false,
                 "debug": true
             },
-            "title": "elevator Encoder",
+            "title": "Elevator Encoder",
             "unit": "in",
             "key": "/SmartDashboard/elevator/encoders/encoder"
         },
@@ -183,28 +159,6 @@
             "title": "Right Drive Percentage",
             "unit": "%",
             "key": "/SmartDashboard/drive/percentages/rightpercent"
-        },
-        {
-            "settings": {
-                "fixedDecimals": true,
-                "show": true,
-                "default": false,
-                "debug": true
-            },
-            "title": "Limelight hatch Timer",
-            "unit": "ms",
-            "key": "/SmartDashboard/misc/limelight/hatch/timer"
-        },
-        {
-            "settings": {
-                "fixedDecimals": true,
-                "show": true,
-                "default": false,
-                "debug": true
-            },
-            "title": "Limelight hatch target",
-            "unit": "",
-            "key": "/SmartDashboard/misc/limelight/hatch/target"
         },
         {
             "settings": {
