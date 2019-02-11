@@ -36,8 +36,8 @@ public:
     {
         manualVoltage, /**< Control the motors with manual voltage. */
         motionMagic, /**< Control the motors using position w/ Motion Magic. */
-        idle,
-        joystickControl
+        idle,        /**< staying in place after pressing a button. */
+        joystickControl /**< Controlling with the joystick. */
     };
 
     static constexpr double GROUND = 0.2; /**< Ground preset. */
