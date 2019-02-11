@@ -8,6 +8,9 @@ Limelight::Limelight(const char *name)
         , m_camName(name)
         , m_lightMode(LightMode::on)
         , m_cameraMode(CameraMode::onDriver)
+        , m_streamMode(StreamMode::standard)
+        , m_snapshotMode(SnapshotMode::stop)
+        , m_pipelineMode(PipelineMode::drive)
         , m_targetStatus(false)
         , m_horizontalOffset(0.0)
         , m_verticalOffset(0.0)
@@ -30,8 +33,6 @@ void Limelight::SetLightMode(LightMode mode) {
             break;
         case LightMode::blink:
             m_limelight->PutNumber("ledMode", 2);
-            DBStringPrintf(DBStringPos::DB_LINE6, "%f",
-                           m_limelight->GetNumber("ledMode", 0));
             break;
     }
 }
@@ -67,6 +68,12 @@ void Limelight::SetPipeline(PipelineMode mode) {
             break;
         case PipelineMode::target_vision:
             SetPipelineIndex(2);
+            break;
+        case PipelineMode::off:
+            SetPipelineIndex(3);
+            break;
+        case PipelineMode::vision3d:
+            SetPipelineIndex(4);
             break;
     }
 }
@@ -116,19 +123,31 @@ void Limelight::SetLightBlink() {
 void Limelight::SetCameraVision() {
     SetPipeline(PipelineMode::target_vision);
     SetCameraMode(CameraMode::onVision);
-    SetStreamMode(StreamMode::pipMain);
+    SetLightOn();
 }
 
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
     SetCameraMode(CameraMode::onDriver);
-    SetStreamMode(StreamMode::pipMain);
+    SetLightOn();
 }
 
 void Limelight::SetCameraDefaultVision() {
     SetPipeline(PipelineMode::default_vision);
     SetCameraMode(CameraMode::onVision);
-    SetStreamMode(StreamMode::pipMain);
+    SetLightOn();
+}
+
+void Limelight::SetCameraOff() {
+    SetPipeline(PipelineMode::off);
+    SetCameraMode(CameraMode::onDriver);
+    SetLightOff();
+}
+
+void Limelight::SetCamera3D() {
+    SetPipeline(PipelineMode::vision3d);
+    SetCameraMode(CameraMode::onVision);
+    SetLightOn();
 }
 
 bool Limelight::isTargetValid() {
@@ -153,6 +172,10 @@ double Limelight::GetTargetSkew() {
 
 double Limelight::GetLatency() {
     return m_limelight->GetNumber("tl", 0.0);
+}
+
+double Limelight::GetPipeline() {
+    return m_limelight->GetNumber("pipeline", 0.0);
 }
 
 double Limelight::GetHorizontalLength() {
