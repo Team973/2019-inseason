@@ -30,8 +30,8 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->SetInverted(false);
 
     m_elevatorMotorA->Config_PID(0, 1.5, 0.0, 0.0, 0.0, 10);
-    m_elevatorMotorA->ConfigMotionCruiseVelocity(5000.0, 10);
-    m_elevatorMotorA->ConfigMotionAcceleration(6000.0, 10);
+    m_elevatorMotorA->ConfigMotionCruiseVelocity(2500.0, 10);
+    m_elevatorMotorA->ConfigMotionAcceleration(3000.0, 10);
     m_elevatorMotorA->SelectProfileSlot(0, 0);
 
     m_elevatorMotorA->EnableCurrentLimit(true);

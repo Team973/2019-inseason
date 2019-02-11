@@ -251,12 +251,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::Cargo:  // High Rocket Cargo Preset
-                            m_elevator->SetPosition(
-                                Elevator::HIGH_ROCKET_CARGO);
                             break;
                         case GameMode::Hatch:  // High Rocket Hatch Preset
-                            m_elevator->SetPosition(
-                                Elevator::HIGH_ROCKET_HATCH);
                             break;
                         case GameMode::EndGame:
                             // Task
@@ -304,12 +300,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::Cargo:  // Middle Rocket Cargo Preset
-                            m_elevator->SetPosition(
-                                Elevator::MIDDLE_ROCKET_CARGO);
                             break;
                         case GameMode::Hatch:  // Middle Rocket Hatch Preset
-                            m_elevator->SetPosition(
-                                Elevator::MIDDLE_ROCKET_HATCH);
                             break;
                         case GameMode::EndGame:
                             // Task

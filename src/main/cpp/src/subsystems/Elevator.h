@@ -43,16 +43,8 @@ public:
     static constexpr double GROUND = 0.0; /**< Ground preset. */
     static constexpr double LOW_ROCKET_HATCH =
         0.0; /**< Low rocket hatch preset. */
-    static constexpr double MIDDLE_ROCKET_HATCH =
-        28.0; /**< Middle rocket hatch preset. */
-    static constexpr double HIGH_ROCKET_HATCH =
-        56.0; /**< High rocket hatch preset. */
     static constexpr double LOW_ROCKET_CARGO =
         5.0; /**< Low rocket cargo preset. */
-    static constexpr double MIDDLE_ROCKET_CARGO =
-        33.0; /**< Middle rocket cargo preset. */
-    static constexpr double HIGH_ROCKET_CARGO =
-        57.75; /**< High rocket cargo preset. */
     static constexpr double CARGO_SHIP_HATCH =
         15.0; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
