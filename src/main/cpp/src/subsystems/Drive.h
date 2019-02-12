@@ -21,9 +21,12 @@ using namespace trajectories;
 
 namespace frc973 {
 class CheesyDriveController;
+class LimelightDriveController;
+class Limelight;
 class OpenloopArcadeDriveController;
 class PIDDriveController;
 class SplineDriveController;
+class StingerDriveController;
 class VelocityArcadeDriveController;
 class LimelightDriveController;
 class AssistedCheesyDriveController;
@@ -62,8 +65,8 @@ public:
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
           GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
           GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
-          ADXRS450_Gyro *gyro, Limelight *limelightCargo,
-          Limelight *limelightHatch);
+          GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+          Limelight *limelightCargo, Limelight *limelightHatch);
     virtual ~Drive();
 
     /**
@@ -80,6 +83,11 @@ public:
      */
     void CheesyDrive(double throttle, double turn, bool isQuickTurn,
                      bool isHighGear);
+
+    /**
+     * Set drive controller to use limelight in following a target
+     */
+    LimelightDriveController *LimelightDrive();
 
     /**
      * Set a drive to use the openloop arcade drive controller.
@@ -139,15 +147,18 @@ public:
     double GetSplinePercentComplete();
 
     /**
+     * Set a drive to use the Cheesy drive controller.
+     * @param throttle Forward/backwards amount.
+     * @param turn Left/right amount.
+     */
+    void StingerDrive(double throttle, double turn);
+
+    /**
      * Set drive to use the velocity arcade drive controller.
      * @param throttle Forward/backwards amount.
      * @param turn Left/right amount.
      */
     void VelocityArcadeDrive(double throttle, double turn);
-
-    /**
-     * Set drive controller to use limelight in following a target
-     */
     LimelightDriveController *LimelightCargoDrive();
 
     /**
@@ -162,10 +173,22 @@ public:
      * @param isQuickTurn 1 or 0 for if quickturn is enabled
      * @param isHighGear 1 or 0 for if high gear is enabled
      */
-    AssistedCheesyDriveController *AssistedCheesyDrive(double throttle,
-                                                       double turn,
-                                                       bool isQuickTurn,
-                                                       bool isHighGear);
+    AssistedCheesyDriveController *AssistedCheesyHatchDrive(double throttle,
+                                                            double turn,
+                                                            bool isQuickTurn,
+                                                            bool isHighGear);
+
+    /*
+     * Set drive controller to use limelight and driver input to steer and drive
+     * @param trottle Joysticks left y-axis input
+     * @param turn Joysticks right x-axis input
+     * @param isQuickTurn 1 or 0 for if quickturn is enabled
+     * @param isHighGear 1 or 0 for if high gear is enabled
+     */
+    AssistedCheesyDriveController *AssistedCheesyCargoDrive(double throttle,
+                                                            double turn,
+                                                            bool isQuickTurn,
+                                                            bool isHighGear);
 
     /**
      * Return the left distance from the encoder in inches.
@@ -267,6 +290,8 @@ private:
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
 
+    GreyTalonSRX *m_stingerDriveMotor;
+
     ControlMode m_controlMode;
 
     double m_leftDriveOutput;
@@ -274,8 +299,10 @@ private:
 
     LogCell *m_leftDriveOutputLog;
     LogCell *m_rightDriveOutputLog;
+    LogCell *m_stingerDriveOutputLog;
     LogCell *m_leftVoltageLog;
     LogCell *m_rightVoltageLog;
+    LogCell *m_stingerVoltageLog;
 
     double m_leftPosZero;
     double m_rightPosZero;
@@ -286,13 +313,16 @@ private:
     Limelight *m_limelightHatch;
 
     CheesyDriveController *m_cheesyDriveController;
+    LimelightDriveController *m_limelightDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
+    StingerDriveController *m_stingerDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
     LimelightDriveController *m_limelightCargoDriveController;
     LimelightDriveController *m_limelightHatchDriveController;
-    AssistedCheesyDriveController *m_assistedCheesyDriveController;
+    AssistedCheesyDriveController *m_assistedCheesyDriveCargoController;
+    AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 
     double m_angle;
     double m_angleRate;

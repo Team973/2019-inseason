@@ -15,17 +15,18 @@ namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
-               CargoIntake *cargoIntake, Limelight *limelightCargo,
-               Limelight *limelightHatch,
+               CargoIntake *cargoIntake, Stinger *stinger,
+               Limelight *limelightCargo, Limelight *limelightHatch,
                PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
-        , m_driveMode(DriveMode::Openloop)
+        , m_driveMode(DriveMode::Cheesy)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
         , m_gameMode(GameMode::Hatch)
+        , m_stinger(stinger)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_presetDispatcher(presetDispatcher)
@@ -38,10 +39,11 @@ Teleop::~Teleop() {
 void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
     m_elevator->EnableCoastMode();
-    m_driveMode = DriveMode::Openloop;
 }
 
 void Teleop::TeleopPeriodic() {
+    DBStringPrintf(DBStringPos::DB_LINE3, "X Off: %f",
+                   m_limelightHatch->GetXOffset());
     /**
      * Driver Joystick
      */
@@ -77,23 +79,30 @@ void Teleop::TeleopPeriodic() {
         case DriveMode::LimelightHatch:
             m_drive->LimelightHatchDrive();
             break;
-        case DriveMode::AssistedCheesy:
-            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+        case DriveMode::AssistedCheesyHatch:
+            m_drive->AssistedCheesyHatchDrive(y, x, false, false);
+            break;
+        case DriveMode::AssistedCheesyCargo:
+            m_drive->AssistedCheesyCargoDrive(y, x, false, false);
             break;
     }
 
     switch (m_gameMode) {
         case GameMode::Cargo:
-            m_limelightCargo->SetLightOn();
-            m_limelightHatch->SetLightOff();
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "hatch");  // cargo
             break;
         case GameMode::Hatch:
-            m_limelightCargo->SetLightOff();
-            m_limelightHatch->SetLightOn();
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "hatch");
             break;
         case GameMode::EndGame:
-            m_limelightCargo->SetLightBlink();
+            m_limelightCargo->SetCameraOff();     // Driver
+            m_limelightHatch->SetCameraDriver();  // Off
             m_limelightHatch->SetLightBlink();
+            m_limelightCargo->SetLightBlink();
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "hatch");  // cargo
             break;
     }
 
@@ -137,10 +146,10 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::Cargo:  // Assisted Cheesy
-                            m_driveMode = DriveMode::AssistedCheesy;
+                            m_driveMode = DriveMode::AssistedCheesyCargo;
                             break;
                         case GameMode::Hatch:  // Assisted Cheesy
-                            m_driveMode = DriveMode::AssistedCheesy;
+                            m_driveMode = DriveMode::AssistedCheesyHatch;
                             break;
                         case GameMode::EndGame:  // Climb Down
                             // Task
@@ -271,6 +280,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_hatchIntake->SetIdle();
                     m_hatchIntake->ManualPuncherRetract();
                     m_rumble = Rumble::on;
+                    m_limelightCargo->SetCameraDriver();
+                    m_limelightCargo->SetLightOn();
+                    m_limelightHatch->SetCameraOff();
+                    m_limelightHatch->SetLightOff();
                 }
                 else {
                     m_rumble = Rumble::off;
@@ -282,6 +295,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_cargoIntake->StopIntake();
                     m_cargoIntake->RetractWrist();
                     m_rumble = Rumble::on;
+                    m_limelightCargo->SetCameraOff();
+                    m_limelightCargo->SetLightOff();
+                    m_limelightHatch->SetCameraDriver();
+                    m_limelightHatch->SetLightOn();
                 }
                 else {
                     m_rumble = Rumble::off;

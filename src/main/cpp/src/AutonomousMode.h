@@ -29,6 +29,7 @@ public:
      * Constuct an autonomous mode.
      * @param disabled The disabled mode.
      * @param drive The drive subsystem.
+     * @param elevator The elevator subsystem
      * @param gyro The gyro.
      */
     Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,

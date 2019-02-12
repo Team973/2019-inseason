@@ -19,6 +19,7 @@
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/HatchIntake.h"
 #include "src/GameMode.h"
+#include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
@@ -40,9 +41,9 @@ public:
      * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-           CargoIntake *cargoIntake, Limelight *limelightCargo,
-           Limelight *limelightHatch,
+           Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
+           CargoIntake *cargoIntake, Stinger *stinger,
+           Limelight *limelightCargo, Limelight *limelightHatch,
            PresetHandlerDispatcher *presetDispatcher);
 
     virtual ~Teleop();
@@ -99,16 +100,18 @@ private:
         Openloop,
         LimelightCargo,
         LimelightHatch,
-        AssistedCheesy,
+        AssistedCheesyHatch,
+        AssistedCheesyCargo,
         Cheesy
     };
     DriveMode m_driveMode;
     GameMode m_gameMode;
 
-    HatchIntake *m_hatchIntake;
     CargoIntake *m_cargoIntake;
+    HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
     PresetHandlerDispatcher *m_presetDispatcher;
+    Stinger *m_stinger;
 
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;

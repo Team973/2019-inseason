@@ -101,8 +101,6 @@ void CargoIntake::GoToPlatformLockState(
 
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_cargoIntakeMotor->GetOutputCurrent());
-    DBStringPrintf(DBStringPos::DB_LINE6, "curr: %2.2lf",
-                   m_cargoIntakeMotor->GetOutputCurrent());
     double filteredCurrent =
         m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {

@@ -15,6 +15,7 @@
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include "src/GameMode.h"
+#include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
@@ -35,7 +36,7 @@ public:
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
          Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-         CargoIntake *cargoIntake, Limelight *limelightCargo,
+         CargoIntake *cargoIntake, Stinger *stinger, Limelight *limelightCargo,
          Limelight *limelightHatch, PresetHandlerDispatcher *presetDispatcher);
     virtual ~Test();
     void TestInit();
@@ -96,6 +97,7 @@ private:
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
     CargoIntake *m_cargoIntake;
+    Stinger *m_stinger;
 
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;

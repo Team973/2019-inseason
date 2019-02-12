@@ -75,7 +75,9 @@ public:
     {
         drive,          /**< The limelight drive pipeline */
         default_vision, /**< The limelight default vision pipeline */
-        target_vision   /**< The limelight target vision pipeline */
+        target_vision,  /**< The limelight target vision pipeline */
+        off,            /**< The limelight off pipeline */
+        vision3d        /**< The limelight 3d pipeline */
     };
 
     /**
@@ -146,6 +148,17 @@ public:
     void SetCameraDefaultVision();
 
     /**
+     * Sets the limelight's camera to use off settings (disables as much
+     * feedback as possible)
+     */
+    void SetCameraOff();
+
+    /**
+     * Sets the limelight's camera to use 3d processing vision settings
+     */
+    void SetCamera3D();
+
+    /**
      * Checks if target is present or not
      * @return target is seen or not
      */
@@ -182,6 +195,12 @@ public:
     double GetLatency();
 
     /**
+     * Gets the camera's pipeline index
+     * @return camera pipeline index
+     */
+    double GetPipeline();
+
+    /**
      * Gets the target's horizontal length
      * @return target's horizontal length
      */
@@ -214,8 +233,11 @@ private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight
     const char *m_camName;
 
-    LightMode m_lightMode;    // enum for LED state
-    CameraMode m_cameraMode;  // enum for camera state
+    LightMode m_lightMode;        // enum for LED state
+    CameraMode m_cameraMode;      // enum for camera state
+    StreamMode m_streamMode;      // enum for stream state
+    SnapshotMode m_snapshotMode;  // enum for snapshot state
+    PipelineMode m_pipelineMode;  // enum for pipeline state
 
     bool m_targetStatus;  // target is seen or not [0,1]
 

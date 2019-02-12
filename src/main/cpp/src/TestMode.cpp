@@ -6,8 +6,9 @@ using namespace frc;
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
            Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-           CargoIntake *cargoIntake, Limelight *limelightCargo,
-           Limelight *limelightHatch, PresetHandlerDispatcher *presetDispatcher)
+           CargoIntake *cargoIntake, Stinger *stinger,
+           Limelight *limelightCargo, Limelight *limelightHatch,
+           PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
@@ -15,6 +16,7 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
         , m_driveMode(DriveMode::Cheesy)
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
+        , m_stinger(stinger)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_presetDispatcher(presetDispatcher)
@@ -69,7 +71,7 @@ void Test::TestPeriodic() {
             m_drive->LimelightHatchDrive();
             break;
         case DriveMode::AssistedCheesy:
-            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+            m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
     }
 
@@ -213,10 +215,12 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
                 if (pressedP) {
-                    m_rumble = Rumble::on;
+                    m_stinger->SetPower(-1.0);
+                    m_elevator->SetPower(-0.5);
                 }
                 else {
-                    m_rumble = Rumble::off;
+                    m_stinger->SetPower(0.0);
+                    m_elevator->SetPower(0.0);
                 }
                 break;
             case Xbox::DPadDownVirtBtn:
