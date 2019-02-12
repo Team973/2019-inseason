@@ -76,21 +76,20 @@ void Teleop::TeleopPeriodic() {
         case DriveMode::LimelightHatch:
             m_drive->LimelightHatchDrive();
             break;
-        case DriveMode::AssistedCheesy:
-            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+        case DriveMode::AssistedCheesyHatch:
+            m_drive->AssistedCheesyHatchDrive(y, x, false, false);
+            break;
+        case DriveMode::AssistedCheesyCargo:
+            m_drive->AssistedCheesyCargoDrive(y, x, false, false);
             break;
     }
 
     switch (m_gameMode) {
         case GameMode::Cargo:
-            // m_limelightCargo->SetCameraDriver();
-            // m_limelightHatch->SetCameraOff();
             SmartDashboard::PutString("misc/limelight/currentLimelight",
                                       "hatch");  // cargo
             break;
         case GameMode::Hatch:
-            m_limelightCargo->SetCameraOff();
-            m_limelightHatch->SetCameraDriver();
             SmartDashboard::PutString("misc/limelight/currentLimelight",
                                       "hatch");
             break;
@@ -101,18 +100,6 @@ void Teleop::TeleopPeriodic() {
             m_limelightCargo->SetLightBlink();
             SmartDashboard::PutString("misc/limelight/currentLimelight",
                                       "hatch");  // cargo
-            break;
-        case GameMode::HatchVision:
-            m_limelightCargo->SetCameraOff();
-            m_limelightHatch->SetCameraVision();
-            SmartDashboard::PutString("misc/limelight/currentLimelight",
-                                      "hatch");
-            break;
-        case GameMode::CargoVision:
-            m_limelightCargo->SetCameraVision();
-            m_limelightHatch->SetCameraOff();
-            SmartDashboard::PutString("misc/limelight/currentLimelight",
-                                      "cargo");
             break;
     }
 
@@ -170,12 +157,10 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::Cargo:  // Assisted Cheesy
-                            m_driveMode = DriveMode::AssistedCheesy;
-                            m_gameMode = GameMode::CargoVision;
+                            m_driveMode = DriveMode::AssistedCheesyCargo;
                             break;
                         case GameMode::Hatch:  // Assisted Cheesy
-                            m_driveMode = DriveMode::AssistedCheesy;
-                            m_gameMode = GameMode::HatchVision;
+                            m_driveMode = DriveMode::AssistedCheesyHatch;
                             break;
                         case GameMode::EndGame:  // Climb Down
                             // Task
@@ -186,11 +171,9 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                     switch (m_gameMode) {
                         case GameMode::Cargo:  // Assisted Cheesy
                             m_driveMode = DriveMode::Cheesy;
-                            m_gameMode = GameMode::Cargo;
                             break;
                         case GameMode::Hatch:  // Assisted Cheesy
                             m_driveMode = DriveMode::Cheesy;
-                            m_gameMode = GameMode::Hatch;
                             break;
                         case GameMode::EndGame:  // Climb Down
                             // Task
@@ -231,11 +214,9 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                     switch (m_gameMode) {
                         case GameMode::Cargo:  // Auto Score Cargo
                             m_driveMode = DriveMode::LimelightCargo;
-                            m_gameMode = GameMode::CargoVision;
                             break;
                         case GameMode::Hatch:  // Auto Score Hatch
                             m_driveMode = DriveMode::LimelightHatch;
-                            m_gameMode = GameMode::HatchVision;
                             break;
                         case GameMode::EndGame:  // Climb Up Stinger
                             // Task
@@ -246,11 +227,9 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                     switch (m_gameMode) {
                         case GameMode::Cargo:
                             m_driveMode = DriveMode::Cheesy;
-                            m_gameMode = GameMode::Cargo;
                             break;
                         case GameMode::Hatch:
                             m_driveMode = DriveMode::Cheesy;
-                            m_gameMode = GameMode::Hatch;
                             break;
                         case GameMode::EndGame:
                             // Task
@@ -413,6 +392,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_hatchIntake->SetIdle();
                     m_hatchIntake->ManualPuncherRetract();
                     m_rumble = Rumble::on;
+                    m_limelightCargo->SetCameraDriver();
+                    m_limelightCargo->SetLightOn();
+                    m_limelightHatch->SetCameraOff();
+                    m_limelightHatch->SetLightOff();
                 }
                 else {
                     m_rumble = Rumble::off;
@@ -424,6 +407,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_cargoIntake->StopIntake();
                     m_cargoIntake->RetractWrist();
                     m_rumble = Rumble::on;
+                    m_limelightCargo->SetCameraOff();
+                    m_limelightCargo->SetLightOff();
+                    m_limelightHatch->SetCameraDriver();
+                    m_limelightHatch->SetLightOn();
                 }
                 else {
                     m_rumble = Rumble::off;

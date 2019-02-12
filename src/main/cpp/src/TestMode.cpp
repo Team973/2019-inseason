@@ -67,7 +67,7 @@ void Test::TestPeriodic() {
             m_drive->LimelightHatchDrive();
             break;
         case DriveMode::AssistedCheesy:
-            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+            m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
     }
 

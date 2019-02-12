@@ -22,7 +22,7 @@ public:
      * Construct a Limelight Drive controller.
      * @param limelight The limelight.
      */
-    LimelightDriveController(Limelight *limelight);
+    LimelightDriveController(Limelight *limelight, bool inverted);
     virtual ~LimelightDriveController();
 
     /**
@@ -62,6 +62,7 @@ public:
     static constexpr double PERIOD = 3.0;
 
 private:
+    bool m_isInverted;
     bool m_onTarget;
     double m_leftSetpoint;
     double m_rightSetpoint;
