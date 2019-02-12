@@ -19,10 +19,7 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
     double ret = NO_PRESET_NO_CHANGE;
 
     switch (button) {
-        case Xbox::BtnY:  // High Elevator Preset
-            if (pressedP) {
-                return Elevator::HIGH_ROCKET_CARGO;
-            }
+        case Xbox::BtnY:
             break;
         case Xbox::BtnA:  // Low Preset
             if (pressedP) {
@@ -33,10 +30,7 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
                 return Elevator::CARGO_SHIP_CARGO;
             }
             break;
-        case Xbox::BtnB:  // Middle Elevator Preset
-            if (pressedP) {
-                return Elevator::MIDDLE_ROCKET_CARGO;
-            }
+        case Xbox::BtnB:
             break;
     }
 
@@ -48,10 +42,7 @@ double PresetHandlerDispatcher::GetHatchPresetFromButton(uint32_t button,
     double ret = NO_PRESET_NO_CHANGE;
 
     switch (button) {
-        case Xbox::BtnY:  // High Elevator Preset
-            if (pressedP) {
-                return Elevator::HIGH_ROCKET_HATCH;
-            }
+        case Xbox::BtnY:
             break;
         case Xbox::BtnA:  // Low Preset
             if (pressedP) {
@@ -63,10 +54,7 @@ double PresetHandlerDispatcher::GetHatchPresetFromButton(uint32_t button,
                 return Elevator::CARGO_SHIP_HATCH;
             }
             break;
-        case Xbox::BtnB:  // Middle Elevator Preset
-            if (pressedP) {
-                return Elevator::MIDDLE_ROCKET_HATCH;
-            }
+        case Xbox::BtnB:
             break;
     }
 
