@@ -6,6 +6,7 @@
  *
  */
 #include "src/TeleopMode.h"
+#include "src/PresetHandlerDispatcher.h"
 #include <cmath>
 
 using namespace frc;
@@ -14,17 +15,21 @@ namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
-               CargoIntake *cargoIntake, Limelight *limelightCargo,
-               Limelight *limelightHatch)
+               CargoIntake *cargoIntake, Stinger *stinger,
+               Limelight *limelightCargo, Limelight *limelightHatch,
+               PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
-        , m_driveMode(DriveMode::Openloop)
+        , m_driveMode(DriveMode::Cheesy)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
+        , m_gameMode(GameMode::Hatch)
+        , m_stinger(stinger)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
+        , m_presetDispatcher(presetDispatcher)
         , m_rumble(Rumble::off) {
 }
 
@@ -37,6 +42,8 @@ void Teleop::TeleopInit() {
 }
 
 void Teleop::TeleopPeriodic() {
+    DBStringPrintf(DBStringPos::DB_LINE3, "X Off: %f",
+                   m_limelightHatch->GetXOffset());
     /**
      * Driver Joystick
      */
@@ -46,7 +53,6 @@ void Teleop::TeleopPeriodic() {
         -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
-
     bool softwareLowGear =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
@@ -73,39 +79,59 @@ void Teleop::TeleopPeriodic() {
         case DriveMode::LimelightHatch:
             m_drive->LimelightHatchDrive();
             break;
-        case DriveMode::AssistedCheesy:
-            m_drive->AssistedCheesyDrive(y, x, quickturn, false);
+        case DriveMode::AssistedCheesyHatch:
+            m_drive->AssistedCheesyHatchDrive(y, x, false, false);
+            break;
+        case DriveMode::AssistedCheesyCargo:
+            m_drive->AssistedCheesyCargoDrive(y, x, false, false);
             break;
     }
 
-    switch (m_rumble) {
-        case Rumble::on:
-            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kRightRumble,
-                                          1);
-            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kLeftRumble,
-                                          1);
+    switch (m_gameMode) {
+        case GameMode::Cargo:
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "hatch");  // cargo
             break;
-        case Rumble::off:
-            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kRightRumble,
-                                          0);
-            m_operatorJoystick->SetRumble(GenericHID::RumbleType::kLeftRumble,
-                                          0);
+        case GameMode::Hatch:
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "hatch");
+            break;
+        case GameMode::EndGame:
+            m_limelightCargo->SetCameraOff();     // Driver
+            m_limelightHatch->SetCameraDriver();  // Off
+            m_limelightHatch->SetLightBlink();
+            m_limelightCargo->SetLightBlink();
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "hatch");  // cargo
             break;
     }
 
     /**
      * Operator Joystick
      */
-
-    if (m_operatorJoystick->GetRawButton(Xbox::LeftBumper) &&
-        m_limelightCargo->isTargetValid() == 1) {
-        printf("got a Cargo target\n");
-        printf("%d\n", (GetMsecTime() - m_limelightCargoTimer));
+    if (fabs(m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis)) >
+        0.2) {
+        m_elevator->SetManualInput();
     }
-    if (m_operatorJoystick->GetRawButton(Xbox::RightBumper) &&
-        m_limelightHatch->isTargetValid() == 1) {
-        printf("got a hatch target\n");
-        printf("%d\n", (GetMsecTime() - m_limelightHatchTimer));
+
+    m_presetDispatcher->PresetPeriodic(this);
+
+    switch (m_rumble) {
+        case Rumble::on:
+            m_rumbleTimer = GetMsecTime();
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kRightRumble,
+                                          1);
+            m_operatorJoystick->SetRumble(GenericHID ::RumbleType::kLeftRumble,
+                                          1);
+            break;
+        case Rumble::off:
+            if ((GetMsecTime() - m_rumbleTimer) > 150) {
+                m_operatorJoystick->SetRumble(
+                    GenericHID ::RumbleType::kRightRumble, 0);
+                m_operatorJoystick->SetRumble(
+                    GenericHID ::RumbleType::kLeftRumble, 0);
+            }
+            break;
     }
 }
 
@@ -118,26 +144,90 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
         switch (button) {
             case PoofsJoysticks::LeftTrigger:
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Assisted Cheesy
+                            m_driveMode = DriveMode::AssistedCheesyCargo;
+                            break;
+                        case GameMode::Hatch:  // Assisted Cheesy
+                            m_driveMode = DriveMode::AssistedCheesyHatch;
+                            break;
+                        case GameMode::EndGame:  // Climb Down
+                            // Task
+                            break;
+                    }
                 }
                 else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Assisted Cheesy
+                            m_driveMode = DriveMode::Cheesy;
+                            break;
+                        case GameMode::Hatch:  // Assisted Cheesy
+                            m_driveMode = DriveMode::Cheesy;
+                            break;
+                        case GameMode::EndGame:  // Climb Down
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case PoofsJoysticks::RightTrigger:
+            case PoofsJoysticks::RightTrigger:  // Score
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Score Cargo
+                            m_cargoIntake->Exhaust();
+                            break;
+                        case GameMode::Hatch:  // Score Hatch
+                            m_hatchIntake->Exhaust();
+                            break;
+                        case GameMode::EndGame:  // Raise Intake
+                            // Task
+                            break;
+                    }
                 }
                 else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            m_cargoIntake->StopIntake();
+                            break;
+                        case GameMode::Hatch:
+                            m_hatchIntake->SetIdle();
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
             case PoofsJoysticks::LeftBumper:
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:  // Auto Score Cargo
+                            m_driveMode = DriveMode::LimelightCargo;
+                            break;
+                        case GameMode::Hatch:  // Auto Score Hatch
+                            m_driveMode = DriveMode::LimelightHatch;
+                            break;
+                        case GameMode::EndGame:  // Climb Up Stinger
+                            // Task
+                            break;
+                    }
                 }
                 else {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            m_driveMode = DriveMode::Cheesy;
+                            break;
+                        case GameMode::Hatch:
+                            m_driveMode = DriveMode::Cheesy;
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 break;
-            case PoofsJoysticks::RightBumper:
+            case PoofsJoysticks::RightBumper:  // Quickturn
                 if (pressedP) {
-                }
-                else {
                 }
                 break;
         }
@@ -147,96 +237,71 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
 void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == OPERATOR_JOYSTICK_PORT) {
         switch (button) {
-            case Xbox::BtnY:
-                if (pressedP) {
-                    m_hatchIntake->SetIntaking();
-                }
-                else {
-                    m_hatchIntake->SetIdle();
-                }
+            case Xbox::BtnY:  // High Elevator Preset
+            case Xbox::BtnA:  // Low Preset
+            case Xbox::BtnX:  // Cargo Bay Preset
+            case Xbox::BtnB:  // Middle Elevator Preset
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
                 break;
-            case Xbox::BtnA:
-                if (pressedP) {
-                    m_hatchIntake->Exhaust();
-                }
-                else {
-                    m_hatchIntake->SetIdle();
-                }
+            case Xbox::LeftBumper:   // Extend Intake
+            case Xbox::RightBumper:  // Intake
+                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
                 break;
-            case Xbox::BtnX:
+            case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
                 if (pressedP) {
-                    m_hatchIntake->ManualPuncherActivate();
+                    m_gameMode = GameMode::EndGame;
+                    m_rumble = Rumble::on;
                 }
                 else {
-                    m_hatchIntake->ManualPuncherRetract();
-                }
-                break;
-            case Xbox::BtnB:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::LeftBumper:
-                if (pressedP) {
-                    m_hatchIntake->ManualPuncherActivate();
-                }
-                else {
-                }
-                break;
-            case Xbox::LJoystickBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::RJoystickBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::RightBumper:
-                if (pressedP) {
-                    m_hatchIntake->ManualPuncherRetract();
-                }
-                else {
-                }
-                break;
-            case Xbox::DPadUpVirtBtn:
-                if (pressedP) {
-                }
-                else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::DPadDownVirtBtn:
                 if (pressedP) {
+                    switch (m_gameMode) {
+                        case GameMode::Cargo:
+                            // Task
+                            break;
+                        case GameMode::Hatch:
+                            // Task
+                            break;
+                        case GameMode::EndGame:
+                            // Task
+                            break;
+                    }
                 }
                 else {
                 }
                 break;
-            case Xbox::DPadLeftVirtBtn:
+            case Xbox::DPadLeftVirtBtn:  // Changes game mode to Cargo
                 if (pressedP) {
+                    m_gameMode = GameMode::Cargo;
+                    m_hatchIntake->SetIdle();
+                    m_hatchIntake->ManualPuncherRetract();
+                    m_rumble = Rumble::on;
+                    m_limelightCargo->SetCameraDriver();
+                    m_limelightCargo->SetLightOn();
+                    m_limelightHatch->SetCameraOff();
+                    m_limelightHatch->SetLightOff();
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
-            case Xbox::DPadRightVirtBtn:
+            case Xbox::DPadRightVirtBtn:  // Changes game mode to Hatch
                 if (pressedP) {
+                    m_gameMode = GameMode::Hatch;
+                    m_cargoIntake->StopIntake();
+                    m_cargoIntake->RetractWrist();
+                    m_rumble = Rumble::on;
+                    m_limelightCargo->SetCameraOff();
+                    m_limelightCargo->SetLightOff();
+                    m_limelightHatch->SetCameraDriver();
+                    m_limelightHatch->SetLightOn();
                 }
                 else {
-                }
-                break;
-            case Xbox::Back:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::Start:
-                if (pressedP) {
-                }
-                else {
+                    m_rumble = Rumble::off;
                 }
                 break;
         }
@@ -248,19 +313,10 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
     switch (button) {
         case DualAction::BtnA:
             if (pressedP) {
-                m_limelightHatch->SetPipelineIndex(2);
-                m_driveMode = DriveMode::LimelightHatch;
-            }
-            else {
-                m_driveMode = DriveMode::Cheesy;
             }
             break;
         case DualAction::BtnB:
             if (pressedP) {
-                m_driveMode = DriveMode::LimelightCargo;
-            }
-            else {
-                m_driveMode = DriveMode::Cheesy;
             }
             break;
         case DualAction::BtnX:
@@ -271,10 +327,8 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
             break;
         case DualAction::BtnY:
             if (pressedP) {
-                m_driveMode = DriveMode::AssistedCheesy;
             }
             else {
-                m_driveMode = DriveMode::Cheesy;
             }
             break;
         case DualAction::LeftBumper:

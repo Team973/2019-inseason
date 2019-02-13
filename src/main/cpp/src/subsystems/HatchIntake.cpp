@@ -33,7 +33,7 @@ void HatchIntake::SetIdle() {
     GoToIntakeState(HatchIntakeState::idle);
 }
 
-void HatchIntake::SetIntaking() {
+void HatchIntake::RunIntake() {
     GoToIntakeState(HatchIntakeState::intaking);
 }
 

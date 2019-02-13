@@ -16,9 +16,10 @@ using namespace frc;
 namespace frc973 {
 
 AssistedCheesyDriveController::AssistedCheesyDriveController(
-    Limelight *limelight)
+    Limelight *limelight, bool inverted)
         : m_limelight(limelight)
-        , m_visionTurnPID(new PID(0.15, 0.0, 0.0))
+        , m_isInverted(inverted)
+        , m_visionTurnPID(new PID(0.05, 0.0, 0.0))
         , m_leftOutput(0.0)
         , m_rightOutput(0.0)
         , m_oldWheel(0.0)
@@ -30,24 +31,31 @@ AssistedCheesyDriveController::~AssistedCheesyDriveController() {
 }
 
 void AssistedCheesyDriveController::Start(DriveControlSignalReceiver *out) {
-    printf("Turning on Cheesy Mode\n");
     m_limelight->SetCameraVision();
-    m_limelight->SetLightOn();
 }
 
 void AssistedCheesyDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
     out->SetDriveOutputVBus(m_leftOutput, m_rightOutput);
-    DBStringPrintf(DBStringPos::DB_LINE4, "cheesy l=%1.2lf r=%1.2lf",
+    DBStringPrintf(DBStringPos::DB_LINE4, "assch l=%1.2lf r=%1.2lf",
                    m_leftOutput, m_rightOutput);
-    // printf("cheesy l=%1.2lf r=%1.2lf\n", m_leftOutput, m_rightOutput);
 }
 
 void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
                                                  bool isQuickTurn,
                                                  bool isHighGear) {
-    double sumTurn =
-        turn - m_visionTurnPID->CalcOutputWithError(m_limelight->GetXOffset());
+    double sumTurn;
+
+    if (m_isInverted) {
+        sumTurn = turn - m_visionTurnPID->CalcOutputWithError(
+                             m_limelight->GetXOffset());
+        SmartDashboard::PutString("misc/limelight/currentLimelight", "cargo");
+    }
+    else {
+        sumTurn = turn + m_visionTurnPID->CalcOutputWithError(
+                             m_limelight->GetXOffset());
+        SmartDashboard::PutString("misc/limelight/currentLimelight", "hatch");
+    }
     double negInertia = sumTurn - m_oldWheel;
     if (isQuickTurn) {
         sumTurn = Util::signSquare(sumTurn);

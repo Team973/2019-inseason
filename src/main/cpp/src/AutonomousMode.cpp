@@ -1,24 +1,27 @@
 #include "src/AutonomousMode.h"
 #include "src/DisabledMode.h"
 #include "src/Robot.h"
+#include "src/PresetHandlerDispatcher.h"
 
 using namespace frc;
 
 namespace frc973 {
-Autonomous::Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
-                       HatchIntake *hatchIntake,
-                       ObservablePoofsJoystick *driver,
-                       ObservableXboxJoystick *codriver)
-        : m_disabled(disabled)
-        , m_drive(drive)
-        , m_elevator(elevator)
-        , m_hatchintake(hatchIntake)
-        , m_routine(m_noAuto)
-        , m_driveMode(DriveMode::Cheesy)
+Autonomous::Autonomous(ObservablePoofsJoystick *driver,
+                       ObservableXboxJoystick *codriver, Disabled *disabled,
+                       Drive *drive, Elevator *elevator, ADXRS450_Gyro *gyro,
+                       PresetHandlerDispatcher *presetDispatcher)
+        : m_noAuto(new NoAuto())
         , m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
-        , m_noAuto(new NoAuto())
-        , m_forwardAuto(new ForwardAuto(drive)) {
+        , m_forwardAuto(new ForwardAuto(drive))
+        , m_disabled(disabled)
+        , m_routine(m_noAuto)
+        , m_drive(drive)
+        , m_driveMode(DriveMode::Cheesy)
+        , m_elevator(elevator)
+        , m_gyro(gyro)
+        , m_presetDispatcher(presetDispatcher)
+        , m_gameMode(GameMode::Hatch) {
 }
 
 Autonomous::~Autonomous() {

@@ -1,6 +1,12 @@
 /**
- * [year] Contributors:
- * - Person (@username)
+ * 2019 Contributors:
+ * - Kyle D
+ * - Chris M
+ * - Chris L
+ * - Luis V
+ * - Dylan F
+ * - Allen B
+ * - Andrew N
  **/
 
 #pragma once
@@ -10,8 +16,8 @@
 #include "lib/bases/CoopMTRobot.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/logging/LogSpreadsheet.h"
@@ -22,6 +28,7 @@
 #include "src/TestMode.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
+#include "src/subsystems/Stinger.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
@@ -36,6 +43,7 @@ class Disabled;
 class Autonomous;
 class Drive;
 class Elevator;
+class PresetHandlerDispatcher;
 
 /**
  * Defines the robot.
@@ -91,6 +99,10 @@ private:
     GreyTalonSRX *m_rightDriveTalonA;
     VictorSPX *m_rightDriveVictorB;
 
+    GreyTalonSRX *m_stingerDriveMotor;
+    GreyTalonSRX *m_stingerElevatorMotor;
+    DigitalInput *m_stingerLowerHall;
+    DigitalInput *m_stingerUpperHall;
     GreyTalonSRX *m_elevatorMotorA;
     VictorSPX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;
@@ -100,6 +112,10 @@ private:
     GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
 
+    UsbCamera m_hatchCamera;
+    CameraServer *m_cameraServer;
+    VideoSink m_greyCam;
+
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
@@ -107,14 +123,15 @@ private:
     Solenoid *m_cargoWrist;
     Solenoid *m_cargoPlatformLock;
 
-    GreyLight *m_greylight;
-
     LogCell *m_matchIdentifier;
+    LogCell *m_gameSpecificMessage;
 
     Drive *m_drive;
+    Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
     CargoIntake *m_cargoIntake;
-    Elevator *m_elevator;
+    PresetHandlerDispatcher *m_presetDispatcher;
+    Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;

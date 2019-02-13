@@ -10,24 +10,14 @@
 #include "src/subsystems/Elevator.h"
 #include "src/Robot.h"
 #include "src/subsystems/Drive.h"
-#include "src/subsystems/Elevator.h"
-#include "src/subsystems/HatchIntake.h"
-#include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/helpers/XboxJoystickHelper.h"
-#include "ctre/Phoenix.h"
-#include "lib/helpers/GreyTalon.h"
-#include "lib/managers/CoopTask.h"
-#include "lib/logging/LogSpreadsheet.h"
-#include "lib/sensors/Limelight.h"
-#include "src/controllers/LimelightVerticalController.h"
-#include "lib/util/Util.h"
-#include <iostream>
+#include "lib/pixelprocessors/AutoIndicator.h"
+#include "src/GameMode.h"
 
 using namespace frc;
 
 namespace frc973 {
 class Disabled;
+class PresetHandlerDispatcher;
 
 /**
  * Controls the autonomous mode.
@@ -38,11 +28,13 @@ public:
      * Constuct an autonomous mode.
      * @param disabled The disabled mode.
      * @param drive The drive subsystem.
+     * @param elevator The elevator subsystem
      * @param gyro The gyro.
      */
-    Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
-               HatchIntake *hatchIntake, ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver);
+    Autonomous(ObservablePoofsJoystick *driver,
+               ObservableXboxJoystick *codriver, Disabled *disabled,
+               Drive *drive, Elevator *elevator, ADXRS450_Gyro *gyro,
+               PresetHandlerDispatcher *presetDispatcher);
     virtual ~Autonomous();
 
     /**
@@ -85,30 +77,33 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
+    friend class PresetHandlerDispatcher;
+
 private:
     NoAuto *m_noAuto;
     ForwardAuto *m_forwardAuto;
+    GameMode m_gameMode;
+
+    ObservablePoofsJoystick *m_driverJoystick;
+    ObservableXboxJoystick *m_operatorJoystick;
 
     Disabled *m_disabled;
 
     AutoRoutineBase *m_routine;
 
     Drive *m_drive;
-    Elevator *m_elevator;
-    HatchIntake *m_hatchintake;
-
-    ObservablePoofsJoystick *m_driverJoystick;
-    ObservableXboxJoystick *m_operatorJoystick;
-
-    /**
-     * Defines drivemodes.
-     */
-
     enum class DriveMode
     {
         Openloop,
+        LimelightCargo,
+        LimelightHatch,
+        AssistedCheesyHatch,
+        AssistedCheesyCargo,
         Cheesy
     };
     DriveMode m_driveMode;
+    Elevator *m_elevator;
+    PresetHandlerDispatcher *m_presetDispatcher;
+    ADXRS450_Gyro *m_gyro;
 };
 }
