@@ -212,9 +212,6 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
     }
 
     // switch (button) {
-
-    //         }
-    //         break;
     //     case PoofsJoysticks::LeftBumper:
     //         if (pressedP) {
     //             switch (m_gameMode) {
