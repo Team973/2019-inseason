@@ -174,10 +174,16 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 if (button == PoofsJoysticks::LeftTrigger) {
                     mode->m_driveMode = Teleop::DriveMode::AssistedCheesyCargo;
                 }
+                else if (button == PoofsJoysticks::RightTrigger) {
+                    mode->m_cargoIntake->Exhaust();
+                }
             }
             else {
                 if (button == PoofsJoysticks::LeftTrigger) {
                     mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else if (button == PoofsJoysticks::RightTrigger) {
+                    mode->m_cargoIntake->StopIntake();
                 }
             }
             break;
@@ -186,10 +192,16 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 if (button == PoofsJoysticks::LeftTrigger) {
                     mode->m_driveMode = Teleop::DriveMode::AssistedCheesyHatch;
                 }
+                else if (button == PoofsJoysticks::RightTrigger) {
+                    mode->m_hatchIntake->Exhaust();
+                }
             }
             else {
                 if (button == PoofsJoysticks::LeftTrigger) {
                     mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else if (button == PoofsJoysticks::RightTrigger) {
+                    mode->m_hatchIntake->SetIdle();
                 }
             }
             break;
@@ -200,32 +212,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
     }
 
     // switch (button) {
-    //     case PoofsJoysticks::RightTrigger:  // Score
-    //         if (pressedP) {
-    //             switch (m_gameMode) {
-    //                 case GameMode::Cargo:  // Score Cargo
-    //                     m_cargoIntake->Exhaust();
-    //                     break;
-    //                 case GameMode::Hatch:  // Score Hatch
-    //                     m_hatchIntake->Exhaust();
-    //                     break;
-    //                 case GameMode::EndGame:  // Raise Intake
-    //                     // Task
-    //                     break;
-    //             }
-    //         }
-    //         else {
-    //             switch (m_gameMode) {
-    //                 case GameMode::Cargo:
-    //                     m_cargoIntake->StopIntake();
-    //                     break;
-    //                 case GameMode::Hatch:
-    //                     m_hatchIntake->SetIdle();
-    //                     break;
-    //                 case GameMode::EndGame:
-    //                     // Task
-    //                     break;
-    //             }
+
     //         }
     //         break;
     //     case PoofsJoysticks::LeftBumper:
