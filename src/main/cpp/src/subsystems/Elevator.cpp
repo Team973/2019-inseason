@@ -17,9 +17,10 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_elevatorHall(elevatorHall)
         , m_position(0.0)
         , m_power(0.0)
+        , m_joystickControl(0.0)
         , m_prevHall(true)
         , m_zeroingTime(0)
-        , m_elevatorState(ElevatorState::manualVoltage) {
+        , m_elevatorState(ElevatorState::idle) {
     this->m_scheduler->RegisterTask("Elevator", this, TASK_PERIODIC);
 
     m_elevatorMotorA->ConfigSelectedFeedbackSensor(
@@ -30,8 +31,8 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->SetInverted(false);
 
     m_elevatorMotorA->Config_PID(0, 1.5, 0.0, 0.0, 0.0, 10);
-    m_elevatorMotorA->ConfigMotionCruiseVelocity(5000.0, 10);
-    m_elevatorMotorA->ConfigMotionAcceleration(6000.0, 10);
+    m_elevatorMotorA->ConfigMotionCruiseVelocity(2500.0, 10);
+    m_elevatorMotorA->ConfigMotionAcceleration(1000.0, 10);
     m_elevatorMotorA->SelectProfileSlot(0, 0);
 
     m_elevatorMotorA->EnableCurrentLimit(true);
@@ -41,7 +42,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->EnableVoltageCompensation(false);
     m_elevatorMotorA->ConfigForwardSoftLimitEnable(true, 10);
     m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
-        ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
+        ELEVATOR_HEIGHT_SOFT_LIMIT_TELEOP / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
     m_elevatorMotorB->SetInverted(true);
@@ -99,9 +100,10 @@ void Elevator::SetSoftLimit(double limit) {
 }
 
 void Elevator::HallZero() {
-    if (m_prevHall != GetElevatorHall()) {
+    bool hallState = GetElevatorHall();
+    if (m_prevHall != hallState) {
         ZeroPosition();
-        m_prevHall = GetElevatorHall();
+        m_prevHall = hallState;
     }
 }
 
@@ -115,34 +117,42 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     SmartDashboard::PutNumber("elevator/motorB/velocity",
                               m_elevatorMotorB->GetSelectedSensorVelocity(0));
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
+    DBStringPrintf(DBStringPos::DB_LINE7, "ep: %2.2lf",
+                   m_elevatorMotorA->GetMotorOutputVoltage());
+    DBStringPrintf(DBStringPos::DB_LINE1, "E-Voltage: %f",
+                   m_elevatorMotorA->GetMotorOutputVoltage());
 
     HallZero();
 
     switch (m_elevatorState) {
         case joystickControl:
-            if (GetPosition() < 15.0) {
-                SetPower(pow(-m_operatorJoystick->GetRawAxisWithDeadband(
-                                 Xbox::RightYAxis),
-                             3.0) /
-                         3.0);
+            m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
+                ELEVATOR_HEIGHT_SOFT_LIMIT_TELEOP / ELEVATOR_INCHES_PER_CLICK,
+                0);
+
+            m_joystickControl =
+                -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis);
+
+            if (GetElevatorHall()) {
+                m_elevatorMotorA->Set(
+                    ControlMode::PercentOutput,
+                    Util::bound(pow(m_joystickControl, 3.0), 0.0, 0.3));
             }
             else {
-                SetPower(pow(-m_operatorJoystick->GetRawAxisWithDeadband(
-                                 Xbox::RightYAxis),
-                             3.0) /
-                             3.0 +
-                         ELEVATOR_FEED_FORWARD);
+                m_elevatorMotorA->Set(ControlMode::PercentOutput,
+                                      Util::bound(pow(m_joystickControl, 3.0) +
+                                                      ELEVATOR_FEED_FORWARD,
+                                                  -0.3, 0.3));
             }
+            break;
+        case manualVoltage:
+            m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
+                ELEVATOR_HEIGHT_SOFT_LIMIT_END_GAME / ELEVATOR_INCHES_PER_CLICK,
+                0);
             break;
         case motionMagic:
             break;
-        case manualVoltage:
-            if (GetElevatorHall()) {
-                m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
-            }
-            else {
-                m_elevatorMotorA->Set(ControlMode::PercentOutput, m_power);
-            }
+        case idle:
             break;
         default:
             break;

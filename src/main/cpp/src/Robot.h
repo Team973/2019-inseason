@@ -43,6 +43,7 @@ class Disabled;
 class Autonomous;
 class Drive;
 class Elevator;
+class PresetHandlerDispatcher;
 
 /**
  * Defines the robot.
@@ -111,6 +112,10 @@ private:
     GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
 
+    UsbCamera m_hatchCamera;
+    CameraServer *m_cameraServer;
+    VideoSink m_greyCam;
+
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
@@ -125,6 +130,7 @@ private:
     Drive *m_drive;
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
+    PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;

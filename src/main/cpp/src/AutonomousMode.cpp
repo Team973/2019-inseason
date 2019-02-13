@@ -1,19 +1,23 @@
 #include "src/AutonomousMode.h"
 #include "src/DisabledMode.h"
 #include "src/Robot.h"
+#include "src/PresetHandlerDispatcher.h"
 
 using namespace frc;
 
 namespace frc973 {
 Autonomous::Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
-                       ADXRS450_Gyro *gyro)
+                       ADXRS450_Gyro *gyro,
+                       PresetHandlerDispatcher *presetDispatcher)
         : m_noAuto(new NoAuto())
         , m_forwardAuto(new ForwardAuto(drive))
         , m_disabled(disabled)
         , m_routine(m_noAuto)
         , m_drive(drive)
         , m_elevator(elevator)
-        , m_gyro(gyro) {
+        , m_gyro(gyro)
+        , m_presetDispatcher(presetDispatcher)
+        , m_gameMode(GameMode::Hatch) {
 }
 
 Autonomous::~Autonomous() {

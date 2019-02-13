@@ -12,11 +12,13 @@
 #include "src/Robot.h"
 #include "src/subsystems/Drive.h"
 #include "lib/pixelprocessors/AutoIndicator.h"
+#include "src/GameMode.h"
 
 using namespace frc;
 
 namespace frc973 {
 class Disabled;
+class PresetHandlerDispatcher;
 
 /**
  * Controls the autonomous mode.
@@ -31,7 +33,7 @@ public:
      * @param gyro The gyro.
      */
     Autonomous(Disabled *disabled, Drive *drive, Elevator *elevator,
-               ADXRS450_Gyro *gyro);
+               ADXRS450_Gyro *gyro, PresetHandlerDispatcher *presetDispatcher);
     virtual ~Autonomous();
 
     /**
@@ -49,9 +51,12 @@ public:
      */
     void AutonomousStop();
 
+    friend class PresetHandlerDispatcher;
+
 private:
     NoAuto *m_noAuto;
     ForwardAuto *m_forwardAuto;
+    GameMode m_gameMode;
 
     Disabled *m_disabled;
 
@@ -59,6 +64,7 @@ private:
 
     Drive *m_drive;
     Elevator *m_elevator;
+    PresetHandlerDispatcher *m_presetDispatcher;
     ADXRS450_Gyro *m_gyro;
 };
 }

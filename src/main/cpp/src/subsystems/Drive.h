@@ -166,10 +166,22 @@ public:
      * @param isQuickTurn 1 or 0 for if quickturn is enabled
      * @param isHighGear 1 or 0 for if high gear is enabled
      */
-    AssistedCheesyDriveController *AssistedCheesyDrive(double throttle,
-                                                       double turn,
-                                                       bool isQuickTurn,
-                                                       bool isHighGear);
+    AssistedCheesyDriveController *AssistedCheesyHatchDrive(double throttle,
+                                                            double turn,
+                                                            bool isQuickTurn,
+                                                            bool isHighGear);
+
+    /*
+     * Set drive controller to use limelight and driver input to steer and drive
+     * @param trottle Joysticks left y-axis input
+     * @param turn Joysticks right x-axis input
+     * @param isQuickTurn 1 or 0 for if quickturn is enabled
+     * @param isHighGear 1 or 0 for if high gear is enabled
+     */
+    AssistedCheesyDriveController *AssistedCheesyCargoDrive(double throttle,
+                                                            double turn,
+                                                            bool isQuickTurn,
+                                                            bool isHighGear);
 
     /**
      * Return the left distance from the encoder in inches.
@@ -301,7 +313,8 @@ private:
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
     LimelightDriveController *m_limelightCargoDriveController;
     LimelightDriveController *m_limelightHatchDriveController;
-    AssistedCheesyDriveController *m_assistedCheesyDriveController;
+    AssistedCheesyDriveController *m_assistedCheesyDriveCargoController;
+    AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 
     double m_angle;
     double m_angleRate;

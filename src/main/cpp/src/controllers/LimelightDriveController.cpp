@@ -4,8 +4,10 @@
 #include "lib/helpers/PID.h"
 
 namespace frc973 {
-LimelightDriveController::LimelightDriveController(Limelight *limelight)
-        : m_onTarget(false)
+LimelightDriveController::LimelightDriveController(Limelight *limelight,
+                                                   bool inverted)
+        : m_isInverted(inverted)
+        , m_onTarget(false)
         , m_leftSetpoint(0.0)
         , m_rightSetpoint(0.0)
         , m_throttle(0.0)
@@ -44,9 +46,14 @@ void LimelightDriveController::CalcDriveOutput(
         m_leftSetpoint = throttlePidOut + turnPidOut;
         m_rightSetpoint = throttlePidOut - turnPidOut;
     }
-
-    out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
-                            m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
+    if (m_isInverted) {
+        out->SetDriveOutputVBus(-m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
+                                -m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
+    }
+    else {
+        out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
+                                m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
+    }
 
     if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 5.0) &&
         (fabs(distError) < 3.0 && fabs(state->GetRate() < 3.0))) {
