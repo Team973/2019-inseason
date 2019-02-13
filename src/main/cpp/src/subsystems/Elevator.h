@@ -42,7 +42,7 @@ public:
 
     static constexpr double GROUND = 0.2; /**< Ground preset. */
     static constexpr double LOW_ROCKET_HATCH =
-        0.2; /**< Low rocket hatch preset. */
+        0.5; /**< Low rocket hatch preset. */
     static constexpr double LOW_ROCKET_CARGO =
         5.0; /**< Low rocket cargo preset. */
     static constexpr double CARGO_SHIP_HATCH =
