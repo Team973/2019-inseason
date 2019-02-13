@@ -18,12 +18,14 @@
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/HatchIntake.h"
+#include "src/GameMode.h"
 #include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
 
 namespace frc973 {
+class PresetHandlerDispatcher;
 
 /**
  * Controls the teleop mode.
@@ -41,7 +43,8 @@ public:
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
            Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
            CargoIntake *cargoIntake, Stinger *stinger,
-           Limelight *limelightCargo, Limelight *limelightHatch);
+           Limelight *limelightCargo, Limelight *limelightHatch,
+           PresetHandlerDispatcher *presetDispatcher);
 
     virtual ~Teleop();
 
@@ -85,6 +88,8 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
+    friend class PresetHandlerDispatcher;
+
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
@@ -100,20 +105,12 @@ private:
         Cheesy
     };
     DriveMode m_driveMode;
-
-    enum class GameMode
-    {
-        Cargo,
-        Hatch,
-        EndGame,
-        HatchVision,
-        CargoVision
-    };
     GameMode m_gameMode;
 
     CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
+    PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 
     Limelight *m_limelightCargo;

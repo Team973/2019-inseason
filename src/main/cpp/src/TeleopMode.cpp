@@ -6,6 +6,7 @@
  *
  */
 #include "src/TeleopMode.h"
+#include "src/PresetHandlerDispatcher.h"
 #include <cmath>
 
 using namespace frc;
@@ -15,7 +16,8 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
                CargoIntake *cargoIntake, Stinger *stinger,
-               Limelight *limelightCargo, Limelight *limelightHatch)
+               Limelight *limelightCargo, Limelight *limelightHatch,
+               PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_drive(drive)
@@ -27,6 +29,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_stinger(stinger)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
+        , m_presetDispatcher(presetDispatcher)
         , m_rumble(Rumble::off) {
 }
 
@@ -111,21 +114,7 @@ void Teleop::TeleopPeriodic() {
         m_elevator->SetManualInput();
     }
 
-    if (fabs(m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftBumper)) >
-        0.25) {
-        switch (m_gameMode) {
-            case GameMode::Cargo:
-                m_cargoIntake->GoToWristState(
-                    CargoIntake::CargoWristState::retracted);
-                break;
-            case GameMode::Hatch:
-                m_hatchIntake->ManualPuncherRetract();
-                break;
-            case GameMode::EndGame:
-                // Task
-                break;
-        }
-    }
+    m_presetDispatcher->PresetPeriodic(this);
 
     switch (m_rumble) {
         case Rumble::on:
@@ -249,116 +238,15 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == OPERATOR_JOYSTICK_PORT) {
         switch (button) {
             case Xbox::BtnY:  // High Elevator Preset
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:  // High Rocket Cargo Preset
-                            break;
-                        case GameMode::Hatch:  // High Rocket Hatch Preset
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
-                else {
-                }
-                break;
             case Xbox::BtnA:  // Low Preset
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:  // Low Rocket Cargo Preset
-                            m_elevator->SetPosition(Elevator::LOW_ROCKET_CARGO);
-                            break;
-                        case GameMode::Hatch:  // Low Rocket Hatch Preset
-                            m_elevator->SetPosition(Elevator::LOW_ROCKET_HATCH);
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
-                else {
-                }
-                break;
             case Xbox::BtnX:  // Cargo Bay Preset
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:  // Cargo Bay Cargo Preset
-                            m_elevator->SetPosition(Elevator::CARGO_SHIP_CARGO);
-                            break;
-                        case GameMode::Hatch:  // Cargo Bay Hatch Preset
-                            m_elevator->SetPosition(Elevator::CARGO_SHIP_HATCH);
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
-                else {
-                }
-                break;
             case Xbox::BtnB:  // Middle Elevator Preset
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:  // Middle Rocket Cargo Preset
-                            break;
-                        case GameMode::Hatch:  // Middle Rocket Hatch Preset
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
-                else {
-                }
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
                 break;
-            case Xbox::LeftBumper:  // Extend Intake
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            m_cargoIntake->GoToWristState(
-                                CargoIntake::CargoWristState::extended);
-                            break;
-                        case GameMode::Hatch:
-                            m_hatchIntake->ManualPuncherActivate();
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
-                else {
-                }
-                break;
+            case Xbox::LeftBumper:   // Extend Intake
             case Xbox::RightBumper:  // Intake
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            m_cargoIntake->RunIntake();
-                            m_elevator->SetPosition(Elevator::GROUND);
-                            break;
-                        case GameMode::Hatch:
-                            m_hatchIntake->RunIntake();
-                            m_elevator->SetPosition(Elevator::GROUND);
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
-                else {
-                    switch (m_gameMode) {
-                        case GameMode::Cargo:
-                            m_cargoIntake->HoldCargo();
-                            break;
-                        case GameMode::Hatch:
-                            m_hatchIntake->HoldHatch();
-                            break;
-                        case GameMode::EndGame:
-                            // Task
-                            break;
-                    }
-                }
+                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
                 break;
             case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
                 if (pressedP) {
