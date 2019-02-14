@@ -46,8 +46,10 @@ public:
      *  Select and use the driver dispatch joystick button by the GameMode
      * (Cargo, Hatch, EndGame)
      */
-    void DriveDispatchJoystickButtons(Teleop *mode, uint32_t button,
+    void DriveDispatchJoystickTrigger(Teleop *mode, uint32_t button,
                                       bool pressedP);
+    void DriveDispatchJoystickBumper(Teleop *mode, uint32_t button,
+                                     bool pressedP);
 
     void PresetPeriodic(Teleop *mode);
 

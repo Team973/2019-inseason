@@ -163,18 +163,17 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
         mode->m_elevator->SetPosition(height);
     }
 }
-void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
+
+void PresetHandlerDispatcher::DriveDispatchJoystickTrigger(Teleop *mode,
                                                            uint32_t button,
                                                            bool pressedP) {
-    double height = NO_PRESET_NO_CHANGE;
-
     switch (mode->m_gameMode) {
         case GameMode::Cargo:
             if (pressedP) {
                 if (button == PoofsJoysticks::LeftTrigger) {
                     mode->m_driveMode = Teleop::DriveMode::AssistedCheesyCargo;
                 }
-                else if (button == PoofsJoysticks::RightTrigger) {
+                else {  // RightTrigger
                     mode->m_cargoIntake->Exhaust();
                 }
             }
@@ -182,7 +181,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 if (button == PoofsJoysticks::LeftTrigger) {
                     mode->m_driveMode = Teleop::DriveMode::Cheesy;
                 }
-                else if (button == PoofsJoysticks::RightTrigger) {
+                else {  // RightTrigger
                     mode->m_cargoIntake->StopIntake();
                 }
             }
@@ -192,7 +191,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 if (button == PoofsJoysticks::LeftTrigger) {
                     mode->m_driveMode = Teleop::DriveMode::AssistedCheesyHatch;
                 }
-                else if (button == PoofsJoysticks::RightTrigger) {
+                else {  // RightTrigger
                     mode->m_hatchIntake->Exhaust();
                 }
             }
@@ -200,7 +199,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 if (button == PoofsJoysticks::LeftTrigger) {
                     mode->m_driveMode = Teleop::DriveMode::Cheesy;
                 }
-                else if (button == PoofsJoysticks::RightTrigger) {
+                else {  // RightTrigger
                     mode->m_hatchIntake->SetIdle();
                 }
             }
@@ -210,41 +209,49 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
         default:
             break;
     }
+}
 
-    // switch (button) {
-    //     case PoofsJoysticks::LeftBumper:
-    //         if (pressedP) {
-    //             switch (m_gameMode) {
-    //                 case GameMode::Cargo:  // Auto Score Cargo
-    //                     m_driveMode = DriveMode::LimelightCargo;
-    //                     break;
-    //                 case GameMode::Hatch:  // Auto Score Hatch
-    //                     m_driveMode = DriveMode::LimelightHatch;
-    //                     break;
-    //                 case GameMode::EndGame:  // Climb Up Stinger
-    //                     // Task
-    //                     break;
-    //             }
-    //         }
-    //         else {
-    //             switch (m_gameMode) {
-    //                 case GameMode::Cargo:
-    //                     m_driveMode = DriveMode::Cheesy;
-    //                     break;
-    //                 case GameMode::Hatch:
-    //                     m_driveMode = DriveMode::Cheesy;
-    //                     break;
-    //                 case GameMode::EndGame:
-    //                     // Task
-    //                     break;
-    //             }
-    //         }
-    //         break;
-    //     case PoofsJoysticks::RightBumper:  // Quickturn
-    //         if (pressedP) {
-    //         }
-    //         break;
-    // }
+void PresetHandlerDispatcher::DriveDispatchJoystickBumper(Teleop *mode,
+                                                          uint32_t button,
+                                                          bool pressedP) {
+    switch (mode->m_gameMode) {
+        case GameMode::Cargo:
+            if (pressedP) {
+                if (button == PoofsJoysticks::LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::LimelightCargo;
+                }
+                else {  // RightBumper
+                }
+            }
+            else {
+                if (button == PoofsJoysticks::LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else {  // RightBumper
+                }
+            }
+            break;
+        case GameMode::Hatch:
+            if (pressedP) {
+                if (button == PoofsJoysticks::LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::LimelightHatch;
+                }
+                else {  // RightBumper
+                }
+            }
+            else {
+                if (button == PoofsJoysticks::LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else {  // RightBumper
+                }
+            }
+            break;
+        case GameMode::EndGame:
+            break;
+        default:
+            break;
+    }
 }
 
 void PresetHandlerDispatcher::PresetPeriodic(Teleop *mode) {
