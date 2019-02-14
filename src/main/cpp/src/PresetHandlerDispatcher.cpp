@@ -254,7 +254,15 @@ void PresetHandlerDispatcher::DriveDispatchJoystickBumper(Teleop *mode,
     }
 }
 
-void PresetHandlerDispatcher::PresetPeriodic(Teleop *mode) {
+void PresetHandlerDispatcher::JoystickPeriodic(Teleop *mode) {
+    /**
+     * Operator Joystick
+     */
+    if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
+            Xbox::RightYAxis)) > 0.2) {
+        mode->m_elevator->SetManualInput();
+    }
+
     if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
             Xbox::LeftTriggerAxis)) > 0.25) {
         switch (mode->m_gameMode) {

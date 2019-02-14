@@ -106,15 +106,7 @@ void Teleop::TeleopPeriodic() {
             break;
     }
 
-    /**
-     * Operator Joystick
-     */
-    if (fabs(m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis)) >
-        0.2) {
-        m_elevator->SetManualInput();
-    }
-
-    m_presetDispatcher->PresetPeriodic(this);
+    m_presetDispatcher->JoystickPeriodic(this);  // RightYAxis & LeftTriggerAxis
 
     switch (m_rumble) {
         case Rumble::on:
