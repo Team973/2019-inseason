@@ -19,7 +19,7 @@ AssistedCheesyDriveController::AssistedCheesyDriveController(
     Limelight *limelight, bool inverted)
         : m_limelight(limelight)
         , m_isInverted(inverted)
-        , m_visionTurnPID(new PID(0.06, 0.0, 0.0))
+        , m_visionTurnPID(new PID(0.04, 0.0, 0.0))
         , m_leftOutput(0.0)
         , m_rightOutput(0.0)
         , m_oldWheel(0.0)
@@ -40,7 +40,7 @@ void AssistedCheesyDriveController::CalcDriveOutput(
     DBStringPrintf(DBStringPos::DB_LINE4, "assch l=%1.2lf r=%1.2lf",
                    m_leftOutput, m_rightOutput);
     DBStringPrintf(DBStringPos::DB_LINE5, "xoff %2.2lf",
-                   m_limelight->GetXOffset());
+                   m_limelight->GetXOffset() - VISION_OFFSET);
 }
 
 void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
@@ -50,12 +50,12 @@ void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
 
     if (m_isInverted) {
         sumTurn = turn - m_visionTurnPID->CalcOutputWithError(
-                             m_limelight->GetXOffset() - VISION_OFFSET);
+                             m_limelight->GetXOffset() + VISION_OFFSET);
         SmartDashboard::PutString("misc/limelight/currentLimelight", "cargo");
     }
     else {
         sumTurn = turn + m_visionTurnPID->CalcOutputWithError(
-                             m_limelight->GetXOffset());
+                             m_limelight->GetXOffset() - VISION_OFFSET);
         SmartDashboard::PutString("misc/limelight/currentLimelight", "hatch");
     }
     double negInertia = sumTurn - m_oldWheel;

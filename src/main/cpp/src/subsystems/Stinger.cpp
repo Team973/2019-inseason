@@ -101,8 +101,6 @@ void Stinger::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_stingerElevatorMotor->GetOutputCurrent());
     SmartDashboard::PutNumber("stinger/outputs/current",
                               m_stingerElevatorMotor->GetOutputCurrent());
-    DBStringPrintf(DBStringPos::DB_LINE5, "u:%d l:%d", GetUpperHall(),
-                   GetLowerHall());
     switch (m_stingerState) {
         case StingerState::manualVoltage:
             if (m_power > 0.0 && GetStingerElevatorHallState() ==
