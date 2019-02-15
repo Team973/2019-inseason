@@ -33,7 +33,8 @@ public:
      */
     Autonomous(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver, Disabled *disabled,
-               Drive *drive, Elevator *elevator, ADXRS450_Gyro *gyro,
+               Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+               CargoIntake *cargoIntake, ADXRS450_Gyro *gyro,
                PresetHandlerDispatcher *presetDispatcher);
     virtual ~Autonomous();
 
@@ -103,6 +104,8 @@ private:
     };
     DriveMode m_driveMode;
     Elevator *m_elevator;
+    CargoIntake *m_cargoIntake;
+    HatchIntake *m_hatchIntake;
     PresetHandlerDispatcher *m_presetDispatcher;
     ADXRS450_Gyro *m_gyro;
 };

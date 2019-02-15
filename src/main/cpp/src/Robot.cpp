@@ -74,7 +74,8 @@ Robot::Robot()
                                   m_limelightHatch))
         , m_presetDispatcher(new PresetHandlerDispatcher())
         , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
-                                      m_disabled, m_drive, m_elevator, m_gyro,
+                                      m_disabled, m_drive, m_elevator,
+                                      m_hatchIntake, m_cargoIntake, m_gyro,
                                       m_presetDispatcher))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
                               m_elevator, m_hatchIntake, m_cargoIntake,

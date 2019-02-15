@@ -164,6 +164,11 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     }
 }
 
+void PresetHandlerDispatcher::DriveDispatchJoystickTrigger(Autonomous *mode,
+                                                           uint32_t button,
+                                                           bool pressedP) {
+}
+
 void PresetHandlerDispatcher::DriveDispatchJoystickTrigger(Teleop *mode,
                                                            uint32_t button,
                                                            bool pressedP) {
@@ -209,6 +214,11 @@ void PresetHandlerDispatcher::DriveDispatchJoystickTrigger(Teleop *mode,
         default:
             break;
     }
+}
+
+void PresetHandlerDispatcher::DriveDispatchJoystickBumper(Autonomous *mode,
+                                                          uint32_t button,
+                                                          bool pressedP) {
 }
 
 void PresetHandlerDispatcher::DriveDispatchJoystickBumper(Teleop *mode,

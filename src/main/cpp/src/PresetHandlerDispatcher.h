@@ -48,7 +48,14 @@ public:
      */
     void DriveDispatchJoystickTrigger(Teleop *mode, uint32_t button,
                                       bool pressedP);
+
+    void DriveDispatchJoystickTrigger(Autonomous *mode, uint32_t button,
+                                      bool pressedP);
+
     void DriveDispatchJoystickBumper(Teleop *mode, uint32_t button,
+                                     bool pressedP);
+
+    void DriveDispatchJoystickBumper(Autonomous *mode, uint32_t button,
                                      bool pressedP);
 
     void JoystickPeriodic(Teleop *mode);

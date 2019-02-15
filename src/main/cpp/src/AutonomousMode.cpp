@@ -8,7 +8,9 @@ using namespace frc;
 namespace frc973 {
 Autonomous::Autonomous(ObservablePoofsJoystick *driver,
                        ObservableXboxJoystick *codriver, Disabled *disabled,
-                       Drive *drive, Elevator *elevator, ADXRS450_Gyro *gyro,
+                       Drive *drive, Elevator *elevator,
+                       HatchIntake *hatchIntake, CargoIntake *cargoIntake,
+                       ADXRS450_Gyro *gyro,
                        PresetHandlerDispatcher *presetDispatcher)
         : m_noAuto(new NoAuto())
         , m_driverJoystick(driver)
@@ -19,6 +21,8 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driver,
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
         , m_elevator(elevator)
+        , m_hatchIntake(hatchIntake)
+        , m_cargoIntake(cargoIntake)
         , m_gyro(gyro)
         , m_presetDispatcher(presetDispatcher)
         , m_gameMode(GameMode::Hatch) {
@@ -103,91 +107,17 @@ void Autonomous::HandlePoofsJoystick(uint32_t port, uint32_t button,
 
 void Autonomous::HandleXboxJoystick(uint32_t port, uint32_t button,
                                     bool pressedP) {
-    if (port == OPERATOR_JOYSTICK_PORT) {
+    if (port == DRIVER_JOYSTICK_PORT) {
         switch (button) {
-            case Xbox::BtnY:
-                if (pressedP) {
-                }
-                else {
-                }
+            case PoofsJoysticks::LeftTrigger:
+            case PoofsJoysticks::RightTrigger:  // Score
+                m_presetDispatcher->DriveDispatchJoystickTrigger(this, button,
+                                                                 pressedP);
                 break;
-            case Xbox::BtnA:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::BtnX:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::BtnB:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::LeftBumper:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::LJoystickBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::RJoystickBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::RightBumper:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::DPadUpVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::DPadDownVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::DPadLeftVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::DPadRightVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::Back:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case Xbox::Start:
-                if (pressedP) {
-                }
-                else {
-                }
+            case PoofsJoysticks::LeftBumper:
+            case PoofsJoysticks::RightBumper:
+                m_presetDispatcher->DriveDispatchJoystickBumper(this, button,
+                                                                pressedP);
                 break;
         }
     }
