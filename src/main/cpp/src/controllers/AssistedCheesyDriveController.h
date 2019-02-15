@@ -77,6 +77,7 @@ public:
     }
 
     static constexpr double VISION_MULTIPLIER = 1.0;
+    static constexpr double VISION_OFFSET = 2.0;  // in degrees
 
 private:
     Limelight *m_limelight;

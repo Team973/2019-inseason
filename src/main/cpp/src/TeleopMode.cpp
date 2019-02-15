@@ -80,10 +80,10 @@ void Teleop::TeleopPeriodic() {
             m_drive->LimelightHatchDrive();
             break;
         case DriveMode::AssistedCheesyHatch:
-            m_drive->AssistedCheesyHatchDrive(y, x, false, false);
+            m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
         case DriveMode::AssistedCheesyCargo:
-            m_drive->AssistedCheesyCargoDrive(y, x, false, false);
+            m_drive->AssistedCheesyCargoDrive(y, x, quickturn, false);
             break;
     }
 
