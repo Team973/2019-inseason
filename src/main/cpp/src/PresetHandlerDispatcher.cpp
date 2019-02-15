@@ -164,7 +164,105 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     }
 }
 
-void PresetHandlerDispatcher::PresetPeriodic(Teleop *mode) {
+void PresetHandlerDispatcher::DriveDispatchJoystickTrigger(Teleop *mode,
+                                                           uint32_t button,
+                                                           bool pressedP) {
+    switch (mode->m_gameMode) {
+        case GameMode::Cargo:
+            if (pressedP) {
+                if (button == PoofsJoysticks::LeftTrigger) {
+                    mode->m_driveMode = Teleop::DriveMode::AssistedCheesyCargo;
+                }
+                else {  // RightTrigger
+                    mode->m_cargoIntake->Exhaust();
+                }
+            }
+            else {
+                if (button == PoofsJoysticks::LeftTrigger) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else {  // RightTrigger
+                    mode->m_cargoIntake->StopIntake();
+                }
+            }
+            break;
+        case GameMode::Hatch:
+            if (pressedP) {
+                if (button == PoofsJoysticks::LeftTrigger) {
+                    mode->m_driveMode = Teleop::DriveMode::AssistedCheesyHatch;
+                }
+                else {  // RightTrigger
+                    mode->m_hatchIntake->Exhaust();
+                }
+            }
+            else {
+                if (button == PoofsJoysticks::LeftTrigger) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else {  // RightTrigger
+                    mode->m_hatchIntake->SetIdle();
+                }
+            }
+            break;
+        case GameMode::EndGame:
+            break;
+        default:
+            break;
+    }
+}
+
+void PresetHandlerDispatcher::DriveDispatchJoystickBumper(Teleop *mode,
+                                                          uint32_t button,
+                                                          bool pressedP) {
+    switch (mode->m_gameMode) {
+        case GameMode::Cargo:
+            if (pressedP) {
+                if (button == PoofsJoysticks::LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::LimelightCargo;
+                }
+                else {  // RightBumper
+                }
+            }
+            else {
+                if (button == PoofsJoysticks::LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else {  // RightBumper
+                }
+            }
+            break;
+        case GameMode::Hatch:
+            if (pressedP) {
+                if (button == PoofsJoysticks::LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::LimelightHatch;
+                }
+                else {  // RightBumper
+                }
+            }
+            else {
+                if (button == PoofsJoysticks::LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else {  // RightBumper
+                }
+            }
+            break;
+        case GameMode::EndGame:
+            break;
+        default:
+            break;
+    }
+}
+
+void PresetHandlerDispatcher::JoystickPeriodic(Teleop *mode) {
+    /**
+     * Operator Joystick
+     */
+    if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
+            Xbox::RightYAxis)) > 0.2) {
+        mode->m_elevator->SetManualInput();
+    }
+
     if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
             Xbox::LeftTriggerAxis)) > 0.25) {
         switch (mode->m_gameMode) {
