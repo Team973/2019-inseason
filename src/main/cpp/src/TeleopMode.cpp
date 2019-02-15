@@ -116,7 +116,7 @@ void Teleop::TeleopPeriodic() {
             m_elevator->SetPosition(Elevator::PLATFORM);
             m_cargoIntake->DeployPlatformWheel();
             m_cargoIntake->ExtendWrist();
-            if (m_elevator->GetPosition() > 25.0) {
+            if (m_elevator->GetPosition() > Elevator::PLATFORM - 1.0) {
                 m_gameMode = GameMode::EndGamePeriodic;
             }
             break;
