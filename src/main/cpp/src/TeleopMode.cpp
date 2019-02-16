@@ -104,6 +104,8 @@ void Teleop::TeleopPeriodic() {
             m_limelightCargo->SetLightOn();
             m_limelightHatch->SetLightOff();
             m_cargoIntake->RetractPlatformWheel();
+            SmartDashboard::PutString("misc/limelight/currentLimelight",
+                                      "cargo");
             break;
         case GameMode::Hatch:
             m_limelightCargo->SetLightOff();
@@ -112,6 +114,8 @@ void Teleop::TeleopPeriodic() {
             break;
         case GameMode::EndGameInit:
             m_limelightCargo->SetLightBlink();
+            m_limelightCargo->SetCameraDriver();
+            m_limelightHatch->SetCameraOff();
             m_limelightHatch->SetLightBlink();
             m_elevator->SetPosition(Elevator::PLATFORM);
             m_cargoIntake->DeployPlatformWheel();

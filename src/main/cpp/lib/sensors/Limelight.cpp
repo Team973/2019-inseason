@@ -123,31 +123,31 @@ void Limelight::SetLightBlink() {
 
 void Limelight::SetCameraVision() {
     SetPipeline(PipelineMode::target_vision);
-    SetCameraMode(CameraMode::onVision);
+    // SetCameraMode(CameraMode::onVision);
     SetLightOn();
 }
 
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
-    SetCameraMode(CameraMode::onDriver);
+    // SetCameraMode(CameraMode::onDriver);
     SetLightOn();
 }
 
 void Limelight::SetCameraDefaultVision() {
     SetPipeline(PipelineMode::default_vision);
-    SetCameraMode(CameraMode::onVision);
+    // SetCameraMode(CameraMode::onVision);
     SetLightOn();
 }
 
 void Limelight::SetCameraOff() {
     SetPipeline(PipelineMode::off);
-    SetCameraMode(CameraMode::onDriver);
+    // SetCameraMode(CameraMode::onDriver);
     SetLightOff();
 }
 
 void Limelight::SetCamera3D() {
     SetPipeline(PipelineMode::vision3d);
-    SetCameraMode(CameraMode::onVision);
+    // SetCameraMode(CameraMode::onVision);
     SetLightOn();
 }
 
