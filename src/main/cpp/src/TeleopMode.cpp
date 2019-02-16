@@ -141,9 +141,6 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 m_presetDispatcher->DriveDispatchJoystickButtons(this, button,
                                                                  pressedP);
                 break;
-                // m_presetDispatcher->DriveDispatchJoystickBumper(this, button,
-                //                                                 pressedP);
-                // break;
         }
     }
 }
