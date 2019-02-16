@@ -241,49 +241,6 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
     }
 }
 
-// void PresetHandlerDispatcher::DriveDispatchJoystickBumper(Teleop *mode,
-//                                                           uint32_t button,
-//                                                           bool pressedP) {
-//     switch (mode->m_gameMode) {
-//         case GameMode::Cargo:
-//             if (pressedP) {
-//                 if (button == PoofsJoysticks::LeftBumper) {
-//                     mode->m_driveMode = Teleop::DriveMode::LimelightCargo;
-//                 }
-//                 else {  // RightBumper
-//                 }
-//             }
-//             else {
-//                 if (button == PoofsJoysticks::LeftBumper) {
-//                     mode->m_driveMode = Teleop::DriveMode::Cheesy;
-//                 }
-//                 else {  // RightBumper
-//                 }
-//             }
-//             break;
-//         case GameMode::Hatch:
-//             if (pressedP) {
-//                 if (button == PoofsJoysticks::LeftBumper) {
-//                     mode->m_driveMode = Teleop::DriveMode::LimelightHatch;
-//                 }
-//                 else {  // RightBumper
-//                 }
-//             }
-//             else {
-//                 if (button == PoofsJoysticks::LeftBumper) {
-//                     mode->m_driveMode = Teleop::DriveMode::Cheesy;
-//                 }
-//                 else {  // RightBumper
-//                 }
-//             }
-//             break;
-//         case GameMode::EndGame:
-//             break;
-//         default:
-//             break;
-//     }
-// }
-
 void PresetHandlerDispatcher::JoystickPeriodic(Teleop *mode) {
     /**
      * Operator Joystick
