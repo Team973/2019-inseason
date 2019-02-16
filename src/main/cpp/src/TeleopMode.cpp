@@ -136,14 +136,14 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
         switch (button) {
             case PoofsJoysticks::LeftTrigger:
             case PoofsJoysticks::RightTrigger:  // Score
-                m_presetDispatcher->DriveDispatchJoystickTrigger(this, button,
-                                                                 pressedP);
-                break;
             case PoofsJoysticks::LeftBumper:
             case PoofsJoysticks::RightBumper:
-                m_presetDispatcher->DriveDispatchJoystickBumper(this, button,
-                                                                pressedP);
+                m_presetDispatcher->DriveDispatchJoystickButtons(this, button,
+                                                                 pressedP);
                 break;
+                // m_presetDispatcher->DriveDispatchJoystickBumper(this, button,
+                //                                                 pressedP);
+                // break;
         }
     }
 }
