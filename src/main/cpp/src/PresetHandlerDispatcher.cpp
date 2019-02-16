@@ -31,6 +31,9 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
             }
             break;
         case Xbox::BtnB:
+            if (pressedP) {
+                return Elevator::LOADING_STATION_CARGO;
+            }
             break;
     }
 
@@ -138,6 +141,9 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
 
     if (height != NO_PRESET_NO_CHANGE) {
         mode->m_elevator->SetPosition(height);
+        if (height == Elevator::LOADING_STATION_CARGO) {
+            mode->m_cargoIntake->RunIntake(1.0);
+        }
     }
 }
 

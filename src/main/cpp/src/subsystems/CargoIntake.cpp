@@ -9,6 +9,7 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_logger(logger)
         , m_cargoIntakeMotor(cargoIntakeMotor)
         , m_cargoPlatformLock(cargoPlatformLock)
+        , m_power(0.0)
         , m_cargoWrist(cargoWrist)
         , m_cargoIntakeState(CargoIntakeState::notRunning)
         , m_cargoWristState(CargoWristState::retracted)
@@ -35,7 +36,8 @@ CargoIntake::~CargoIntake() {
 }
 
 void CargoIntake::RunIntake(double power) {
-    m_cargoIntakeMotor->Set(ControlMode::PercentOutput, power);
+    m_cargoIntakeState = CargoIntakeState::manualRunning;
+    m_power = power;
 }
 
 void CargoIntake::RunIntake() {
@@ -110,6 +112,12 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             m_cargoIntakeMotor->ConfigContinuousCurrentLimit(40, 10);
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 1.0);
             ExtendWrist();
+            if (filteredCurrent > 25.0) {
+                m_cargoIntakeState = CargoIntakeState::holding;
+            }
+            break;
+        case CargoIntakeState::manualRunning:
+            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, m_power);
             if (filteredCurrent > 25.0) {
                 m_cargoIntakeState = CargoIntakeState::holding;
             }
