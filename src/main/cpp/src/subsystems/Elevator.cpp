@@ -42,7 +42,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->EnableVoltageCompensation(false);
     m_elevatorMotorA->ConfigForwardSoftLimitEnable(true, 10);
     m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
-        ELEVATOR_HEIGHT_SOFT_LIMIT_TELEOP / ELEVATOR_INCHES_PER_CLICK, 10);
+        ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
     m_elevatorMotorB->SetInverted(true);
@@ -121,15 +121,12 @@ void Elevator::TaskPeriodic(RobotMode mode) {
                    m_elevatorMotorA->GetMotorOutputVoltage());
     DBStringPrintf(DBStringPos::DB_LINE1, "E-Voltage: %f",
                    m_elevatorMotorA->GetMotorOutputVoltage());
+    DBStringPrintf(DBStringPos::DB_LINE6, "ehall %d", GetElevatorHall());
 
     HallZero();
 
     switch (m_elevatorState) {
         case joystickControl:
-            m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
-                ELEVATOR_HEIGHT_SOFT_LIMIT_TELEOP / ELEVATOR_INCHES_PER_CLICK,
-                0);
-
             m_joystickControl =
                 -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis);
 
@@ -146,9 +143,14 @@ void Elevator::TaskPeriodic(RobotMode mode) {
             }
             break;
         case manualVoltage:
-            m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
-                ELEVATOR_HEIGHT_SOFT_LIMIT_END_GAME / ELEVATOR_INCHES_PER_CLICK,
-                0);
+            if (GetElevatorHall()) {
+                m_elevatorMotorA->Set(ControlMode::PercentOutput,
+                                      fmax(-0.3, m_power));
+            }
+            else {
+                m_elevatorMotorA->Set(ControlMode::PercentOutput, m_power);
+            }
+
             break;
         case motionMagic:
             break;

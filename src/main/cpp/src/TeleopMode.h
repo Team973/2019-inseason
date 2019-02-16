@@ -41,7 +41,8 @@ public:
      * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
+           ObservableDualActionJoystick *testStick, Drive *drive,
+           Elevator *elevator, HatchIntake *hatchintake,
            CargoIntake *cargoIntake, Stinger *stinger,
            Limelight *limelightCargo, Limelight *limelightHatch,
            PresetHandlerDispatcher *presetDispatcher);
@@ -94,6 +95,7 @@ public:
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_testJoystick;
 
     Drive *m_drive;
     enum class DriveMode

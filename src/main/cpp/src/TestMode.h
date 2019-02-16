@@ -39,9 +39,10 @@ public:
      * @param stinger The stinger subsystem.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-         CargoIntake *cargoIntake, Stinger *stinger, Limelight *limelightCargo,
-         Limelight *limelightHatch, PresetHandlerDispatcher *presetDispatcher);
+         ObservableDualActionJoystick *testStick, Drive *drive,
+         Elevator *elevator, HatchIntake *hatchIntake, CargoIntake *cargoIntake,
+         Stinger *stinger, Limelight *limelightCargo, Limelight *limelightHatch,
+         PresetHandlerDispatcher *presetDispatcher);
     virtual ~Test();
     void TestInit();
 
@@ -85,6 +86,7 @@ public:
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_testJoystick;
 
     Drive *m_drive;
     enum class DriveMode
