@@ -17,6 +17,7 @@
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/util/Util.h"
+#include <math.h>
 
 using namespace frc;
 
@@ -49,12 +50,10 @@ public:
         15.0; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
         15.0;                                /**< Cargo ship cargo preset. */
-    static constexpr double PLATFORM = 20.0; /**< Platform preset. */
+    static constexpr double PLATFORM = 24.0; /**< Platform preset. */
 
-    static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT_END_GAME =
-        21.0; /**< Soft elevator height. */
-    static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT_TELEOP =
-        15.0; /**< Soft elevator height. */
+    static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
+        27.0; /**< Soft elevator height. */
     static constexpr double ELEVATOR_HALL_HEIGHT_OFFSET = 0.6;
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         4.0 / 4096.0; /**< Encoder in/click */
@@ -117,6 +116,8 @@ public:
      */
     bool GetElevatorHall();
 
+    void SetSoftLimit(double limit);
+
     /**
      * Checks for halls state and auto zeros if its false
      */
@@ -137,6 +138,7 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
+    double m_power;
     double m_joystickControl;
     bool m_prevHall;
     uint32_t m_zeroingTime;
