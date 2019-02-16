@@ -234,7 +234,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 }
             }
             break;
-        case GameMode::EndGame:
+        case GameMode::EndGamePeriodic:
             if (pressedP) {
                 switch (button) {
                     case PoofsJoysticks::LeftTrigger:
