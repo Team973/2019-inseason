@@ -182,39 +182,48 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
             case PoofsJoysticks::LeftTrigger:
                 if (pressedP) {
                     switch (m_gameMode) {
-                        case GameMode::Cargo:  // Assisted Cheesy
+                        case GameMode::Cargo:  // Assisted
+                                               // Cheesy
                             m_driveMode = DriveMode::AssistedCheesyCargo;
                             break;
-                        case GameMode::Hatch:  // Assisted Cheesy
+                        case GameMode::Hatch:  // Assisted
+                                               // Cheesy
                             m_driveMode = DriveMode::AssistedCheesyHatch;
                             break;
                         case GameMode::EndGamePeriodic:  // Climb Down
                             if (m_cargoIntake->GetWristState() ==
                                 CargoIntake::CargoWristState::extended) {
                                 m_elevator->SetPower(
-                                    ELEVATOR_STINGER_VOLTAGE_RATIO * 0.3);
-                                m_stinger->SetPower(0.3);
+                                    ELEVATOR_STINGER_VOLTAGE_RATIO * 0.6);
+                                m_stinger->SetPower(0.8);
                             }
                             else if (m_cargoIntake->GetWristState() ==
                                      CargoIntake::CargoWristState::retracted) {
-                                m_elevator->SetPower(
-                                    ELEVATOR_STINGER_VOLTAGE_RATIO);
-                                m_stinger->SetPower(1.0);
+                                m_stinger->SetPower(0.6);
                             }
                             break;
                     }
                 }
                 else {
                     switch (m_gameMode) {
-                        case GameMode::Cargo:  // Assisted Cheesy
+                        case GameMode::Cargo:  // Assisted
+                                               // Cheesy
                             m_driveMode = DriveMode::Cheesy;
                             break;
-                        case GameMode::Hatch:  // Assisted Cheesy
+                        case GameMode::Hatch:  // Assisted
+                                               // Cheesy
                             m_driveMode = DriveMode::Cheesy;
                             break;
                         case GameMode::EndGamePeriodic:  // Climb Down
-                            m_elevator->SetPower(0.4);
-                            m_stinger->SetPower(0.4);
+                            if (m_cargoIntake->GetWristState() ==
+                                CargoIntake::CargoWristState::extended) {
+                                m_elevator->SetPower(0.0);
+                                m_stinger->SetPower(0.0);
+                            }
+                            else if (m_cargoIntake->GetWristState() ==
+                                     CargoIntake::CargoWristState::retracted) {
+                                m_stinger->SetPower(0.0);
+                            }
                             break;
                     }
                 }
@@ -222,10 +231,12 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
             case PoofsJoysticks::RightTrigger:  // Score
                 if (pressedP) {
                     switch (m_gameMode) {
-                        case GameMode::Cargo:  // Score Cargo
+                        case GameMode::Cargo:  // Score
+                                               // Cargo
                             m_cargoIntake->Exhaust();
                             break;
-                        case GameMode::Hatch:  // Score Hatch
+                        case GameMode::Hatch:  // Score
+                                               // Hatch
                             m_hatchIntake->Exhaust();
                             break;
                         case GameMode::EndGamePeriodic:  // Raise Intake
@@ -250,10 +261,14 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
             case PoofsJoysticks::LeftBumper:
                 if (pressedP) {
                     switch (m_gameMode) {
-                        case GameMode::Cargo:  // Auto Score Cargo
+                        case GameMode::Cargo:  // Auto
+                                               // Score
+                                               // Cargo
                             m_driveMode = DriveMode::LimelightCargo;
                             break;
-                        case GameMode::Hatch:  // Auto Score Hatch
+                        case GameMode::Hatch:  // Auto
+                                               // Score
+                                               // Hatch
                             m_driveMode = DriveMode::LimelightHatch;
                             break;
                         case GameMode::EndGamePeriodic:  // Climb Up Stinger
@@ -272,8 +287,8 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                             m_driveMode = DriveMode::Cheesy;
                             break;
                         case GameMode::EndGamePeriodic:
-                            m_elevator->SetPower(0.4);
-                            m_stinger->SetPower(0.4);
+                            m_elevator->SetPower(0.0);
+                            m_stinger->SetPower(0.0);
                             break;
                     }
                 }

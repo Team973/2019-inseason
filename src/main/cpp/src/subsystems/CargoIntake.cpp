@@ -13,7 +13,7 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_cargoIntakeState(CargoIntakeState::notRunning)
         , m_cargoWristState(CargoWristState::retracted)
         , m_cargoPlatformLockState(CargoPlatformLockState::retracted)
-        , m_intakeCurentFilter(new MovingAverageFilter(0.4)) {
+        , m_intakeCurentFilter(new MovingAverageFilter(0.6)) {
     this->m_scheduler->RegisterTask("CargoIntake", this, TASK_PERIODIC);
     m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
     m_cargoIntakeMotor->SetNeutralMode(NeutralMode::Coast);
@@ -101,6 +101,8 @@ void CargoIntake::GoToPlatformLockState(
 
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_cargoIntakeMotor->GetOutputCurrent());
+    DBStringPrintf(DBStringPos::DB_LINE6, "cp %2.2lf",
+                   m_cargoIntakeMotor->GetOutputCurrent());
     double filteredCurrent =
         m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {
@@ -114,7 +116,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             break;
         case CargoIntakeState::holding:
             m_cargoIntakeMotor->ConfigContinuousCurrentLimit(100, 10);
-            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.35);
+            m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.7);
             this->RetractWrist();
             break;
         case CargoIntakeState::notRunning:
