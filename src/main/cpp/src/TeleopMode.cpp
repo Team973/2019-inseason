@@ -90,7 +90,7 @@ void Teleop::TeleopPeriodic() {
     switch (m_gameMode) {
         case GameMode::Cargo:
             SmartDashboard::PutString("misc/limelight/currentLimelight",
-                                      "hatch");  // cargo
+                                      "cargo");  // cargo
             break;
         case GameMode::Hatch:
             SmartDashboard::PutString("misc/limelight/currentLimelight",
