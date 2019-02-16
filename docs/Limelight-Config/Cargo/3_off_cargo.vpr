@@ -3,10 +3,10 @@ area_min:0.0017850625000000004
 aspect_max:20
 aspect_min:0
 black_level:0
-blue_balance:500
+blue_balance:1975
 calibration_type:0
 contour_grouping:0
-contour_sort_final:0
+contour_sort_final:6
 convexity_max:100
 convexity_min:10
 corner_approx:5
@@ -16,7 +16,7 @@ cross_a_y:0
 cross_b_a:1
 cross_b_x:0
 cross_b_y:0
-desc:off_cargo
+desc:3_off_cargo
 desired_contour_region:0
 dilation_steps:0
 direction_filter:0
@@ -31,7 +31,7 @@ intersection_filter:0
 pipeline_led_enabled:0
 pipeline_res:0
 pipeline_type:0
-red_balance:500
+red_balance:1200
 sat_max:0
 sat_min:0
 send_corners:0

@@ -235,6 +235,50 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
             }
             break;
         case GameMode::EndGame:
+            if (pressedP) {
+                switch (button) {
+                    case PoofsJoysticks::LeftTrigger:
+                        if (mode->m_cargoIntake->GetWristState() ==
+                            CargoIntake::CargoWristState::extended) {
+                            mode->m_elevator->SetPower(
+                                Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO * 0.3);
+                            mode->m_stinger->SetPower(0.3);
+                        }
+                        else if (mode->m_cargoIntake->GetWristState() ==
+                                 CargoIntake::CargoWristState::retracted) {
+                            mode->m_elevator->SetPower(
+                                Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
+                            mode->m_stinger->SetPower(1.0);
+                        }
+                        break;
+                    case PoofsJoysticks::RightTrigger:
+                        mode->m_gameMode = GameMode::RaiseIntake;
+                        break;
+                    case PoofsJoysticks::LeftBumper:
+                        mode->m_elevator->SetPower(
+                            -Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
+                        mode->m_stinger->SetPower(-1.0);
+                        break;
+                    case PoofsJoysticks::RightBumper:
+                        break;
+                }
+            }
+            else {
+                switch (button) {
+                    case PoofsJoysticks::LeftTrigger:
+                        mode->m_elevator->SetPower(0.4);
+                        mode->m_stinger->SetPower(0.4);
+                        break;
+                    case PoofsJoysticks::RightTrigger:
+                        break;
+                    case PoofsJoysticks::LeftBumper:
+                        mode->m_elevator->SetPower(0.4);
+                        mode->m_stinger->SetPower(0.4);
+                        break;
+                    case PoofsJoysticks::RightBumper:
+                        break;
+                }
+            }
             break;
         default:
             break;
