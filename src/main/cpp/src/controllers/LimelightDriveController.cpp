@@ -14,7 +14,7 @@ LimelightDriveController::LimelightDriveController(Limelight *limelight,
         , m_turn(0.0)
         , m_limelight(limelight)
         , m_turnPid(new PID(0.06, 0.0, 0.0))
-        , m_throttlePid(new PID(0.055, 0.0, 0.006)) {
+        , m_throttlePid(new PID(0.0, 0.0, 0.0)) {
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -39,7 +39,7 @@ void LimelightDriveController::CalcDriveOutput(
         m_rightSetpoint = 0.0;
     }
     else {
-        double turnPidOut = m_turnPid->CalcOutputWithError(offset);
+        double turnPidOut = m_turnPid->CalcOutputWithError(offset - 3.3);
         double throttlePidOut = m_throttlePid->CalcOutputWithError(
             distError *
             (pow(cos((offset * Constants::PI / 180.0) * PERIOD), 5)));

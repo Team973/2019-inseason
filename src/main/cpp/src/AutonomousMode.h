@@ -32,8 +32,8 @@ public:
      * @param gyro The gyro.
      */
     Autonomous(ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver, Disabled *disabled,
-               Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+               ObservableXboxJoystick *codriver, Drive *drive,
+               Elevator *elevator, HatchIntake *hatchIntake,
                CargoIntake *cargoIntake, ADXRS450_Gyro *gyro,
                PresetHandlerDispatcher *presetDispatcher);
     virtual ~Autonomous();
@@ -81,16 +81,10 @@ public:
     friend class PresetHandlerDispatcher;
 
 private:
-    NoAuto *m_noAuto;
-    ForwardAuto *m_forwardAuto;
     GameMode m_gameMode;
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
-
-    Disabled *m_disabled;
-
-    AutoRoutineBase *m_routine;
 
     Drive *m_drive;
     enum class DriveMode
@@ -107,6 +101,5 @@ private:
     CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;
     PresetHandlerDispatcher *m_presetDispatcher;
-    ADXRS450_Gyro *m_gyro;
 };
 }

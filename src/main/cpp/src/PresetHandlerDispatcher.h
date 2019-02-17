@@ -43,20 +43,13 @@ public:
     void ElevatorDispatchPressedButtonToPreset(Test *mode, uint32_t button,
                                                bool pressedP);
     /**
-     *  Select and use the driver dispatch joystick button by the GameMode
+     *  Select and use the driver dispatch joystick buttons by the GameMode
      * (Cargo, Hatch, EndGame)
      */
-    void DriveDispatchJoystickTrigger(Teleop *mode, uint32_t button,
+    void DriveDispatchJoystickButtons(Teleop *mode, uint32_t button,
                                       bool pressedP);
-
-    void DriveDispatchJoystickTrigger(Autonomous *mode, uint32_t button,
-                                      bool pressedP);
-
-    void DriveDispatchJoystickBumper(Teleop *mode, uint32_t button,
-                                     bool pressedP);
-
-    void DriveDispatchJoystickBumper(Autonomous *mode, uint32_t button,
-                                     bool pressedP);
+    // void DriveDispatchJoystickBumper(Teleop *mode, uint32_t button,
+    //                                  bool pressedP);
 
     void JoystickPeriodic(Teleop *mode);
 

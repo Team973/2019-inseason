@@ -19,8 +19,10 @@ Disabled::~Disabled() {
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
 
-    m_limelightCargo->SetCameraDriver();
-    m_limelightHatch->SetCameraVision();
+    m_limelightCargo->SetLightOff();
+    m_limelightCargo->SetCameraOff();
+    m_limelightHatch->SetLightOff();
+    m_limelightHatch->SetCameraOff();
     m_elevator->EnableBrakeMode();
 }
 

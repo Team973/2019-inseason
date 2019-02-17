@@ -38,7 +38,8 @@ public:
      */
     enum class CargoIntakeState
     {
-        running,    /**< Intaking state. */
+        running, /**< Intaking state. */
+        manualRunning,
         holding,    /**< Holding state. */
         notRunning, /**< Stopped state. */
         reverse     /**< Outtaking state. */
@@ -131,6 +132,8 @@ private:
     GreyTalonSRX *m_cargoIntakeMotor;
     Solenoid *m_cargoWrist;
     Solenoid *m_cargoPlatformLock;
+
+    double m_power;
 
     CargoIntakeState m_cargoIntakeState;
     CargoWristState m_cargoWristState;

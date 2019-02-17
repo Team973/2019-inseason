@@ -16,6 +16,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_operatorJoystick(operatorJoystick)
         , m_elevatorHall(elevatorHall)
         , m_position(0.0)
+        , m_power(0.0)
         , m_joystickControl(0.0)
         , m_prevHall(true)
         , m_zeroingTime(0)
@@ -41,7 +42,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->EnableVoltageCompensation(false);
     m_elevatorMotorA->ConfigForwardSoftLimitEnable(true, 10);
     m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
-        ELEVATOR_HEIGHT_SOFT_LIMIT_TELEOP / ELEVATOR_INCHES_PER_CLICK, 10);
+        ELEVATOR_HEIGHT_SOFT_LIMIT / ELEVATOR_INCHES_PER_CLICK, 10);
 
     m_elevatorMotorB->Follow(*m_elevatorMotorA);
     m_elevatorMotorB->SetInverted(true);
@@ -62,7 +63,7 @@ void Elevator::SetManualInput() {
 
 void Elevator::SetPower(double power) {
     m_elevatorState = ElevatorState::manualVoltage;
-    m_elevatorMotorA->Set(ControlMode::PercentOutput, power);
+    m_power = power;
 }
 
 void Elevator::SetPosition(double position) {
@@ -93,6 +94,11 @@ bool Elevator::GetElevatorHall() {
     return !m_elevatorHall->Get();
 }
 
+void Elevator::SetSoftLimit(double limit) {
+    m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
+        limit / ELEVATOR_INCHES_PER_CLICK, 10);
+}
+
 void Elevator::HallZero() {
     bool hallState = GetElevatorHall();
     if (m_prevHall != hallState) {
@@ -120,10 +126,6 @@ void Elevator::TaskPeriodic(RobotMode mode) {
 
     switch (m_elevatorState) {
         case joystickControl:
-            m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
-                ELEVATOR_HEIGHT_SOFT_LIMIT_TELEOP / ELEVATOR_INCHES_PER_CLICK,
-                0);
-
             m_joystickControl =
                 -m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis);
 
@@ -140,9 +142,14 @@ void Elevator::TaskPeriodic(RobotMode mode) {
             }
             break;
         case manualVoltage:
-            m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
-                ELEVATOR_HEIGHT_SOFT_LIMIT_END_GAME / ELEVATOR_INCHES_PER_CLICK,
-                0);
+            if (GetElevatorHall()) {
+                m_elevatorMotorA->Set(ControlMode::PercentOutput,
+                                      fmax(-0.3, m_power));
+            }
+            else {
+                m_elevatorMotorA->Set(ControlMode::PercentOutput, m_power);
+            }
+
             break;
         case motionMagic:
             break;
