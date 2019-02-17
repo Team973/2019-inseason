@@ -8,7 +8,6 @@
 
 #include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/sensors/Limelight.h"
@@ -19,12 +18,14 @@
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/HatchIntake.h"
+#include "src/GameMode.h"
 #include "src/subsystems/Stinger.h"
 #include <iostream>
 
 using namespace frc;
 
 namespace frc973 {
+class PresetHandlerDispatcher;
 
 /**
  * Controls the teleop mode.
@@ -40,9 +41,11 @@ public:
      * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
+           ObservableDualActionJoystick *testStick, Drive *drive,
+           Elevator *elevator, HatchIntake *hatchintake,
            CargoIntake *cargoIntake, Stinger *stinger,
-           Limelight *limelightCargo, Limelight *limelightHatch);
+           Limelight *limelightCargo, Limelight *limelightHatch,
+           PresetHandlerDispatcher *presetDispatcher);
 
     virtual ~Teleop();
 
@@ -85,10 +88,14 @@ public:
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
+    static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
+
+    friend class PresetHandlerDispatcher;
 
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_testJoystick;
 
     Drive *m_drive;
     enum class DriveMode
@@ -96,19 +103,22 @@ private:
         Openloop,
         LimelightCargo,
         LimelightHatch,
-        AssistedCheesy,
+        AssistedCheesyHatch,
+        AssistedCheesyCargo,
         Cheesy
     };
     DriveMode m_driveMode;
     CargoIntake *m_cargoIntake;
 
+    GameMode m_gameMode;
+
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
+    PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
-
     enum class Rumble
     {
         on,
@@ -116,7 +126,8 @@ private:
     };
     Rumble m_rumble;
 
-    u_int32_t m_limelightCargoTimer;
-    u_int32_t m_limelightHatchTimer;
+    uint32_t m_rumbleTimer;
+    uint32_t m_limelightCargoTimer;
+    uint32_t m_limelightHatchTimer;
 };
 }

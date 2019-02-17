@@ -13,7 +13,6 @@
 #include "src/controllers/OpenloopArcadeDriveController.h"
 #include "src/controllers/PIDDriveController.h"
 #include "src/controllers/SplineDriveController.h"
-#include "src/controllers/StingerDriveController.h"
 #include "src/controllers/VelocityArcadeDriveController.h"
 #include "src/controllers/LimelightDriveController.h"
 #include "src/controllers/AssistedCheesyDriveController.h"
@@ -63,14 +62,19 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
-        , m_stingerDriveController(new StingerDriveController())
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
         , m_limelightCargoDriveController(
-              new LimelightDriveController(limelightCargo))
+              new LimelightDriveController(limelightCargo, true))
         , m_limelightHatchDriveController(
-              new LimelightDriveController(limelightHatch))
-        , m_assistedCheesyDriveController(
-              new AssistedCheesyDriveController(m_limelightHatch))
+              new LimelightDriveController(limelightHatch, false))
+        , m_assistedCheesyDriveHatchController(
+              new AssistedCheesyDriveController(
+                  m_limelightHatch,
+                  AssistedCheesyDriveController::VisionOffset::Hatch, false))
+        , m_assistedCheesyDriveCargoController(
+              new AssistedCheesyDriveController(
+                  m_limelightCargo,
+                  AssistedCheesyDriveController::VisionOffset::Cargo, true))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))
@@ -102,15 +106,12 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_rightDriveVictorB->SetInverted(false);
 
     m_stingerDriveMotor->SetNeutralMode(Coast);
-    m_stingerDriveMotor->SetSensorPhase(false);
     m_stingerDriveMotor->SetInverted(false);
-    m_stingerDriveMotor->SelectProfileSlot(0, 0);
 
     m_stingerDriveMotor->EnableCurrentLimit(true);
     m_stingerDriveMotor->ConfigPeakCurrentDuration(0, 10);
     m_stingerDriveMotor->ConfigPeakCurrentLimit(0, 10);
     m_stingerDriveMotor->ConfigContinuousCurrentLimit(40, 10);
-    m_stingerDriveMotor->EnableVoltageCompensation(false);
 
     logger->RegisterCell(m_angleLog);
     logger->RegisterCell(m_angularRateLog);
@@ -173,18 +174,8 @@ double Drive::GetSplinePercentComplete() {
     return m_splineDriveController->GetSplinePercentComplete();
 }
 
-void Drive::StingerDrive(double throttle, double turn) {
-    this->SetDriveController(m_stingerDriveController);
-    m_stingerDriveController->SetJoysticks(throttle, turn);
-
-    if (std::isnan(m_stingerDriveController->GetStingerMotorOutput())) {
-        m_stingerDriveMotor->Set(ControlMode::PercentOutput, 0.0);
-    }
-    else {
-        m_stingerDriveMotor->Set(
-            ControlMode::PercentOutput,
-            m_stingerDriveController->GetStingerMotorOutput());
-    }
+void Drive::SetStingerOutput(double power) {
+    m_stingerDriveMotor->Set(ControlMode::PercentOutput, power);
 }
 
 void Drive::VelocityArcadeDrive(double throttle, double turn) {
@@ -204,14 +195,20 @@ LimelightDriveController *Drive::LimelightHatchDrive() {
     return m_limelightHatchDriveController;
 }
 
-AssistedCheesyDriveController *Drive::AssistedCheesyDrive(double throttle,
-                                                          double turn,
-                                                          bool isQuickTurn,
-                                                          bool isHighGear) {
-    this->SetDriveController(m_assistedCheesyDriveController);
-    m_assistedCheesyDriveController->SetJoysticks(throttle, turn, isQuickTurn,
-                                                  isHighGear);
-    return m_assistedCheesyDriveController;
+AssistedCheesyDriveController *Drive::AssistedCheesyHatchDrive(
+    double throttle, double turn, bool isQuickTurn, bool isHighGear) {
+    this->SetDriveController(m_assistedCheesyDriveHatchController);
+    m_assistedCheesyDriveHatchController->SetJoysticks(throttle, turn,
+                                                       isQuickTurn, isHighGear);
+    return m_assistedCheesyDriveHatchController;
+}
+
+AssistedCheesyDriveController *Drive::AssistedCheesyCargoDrive(
+    double throttle, double turn, bool isQuickTurn, bool isHighGear) {
+    this->SetDriveController(m_assistedCheesyDriveCargoController);
+    m_assistedCheesyDriveCargoController->SetJoysticks(throttle, turn,
+                                                       isQuickTurn, isHighGear);
+    return m_assistedCheesyDriveCargoController;
 }
 
 double Drive::GetLeftDist() const {

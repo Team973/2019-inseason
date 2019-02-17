@@ -1,6 +1,12 @@
 /**
- * [year] Contributors:
- * - Person (@username)
+ * 2019 Contributors:
+ * - Kyle D
+ * - Chris M
+ * - Chris L
+ * - Luis V
+ * - Dylan F
+ * - Allen B
+ * - Andrew N
  **/
 
 #pragma once
@@ -11,6 +17,7 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/logging/LogSpreadsheet.h"
@@ -36,6 +43,7 @@ class Disabled;
 class Autonomous;
 class Drive;
 class Elevator;
+class PresetHandlerDispatcher;
 
 /**
  * Defines the robot.
@@ -76,13 +84,12 @@ public:
     void ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
                                         bool pressedP) override;
 
-    static const int NUM_LED = 26; /**< The number of LEDs. */
-
 private:
     PowerDistributionPanel *m_pdp;
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_testJoystick;
 
     LogSpreadsheet *m_logger;
 
@@ -104,6 +111,10 @@ private:
     GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
 
+    UsbCamera m_hatchCamera;
+    CameraServer *m_cameraServer;
+    VideoSink m_greyCam;
+
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
@@ -112,11 +123,13 @@ private:
     Solenoid *m_cargoPlatformLock;
 
     LogCell *m_matchIdentifier;
+    LogCell *m_gameSpecificMessage;
 
+    CargoIntake *m_cargoIntake;
     Drive *m_drive;
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
-    CargoIntake *m_cargoIntake;
+    PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 
     DigitalInput *m_airPressureSwitch;

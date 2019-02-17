@@ -19,23 +19,14 @@ Disabled::~Disabled() {
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
 
-    m_limelightCargo->SetCameraDriver();
-    m_limelightHatch->SetCameraVision();
+    m_limelightCargo->SetLightOff();
+    m_limelightCargo->SetCameraOff();
+    m_limelightHatch->SetLightOff();
+    m_limelightHatch->SetCameraOff();
     m_elevator->EnableBrakeMode();
 }
 
 void Disabled::DisabledPeriodic() {
-    DBStringPrintf(DBStringPos::DB_LINE2, "tv %3.1lf th %3.1lf",
-                   m_limelightHatch->GetVerticalLength(),
-                   m_limelightHatch->GetHorizontalLength());
-    DBStringPrintf(DBStringPos::DB_LINE1, "xd %3.2lf",
-                   m_limelightHatch->GetHorizontalDistance());
-    DBStringPrintf(DBStringPos::DB_LINE3, "HI: %f",
-                   m_limelightHatch->FindTargetSkew());
-    DBStringPrintf(DBStringPos::DB_LINE0, "Ratios: %f",
-                   (m_limelightHatch->GetHorizontalLength() /
-                    m_limelightHatch->GetVerticalLength()) *
-                       (6.0 / 15.0));
 }
 
 void Disabled::DisabledStop() {

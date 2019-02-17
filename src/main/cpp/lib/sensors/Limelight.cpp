@@ -6,15 +6,17 @@ namespace frc973 {
 Limelight::Limelight(const char *name)
         : m_limelight(nt::NetworkTableInstance::GetDefault().GetTable(name))
         , m_camName(name)
-        , m_lightMode(LightMode::on)
-        , m_cameraMode(CameraMode::onVision)
+        , m_lightMode(LightMode::off)
+        , m_cameraMode(CameraMode::onDriver)
+        , m_streamMode(StreamMode::standard)
+        , m_snapshotMode(SnapshotMode::stop)
+        , m_pipelineMode(PipelineMode::off)
         , m_targetStatus(false)
         , m_horizontalOffset(0.0)
         , m_verticalOffset(0.0)
         , m_targetArea(0.0)
         , m_targetSkew(0.0)
         , m_latency(0.0) {
-    SetCameraDriver();
 }
 
 Limelight::~Limelight() {
@@ -23,7 +25,7 @@ Limelight::~Limelight() {
 void Limelight::SetLightMode(LightMode mode) {
     switch (mode) {
         case LightMode::on:
-            m_limelight->PutNumber("ledMode", 0);
+            m_limelight->PutNumber("ledMode", 3);
             break;
         case LightMode::off:
             m_limelight->PutNumber("ledMode", 1);
@@ -66,6 +68,12 @@ void Limelight::SetPipeline(PipelineMode mode) {
         case PipelineMode::target_vision:
             SetPipelineIndex(2);
             break;
+        case PipelineMode::off:
+            SetPipelineIndex(3);
+            break;
+        case PipelineMode::vision3d:
+            SetPipelineIndex(4);
+            break;
     }
 }
 
@@ -73,12 +81,17 @@ void Limelight::SetStreamMode(StreamMode mode) {
     switch (mode) {
         case StreamMode::standard:
             m_limelight->PutNumber("stream", 0);
+            SmartDashboard::PutString("misc/limelight/currentCamera",
+                                      "limelight");
             break;
         case StreamMode::pipMain:
             m_limelight->PutNumber("stream", 1);
+            SmartDashboard::PutString("misc/limelight/currentCamera",
+                                      "limelight");
             break;
         case StreamMode::pipSecondary:
             m_limelight->PutNumber("stream", 2);
+            SmartDashboard::PutString("misc/limelight/currentCamera", "usb");
             break;
     }
 }
@@ -103,22 +116,39 @@ void Limelight::SetLightOff() {
 }
 
 void Limelight::SetLightBlink() {
+    DBStringPrintf(DBStringPos::DB_LINE1, "%f",
+                   m_limelight->GetNumber("ledMode", 0));
     SetLightMode(LightMode::blink);
 }
 
 void Limelight::SetCameraVision() {
     SetPipeline(PipelineMode::target_vision);
-    SetCameraMode(CameraMode::onVision);
+    // SetCameraMode(CameraMode::onVision);
+    SetLightOn();
 }
 
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
-    SetCameraMode(CameraMode::onDriver);
+    // SetCameraMode(CameraMode::onDriver);
+    SetLightOn();
 }
 
 void Limelight::SetCameraDefaultVision() {
     SetPipeline(PipelineMode::default_vision);
-    SetCameraMode(CameraMode::onVision);
+    // SetCameraMode(CameraMode::onVision);
+    SetLightOn();
+}
+
+void Limelight::SetCameraOff() {
+    SetPipeline(PipelineMode::off);
+    // SetCameraMode(CameraMode::onDriver);
+    SetLightOff();
+}
+
+void Limelight::SetCamera3D() {
+    SetPipeline(PipelineMode::vision3d);
+    // SetCameraMode(CameraMode::onVision);
+    SetLightOn();
 }
 
 bool Limelight::isTargetValid() {
@@ -143,6 +173,10 @@ double Limelight::GetTargetSkew() {
 
 double Limelight::GetLatency() {
     return m_limelight->GetNumber("tl", 0.0);
+}
+
+double Limelight::GetPipeline() {
+    return m_limelight->GetNumber("pipeline", 0.0);
 }
 
 double Limelight::GetHorizontalLength() {

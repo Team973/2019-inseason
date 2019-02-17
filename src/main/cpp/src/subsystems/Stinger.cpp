@@ -39,7 +39,8 @@ Stinger::~Stinger() {
     m_scheduler->UnregisterTask(this);
 }
 
-void Stinger::SetPower(double power) {
+void Stinger::SetPower(double power) {  // negative sets stinger down, brings
+                                        // robot up and vice versa
     power = Util::bound(power, -1.0, 1.0);
     m_power = power;
     GoToStingerState(StingerState::manualVoltage);
@@ -101,17 +102,16 @@ void Stinger::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_stingerElevatorMotor->GetOutputCurrent());
     SmartDashboard::PutNumber("stinger/outputs/current",
                               m_stingerElevatorMotor->GetOutputCurrent());
-    DBStringPrintf(DBStringPos::DB_LINE5, "u:%d l:%d", GetUpperHall(),
-                   GetLowerHall());
     switch (m_stingerState) {
         case StingerState::manualVoltage:
             if (m_power > 0.0 && GetStingerElevatorHallState() ==
                                      StingerElevatorHallState::top) {
-                m_stingerState = StingerState::idle;
+                m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
             }
             else if (m_power < 0.0 && GetStingerElevatorHallState() ==
                                           StingerElevatorHallState::bottom) {
-                m_stingerState = StingerState::idle;
+                m_stingerElevatorMotor->Set(ControlMode::PercentOutput,
+                                            fmax(-0.3, m_power));
             }
             else {
                 m_stingerElevatorMotor->Set(ControlMode::PercentOutput,

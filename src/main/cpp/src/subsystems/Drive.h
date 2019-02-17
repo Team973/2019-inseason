@@ -26,7 +26,6 @@ class Limelight;
 class OpenloopArcadeDriveController;
 class PIDDriveController;
 class SplineDriveController;
-class StingerDriveController;
 class VelocityArcadeDriveController;
 class LimelightDriveController;
 class AssistedCheesyDriveController;
@@ -58,10 +57,8 @@ public:
      * @param logger LogSpreadsheet object.
      * @param leftDriveTalonA The first left drive motor controller.
      * @param leftDriveVictorB The second left drive motor controller.
-     * @param leftDriveVictorC The third left drive motor controller.
      * @param rightDriveTalonA The first right drive motor controller.
      * @param rightDriveVictorB The second right drive motor controller.
-     * @param rightDriveVictorC The third right drive motor controller.
      * @param gyro The gyro object.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
@@ -148,13 +145,7 @@ public:
      */
     double GetSplinePercentComplete();
 
-    /**
-     * Set a drive to use the Cheesy drive controller.
-     * @param throttle Forward/backwards amount.
-     * @param turn Left/right amount.
-     */
-    void StingerDrive(double throttle, double turn);
-
+    void SetStingerOutput(double power);
     /**
      * Set drive to use the velocity arcade drive controller.
      * @param throttle Forward/backwards amount.
@@ -175,10 +166,22 @@ public:
      * @param isQuickTurn 1 or 0 for if quickturn is enabled
      * @param isHighGear 1 or 0 for if high gear is enabled
      */
-    AssistedCheesyDriveController *AssistedCheesyDrive(double throttle,
-                                                       double turn,
-                                                       bool isQuickTurn,
-                                                       bool isHighGear);
+    AssistedCheesyDriveController *AssistedCheesyHatchDrive(double throttle,
+                                                            double turn,
+                                                            bool isQuickTurn,
+                                                            bool isHighGear);
+
+    /*
+     * Set drive controller to use limelight and driver input to steer and drive
+     * @param trottle Joysticks left y-axis input
+     * @param turn Joysticks right x-axis input
+     * @param isQuickTurn 1 or 0 for if quickturn is enabled
+     * @param isHighGear 1 or 0 for if high gear is enabled
+     */
+    AssistedCheesyDriveController *AssistedCheesyCargoDrive(double throttle,
+                                                            double turn,
+                                                            bool isQuickTurn,
+                                                            bool isHighGear);
 
     /**
      * Return the left distance from the encoder in inches.
@@ -307,11 +310,11 @@ private:
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
-    StingerDriveController *m_stingerDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
     LimelightDriveController *m_limelightCargoDriveController;
     LimelightDriveController *m_limelightHatchDriveController;
-    AssistedCheesyDriveController *m_assistedCheesyDriveController;
+    AssistedCheesyDriveController *m_assistedCheesyDriveCargoController;
+    AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 
     double m_angle;
     double m_angleRate;

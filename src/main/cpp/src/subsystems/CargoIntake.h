@@ -38,7 +38,8 @@ public:
      */
     enum class CargoIntakeState
     {
-        running,    /**< Intaking state. */
+        running, /**< Intaking state. */
+        manualRunning,
         holding,    /**< Holding state. */
         notRunning, /**< Stopped state. */
         reverse     /**< Outtaking state. */
@@ -62,9 +63,9 @@ public:
         deployed = false  /**< Deployed wheel state. */
     };
 
-    void RunIntake(double power);
-    void RunIntake();  /**< Set the CargoIntakeState to running. */
-    void HoldCargo();  /**< Set the CargoIntakeState to holding. */
+    void RunIntake(double power); /**< Run the intake with variable power.*/
+    void RunIntake();             /**< Set the CargoIntakeState to running. */
+    void HoldCargo();             /**< Set the CargoIntakeState to holding. */
     void StopIntake(); /**< Set the CargoIntakeState to notRunning. */
     void Exhaust();    /**< Set the CargoIntakeState to reverse. */
 
@@ -131,6 +132,8 @@ private:
     GreyTalonSRX *m_cargoIntakeMotor;
     Solenoid *m_cargoWrist;
     Solenoid *m_cargoPlatformLock;
+
+    double m_power;
 
     CargoIntakeState m_cargoIntakeState;
     CargoWristState m_cargoWristState;
