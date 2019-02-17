@@ -121,7 +121,6 @@ void Elevator::TaskPeriodic(RobotMode mode) {
                    m_elevatorMotorA->GetMotorOutputVoltage());
     DBStringPrintf(DBStringPos::DB_LINE1, "E-Voltage: %f",
                    m_elevatorMotorA->GetMotorOutputVoltage());
-    DBStringPrintf(DBStringPos::DB_LINE6, "ehall %d", GetElevatorHall());
 
     HallZero();
 
