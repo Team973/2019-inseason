@@ -8,6 +8,7 @@
 #include "lib/managers/TaskMgr.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/filters/MovingAverageFilter.h"
+#include "lib/sensors/Limelight.h"
 
 using namespace frc;
 using namespace ctre;
@@ -30,7 +31,7 @@ public:
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoPlatformLock,
-                Solenoid *cargoWrist);
+                Solenoid *cargoWrist, Limelight *limelightCargo);
     virtual ~CargoIntake();
 
     /**
@@ -141,6 +142,9 @@ private:
     CargoIntakeState m_cargoIntakeState;
     CargoWristState m_cargoWristState;
     CargoPlatformLockState m_cargoPlatformLockState;
+
+    Limelight *m_limelightCargo;
+    double m_cargoTimer;
 
     LogCell *m_current;
 
