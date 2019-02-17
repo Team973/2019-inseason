@@ -188,12 +188,12 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::BtnY:  // High Elevator Preset
             case Xbox::BtnA:  // Low Preset
             case Xbox::BtnX:  // Cargo Bay Preset
-            case Xbox::BtnB:  // Middle Elevator Preset
                 m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
                     this, button, pressedP);
                 break;
             case Xbox::LeftBumper:   // Extend Intake
             case Xbox::RightBumper:  // Intake
+            case Xbox::BtnB:         // Middle Elevator Preset
                 m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
                 break;
             case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame

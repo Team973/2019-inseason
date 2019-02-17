@@ -141,9 +141,6 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
 
     if (height != NO_PRESET_NO_CHANGE) {
         mode->m_elevator->SetPosition(height);
-        if (height == Elevator::LOADING_STATION_CARGO) {
-            mode->m_cargoIntake->RunIntake(1.0);
-        }
     }
 }
 
@@ -326,13 +323,19 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                     mode->m_cargoIntake->GoToWristState(
                         CargoIntake::CargoWristState::extended);
                 }
-                else {  // button == Xbox::RightBumper
+                else if (button ==
+                         Xbox::RightBumper) {  // button == Xbox::RightBumper
                     mode->m_cargoIntake->RunIntake();
                     mode->m_elevator->SetPosition(Elevator::GROUND);
                 }
+                else {
+                    mode->m_elevator->SetPosition(
+                        Elevator::LOADING_STATION_CARGO);
+                    mode->m_cargoIntake->RunIntake(1.0);
+                }
             }
             else {
-                if (button == Xbox::RightBumper) {
+                if (button == Xbox::RightBumper || button == Xbox::BtnB) {
                     mode->m_cargoIntake->HoldCargo();
                 }
             }

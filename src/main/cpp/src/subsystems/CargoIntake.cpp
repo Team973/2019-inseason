@@ -117,6 +117,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             }
             break;
         case CargoIntakeState::manualRunning:
+            RetractWrist();
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, m_power);
             if (filteredCurrent > 25.0) {
                 m_cargoIntakeState = CargoIntakeState::holding;
