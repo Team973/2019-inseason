@@ -70,9 +70,13 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_limelightHatchDriveController(
               new LimelightDriveController(limelightHatch, false))
         , m_assistedCheesyDriveHatchController(
-              new AssistedCheesyDriveController(m_limelightHatch, false))
+              new AssistedCheesyDriveController(
+                  m_limelightHatch,
+                  AssistedCheesyDriveController::VisionOffset::Hatch, false))
         , m_assistedCheesyDriveCargoController(
-              new AssistedCheesyDriveController(m_limelightCargo, true))
+              new AssistedCheesyDriveController(
+                  m_limelightCargo,
+                  AssistedCheesyDriveController::VisionOffset::Cargo, true))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))

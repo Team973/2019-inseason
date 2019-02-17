@@ -21,10 +21,17 @@ namespace frc973 {
  */
 class AssistedCheesyDriveController : public DriveController {
 public:
+    enum class VisionOffset
+    {
+        Cargo,
+        Hatch
+    };
+
     /**
      * Construct a Cheesy Drive controller.
      */
-    AssistedCheesyDriveController(Limelight *limelight, bool inverted);
+    AssistedCheesyDriveController(Limelight *limelight, VisionOffset offset,
+                                  bool inverted);
     virtual ~AssistedCheesyDriveController();
 
     /**
@@ -77,10 +84,13 @@ public:
     }
 
     static constexpr double VISION_MULTIPLIER = 1.0;
-    static constexpr double VISION_OFFSET = 3.3;  // in degrees
+    static constexpr double HATCH_VISION_OFFSET = 3.3;  // in degrees
+    static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
 
 private:
     Limelight *m_limelight;
+
+    double m_visionOffset;
 
     PID *m_visionTurnPID;
     bool m_isInverted;
