@@ -31,8 +31,8 @@ public:
      * @param codriver The co-driver's joystick.
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             Elevator *elevator, Limelight *limelightCargo,
-             Limelight *limelightHatch);
+             Elevator *elevator, CargoIntake *cargoIntake,
+             Limelight *limelightCargo, Limelight *limelightHatch);
     virtual ~Disabled();
 
     /**
@@ -80,6 +80,7 @@ private:
     ObservableXboxJoystick *m_operatorJoystick;
 
     Elevator *m_elevator;
+    CargoIntake *m_cargoIntake;
 
     Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;

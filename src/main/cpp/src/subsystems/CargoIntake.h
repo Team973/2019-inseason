@@ -119,6 +119,9 @@ public:
      */
     void GoToPlatformLockState(CargoPlatformLockState newState);
 
+    void EnableCoastMode();
+    void EnableBrakeMode();
+
     /**
      * The looping task periodic.
      * @param mode The current robot mode.

@@ -49,7 +49,7 @@ Robot::Robot()
         , m_cameraServer(CameraServer::GetInstance())
         , m_greyCam(m_cameraServer->AddServer("serve_GreyCam", 1181))
         , m_limelightCargo(new Limelight("limelight-cargo"))
-        , m_limelightHatch(new Limelight("limeligt-hatch"))
+        , m_limelightHatch(new Limelight("limelight-hatch"))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
@@ -72,7 +72,7 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
-                                  m_elevator, m_limelightCargo,
+                                  m_elevator, m_cargoIntake, m_limelightCargo,
                                   m_limelightHatch))
         , m_presetDispatcher(new PresetHandlerDispatcher())
         , m_teleop(new Teleop(
@@ -83,8 +83,8 @@ Robot::Robot()
                           m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
                           m_stinger, m_limelightCargo, m_limelightHatch,
                           m_presetDispatcher))
-        , m_autonomous(
-              new Autonomous(m_driverJoystick, m_operatorJoystick, m_teleop)) {
+        , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
+                                      m_testJoystick, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -163,6 +163,7 @@ void Robot::AllStateContinuous() {
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
+    // printf(GetSecTime());
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

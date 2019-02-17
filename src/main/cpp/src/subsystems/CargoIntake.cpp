@@ -101,6 +101,14 @@ void CargoIntake::GoToPlatformLockState(
     m_cargoPlatformLockState = newState;
 }
 
+void CargoIntake::EnableBrakeMode() {
+    m_cargoIntakeMotor->SetNeutralMode(NeutralMode::Brake);
+}
+
+void CargoIntake::EnableCoastMode() {
+    m_cargoIntakeMotor->SetNeutralMode(NeutralMode::Coast);
+}
+
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_cargoIntakeMotor->GetOutputCurrent());
     DBStringPrintf(DBStringPos::DB_LINE6, "cp %2.2lf",
