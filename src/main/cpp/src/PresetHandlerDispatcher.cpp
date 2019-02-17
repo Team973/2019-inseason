@@ -264,8 +264,15 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
             else {
                 switch (button) {
                     case PoofsJoysticks::LeftTrigger:
-                        mode->m_elevator->SetPower(0.4);
-                        mode->m_stinger->SetPower(0.4);
+                        if (mode->m_cargoIntake->GetWristState() ==
+                            CargoIntake::CargoWristState::extended) {
+                            mode->m_elevator->SetPower(0.0);
+                            mode->m_stinger->SetPower(0.0);
+                        }
+                        else if (mode->m_cargoIntake->GetWristState() ==
+                                 CargoIntake::CargoWristState::retracted) {
+                            mode->m_stinger->SetPower(0.0);
+                        }
                         break;
                     case PoofsJoysticks::RightTrigger:
                         break;
