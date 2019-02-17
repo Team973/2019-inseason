@@ -41,7 +41,8 @@ public:
      * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
+           ObservableDualActionJoystick *testStick, Drive *drive,
+           Elevator *elevator, HatchIntake *hatchintake,
            CargoIntake *cargoIntake, Stinger *stinger,
            Limelight *limelightCargo, Limelight *limelightHatch,
            PresetHandlerDispatcher *presetDispatcher);
@@ -87,12 +88,14 @@ public:
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
+    static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
 
     friend class PresetHandlerDispatcher;
 
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_testJoystick;
 
     Drive *m_drive;
     enum class DriveMode
@@ -105,9 +108,10 @@ private:
         Cheesy
     };
     DriveMode m_driveMode;
+    CargoIntake *m_cargoIntake;
+
     GameMode m_gameMode;
 
-    CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
     PresetHandlerDispatcher *m_presetDispatcher;
@@ -123,7 +127,7 @@ private:
     Rumble m_rumble;
 
     uint32_t m_rumbleTimer;
-    u_int32_t m_limelightCargoTimer;
-    u_int32_t m_limelightHatchTimer;
+    uint32_t m_limelightCargoTimer;
+    uint32_t m_limelightHatchTimer;
 };
 }

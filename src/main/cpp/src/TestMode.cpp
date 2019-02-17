@@ -5,15 +5,16 @@ using namespace frc;
 
 namespace frc973 {
 Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
+           ObservableDualActionJoystick *testStick, Drive *drive,
+           Elevator *elevator, HatchIntake *hatchIntake,
            CargoIntake *cargoIntake, Stinger *stinger,
            Limelight *limelightCargo, Limelight *limelightHatch,
            PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
+        , m_testJoystick(testStick)
         , m_drive(drive)
         , m_elevator(elevator)
-        , m_driveMode(DriveMode::Cheesy)
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
         , m_stinger(stinger)
@@ -37,10 +38,10 @@ void Test::TestPeriodic() {
     /**
      * Driver Joystick
      */
-    double y = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
-    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x = m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
-    //-m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+    double y =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+    double x =
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
     bool quickturn =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
 
@@ -265,89 +266,91 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
 
 void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
                                     bool pressedP) {
-    switch (button) {
-        case DualAction::BtnA:
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        case DualAction::BtnB:
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        case DualAction::BtnX:
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        case DualAction::BtnY:
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        case DualAction::LeftBumper:
-            if (pressedP) {
-                m_cargoIntake->RunIntake();
-            }
-            else {
-                m_cargoIntake->StopIntake();
-            }
-            break;
-        case DualAction::LeftTrigger:
-            if (pressedP) {
-                m_cargoIntake->Exhaust();
-            }
-            else {
-                m_cargoIntake->StopIntake();
-            }
-            break;
-        case DualAction::RightBumper:
-            if (pressedP) {
-                m_cargoIntake->ExtendWrist();
-            }
-            else {
-                m_cargoIntake->RetractWrist();
-            }
-            break;
-        case DualAction::RightTrigger:
-            if (pressedP) {
-                m_cargoIntake->DeployPlatformWheel();
-            }
-            else {
-                m_cargoIntake->RetractPlatformWheel();
-            }
-            break;
-        case DualAction::DPadUpVirtBtn:
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        case DualAction::DPadDownVirtBtn:
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        case DualAction::DPadLeftVirtBtn:
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        case DualAction::DPadRightVirtBtn:
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        default:
-            break;
+    if (port == TEST_JOYSTICK_PORT) {
+        switch (button) {
+            case DualAction::BtnA:
+                if (pressedP) {
+                }
+                else {
+                }
+                break;
+            case DualAction::BtnB:
+                if (pressedP) {
+                }
+                else {
+                }
+                break;
+            case DualAction::BtnX:
+                if (pressedP) {
+                }
+                else {
+                }
+                break;
+            case DualAction::BtnY:
+                if (pressedP) {
+                }
+                else {
+                }
+                break;
+            case DualAction::LeftBumper:
+                if (pressedP) {
+                    m_cargoIntake->RunIntake();
+                }
+                else {
+                    m_cargoIntake->StopIntake();
+                }
+                break;
+            case DualAction::LeftTrigger:
+                if (pressedP) {
+                    m_cargoIntake->Exhaust();
+                }
+                else {
+                    m_cargoIntake->StopIntake();
+                }
+                break;
+            case DualAction::RightBumper:
+                if (pressedP) {
+                    m_cargoIntake->ExtendWrist();
+                }
+                else {
+                    m_cargoIntake->RetractWrist();
+                }
+                break;
+            case DualAction::RightTrigger:
+                if (pressedP) {
+                    m_cargoIntake->DeployPlatformWheel();
+                }
+                else {
+                    m_cargoIntake->RetractPlatformWheel();
+                }
+                break;
+            case DualAction::DPadUpVirtBtn:
+                if (pressedP) {
+                }
+                else {
+                }
+                break;
+            case DualAction::DPadDownVirtBtn:
+                if (pressedP) {
+                }
+                else {
+                }
+                break;
+            case DualAction::DPadLeftVirtBtn:
+                if (pressedP) {
+                }
+                else {
+                }
+                break;
+            case DualAction::DPadRightVirtBtn:
+                if (pressedP) {
+                }
+                else {
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
 }

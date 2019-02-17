@@ -84,13 +84,12 @@ public:
     void ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
                                         bool pressedP) override;
 
-    static const int NUM_LED = 26; /**< The number of LEDs. */
-
 private:
     PowerDistributionPanel *m_pdp;
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_testJoystick;
 
     LogSpreadsheet *m_logger;
 
@@ -126,10 +125,10 @@ private:
     LogCell *m_matchIdentifier;
     LogCell *m_gameSpecificMessage;
 
+    CargoIntake *m_cargoIntake;
     Drive *m_drive;
     Elevator *m_elevator;
     HatchIntake *m_hatchIntake;
-    CargoIntake *m_cargoIntake;
     PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 

@@ -10,6 +10,7 @@
 #include "lib/util/Util.h"
 #include "lib/util/WrapDash.h"
 #include "src/info/RobotInfo.h"
+#include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
@@ -32,12 +33,16 @@ public:
      * Constuct a test mode.
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
+     * @param cargoIntake The cargo intake subsystem.
      * @param drive The drive subsystem.
+     * @param elevator The elevator subsystem.
+     * @param stinger The stinger subsystem.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
-         CargoIntake *cargoIntake, Stinger *stinger, Limelight *limelightCargo,
-         Limelight *limelightHatch, PresetHandlerDispatcher *presetDispatcher);
+         ObservableDualActionJoystick *testStick, Drive *drive,
+         Elevator *elevator, HatchIntake *hatchIntake, CargoIntake *cargoIntake,
+         Stinger *stinger, Limelight *limelightCargo, Limelight *limelightHatch,
+         PresetHandlerDispatcher *presetDispatcher);
     virtual ~Test();
     void TestInit();
 
@@ -81,6 +86,7 @@ public:
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_testJoystick;
 
     Drive *m_drive;
     enum class DriveMode
