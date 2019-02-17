@@ -91,10 +91,10 @@ void Teleop::TeleopPeriodic() {
             m_drive->LimelightHatchDrive();
             break;
         case DriveMode::AssistedCheesyHatch:
-            m_drive->AssistedCheesyHatchDrive(y, x, false, false);
+            m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
         case DriveMode::AssistedCheesyCargo:
-            m_drive->AssistedCheesyCargoDrive(y, x, false, false);
+            m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
         default:
             m_drive->CheesyDrive(y, x, quickturn, false);
@@ -213,10 +213,10 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_hatchIntake->SetIdle();
                     m_hatchIntake->ManualPuncherRetract();
                     m_rumble = Rumble::on;
-                    m_limelightCargo->SetCameraDriver();
-                    m_limelightCargo->SetLightOn();
-                    m_limelightHatch->SetCameraOff();
-                    m_limelightHatch->SetLightOff();
+                    m_limelightCargo->SetCameraOff();
+                    m_limelightCargo->SetLightOff();
+                    m_limelightHatch->SetCameraDriver();
+                    m_limelightHatch->SetLightOn();
                 }
                 else {
                     m_rumble = Rumble::off;
