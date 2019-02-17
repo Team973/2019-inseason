@@ -126,7 +126,5 @@ private:
     Rumble m_rumble;
 
     uint32_t m_rumbleTimer;
-    uint32_t m_limelightCargoTimer;
-    uint32_t m_limelightHatchTimer;
 };
 }

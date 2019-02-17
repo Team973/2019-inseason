@@ -136,8 +136,8 @@ private:
     Relay *m_compressorRelay;
     GreyCompressor *m_compressor;
     Disabled *m_disabled;
-    Autonomous *m_autonomous;
     Teleop *m_teleop;
     Test *m_test;
+    Autonomous *m_autonomous;
 };
 }

@@ -99,29 +99,6 @@ double PresetHandlerDispatcher::GetEndGamePresetFromButton(uint32_t button,
 }
 
 void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
-    Autonomous *mode, uint32_t button, bool pressedP) {
-    double height = NO_PRESET_NO_CHANGE;
-
-    switch (mode->m_gameMode) {
-        case GameMode::Cargo:
-            height = GetCargoPresetFromButton(button, pressedP);
-            break;
-        case GameMode::Hatch:
-            height = GetHatchPresetFromButton(button, pressedP);
-            break;
-        case GameMode::EndGamePeriodic:
-            height = GetEndGamePresetFromButton(button, pressedP);
-            break;
-        default:
-            break;
-    }
-
-    if (height != NO_PRESET_NO_CHANGE) {
-        mode->m_elevator->SetPosition(height);
-    }
-}
-
-void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     Teleop *mode, uint32_t button, bool pressedP) {
     double height = NO_PRESET_NO_CHANGE;
 

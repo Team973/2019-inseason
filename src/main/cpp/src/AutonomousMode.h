@@ -2,22 +2,14 @@
 
 #include "frc/WPILib.h"
 #include "src/info/RobotInfo.h"
-#include "lib/bases/AutoRoutineBase.h"
-#include "src/auto/NoAuto.h"
-#include "src/auto/ForwardAuto.h"
-#include "lib/util/WrapDash.h"
-#include "src/DisabledMode.h"
-#include "src/subsystems/Elevator.h"
-#include "src/Robot.h"
-#include "src/subsystems/Drive.h"
-#include "lib/pixelprocessors/AutoIndicator.h"
-#include "src/GameMode.h"
+#include "src/TeleopMode.h"
+#include "lib/helpers/PoofsJoystickHelper.h"
+#include "lib/helpers/XboxJoystickHelper.h"
+#include "lib/helpers/DualActionJoystickHelper.h"
 
 using namespace frc;
 
 namespace frc973 {
-class Disabled;
-class PresetHandlerDispatcher;
 
 /**
  * Controls the autonomous mode.
@@ -32,10 +24,7 @@ public:
      * @param gyro The gyro.
      */
     Autonomous(ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver, Drive *drive,
-               Elevator *elevator, HatchIntake *hatchIntake,
-               CargoIntake *cargoIntake, ADXRS450_Gyro *gyro,
-               PresetHandlerDispatcher *presetDispatcher);
+               ObservableXboxJoystick *codriver, Teleop *teleop);
     virtual ~Autonomous();
 
     /**
@@ -81,25 +70,9 @@ public:
     friend class PresetHandlerDispatcher;
 
 private:
-    GameMode m_gameMode;
-
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
-    Drive *m_drive;
-    enum class DriveMode
-    {
-        Openloop,
-        LimelightCargo,
-        LimelightHatch,
-        AssistedCheesyHatch,
-        AssistedCheesyCargo,
-        Cheesy
-    };
-    DriveMode m_driveMode;
-    Elevator *m_elevator;
-    CargoIntake *m_cargoIntake;
-    HatchIntake *m_hatchIntake;
-    PresetHandlerDispatcher *m_presetDispatcher;
+    Teleop *m_teleop;
 };
 }

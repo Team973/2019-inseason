@@ -75,9 +75,6 @@ Robot::Robot()
                                   m_elevator, m_limelightCargo,
                                   m_limelightHatch))
         , m_presetDispatcher(new PresetHandlerDispatcher())
-        , m_autonomous(new Autonomous(
-              m_driverJoystick, m_operatorJoystick, m_disabled, m_drive,
-              m_elevator, m_hatchIntake, m_cargoIntake, m_presetDispatcher))
         , m_teleop(new Teleop(
               m_driverJoystick, m_operatorJoystick, m_testJoystick, m_drive,
               m_elevator, m_hatchIntake, m_cargoIntake, m_stinger,
@@ -85,7 +82,9 @@ Robot::Robot()
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
                           m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
                           m_stinger, m_limelightCargo, m_limelightHatch,
-                          m_presetDispatcher)) {
+                          m_presetDispatcher))
+        , m_autonomous(
+              new Autonomous(m_driverJoystick, m_operatorJoystick, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
