@@ -20,7 +20,6 @@ enum class GameMode
 {
     Cargo,
     Hatch,
-    EndGame,
     EndGameInit,
     EndGamePeriodic,
     RaiseIntake,

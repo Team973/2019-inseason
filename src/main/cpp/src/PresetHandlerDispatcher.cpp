@@ -106,7 +106,7 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
         case GameMode::Hatch:
             height = GetHatchPresetFromButton(button, pressedP);
             break;
-        case GameMode::EndGame:
+        case GameMode::EndGamePeriodic:
             height = GetEndGamePresetFromButton(button, pressedP);
             break;
         default:
@@ -129,7 +129,7 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
         case GameMode::Hatch:
             height = GetHatchPresetFromButton(button, pressedP);
             break;
-        case GameMode::EndGame:
+        case GameMode::EndGamePeriodic:
             height = GetEndGamePresetFromButton(button, pressedP);
             break;
         default:
@@ -152,7 +152,7 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
         case GameMode::Hatch:
             height = GetHatchPresetFromButton(button, pressedP);
             break;
-        case GameMode::EndGame:
+        case GameMode::EndGamePeriodic:
             height = GetEndGamePresetFromButton(button, pressedP);
             break;
         default:
@@ -241,14 +241,12 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                         if (mode->m_cargoIntake->GetWristState() ==
                             CargoIntake::CargoWristState::extended) {
                             mode->m_elevator->SetPower(
-                                Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO * 0.3);
-                            mode->m_stinger->SetPower(0.3);
+                                Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO * 0.6);
+                            mode->m_stinger->SetPower(0.8);
                         }
                         else if (mode->m_cargoIntake->GetWristState() ==
                                  CargoIntake::CargoWristState::retracted) {
-                            mode->m_elevator->SetPower(
-                                Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
-                            mode->m_stinger->SetPower(1.0);
+                            mode->m_stinger->SetPower(0.6);
                         }
                         break;
                     case PoofsJoysticks::RightTrigger:
@@ -272,8 +270,8 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                     case PoofsJoysticks::RightTrigger:
                         break;
                     case PoofsJoysticks::LeftBumper:
-                        mode->m_elevator->SetPower(0.4);
-                        mode->m_stinger->SetPower(0.4);
+                        mode->m_elevator->SetPower(0.0);
+                        mode->m_stinger->SetPower(0.0);
                         break;
                     case PoofsJoysticks::RightBumper:
                         break;
@@ -304,7 +302,7 @@ void PresetHandlerDispatcher::JoystickPeriodic(Teleop *mode) {
             case GameMode::Hatch:
                 mode->m_hatchIntake->ManualPuncherRetract();
                 break;
-            case GameMode::EndGame:
+            case GameMode::EndGamePeriodic:
                 // Task
                 break;
         }
@@ -348,7 +346,7 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                 }
             }
             break;
-        case GameMode::EndGame:
+        case GameMode::EndGamePeriodic:
             break;
     }
 }
