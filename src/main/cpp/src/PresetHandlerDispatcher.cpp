@@ -270,32 +270,6 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
     }
 }
 
-void PresetHandlerDispatcher::JoystickPeriodic(Teleop *mode) {
-    /**
-     * Operator Joystick
-     */
-    if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
-            Xbox::RightYAxis)) > 0.2) {
-        mode->m_elevator->SetManualInput();
-    }
-
-    if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
-            Xbox::LeftTriggerAxis)) > 0.25) {
-        switch (mode->m_gameMode) {
-            case GameMode::Cargo:
-                mode->m_cargoIntake->GoToWristState(
-                    CargoIntake::CargoWristState::retracted);
-                break;
-            case GameMode::Hatch:
-                mode->m_hatchIntake->ManualPuncherRetract();
-                break;
-            case GameMode::EndGamePeriodic:
-                // Task
-                break;
-        }
-    }
-}
-
 void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                                                   bool pressedP) {
     switch (mode->m_gameMode) {

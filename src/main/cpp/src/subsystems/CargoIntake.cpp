@@ -17,7 +17,7 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_limelightCargo(limelightCargo)
         , m_cargoTimer(0.0)
         , m_cargoPlatformLockState(CargoPlatformLockState::retracted)
-        , m_intakeCurentFilter(new MovingAverageFilter(0.6)) {
+        , m_intakeCurentFilter(new MovingAverageFilter(0.9)) {
     this->m_scheduler->RegisterTask("CargoIntake", this, TASK_PERIODIC);
     m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
     m_cargoIntakeMotor->SetNeutralMode(NeutralMode::Coast);

@@ -80,6 +80,10 @@ public:
         vision3d        /**< The limelight 3d pipeline */
     };
 
+    void SetPiPMain();
+
+    void SetPiPSecondary();
+
     /**
      * Sets the limelight's LEDs to on, off, or blink
      * @param mode the LED mode

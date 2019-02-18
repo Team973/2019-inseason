@@ -114,10 +114,11 @@ void Teleop::TeleopPeriodic() {
             m_cargoIntake->RetractPlatformWheel();
             break;
         case GameMode::EndGameInit:
-            m_limelightCargo->SetLightBlink();
+            m_limelightCargo->SetLightOff();
             m_limelightCargo->SetCameraDriver();
             m_limelightHatch->SetCameraOff();
             m_limelightHatch->SetLightBlink();
+            m_limelightHatch->SetPiPSecondary();
             m_elevator->SetPosition(Elevator::PLATFORM);
             if (m_elevator->GetPosition() > Elevator::PLATFORM - 1.0) {
                 m_cargoIntake->DeployPlatformWheel();
@@ -128,6 +129,10 @@ void Teleop::TeleopPeriodic() {
         case GameMode::EndGamePeriodic:
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
+            if (m_stinger->GetUpperHall() &&
+                m_driverJoystick->GetRawButton(PoofsJoysticks::LeftTrigger)) {
+                m_limelightCargo->SetLightBlink();
+            }
             break;
         case GameMode::RaiseIntake:
             m_elevator->SetPosition(10.0);
@@ -141,8 +146,6 @@ void Teleop::TeleopPeriodic() {
             }
             break;
     }
-
-    m_presetDispatcher->JoystickPeriodic(this);  // RightYAxis & LeftTriggerAxis
 
     switch (m_rumble) {
         case Rumble::on:
@@ -160,6 +163,27 @@ void Teleop::TeleopPeriodic() {
                     GenericHID ::RumbleType::kLeftRumble, 0);
             }
             break;
+    }
+
+    if (fabs(m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis)) >
+        0.2) {
+        m_elevator->SetManualInput();
+    }
+
+    if (fabs(m_operatorJoystick->GetRawAxisWithDeadband(
+            Xbox::LeftTriggerAxis)) > 0.25) {
+        switch (m_gameMode) {
+            case GameMode::Cargo:
+                m_cargoIntake->GoToWristState(
+                    CargoIntake::CargoWristState::retracted);
+                break;
+            case GameMode::Hatch:
+                m_hatchIntake->ManualPuncherRetract();
+                break;
+            case GameMode::EndGamePeriodic:
+                // Task
+                break;
+        }
     }
 }
 
@@ -212,6 +236,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_hatchIntake->SetIdle();
                     m_hatchIntake->ManualPuncherRetract();
                     m_rumble = Rumble::on;
+                    m_limelightHatch->SetPiPSecondary();
                     m_limelightCargo->SetCameraDriver();
                     m_limelightCargo->SetLightOn();
                     m_limelightHatch->SetCameraOff();
@@ -228,6 +253,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_cargoIntake->RetractWrist();
                     m_cargoIntake->RetractPlatformWheel();
                     m_rumble = Rumble::on;
+                    m_limelightHatch->SetPiPMain();
                     m_limelightCargo->SetCameraOff();
                     m_limelightCargo->SetLightOff();
                     m_limelightHatch->SetCameraDriver();

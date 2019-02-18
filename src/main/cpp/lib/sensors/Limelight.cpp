@@ -107,6 +107,14 @@ void Limelight::SetSnapshotMode(SnapshotMode mode) {
     }
 }
 
+void Limelight::SetPiPMain() {
+    SetStreamMode(StreamMode::pipMain);
+}
+
+void Limelight::SetPiPSecondary() {
+    SetStreamMode(StreamMode::pipSecondary);
+}
+
 void Limelight::SetLightOn() {
     SetLightMode(LightMode::on);
 }
