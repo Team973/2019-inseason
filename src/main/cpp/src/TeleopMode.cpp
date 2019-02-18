@@ -208,6 +208,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
 void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == OPERATOR_JOYSTICK_PORT) {
         switch (button) {
+            case Xbox::BtnY:
             case Xbox::BtnA:  // Low Preset
             case Xbox::BtnX:  // Cargo Bay Preset
                 m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
@@ -218,7 +219,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::BtnB:         // Middle Elevator Preset
                 m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
                 break;
-            case Xbox::BtnY:
+            case Xbox::Back:
                 if (pressedP) {
                     m_gameMode = GameMode::EndGameInit;
                     m_rumble = Rumble::on;

@@ -23,6 +23,7 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
             if (pressedP) {
                 return Elevator::LOW_ROCKET_CARGO;
             }
+            break;
         case Xbox::BtnX:  // Cargo Bay Preset
             if (pressedP) {
                 return Elevator::CARGO_SHIP_CARGO;
@@ -31,6 +32,11 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
         case Xbox::BtnB:
             if (pressedP) {
                 return Elevator::LOADING_STATION_CARGO;
+            }
+            break;
+        case Xbox::BtnY:
+            if (pressedP) {
+                return Elevator::MID_ROCKET_CARGO;
             }
             break;
     }
@@ -54,6 +60,11 @@ double PresetHandlerDispatcher::GetHatchPresetFromButton(uint32_t button,
             }
             break;
         case Xbox::BtnB:
+            break;
+        case Xbox::BtnY:
+            if (pressedP) {
+                return Elevator::MID_ROCKET_CARGO;
+            }
             break;
     }
 
@@ -292,7 +303,8 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                 if (button == Xbox::LeftBumper) {
                     mode->m_hatchIntake->ManualPuncherActivate();
                 }
-                else {  // button == Xbox::RightBumper
+                else if (button ==
+                         Xbox::RightBumper) {  // button == Xbox::RightBumper
                     mode->m_hatchIntake->RunIntake();
                     mode->m_elevator->SetPosition(Elevator::GROUND);
                 }
