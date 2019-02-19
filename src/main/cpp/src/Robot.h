@@ -89,7 +89,7 @@ private:
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
-    ObservableDualActionJoystick *m_testJoystick;
+    ObservableDualActionJoystick *m_driverDAJoystick;
 
     LogSpreadsheet *m_logger;
 

@@ -39,9 +39,8 @@ public:
      * @param limelightCargo The Limelight for the cargo.
      * @param limelightHatch The Limelight for the hatch.
      */
-    Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           ObservableDualActionJoystick *testStick, Drive *drive,
-           Elevator *elevator, HatchIntake *hatchintake,
+    Teleop(ObservableJoystickBase *driver, ObservableXboxJoystick *codriver,
+           Drive *drive, Elevator *elevator, HatchIntake *hatchintake,
            CargoIntake *cargoIntake, Stinger *stinger,
            Limelight *limelightCargo, Limelight *limelightHatch,
            PresetHandlerDispatcher *presetDispatcher);
@@ -92,7 +91,7 @@ public:
     friend class PresetHandlerDispatcher;
 
 private:
-    ObservablePoofsJoystick *m_driverJoystick;
+    ObservableJoystickBase *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
     ObservableDualActionJoystick *m_testJoystick;
 

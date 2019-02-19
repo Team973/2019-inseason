@@ -17,16 +17,13 @@ using namespace frc;
 using namespace nt;
 
 namespace frc973 {
-Teleop::Teleop(ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver,
-               ObservableDualActionJoystick *testStick, Drive *drive,
-               Elevator *elevator, HatchIntake *hatchIntake,
+Teleop::Teleop(ObservableJoystickBase *driver, ObservableXboxJoystick *codriver,
+               Drive *drive, Elevator *elevator, HatchIntake *hatchIntake,
                CargoIntake *cargoIntake, Stinger *stinger,
                Limelight *limelightCargo, Limelight *limelightHatch,
                PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
-        , m_testJoystick(testStick)
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
         , m_elevator(elevator)
@@ -53,14 +50,13 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y =  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
-    double x =  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
-    bool quickturn =
-        m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
-    bool softwareLowGear =
-        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+    const JoystickBase::Joystick &stick =
+        m_driverJoystick->GetPeriodicJoystick();
+
+    double y = -m_driverJoystick->GetRawAxisWithDeadband(stick.LeftYAxis);
+    double x = -m_driverJoystick->GetRawAxisWithDeadband(stick.RightXAxis);
+    bool quickturn = m_driverJoystick->GetRawButton(stick.RightBumper);
+    bool softwareLowGear = m_driverJoystick->GetRawButton(stick.RightTrigger);
 
     if (m_stinger->GetLowerHall() && m_gameMode == GameMode::EndGamePeriodic) {
         softwareLowGear = true;
@@ -243,29 +239,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
 
 void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
                                       bool pressedP) {
-    if (port == TEST_JOYSTICK_PORT) {
+    if (port == DRIVER_DA_JOYSTICK_PORT) {
         switch (button) {
-            case DualAction::BtnA:
-                if (pressedP) {
-                }
-                break;
-            case DualAction::BtnB:
-                if (pressedP) {
-                }
-                break;
-            case DualAction::BtnX:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case DualAction::BtnY:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-
             case DualAction::LeftBumper:
             case DualAction::LeftTrigger:
             case DualAction::RightBumper:
@@ -273,31 +248,62 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
                 m_presetDispatcher->DriveDispatchJoystickButtons(this, button,
                                                                  pressedP);
                 break;
-            case DualAction::DPadUpVirtBtn:
+        }
+    }
+    else if (port == OPERATOR_DA_JOYSTICK_PORT) {
+        switch (button) {
+            case DualAction::BtnY:
+            case DualAction::BtnA:  // Low Preset
+            case DualAction::BtnX:  // Cargo Bay Preset
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
+                break;
+            case DualAction::LeftBumper:   // Extend Intake
+            case DualAction::RightBumper:  // Intake
+            case DualAction::BtnB:
+                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
+                break;
+            case DualAction::DPadUpVirtBtn:  // Changes game mode to Endgame
                 if (pressedP) {
+                    m_gameMode = GameMode::EndGameInit;
+                    m_rumble = Rumble::on;
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
             case DualAction::DPadDownVirtBtn:
+                break;
+            case DualAction::DPadLeftVirtBtn:  // Changes game mode to Cargo
                 if (pressedP) {
+                    m_gameMode = GameMode::Cargo;
+                    m_hatchIntake->SetIdle();
+                    m_hatchIntake->ManualPuncherRetract();
+                    m_rumble = Rumble::on;
+                    m_limelightCargo->SetCameraDriver();
+                    m_limelightCargo->SetLightOn();
+                    m_limelightHatch->SetCameraOff();
+                    m_limelightHatch->SetLightOff();
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
                 break;
-            case DualAction::DPadLeftVirtBtn:
+            case DualAction::DPadRightVirtBtn:  // Changes game mode to Hatch
                 if (pressedP) {
+                    m_gameMode = GameMode::Hatch;
+                    m_cargoIntake->StopIntake();
+                    m_cargoIntake->RetractWrist();
+                    m_cargoIntake->RetractPlatformWheel();
+                    m_rumble = Rumble::on;
+                    m_limelightCargo->SetCameraOff();
+                    m_limelightCargo->SetLightOff();
+                    m_limelightHatch->SetCameraDriver();
+                    m_limelightHatch->SetLightOn();
                 }
                 else {
+                    m_rumble = Rumble::off;
                 }
-                break;
-            case DualAction::DPadRightVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            default:
                 break;
         }
     }

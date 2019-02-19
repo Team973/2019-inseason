@@ -10,6 +10,7 @@
 #include "frc/WPILib.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
+#include "lib/helpers/JoystickHelperBase.h"
 #include <stdint.h>
 
 using namespace frc;
@@ -108,7 +109,7 @@ public:
  */
 class ObservableDualActionJoystick
         : public CoopTask
-        , public Joystick {
+        , public ObservableJoystickBase {
 public:
     static constexpr double DEADBAND_INPUT_THRESHOLD =
         0.05; /**< The deadband threshold on the joysticks. */

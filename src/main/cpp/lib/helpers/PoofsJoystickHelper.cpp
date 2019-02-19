@@ -9,7 +9,7 @@ namespace frc973 {
 ObservablePoofsJoystick::ObservablePoofsJoystick(
     uint16_t port, PoofsJoystickObserver *observer, TaskMgr *scheduler,
     DriverStation *ds)
-        : Joystick(port)
+        : ObservableJoystickBase(port)
         , m_port(port)
         , m_observer(observer)
         , m_ds(ds)
@@ -25,6 +25,15 @@ ObservablePoofsJoystick::ObservablePoofsJoystick(
     if (scheduler != nullptr) {
         scheduler->RegisterTask("JoystickHelper", this, TASK_PRE_PERIODIC);
     }
+
+    JoystickBase::Joystick stickStruct;
+
+    stickStruct.LeftYAxis = PoofsJoysticks::LeftYAxis;
+    stickStruct.RightXAxis = PoofsJoysticks::RightXAxis;
+    stickStruct.RightBumper = PoofsJoysticks::RightBumper;
+    stickStruct.RightTrigger = PoofsJoysticks::RightTrigger;
+
+    SetPeriodicJoystick(stickStruct);
 }
 
 ObservablePoofsJoystick::~ObservablePoofsJoystick() {

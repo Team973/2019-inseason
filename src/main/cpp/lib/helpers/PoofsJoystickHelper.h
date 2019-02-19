@@ -10,6 +10,7 @@
 #include "frc/WPILib.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
+#include "lib/helpers/JoystickHelperBase.h"
 #include <stdint.h>
 
 using namespace frc;
@@ -42,7 +43,7 @@ public:
 
 class ObservablePoofsJoystick
         : public CoopTask
-        , public Joystick {
+        , public ObservableJoystickBase {
 public:
     static constexpr double DEADBAND_INPUT_THRESHOLD =
         0.05; /**< The deadband threshold on the joysticks. */
@@ -90,8 +91,9 @@ public:
      * @param fSquared Specifies whether the joystick input should be squared.
      * @param threshold Specifies the deadband threshold.
      */
-    float GetRawAxisWithDeadband(int axis, bool fSquared = false,
-                                 double threshold = DEADBAND_INPUT_THRESHOLD);
+    float GetRawAxisWithDeadband(
+        int axis, bool fSquared = false,
+        double threshold = DEADBAND_INPUT_THRESHOLD) override;
 
     bool GetDPadUpVirtButton(); /**< Check whether the up button on the d pad is
                        pressed. */

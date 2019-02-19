@@ -24,8 +24,8 @@ Robot::Robot()
               new ObservablePoofsJoystick(DRIVER_JOYSTICK_PORT, this, this))
         , m_operatorJoystick(
               new ObservableXboxJoystick(OPERATOR_JOYSTICK_PORT, this, this))
-        , m_testJoystick(
-              new ObservableDualActionJoystick(TEST_JOYSTICK_PORT, this, this))
+        , m_driverDAJoystick(new ObservableDualActionJoystick(
+              DRIVER_DA_JOYSTICK_PORT, this, this))
         , m_logger(new LogSpreadsheet(this))
         , m_leftDriveTalonA(new GreyTalonSRX(LEFT_DRIVE_A_CAN_ID))
         , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
@@ -75,16 +75,16 @@ Robot::Robot()
                                   m_elevator, m_cargoIntake, m_limelightCargo,
                                   m_limelightHatch))
         , m_presetDispatcher(new PresetHandlerDispatcher())
-        , m_teleop(new Teleop(
-              m_driverJoystick, m_operatorJoystick, m_testJoystick, m_drive,
+        , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
+                              m_elevator, m_hatchIntake, m_cargoIntake,
+                              m_stinger, m_limelightCargo, m_limelightHatch,
+                              m_presetDispatcher))
+        , m_test(new Test(
+              m_driverJoystick, m_operatorJoystick, m_driverDAJoystick, m_drive,
               m_elevator, m_hatchIntake, m_cargoIntake, m_stinger,
               m_limelightCargo, m_limelightHatch, m_presetDispatcher))
-        , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
-                          m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
-                          m_stinger, m_limelightCargo, m_limelightHatch,
-                          m_presetDispatcher))
         , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
-                                      m_testJoystick, m_teleop)) {
+                                      m_driverDAJoystick, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 

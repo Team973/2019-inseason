@@ -9,7 +9,7 @@ namespace frc973 {
 ObservableDualActionJoystick::ObservableDualActionJoystick(
     uint16_t port, DualActionJoystickObserver *observer, TaskMgr *scheduler,
     DriverStation *ds)
-        : Joystick(port)
+        : ObservableJoystickBase(port)
         , m_port(port)
         , m_observer(observer)
         , m_ds(ds)

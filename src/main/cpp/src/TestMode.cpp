@@ -266,7 +266,7 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
 
 void Test::HandleDualActionJoystick(uint32_t port, uint32_t button,
                                     bool pressedP) {
-    if (port == TEST_JOYSTICK_PORT) {
+    if (port == DRIVER_DA_JOYSTICK_PORT) {
         switch (button) {
             case DualAction::BtnA:
                 if (pressedP) {
