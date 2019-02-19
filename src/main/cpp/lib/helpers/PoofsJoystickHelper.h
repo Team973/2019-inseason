@@ -10,7 +10,7 @@
 #include "frc/WPILib.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
-#include "lib/helpers/JoystickHelperBase.h"
+#include "lib/bases/JoystickHelperBase.h"
 #include <stdint.h>
 
 using namespace frc;

@@ -1,4 +1,4 @@
-#include "lib/helpers/JoystickHelperBase.h"
+#include "lib/bases/JoystickHelperBase.h"
 
 namespace frc973 {
 
