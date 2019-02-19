@@ -69,7 +69,7 @@ void HatchIntake::ManualPuncherRetract() {
 }
 
 bool HatchIntake::IsHatchInIntake() {
-    return (m_hatchRollers->GetOutputCurrent() > 30);
+    return (m_hatchRollers->GetOutputCurrent() > 15.0);
 }
 
 void HatchIntake::GoToPneumaticState(HatchSolenoidState newState) {
@@ -95,7 +95,7 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
         case HatchIntakeState::hold:
             m_hatchRollers->Set(ControlMode::PercentOutput, -0.1);
             if (m_hatchTimer - GetMsecTime() > 100) {
-                m_limelightHatch->SetLightOn();
+                m_limelightHatch->SetLightOff();
             }
             break;
         case HatchIntakeState::exhaust:

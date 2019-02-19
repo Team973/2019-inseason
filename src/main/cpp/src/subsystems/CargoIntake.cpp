@@ -141,7 +141,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.7);
             this->RetractWrist();
             if (m_cargoTimer - GetMsecTime() > 100) {
-                m_limelightCargo->SetLightOn();
+                m_limelightCargo->SetLightOff();
             }
             break;
         case CargoIntakeState::notRunning:

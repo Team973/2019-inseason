@@ -102,15 +102,11 @@ void Teleop::TeleopPeriodic() {
 
     switch (m_gameMode) {
         case GameMode::Cargo:
-            m_limelightCargo->SetLightOn();
-            m_limelightHatch->SetLightOff();
             m_cargoIntake->RetractPlatformWheel();
             SmartDashboard::PutString("misc/limelight/currentLimelight",
                                       "cargo");
             break;
         case GameMode::Hatch:
-            m_limelightCargo->SetLightOff();
-            m_limelightHatch->SetLightOn();
             m_cargoIntake->RetractPlatformWheel();
             break;
         case GameMode::EndGameInit:
@@ -120,7 +116,7 @@ void Teleop::TeleopPeriodic() {
             m_limelightHatch->SetLightBlink();
             m_limelightHatch->SetPiPSecondary();
             m_elevator->SetPosition(Elevator::PLATFORM);
-            if (m_elevator->GetPosition() > Elevator::PLATFORM - 1.0) {
+            if (m_elevator->GetPosition() > Elevator::PLATFORM - 2.0) {
                 m_cargoIntake->DeployPlatformWheel();
                 m_cargoIntake->ExtendWrist();
                 m_gameMode = GameMode::EndGamePeriodic;
@@ -231,9 +227,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_rumble = Rumble::on;
                     // m_limelightHatch->SetPiPSecondary();
                     m_limelightCargo->SetCameraDriver();
-                    m_limelightCargo->SetLightOn();
                     m_limelightHatch->SetCameraOff();
-                    m_limelightHatch->SetLightOff();
                 }
                 else {
                     m_rumble = Rumble::off;
@@ -248,9 +242,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_rumble = Rumble::on;
                     // m_limelightHatch->SetPiPMain();
                     m_limelightCargo->SetCameraOff();
-                    m_limelightCargo->SetLightOff();
                     m_limelightHatch->SetCameraDriver();
-                    m_limelightHatch->SetLightOn();
                 }
                 else {
                     m_rumble = Rumble::off;
