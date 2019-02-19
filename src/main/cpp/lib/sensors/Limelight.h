@@ -25,7 +25,7 @@ public:
      * Constuct a Limelight Camera.
      * @param name The name of the limelight being constructed
      */
-    Limelight(const char *name);
+    Limelight(const char *name, bool inverted);
     virtual ~Limelight();
 
     /**
@@ -228,14 +228,16 @@ public:
      */
     double GetHorizontalDistance();
 
-    static constexpr double TARGET_HEIGHT = 24.25;  // in inches from ground
-    static constexpr double CAMERA_HEIGHT = 4.75;   // in inches from ground
+    static constexpr double TARGET_HEIGHT = 29.0;  // in inches from ground
+    static constexpr double CAMERA_HEIGHT = 46.0;  // in inches from ground
     static constexpr double CAMERA_ANGLE =
-        40.0 * (Constants::PI / 180.0);  // in degrees wrt ground
+        -26.0 * (Constants::PI / 180.0);  // in degrees wrt ground
+    static constexpr double CAMERA_BUMPER_OFFSET = 19.25;
 
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight
     const char *m_camName;
+    bool m_isInverted;
 
     LightMode m_lightMode;        // enum for LED state
     CameraMode m_cameraMode;      // enum for camera state

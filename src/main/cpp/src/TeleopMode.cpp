@@ -208,17 +208,6 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
 void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == OPERATOR_JOYSTICK_PORT) {
         switch (button) {
-            case Xbox::BtnY:
-            case Xbox::BtnA:  // Low Preset
-            case Xbox::BtnX:  // Cargo Bay Preset
-                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
-                    this, button, pressedP);
-                break;
-            case Xbox::LeftBumper:   // Extend Intake
-            case Xbox::RightBumper:  // Intake
-            case Xbox::BtnB:         // Middle Elevator Preset
-                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
-                break;
             case Xbox::Back:
                 if (pressedP) {
                     m_gameMode = GameMode::EndGameInit;
@@ -240,7 +229,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_hatchIntake->SetIdle();
                     m_hatchIntake->ManualPuncherRetract();
                     m_rumble = Rumble::on;
-                    m_limelightHatch->SetPiPSecondary();
+                    // m_limelightHatch->SetPiPSecondary();
                     m_limelightCargo->SetCameraDriver();
                     m_limelightCargo->SetLightOn();
                     m_limelightHatch->SetCameraOff();
@@ -257,7 +246,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_cargoIntake->RetractWrist();
                     m_cargoIntake->RetractPlatformWheel();
                     m_rumble = Rumble::on;
-                    m_limelightHatch->SetPiPMain();
+                    // m_limelightHatch->SetPiPMain();
                     m_limelightCargo->SetCameraOff();
                     m_limelightCargo->SetLightOff();
                     m_limelightHatch->SetCameraDriver();
@@ -266,6 +255,17 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 else {
                     m_rumble = Rumble::off;
                 }
+                break;
+            case Xbox::BtnY:  // Middle Elevator Preset
+            case Xbox::BtnA:  // Low Preset
+            case Xbox::BtnX:  // Cargo Bay Preset
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
+                break;
+            case Xbox::LeftBumper:   // Extend Intake
+            case Xbox::RightBumper:  // Intake
+            case Xbox::BtnB:
+                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
                 break;
         }
     }

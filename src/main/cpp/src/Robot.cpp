@@ -48,8 +48,8 @@ Robot::Robot()
         , m_hatchCamera(UsbCamera("USB Camera 0", 0))
         , m_cameraServer(CameraServer::GetInstance())
         , m_greyCam(m_cameraServer->AddServer("serve_GreyCam", 1181))
-        , m_limelightCargo(new Limelight("limelight-cargo"))
-        , m_limelightHatch(new Limelight("limelight-hatch"))
+        , m_limelightCargo(new Limelight("limelight-cargo", false))
+        , m_limelightHatch(new Limelight("limelight-hatch", false))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
@@ -164,7 +164,11 @@ void Robot::AllStateContinuous() {
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
-    // printf(GetSecTime());
+    m_limelightHatch->SetCameraVision();
+    m_limelightHatch->SetLightOn();
+    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf sk %2.2lf",
+                   m_limelightHatch->GetHorizontalDistance(),
+                   m_limelightHatch->GetTargetSkew());
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

@@ -3,9 +3,10 @@
 using namespace frc;
 
 namespace frc973 {
-Limelight::Limelight(const char *name)
+Limelight::Limelight(const char *name, bool inverted)
         : m_limelight(nt::NetworkTableInstance::GetDefault().GetTable(name))
         , m_camName(name)
+        , m_isInverted(inverted)
         , m_lightMode(LightMode::off)
         , m_cameraMode(CameraMode::onDriver)
         , m_streamMode(StreamMode::standard)
@@ -164,11 +165,21 @@ bool Limelight::isTargetValid() {
 }
 
 double Limelight::GetXOffset() {
-    return m_limelight->GetNumber("tx", 0.0);
+    if (m_isInverted) {
+        return -m_limelight->GetNumber("tx", 0.0);
+    }
+    else {
+        return m_limelight->GetNumber("tx", 0.0);
+    }
 }
 
 double Limelight::GetYOffset() {
-    return m_limelight->GetNumber("ty", 0.0);
+    if (m_isInverted) {
+        return -m_limelight->GetNumber("ty", 0.0);
+    }
+    else {
+        return m_limelight->GetNumber("ty", 0.0);
+    }
 }
 
 double Limelight::GetTargetArea() {
@@ -203,7 +214,8 @@ double Limelight::FindTargetSkew() {
 }
 
 double Limelight::GetHorizontalDistance() {
-    return (TARGET_HEIGHT - CAMERA_HEIGHT) /
-           tan(CAMERA_ANGLE + this->GetYOffset() * (Constants::PI / 180.0));
+    return ((TARGET_HEIGHT - CAMERA_HEIGHT) /
+            tan(CAMERA_ANGLE + this->GetYOffset() * (Constants::PI / 180.0))) -
+           CAMERA_BUMPER_OFFSET;
 }
 }

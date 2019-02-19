@@ -280,8 +280,7 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                     mode->m_cargoIntake->GoToWristState(
                         CargoIntake::CargoWristState::extended);
                 }
-                else if (button ==
-                         Xbox::RightBumper) {  // button == Xbox::RightBumper
+                else if (button == Xbox::RightBumper) {
                     mode->m_cargoIntake->RunIntake();
                     mode->m_elevator->SetPosition(Elevator::GROUND);
                 }
@@ -303,8 +302,7 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                 if (button == Xbox::LeftBumper) {
                     mode->m_hatchIntake->ManualPuncherActivate();
                 }
-                else if (button ==
-                         Xbox::RightBumper) {  // button == Xbox::RightBumper
+                else if (button == Xbox::RightBumper) {
                     mode->m_hatchIntake->RunIntake();
                     mode->m_elevator->SetPosition(Elevator::GROUND);
                 }

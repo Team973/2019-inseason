@@ -30,8 +30,7 @@ public:
     /**
      * Construct a Cheesy Drive controller.
      */
-    AssistedCheesyDriveController(Limelight *limelight, VisionOffset offset,
-                                  bool inverted);
+    AssistedCheesyDriveController(Limelight *limelight, VisionOffset offset);
     virtual ~AssistedCheesyDriveController();
 
     /**
@@ -93,7 +92,6 @@ private:
     double m_visionOffset;
 
     PID *m_visionTurnPID;
-    bool m_isInverted;
 
     double m_leftOutput;
     double m_rightOutput;
