@@ -167,8 +167,9 @@ public:
      * @param fSquared Specifies whether the joystick input should be squared.
      * @param threshold Specifies the deadband threshold.
      */
-    float GetRawAxisWithDeadband(int axis, bool fSquared = false,
-                                 double threshold = DEADBAND_INPUT_THRESHOLD);
+    float GetRawAxisWithDeadband(
+        int axis, bool fSquared = false,
+        double threshold = DEADBAND_INPUT_THRESHOLD) override;
 
     bool GetDPadUpVirtButton(); /**< Check whether the up button on the d pad is
                        pressed. */

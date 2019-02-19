@@ -31,6 +31,15 @@ ObservableDualActionJoystick::ObservableDualActionJoystick(
     if (scheduler != nullptr) {
         scheduler->RegisterTask("JoystickHelper", this, TASK_PRE_PERIODIC);
     }
+
+    JoystickBase::Joystick stickStruct;
+
+    stickStruct.LeftYAxis = DualAction::LeftYAxis;
+    stickStruct.RightXAxis = DualAction::RightXAxis;
+    stickStruct.RightBumper = DualAction::RightBumper;
+    stickStruct.RightTrigger = DualAction::RightTrigger;
+
+    SetPeriodicJoystick(stickStruct);
 }
 
 ObservableDualActionJoystick::~ObservableDualActionJoystick() {

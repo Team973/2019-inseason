@@ -162,6 +162,10 @@ void Teleop::TeleopPeriodic() {
 void Teleop::TeleopStop() {
 }
 
+void Teleop::SetDriverJoystick(ObservableJoystickBase *driverJoystick) {
+    m_driverJoystick = driverJoystick;
+}
+
 void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                  bool pressedP) {
     if (port == DRIVER_JOYSTICK_PORT) {

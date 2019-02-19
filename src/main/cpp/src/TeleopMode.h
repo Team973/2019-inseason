@@ -86,6 +86,8 @@ public:
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
+
+    void SetDriverJoystick(ObservableJoystickBase *driverJoystick);
     static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
 
     friend class PresetHandlerDispatcher;
