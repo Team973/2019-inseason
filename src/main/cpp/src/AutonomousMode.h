@@ -24,8 +24,7 @@ public:
      * @param gyro The gyro.
      */
     Autonomous(ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver,
-               ObservableDualActionJoystick *testJoystick, Teleop *teleop);
+               ObservableXboxJoystick *codriver, Teleop *teleop);
     virtual ~Autonomous();
 
     /**
@@ -73,7 +72,6 @@ public:
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
-    ObservableDualActionJoystick *m_testJoystick;
 
     Teleop *m_teleop;
 };

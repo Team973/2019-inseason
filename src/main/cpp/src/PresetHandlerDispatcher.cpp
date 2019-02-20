@@ -30,11 +30,6 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
                 return Elevator::CARGO_SHIP_CARGO;
             }
             break;
-        case Xbox::BtnB:
-            if (pressedP) {
-                return Elevator::LOADING_STATION_CARGO;
-            }
-            break;
     }
 
     return ret;
@@ -57,8 +52,6 @@ double PresetHandlerDispatcher::GetHatchPresetFromButton(uint32_t button,
                 return Elevator::CARGO_SHIP_HATCH;
             }
             break;
-        case Xbox::BtnB:
-            break;
     }
 
     return ret;
@@ -69,7 +62,7 @@ double PresetHandlerDispatcher::GetEndGamePresetFromButton(uint32_t button,
     double ret = NO_PRESET_NO_CHANGE;
 
     switch (button) {
-        case Xbox::BtnY:  // High Elevator Preset
+        case Xbox::BtnY:
             if (pressedP) {
             }
             else {
@@ -82,12 +75,6 @@ double PresetHandlerDispatcher::GetEndGamePresetFromButton(uint32_t button,
             }
             break;
         case Xbox::BtnX:  // Cargo Bay Preset
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
-        case Xbox::BtnB:  // Middle Elevator Preset
             if (pressedP) {
             }
             else {
@@ -147,121 +134,96 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
 void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                                                            uint32_t button,
                                                            bool pressedP) {
+    const JoystickBase::JoystickCommon &COMMON =
+        mode->m_driverJoystick->GetJoystickCommon();
+
     switch (mode->m_gameMode) {
         case GameMode::Cargo:
             if (pressedP) {
-                switch (button) {
-                    case PoofsJoysticks::LeftTrigger:
-                        mode->m_driveMode =
-                            Teleop::DriveMode::AssistedCheesyCargo;
-                        break;
-                    case PoofsJoysticks::RightTrigger:
-                        mode->m_cargoIntake->Exhaust();
-                        break;
-                    case PoofsJoysticks::LeftBumper:
-                        mode->m_driveMode = Teleop::DriveMode::LimelightCargo;
-                        break;
-                    case PoofsJoysticks::RightBumper:
-                        break;
+                if (button == COMMON.LeftTrigger) {
+                    mode->m_driveMode = Teleop::DriveMode::AssistedCheesyCargo;
+                }
+                else if (button == COMMON.RightTrigger) {
+                    mode->m_cargoIntake->Exhaust();
+                }
+                else if (button == COMMON.LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::LimelightCargo;
                 }
             }
             else {
-                switch (button) {
-                    case PoofsJoysticks::LeftTrigger:
-                        mode->m_driveMode = Teleop::DriveMode::Cheesy;
-                        break;
-                    case PoofsJoysticks::RightTrigger:
-                        mode->m_cargoIntake->StopIntake();
-                        break;
-                    case PoofsJoysticks::LeftBumper:
-                        mode->m_driveMode = Teleop::DriveMode::Cheesy;
-                        break;
-                    case PoofsJoysticks::RightBumper:
-                        break;
+                if (button == COMMON.LeftTrigger) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else if (button == COMMON.RightTrigger) {
+                    mode->m_cargoIntake->StopIntake();
+                }
+                else if (button == COMMON.LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
                 }
             }
             break;
         case GameMode::Hatch:
             if (pressedP) {
-                switch (button) {
-                    case PoofsJoysticks::LeftTrigger:
-                        mode->m_driveMode =
-                            Teleop::DriveMode::AssistedCheesyHatch;
-                        break;
-                    case PoofsJoysticks::RightTrigger:
-                        mode->m_hatchIntake->Exhaust();
-                        break;
-                    case PoofsJoysticks::LeftBumper:
-                        mode->m_driveMode = Teleop::DriveMode::LimelightHatch;
-                        break;
-                    case PoofsJoysticks::RightBumper:
-                        break;
+                if (button == COMMON.LeftTrigger) {
+                    mode->m_driveMode = Teleop::DriveMode::AssistedCheesyHatch;
+                }
+                else if (button == COMMON.RightTrigger) {
+                    mode->m_hatchIntake->Exhaust();
+                }
+                else if (button == COMMON.LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::LimelightHatch;
                 }
             }
             else {
-                switch (button) {
-                    case PoofsJoysticks::LeftTrigger:
-                        mode->m_driveMode = Teleop::DriveMode::Cheesy;
-                        break;
-                    case PoofsJoysticks::RightTrigger:
-                        mode->m_hatchIntake->SetIdle();
-                        break;
-                    case PoofsJoysticks::LeftBumper:
-                        mode->m_driveMode = Teleop::DriveMode::Cheesy;
-                        break;
-                    case PoofsJoysticks::RightBumper:
-                        break;
+                if (button == COMMON.LeftTrigger) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
+                }
+                else if (button == COMMON.RightTrigger) {
+                    mode->m_hatchIntake->SetIdle();
+                }
+                else if (button == COMMON.LeftBumper) {
+                    mode->m_driveMode = Teleop::DriveMode::Cheesy;
                 }
             }
             break;
         case GameMode::EndGamePeriodic:
             if (pressedP) {
-                switch (button) {
-                    case PoofsJoysticks::LeftTrigger:
-                        if (mode->m_cargoIntake->GetWristState() ==
-                            CargoIntake::CargoWristState::extended) {
-                            mode->m_elevator->SetPower(
-                                Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO * 0.6);
-                            mode->m_stinger->SetPower(0.8);
-                        }
-                        else if (mode->m_cargoIntake->GetWristState() ==
-                                 CargoIntake::CargoWristState::retracted) {
-                            mode->m_stinger->SetPower(0.6);
-                        }
-                        break;
-                    case PoofsJoysticks::RightTrigger:
-                        mode->m_gameMode = GameMode::RaiseIntake;
-                        break;
-                    case PoofsJoysticks::LeftBumper:
+                if (button == COMMON.LeftTrigger) {
+                    if (mode->m_cargoIntake->GetWristState() ==
+                        CargoIntake::CargoWristState::extended) {
                         mode->m_elevator->SetPower(
-                            -Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
-                        mode->m_stinger->SetPower(-1.0);
-                        break;
-                    case PoofsJoysticks::RightBumper:
-                        break;
+                            Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO * 0.6);
+                        mode->m_stinger->SetPower(0.8);
+                    }
+                    else if (mode->m_cargoIntake->GetWristState() ==
+                             CargoIntake::CargoWristState::retracted) {
+                        mode->m_stinger->SetPower(0.6);
+                    }
+                }
+                else if (button == COMMON.RightTrigger) {
+                    mode->m_gameMode = GameMode::RaiseIntake;
+                }
+                else if (button == COMMON.LeftBumper) {
+                    mode->m_elevator->SetPower(
+                        -Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
+                    mode->m_stinger->SetPower(-1.0);
                 }
             }
             else {
-                switch (button) {
-                    case PoofsJoysticks::LeftTrigger:
-                        if (mode->m_cargoIntake->GetWristState() ==
-                            CargoIntake::CargoWristState::extended) {
-                            mode->m_elevator->SetPower(0.0);
-                            mode->m_stinger->SetPower(0.0);
-                        }
-                        else if (mode->m_cargoIntake->GetWristState() ==
-                                 CargoIntake::CargoWristState::retracted) {
-                            mode->m_stinger->SetPower(0.0);
-                        }
-                        break;
-                    case PoofsJoysticks::RightTrigger:
-                        break;
-                    case PoofsJoysticks::LeftBumper:
+                if (button == COMMON.LeftTrigger) {
+                    if (mode->m_cargoIntake->GetWristState() ==
+                        CargoIntake::CargoWristState::extended) {
                         mode->m_elevator->SetPower(0.0);
                         mode->m_stinger->SetPower(0.0);
-                        break;
-                    case PoofsJoysticks::RightBumper:
-                        break;
+                    }
+                    else if (mode->m_cargoIntake->GetWristState() ==
+                             CargoIntake::CargoWristState::retracted) {
+                        mode->m_stinger->SetPower(0.0);
+                    }
+                }
+                else if (button == COMMON.LeftBumper) {
+                    mode->m_elevator->SetPower(0.0);
+                    mode->m_stinger->SetPower(0.0);
                 }
             }
             break;
@@ -305,12 +267,11 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                     mode->m_cargoIntake->GoToWristState(
                         CargoIntake::CargoWristState::extended);
                 }
-                else if (button ==
-                         Xbox::RightBumper) {  // button == Xbox::RightBumper
+                else if (button == Xbox::RightBumper) {
                     mode->m_cargoIntake->RunIntake();
                     mode->m_elevator->SetPosition(Elevator::GROUND);
                 }
-                else {
+                else {  // BtnB
                     mode->m_elevator->SetPosition(
                         Elevator::LOADING_STATION_CARGO);
                     mode->m_cargoIntake->RunIntake(1.0);

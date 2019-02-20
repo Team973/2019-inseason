@@ -14,13 +14,16 @@ namespace frc973 {
 
 namespace JoystickBase {
 
-typedef struct {
-    unsigned int LeftYAxis;
-    unsigned int RightXAxis;
-    unsigned int RightBumper;
-    unsigned int RightTrigger;
-    // ...
-} Joystick;
+struct JoystickCommon {
+    const unsigned int LeftXAxis;
+    const unsigned int LeftYAxis;
+    const unsigned int RightXAxis;
+    const unsigned int RightYAxis;
+    const unsigned int LeftBumper;
+    const unsigned int RightBumper;
+    const unsigned int LeftTrigger;
+    const unsigned int RightTrigger;
+};
 }
 
 class ObservableJoystickBase : public Joystick {
@@ -40,11 +43,9 @@ public:
     virtual float GetRawAxisWithDeadband(int axis, bool fSquared = false,
                                          double threshold = 0) = 0;
 
-    const JoystickBase::Joystick &GetPeriodicJoystick() const;
-
-protected:
-    void SetPeriodicJoystick(JoystickBase::Joystick stickStruct);
-
-    JoystickBase::Joystick m_joystick;
+    /**
+     * Get a const reference to the Common mapping for the type of joystick.
+     */
+    virtual const JoystickBase::JoystickCommon& GetJoystickCommon() = 0;
 };
 }

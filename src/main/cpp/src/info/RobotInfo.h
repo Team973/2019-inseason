@@ -79,5 +79,4 @@ static const int ELEVATOR_HALL_ID = 7;
 static const int DRIVER_JOYSTICK_PORT = 0;
 static const int OPERATOR_JOYSTICK_PORT = 1;
 static const int DRIVER_DA_JOYSTICK_PORT = 2;
-static const int OPERATOR_DA_JOYSTICK_PORT = 3;
 }

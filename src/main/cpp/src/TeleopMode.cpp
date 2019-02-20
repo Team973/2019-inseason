@@ -50,13 +50,13 @@ void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    const JoystickBase::Joystick &stick =
-        m_driverJoystick->GetPeriodicJoystick();
+    const JoystickBase::JoystickCommon &COMMON =
+        m_driverJoystick->GetJoystickCommon();
 
-    double y = -m_driverJoystick->GetRawAxisWithDeadband(stick.LeftYAxis);
-    double x = -m_driverJoystick->GetRawAxisWithDeadband(stick.RightXAxis);
-    bool quickturn = m_driverJoystick->GetRawButton(stick.RightBumper);
-    bool softwareLowGear = m_driverJoystick->GetRawButton(stick.RightTrigger);
+    double y = -m_driverJoystick->GetRawAxisWithDeadband(COMMON.LeftYAxis);
+    double x = -m_driverJoystick->GetRawAxisWithDeadband(COMMON.RightXAxis);
+    bool quickturn = m_driverJoystick->GetRawButton(COMMON.RightBumper);
+    bool softwareLowGear = m_driverJoystick->GetRawButton(COMMON.RightTrigger);
 
     if (m_stinger->GetLowerHall() && m_gameMode == GameMode::EndGamePeriodic) {
         softwareLowGear = true;
@@ -184,7 +184,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
 void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == OPERATOR_JOYSTICK_PORT) {
         switch (button) {
-            case Xbox::BtnY:  // High Elevator Preset
+            case Xbox::BtnY:
             case Xbox::BtnA:  // Low Preset
             case Xbox::BtnX:  // Cargo Bay Preset
                 m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
@@ -192,7 +192,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::LeftBumper:   // Extend Intake
             case Xbox::RightBumper:  // Intake
-            case Xbox::BtnB:         // Middle Elevator Preset
+            case Xbox::BtnB:
                 m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
                 break;
             case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
@@ -251,63 +251,6 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
             case DualAction::RightTrigger:
                 m_presetDispatcher->DriveDispatchJoystickButtons(this, button,
                                                                  pressedP);
-                break;
-        }
-    }
-    else if (port == OPERATOR_DA_JOYSTICK_PORT) {
-        switch (button) {
-            case DualAction::BtnY:
-            case DualAction::BtnA:  // Low Preset
-            case DualAction::BtnX:  // Cargo Bay Preset
-                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
-                    this, button, pressedP);
-                break;
-            case DualAction::LeftBumper:   // Extend Intake
-            case DualAction::RightBumper:  // Intake
-            case DualAction::BtnB:
-                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
-                break;
-            case DualAction::DPadUpVirtBtn:  // Changes game mode to Endgame
-                if (pressedP) {
-                    m_gameMode = GameMode::EndGameInit;
-                    m_rumble = Rumble::on;
-                }
-                else {
-                    m_rumble = Rumble::off;
-                }
-                break;
-            case DualAction::DPadDownVirtBtn:
-                break;
-            case DualAction::DPadLeftVirtBtn:  // Changes game mode to Cargo
-                if (pressedP) {
-                    m_gameMode = GameMode::Cargo;
-                    m_hatchIntake->SetIdle();
-                    m_hatchIntake->ManualPuncherRetract();
-                    m_rumble = Rumble::on;
-                    m_limelightCargo->SetCameraDriver();
-                    m_limelightCargo->SetLightOn();
-                    m_limelightHatch->SetCameraOff();
-                    m_limelightHatch->SetLightOff();
-                }
-                else {
-                    m_rumble = Rumble::off;
-                }
-                break;
-            case DualAction::DPadRightVirtBtn:  // Changes game mode to Hatch
-                if (pressedP) {
-                    m_gameMode = GameMode::Hatch;
-                    m_cargoIntake->StopIntake();
-                    m_cargoIntake->RetractWrist();
-                    m_cargoIntake->RetractPlatformWheel();
-                    m_rumble = Rumble::on;
-                    m_limelightCargo->SetCameraOff();
-                    m_limelightCargo->SetLightOff();
-                    m_limelightHatch->SetCameraDriver();
-                    m_limelightHatch->SetLightOn();
-                }
-                else {
-                    m_rumble = Rumble::off;
-                }
                 break;
         }
     }

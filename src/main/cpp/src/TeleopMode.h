@@ -87,7 +87,12 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
+    /**
+     * Set the m_driverJoystick instance, used when switching between Poofs and
+     * DualAction.
+     */
     void SetDriverJoystick(ObservableJoystickBase *driverJoystick);
+
     static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
 
     friend class PresetHandlerDispatcher;

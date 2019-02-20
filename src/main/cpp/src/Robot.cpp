@@ -83,8 +83,8 @@ Robot::Robot()
               m_driverJoystick, m_operatorJoystick, m_driverDAJoystick, m_drive,
               m_elevator, m_hatchIntake, m_cargoIntake, m_stinger,
               m_limelightCargo, m_limelightHatch, m_presetDispatcher))
-        , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
-                                      m_driverDAJoystick, m_teleop)) {
+        , m_autonomous(
+              new Autonomous(m_driverJoystick, m_operatorJoystick, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -168,20 +168,22 @@ void Robot::AllStateContinuous() {
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
                                                  bool pressedP) {
-    if (this->IsOperatorControl()) {
-        if (port == DRIVER_DA_JOYSTICK_PORT) {
-            if (button == DualAction::Start) {
-                if (pressedP) {
-                    m_teleop->SetDriverJoystick(m_driverDAJoystick);
-                }
-            }
-            else if (button == DualAction::Back) {
-                if (pressedP) {
-                    m_teleop->SetDriverJoystick(m_driverJoystick);
-                }
+    // Note: autonomous uses teleop this year, so we do this check first. Does
+    // not change test at this time.
+    if (port == DRIVER_DA_JOYSTICK_PORT) {
+        if (button == DualAction::Start) {
+            if (pressedP) {
+                m_teleop->SetDriverJoystick(m_driverDAJoystick);
             }
         }
+        else if (button == DualAction::Back) {
+            if (pressedP) {
+                m_teleop->SetDriverJoystick(m_driverJoystick);
+            }
+        }
+    }
 
+    if (this->IsOperatorControl()) {
         m_teleop->HandleDualActionJoystick(port, button, pressedP);
     }
     else if (this->IsDisabled()) {

@@ -77,6 +77,12 @@ const unsigned int RightXAxis = 2; /**< Right X Axis */
 const unsigned int RightYAxis = 3; /**< Right Y Axis */
 const unsigned int DPadXAxis = 4;  /**< DPad X Axis */
 const unsigned int DPadYAxis = 5;  /**< DPad Y Axis */
+
+constexpr JoystickBase::JoystickCommon COMMON{
+    DualAction::LeftXAxis,   DualAction::LeftYAxis,    DualAction::RightXAxis,
+    DualAction::RightYAxis,  DualAction::LeftBumper,   DualAction::RightBumper,
+    DualAction::LeftTrigger, DualAction::RightTrigger,
+};
 }  // namespace DualAction
 
 class ObservableDualActionJoystick;
@@ -160,6 +166,12 @@ public:
      * @param logger The spreadsheet to log to.
      */
     ObservableDualActionJoystick *RegisterLog(LogSpreadsheet *logger);
+
+    /**
+     * Get a const reference to DualAction::COMMON when an
+     * ObservableJoystickBase is a DualAction stick.
+     */
+    const JoystickBase::JoystickCommon &GetJoystickCommon() override;
 
     /**
      * Get the value of the given axis with deadband.

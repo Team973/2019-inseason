@@ -27,6 +27,13 @@ const unsigned int LeftTrigger = 1;
 const unsigned int LeftBumper = 2;
 const unsigned int RightTrigger = 3;
 const unsigned int RightBumper = 4;
+
+constexpr JoystickBase::JoystickCommon COMMON{
+    PoofsJoysticks::LeftXAxis,   PoofsJoysticks::LeftYAxis,
+    PoofsJoysticks::RightXAxis,  PoofsJoysticks::RightYAxis,
+    PoofsJoysticks::LeftBumper,  PoofsJoysticks::RightBumper,
+    PoofsJoysticks::LeftTrigger, PoofsJoysticks::RightTrigger,
+};
 }  // namespace PoofsJoysticks
 
 class ObservablePoofsJoystick;
@@ -84,6 +91,12 @@ public:
      * @param logger The spreadsheet to log to.
      */
     ObservablePoofsJoystick *RegisterLog(LogSpreadsheet *logger);
+
+    /**
+     * Get a const reference to PoofsJoysticks::COMMON when an
+     * ObservableJoystickBase is a Poofs stick.
+     */
+    const JoystickBase::JoystickCommon &GetJoystickCommon() override;
 
     /**
      * Get the value of the given axis with deadband.

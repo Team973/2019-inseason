@@ -31,15 +31,6 @@ ObservableDualActionJoystick::ObservableDualActionJoystick(
     if (scheduler != nullptr) {
         scheduler->RegisterTask("JoystickHelper", this, TASK_PRE_PERIODIC);
     }
-
-    JoystickBase::Joystick stickStruct;
-
-    stickStruct.LeftYAxis = DualAction::LeftYAxis;
-    stickStruct.RightXAxis = DualAction::RightXAxis;
-    stickStruct.RightBumper = DualAction::RightBumper;
-    stickStruct.RightTrigger = DualAction::RightTrigger;
-
-    SetPeriodicJoystick(stickStruct);
 }
 
 ObservableDualActionJoystick::~ObservableDualActionJoystick() {
@@ -60,6 +51,11 @@ ObservableDualActionJoystick *ObservableDualActionJoystick::RegisterLog(
     }
 
     return this;
+}
+
+const JoystickBase::JoystickCommon &
+ObservableDualActionJoystick::GetJoystickCommon() {
+    return DualAction::COMMON;
 }
 
 float ObservableDualActionJoystick::GetRawAxisWithDeadband(int axis,

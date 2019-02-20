@@ -25,15 +25,6 @@ ObservablePoofsJoystick::ObservablePoofsJoystick(
     if (scheduler != nullptr) {
         scheduler->RegisterTask("JoystickHelper", this, TASK_PRE_PERIODIC);
     }
-
-    JoystickBase::Joystick stickStruct;
-
-    stickStruct.LeftYAxis = PoofsJoysticks::LeftYAxis;
-    stickStruct.RightXAxis = PoofsJoysticks::RightXAxis;
-    stickStruct.RightBumper = PoofsJoysticks::RightBumper;
-    stickStruct.RightTrigger = PoofsJoysticks::RightTrigger;
-
-    SetPeriodicJoystick(stickStruct);
 }
 
 ObservablePoofsJoystick::~ObservablePoofsJoystick() {
@@ -54,6 +45,11 @@ ObservablePoofsJoystick *ObservablePoofsJoystick::RegisterLog(
     }
 
     return this;
+}
+
+const JoystickBase::JoystickCommon &
+ObservablePoofsJoystick::GetJoystickCommon() {
+    return PoofsJoysticks::COMMON;
 }
 
 float ObservablePoofsJoystick::GetRawAxisWithDeadband(int axis, bool fSquared,

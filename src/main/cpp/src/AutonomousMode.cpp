@@ -6,12 +6,9 @@ using namespace frc;
 
 namespace frc973 {
 Autonomous::Autonomous(ObservablePoofsJoystick *driver,
-                       ObservableXboxJoystick *codriver,
-                       ObservableDualActionJoystick *testJoystick,
-                       Teleop *teleop)
+                       ObservableXboxJoystick *codriver, Teleop *teleop)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
-        , m_testJoystick(testJoystick)
         , m_teleop(teleop) {
 }
 
