@@ -169,6 +169,19 @@ void Robot::AllStateContinuous() {
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
                                                  bool pressedP) {
     if (this->IsOperatorControl()) {
+        if (port == DRIVER_DA_JOYSTICK_PORT) {
+            if (button == DualAction::Start) {
+                if (pressedP) {
+                    m_teleop->SetDriverJoystick(m_driverDAJoystick);
+                }
+            }
+            else if (button == DualAction::Back) {
+                if (pressedP) {
+                    m_teleop->SetDriverJoystick(m_driverJoystick);
+                }
+            }
+        }
+
         m_teleop->HandleDualActionJoystick(port, button, pressedP);
     }
     else if (this->IsDisabled()) {
