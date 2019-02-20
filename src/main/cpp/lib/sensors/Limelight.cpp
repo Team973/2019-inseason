@@ -187,7 +187,13 @@ double Limelight::GetTargetArea() {
 }
 
 double Limelight::GetTargetSkew() {
-    return m_limelight->GetNumber("ts", 0.0);
+    double skew = m_limelight->GetNumber("ts", 0.0);
+    if (skew < -45.0) {
+        return skew + 90.0;
+    }
+    else {
+        return skew;
+    }
 }
 
 double Limelight::GetLatency() {

@@ -44,7 +44,7 @@ public:
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out) override;
 
-    double CalcScaleGoalAngleComp(double skew);
+    double CalcScaleGoalAngleComp();
 
     /**
      * Checks with the controller to see if we are on target.
