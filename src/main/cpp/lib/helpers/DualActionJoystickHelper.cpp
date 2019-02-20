@@ -71,7 +71,7 @@ float ObservableDualActionJoystick::GetRawAxisWithDeadband(int axis,
         value = Util::signSquare(value);
     }
 
-    return value;
+    return -value;
 }
 
 bool ObservableDualActionJoystick::GetDPadUpVirtButton() {
