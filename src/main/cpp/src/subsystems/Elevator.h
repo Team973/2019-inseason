@@ -57,6 +57,7 @@ public:
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
         27.3; /**< Soft elevator height. */
+    static constexpr double ENDGAME_HEIGHT_SOFT_LIMIT = 24.25;
     static constexpr double ELEVATOR_HALL_HEIGHT_OFFSET = 0.6;
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         4.0 / 4096.0; /**< Encoder in/click */

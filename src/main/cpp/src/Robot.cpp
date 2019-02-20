@@ -164,6 +164,8 @@ void Robot::AllStateContinuous() {
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
+    m_limelightHatch->SetCameraVision();
+    m_limelightHatch->SetLightOn();
     DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf sk %2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetTargetSkew());

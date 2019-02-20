@@ -207,6 +207,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::Back:
                 if (pressedP) {
                     m_gameMode = GameMode::EndGameInit;
+                    m_elevator->SetSoftLimit(
+                        Elevator::ENDGAME_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
                 }
                 else {
@@ -222,6 +224,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadLeftVirtBtn:  // Changes game mode to Cargo
                 if (pressedP) {
                     m_gameMode = GameMode::Cargo;
+                    m_elevator->SetSoftLimit(
+                        Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_hatchIntake->SetIdle();
                     m_hatchIntake->ManualPuncherRetract();
                     m_rumble = Rumble::on;
@@ -236,6 +240,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadRightVirtBtn:  // Changes game mode to Hatch
                 if (pressedP) {
                     m_gameMode = GameMode::Hatch;
+                    m_elevator->SetSoftLimit(
+                        Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_cargoIntake->StopIntake();
                     m_cargoIntake->RetractWrist();
                     m_cargoIntake->RetractPlatformWheel();
