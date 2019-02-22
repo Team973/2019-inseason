@@ -38,10 +38,10 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                             (GOAL_ANGLE_COMP_MIN * 1 /
                              (GOAL_ANGLE_COMP_MAX - GOAL_ANGLE_COMP_MIN)),
                         0.0, 1.0),
-        -0.2, 0.2);  // y = mx + b
-                     // m = (1 - 0) / (max - min)
-                     // x = distance to target
-                     // b = y-int as plugged in to slope intercept equation
+        -0.35, 0.35);  // y = mx + b
+                       // m = (1 - 0) / (max - min)
+                       // x = distance to target
+                       // b = y-int as plugged in to slope intercept equation
 }
 
 void LimelightDriveController::CalcDriveOutput(

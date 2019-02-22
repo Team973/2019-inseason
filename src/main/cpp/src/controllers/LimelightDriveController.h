@@ -71,7 +71,7 @@ public:
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_MAX = 40.0;
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.04;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.06;
 
 private:
     bool m_onTarget;
