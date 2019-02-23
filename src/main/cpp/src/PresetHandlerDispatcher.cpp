@@ -104,10 +104,10 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     double height = NO_PRESET_NO_CHANGE;
 
     switch (mode->m_gameMode) {
-        case GameMode::Cargo:
+        case GameMode::CargoPeriodic:
             height = GetCargoPresetFromButton(button, pressedP);
             break;
-        case GameMode::Hatch:
+        case GameMode::HatchPeriodic:
             height = GetHatchPresetFromButton(button, pressedP);
             break;
         case GameMode::EndGamePeriodic:
@@ -127,10 +127,10 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     double height = NO_PRESET_NO_CHANGE;
 
     switch (mode->m_gameMode) {
-        case GameMode::Cargo:
+        case GameMode::CargoPeriodic:
             height = GetCargoPresetFromButton(button, pressedP);
             break;
-        case GameMode::Hatch:
+        case GameMode::HatchPeriodic:
             height = GetHatchPresetFromButton(button, pressedP);
             break;
         case GameMode::EndGamePeriodic:
@@ -149,7 +149,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                                                            uint32_t button,
                                                            bool pressedP) {
     switch (mode->m_gameMode) {
-        case GameMode::Cargo:
+        case GameMode::CargoPeriodic:
             if (pressedP) {
                 switch (button) {
                     case PoofsJoysticks::LeftTrigger:
@@ -182,7 +182,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 }
             }
             break;
-        case GameMode::Hatch:
+        case GameMode::HatchPeriodic:
             if (pressedP) {
                 switch (button) {
                     case PoofsJoysticks::LeftTrigger:
@@ -274,7 +274,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
 void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                                                   bool pressedP) {
     switch (mode->m_gameMode) {
-        case GameMode::Cargo:
+        case GameMode::CargoPeriodic:
             if (pressedP) {
                 if (button == Xbox::LeftBumper) {
                     mode->m_cargoIntake->ExtendWrist();
@@ -296,7 +296,7 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
             }
 
             break;
-        case GameMode::Hatch:
+        case GameMode::HatchPeriodic:
             if (pressedP) {
                 if (button == Xbox::LeftBumper) {
                     mode->m_hatchIntake->ManualPuncherActivate();

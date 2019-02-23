@@ -18,8 +18,10 @@ namespace frc973 {
  */
 enum class GameMode
 {
-    Cargo,
-    Hatch,
+    CargoInit,
+    CargoPeriodic,
+    HatchInit,
+    HatchPeriodic,
     EndGameInit,
     EndGamePeriodic,
     RaiseIntake,
