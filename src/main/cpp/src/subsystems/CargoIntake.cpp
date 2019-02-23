@@ -5,7 +5,7 @@ namespace frc973 {
 CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                          GreyTalonSRX *cargoIntakeMotor,
                          Solenoid *cargoPlatformLock, Solenoid *cargoWrist,
-                         Limelight *limelightCargo)
+                         Limelight *limelightHatch)
         : m_scheduler(scheduler)
         , m_logger(logger)
         , m_cargoIntakeMotor(cargoIntakeMotor)
@@ -14,7 +14,7 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_cargoWrist(cargoWrist)
         , m_cargoIntakeState(CargoIntakeState::notRunning)
         , m_cargoWristState(CargoWristState::retracted)
-        , m_limelightCargo(limelightCargo)
+        , m_limelightHatch(limelightHatch)
         , m_cargoTimer(0.0)
         , m_cargoPlatformLockState(CargoPlatformLockState::retracted)
         , m_intakeCurentFilter(new MovingAverageFilter(0.9)) {
@@ -125,7 +125,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             ExtendWrist();
             if (filteredCurrent > 25.0) {
                 m_cargoIntakeState = CargoIntakeState::holding;
-                m_limelightCargo->SetLightBlink();
+                m_limelightHatch->SetLightBlink();
                 this->RetractWrist();
                 m_cargoTimer = GetMsecTime();
             }
@@ -141,7 +141,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             m_cargoIntakeMotor->ConfigContinuousCurrentLimit(100, 10);
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.7);
             if (m_cargoTimer - GetMsecTime() > 100) {
-                m_limelightCargo->SetLightOff();
+                m_limelightHatch->SetLightOff();
             }
             break;
         case CargoIntakeState::notRunning:

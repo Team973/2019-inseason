@@ -61,7 +61,7 @@ Robot::Robot()
                                   m_elevatorHall))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoPlatformLock, m_cargoWrist,
-                                        m_limelightCargo))
+                                        m_limelightHatch))
         , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
                                         m_hatchPuncher, m_limelightHatch))
         , m_stinger(new Stinger(this, m_logger, m_stingerElevatorMotor,

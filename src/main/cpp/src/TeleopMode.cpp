@@ -135,6 +135,8 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameinit");
             m_limelightHatch->SetCameraDriver();
             m_limelightHatch->SetPiPSecondary();
+            m_cargoIntake->StopIntake();
+            m_hatchIntake->SetIdle();
             m_elevator->SetPosition(Elevator::PLATFORM);
             if (m_elevator->GetPosition() > Elevator::PLATFORM - 2.0) {
                 m_cargoIntake->DeployPlatformWheel();
