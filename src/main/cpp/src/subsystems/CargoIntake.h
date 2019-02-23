@@ -45,7 +45,6 @@ public:
         notRunning, /**< Stopped state. */
         reverse     /**< Outtaking state. */
     };
-
     /**
      * Cargo Wrist states.
      */
@@ -102,6 +101,16 @@ public:
      */
     CargoPlatformLockState GetPlatformLockState();
 
+    void EnableCoastMode();
+    void EnableBrakeMode();
+
+    /**
+     * The looping task periodic.
+     * @param mode The current robot mode.
+     */
+    void TaskPeriodic(RobotMode mode) override;
+
+private:
     /**
      * Sets the desired cargo intake state
      * @param newState The desired Cargo Intake state.
@@ -120,16 +129,6 @@ public:
      */
     void GoToPlatformLockState(CargoPlatformLockState newState);
 
-    void EnableCoastMode();
-    void EnableBrakeMode();
-
-    /**
-     * The looping task periodic.
-     * @param mode The current robot mode.
-     */
-    void TaskPeriodic(RobotMode mode) override;
-
-private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
 

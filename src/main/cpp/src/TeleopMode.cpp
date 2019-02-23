@@ -105,6 +105,7 @@ void Teleop::TeleopPeriodic() {
 
     switch (m_gameMode) {
         case GameMode::Cargo:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: cargo");
             m_cargoIntake->RetractPlatformWheel();
             m_hatchIntake->SetIdle();
             m_hatchIntake->ManualPuncherRetract();
@@ -112,12 +113,14 @@ void Teleop::TeleopPeriodic() {
                                       "cargo");
             break;
         case GameMode::Hatch:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: hatch");
             m_cargoIntake->RetractPlatformWheel();
             m_cargoIntake->StopIntake();
             m_cargoIntake->RetractWrist();
             m_cargoIntake->RetractPlatformWheel();
             break;
         case GameMode::EndGameInit:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameinit");
             m_limelightCargo->SetLightOff();
             m_limelightCargo->SetCameraDriver();
             m_limelightHatch->SetCameraDriver();
@@ -131,6 +134,7 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case GameMode::EndGamePeriodic:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
             if (m_stinger->GetUpperHall() &&
@@ -139,10 +143,12 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case GameMode::RaiseIntake:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
             m_elevator->SetPosition(10.0);
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
             if (fabs(m_elevator->GetPosition() - 10.0) < 1.0) {
                 m_cargoIntake->RetractWrist();
                 m_cargoIntake->RetractPlatformWheel();
@@ -247,6 +253,11 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_gameMode = GameMode::Hatch;
                     m_elevator->SetSoftLimit(
                         Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
+<<<<<<< HEAD
+=======
+                    m_cargoIntake->StopIntake();
+                    m_cargoIntake->RetractWrist();
+>>>>>>> 0da9114714542e9aae0bc56f7bf9f880cad6a8bc
                     m_rumble = Rumble::on;
                     // m_limelightHatch->SetPiPMain();
                     m_limelightCargo->SetCameraOff();
