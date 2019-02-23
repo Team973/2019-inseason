@@ -125,8 +125,6 @@ void Limelight::SetLightOff() {
 }
 
 void Limelight::SetLightBlink() {
-    DBStringPrintf(DBStringPos::DB_LINE1, "%f",
-                   m_limelight->GetNumber("ledMode", 0));
     SetLightMode(LightMode::blink);
 }
 
@@ -139,7 +137,7 @@ void Limelight::SetCameraVision() {
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
     SetCameraMode(CameraMode::onDriver);
-    SetLightOn();
+    SetLightOff();
 }
 
 void Limelight::SetCameraDefaultVision() {

@@ -187,7 +187,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 switch (button) {
                     case PoofsJoysticks::LeftTrigger:
                         mode->m_driveMode =
-                            Teleop::DriveMode::AssistedCheesyHatch;
+                            Teleop::DriveMode::RegularLimelightHatch;
                         break;
                     case PoofsJoysticks::RightTrigger:
                         mode->m_hatchIntake->Exhaust();

@@ -152,12 +152,13 @@ public:
      * @param turn Left/right amount.
      */
     void VelocityArcadeDrive(double throttle, double turn);
-    LimelightDriveController *LimelightCargoDrive();
 
     /**
      * Set drive controller to use limelight in following a target
      */
+    LimelightDriveController *LimelightCargoDrive();
     LimelightDriveController *LimelightHatchDrive();
+    LimelightDriveController *RegularLimelightHatchDrive();
 
     /*
      * Set drive controller to use limelight and driver input to steer and drive
@@ -313,6 +314,7 @@ private:
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
     LimelightDriveController *m_limelightCargoDriveController;
     LimelightDriveController *m_limelightHatchDriveController;
+    LimelightDriveController *m_regularLimelightHatchDriveController;
     AssistedCheesyDriveController *m_assistedCheesyDriveCargoController;
     AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 

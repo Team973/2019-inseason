@@ -102,6 +102,7 @@ private:
         Openloop,
         LimelightCargo,
         LimelightHatch,
+        RegularLimelightHatch,
         AssistedCheesyHatch,
         AssistedCheesyCargo,
         Cheesy

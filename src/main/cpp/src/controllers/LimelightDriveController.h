@@ -27,7 +27,8 @@ public:
      * Construct a Limelight Drive controller.
      * @param limelight The limelight.
      */
-    LimelightDriveController(Limelight *limelight, VisionOffset offset);
+    LimelightDriveController(Limelight *limelight, VisionOffset offset,
+                             bool isCompSkew);
     virtual ~LimelightDriveController();
 
     /**
@@ -78,6 +79,7 @@ private:
     double m_leftSetpoint;
     double m_rightSetpoint;
     double m_visionOffset;
+    bool m_isCompensatingSkew;
 
     double m_throttle;
     double m_turn;

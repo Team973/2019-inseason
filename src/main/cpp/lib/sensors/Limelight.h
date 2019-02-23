@@ -188,6 +188,8 @@ public:
 
     /**
      * Gets the target skew
+     * Returns negative values when target is more distant on the right
+     * side of the robot and vice versa
      * @return target skew
      */
     double GetTargetSkew();
@@ -218,8 +220,6 @@ public:
 
     /**
      * Finds the angle skew of the robot in reference to the target
-     * Returns negative values when target is more distant on the right side of
-     * the robot and vice versa
      * @return targets skew
      */
     double FindTargetSkew();

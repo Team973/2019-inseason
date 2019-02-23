@@ -5,12 +5,14 @@
 
 namespace frc973 {
 LimelightDriveController::LimelightDriveController(Limelight *limelight,
-                                                   VisionOffset offset)
+                                                   VisionOffset offset,
+                                                   bool isCompSkew)
         : m_onTarget(false)
         , m_leftSetpoint(0.0)
         , m_rightSetpoint(0.0)
         , m_visionOffset((offset == VisionOffset::Cargo ? CARGO_VISION_OFFSET
                                                         : HATCH_VISION_OFFSET))
+        , m_isCompensatingSkew(isCompSkew)
         , m_throttle(0.0)
         , m_turn(0.0)
         , m_goalAngleComp(0.0)
@@ -39,6 +41,7 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                              (GOAL_ANGLE_COMP_MAX - GOAL_ANGLE_COMP_MIN)),
                         0.0, 1.0),
         -0.35, 0.35);  // y = mx + b
+                       // y = degree of compensation
                        // m = (1 - 0) / (max - min)
                        // x = distance to target
                        // b = y-int as plugged in to slope intercept equation
@@ -64,8 +67,14 @@ void LimelightDriveController::CalcDriveOutput(
                 (pow(cos((offset * Constants::PI / 180.0) * PERIOD), 5))),
             -0.5, 0.5);
         m_goalAngleComp = CalcScaleGoalAngleComp();
-        m_leftSetpoint = throttlePidOut + turnPidOut + m_goalAngleComp;
-        m_rightSetpoint = throttlePidOut - turnPidOut - m_goalAngleComp;
+        if (m_isCompensatingSkew) {
+            m_leftSetpoint = throttlePidOut + turnPidOut + m_goalAngleComp;
+            m_rightSetpoint = throttlePidOut - turnPidOut - m_goalAngleComp;
+        }
+        else {
+            m_leftSetpoint = throttlePidOut + turnPidOut;
+            m_rightSetpoint = throttlePidOut - turnPidOut;
+        }
     }
 
     out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
