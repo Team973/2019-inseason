@@ -126,6 +126,7 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
             if (filteredCurrent > 25.0) {
                 m_cargoIntakeState = CargoIntakeState::holding;
                 m_limelightCargo->SetLightBlink();
+                this->RetractWrist();
                 m_cargoTimer = GetMsecTime();
             }
             break;
@@ -139,7 +140,6 @@ void CargoIntake::TaskPeriodic(RobotMode mode) {
         case CargoIntakeState::holding:
             m_cargoIntakeMotor->ConfigContinuousCurrentLimit(100, 10);
             m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.7);
-            this->RetractWrist();
             if (m_cargoTimer - GetMsecTime() > 100) {
                 m_limelightCargo->SetLightOff();
             }
