@@ -133,11 +133,8 @@ void Teleop::TeleopPeriodic() {
             break;
         case GameMode::EndGameInit:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameinit");
-            m_limelightCargo->SetLightOff();
-            m_limelightCargo->SetCameraDriver();
             m_limelightHatch->SetCameraDriver();
-            m_limelightHatch->SetLightOff();
-            // m_limelightHatch->SetPiPSecondary();
+            m_limelightHatch->SetPiPSecondary();
             m_elevator->SetPosition(Elevator::PLATFORM);
             if (m_elevator->GetPosition() > Elevator::PLATFORM - 2.0) {
                 m_cargoIntake->DeployPlatformWheel();
@@ -252,8 +249,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_elevator->SetSoftLimit(
                         Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
-                    // m_limelightHatch->SetPiPSecondary();
-                    m_limelightCargo->SetCameraDriver();
+                    m_limelightHatch->SetPiPSecondary();
                     m_limelightHatch->SetCameraDriver();
                 }
                 else {
@@ -266,8 +262,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_elevator->SetSoftLimit(
                         Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
-                    // m_limelightHatch->SetPiPMain();
-                    m_limelightCargo->SetCameraOff();
+                    m_limelightHatch->SetPiPMain();
                     m_limelightHatch->SetCameraDriver();
                 }
                 else {
