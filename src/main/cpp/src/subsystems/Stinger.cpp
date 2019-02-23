@@ -26,7 +26,7 @@ Stinger::Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_stingerElevatorMotor->EnableCurrentLimit(true);
     m_stingerElevatorMotor->ConfigPeakCurrentDuration(0, 10);
     m_stingerElevatorMotor->ConfigPeakCurrentLimit(0, 10);
-    m_stingerElevatorMotor->ConfigContinuousCurrentLimit(50, 10);
+    m_stingerElevatorMotor->ConfigContinuousCurrentLimit(100, 10);
     m_stingerElevatorMotor->EnableVoltageCompensation(false);
 
     m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
@@ -105,6 +105,8 @@ void Stinger::TaskPeriodic(RobotMode mode) {
     DBStringPrintf(DBStringPos::DB_LINE5, "uh: %d lh:%d sv:%2.2lf",
                    GetUpperHall(), GetLowerHall(),
                    m_stingerElevatorMotor->GetMotorOutputVoltage());
+    DBStringPrintf(DB_LINE1, "stingexcurr: %2.2lf",
+                   m_stingerElevatorMotor->GetOutputCurrent());
     switch (m_stingerState) {
         case StingerState::manualVoltage:
             if (m_power > 0.0 && GetStingerElevatorHallState() ==
