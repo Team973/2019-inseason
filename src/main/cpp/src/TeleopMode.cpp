@@ -253,11 +253,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_gameMode = GameMode::Hatch;
                     m_elevator->SetSoftLimit(
                         Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
-<<<<<<< HEAD
-=======
-                    m_cargoIntake->StopIntake();
-                    m_cargoIntake->RetractWrist();
->>>>>>> 0da9114714542e9aae0bc56f7bf9f880cad6a8bc
                     m_rumble = Rumble::on;
                     // m_limelightHatch->SetPiPMain();
                     m_limelightCargo->SetCameraOff();
