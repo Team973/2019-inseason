@@ -3,9 +3,10 @@
 using namespace frc;
 
 namespace frc973 {
-Limelight::Limelight(const char *name)
+Limelight::Limelight(const char *name, bool inverted)
         : m_limelight(nt::NetworkTableInstance::GetDefault().GetTable(name))
         , m_camName(name)
+        , m_isInverted(inverted)
         , m_lightMode(LightMode::off)
         , m_cameraMode(CameraMode::onDriver)
         , m_streamMode(StreamMode::standard)
@@ -107,6 +108,14 @@ void Limelight::SetSnapshotMode(SnapshotMode mode) {
     }
 }
 
+void Limelight::SetPiPMain() {
+    SetStreamMode(StreamMode::pipMain);
+}
+
+void Limelight::SetPiPSecondary() {
+    SetStreamMode(StreamMode::pipSecondary);
+}
+
 void Limelight::SetLightOn() {
     SetLightMode(LightMode::on);
 }
@@ -116,38 +125,36 @@ void Limelight::SetLightOff() {
 }
 
 void Limelight::SetLightBlink() {
-    DBStringPrintf(DBStringPos::DB_LINE1, "%f",
-                   m_limelight->GetNumber("ledMode", 0));
     SetLightMode(LightMode::blink);
 }
 
 void Limelight::SetCameraVision() {
     SetPipeline(PipelineMode::target_vision);
-    // SetCameraMode(CameraMode::onVision);
+    SetCameraMode(CameraMode::onVision);
     SetLightOn();
 }
 
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
-    // SetCameraMode(CameraMode::onDriver);
-    SetLightOn();
+    SetCameraMode(CameraMode::onDriver);
+    SetLightOff();
 }
 
 void Limelight::SetCameraDefaultVision() {
     SetPipeline(PipelineMode::default_vision);
-    // SetCameraMode(CameraMode::onVision);
+    SetCameraMode(CameraMode::onVision);
     SetLightOn();
 }
 
 void Limelight::SetCameraOff() {
     SetPipeline(PipelineMode::off);
-    // SetCameraMode(CameraMode::onDriver);
+    SetCameraMode(CameraMode::onDriver);
     SetLightOff();
 }
 
 void Limelight::SetCamera3D() {
     SetPipeline(PipelineMode::vision3d);
-    // SetCameraMode(CameraMode::onVision);
+    SetCameraMode(CameraMode::onVision);
     SetLightOn();
 }
 
@@ -156,11 +163,21 @@ bool Limelight::isTargetValid() {
 }
 
 double Limelight::GetXOffset() {
-    return m_limelight->GetNumber("tx", 0.0);
+    if (m_isInverted) {
+        return -m_limelight->GetNumber("tx", 0.0);
+    }
+    else {
+        return m_limelight->GetNumber("tx", 0.0);
+    }
 }
 
 double Limelight::GetYOffset() {
-    return m_limelight->GetNumber("ty", 0.0);
+    if (m_isInverted) {
+        return -m_limelight->GetNumber("ty", 0.0);
+    }
+    else {
+        return m_limelight->GetNumber("ty", 0.0);
+    }
 }
 
 double Limelight::GetTargetArea() {
@@ -168,7 +185,13 @@ double Limelight::GetTargetArea() {
 }
 
 double Limelight::GetTargetSkew() {
-    return m_limelight->GetNumber("ts", 0.0);
+    double skew = m_limelight->GetNumber("ts", 0.0);
+    if (skew < -45.0) {
+        return skew + 90.0;
+    }
+    else {
+        return skew;
+    }
 }
 
 double Limelight::GetLatency() {
@@ -195,7 +218,8 @@ double Limelight::FindTargetSkew() {
 }
 
 double Limelight::GetHorizontalDistance() {
-    return (TARGET_HEIGHT - CAMERA_HEIGHT) /
-           tan(CAMERA_ANGLE + this->GetYOffset() * (Constants::PI / 180.0));
+    return ((TARGET_HEIGHT - CAMERA_HEIGHT) /
+            tan(CAMERA_ANGLE + this->GetYOffset() * (Constants::PI / 180.0))) -
+           CAMERA_BUMPER_OFFSET;
 }
 }

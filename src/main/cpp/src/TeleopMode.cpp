@@ -32,7 +32,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
-        , m_gameMode(GameMode::Hatch)
+        , m_gameMode(GameMode::HatchInit)
         , m_stinger(stinger)
         , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
@@ -89,6 +89,9 @@ void Teleop::TeleopPeriodic() {
         case DriveMode::LimelightHatch:
             m_drive->LimelightHatchDrive();
             break;
+        case DriveMode::RegularLimelightHatch:
+            m_drive->RegularLimelightHatchDrive();
+            break;
         case DriveMode::AssistedCheesyHatch:
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
@@ -101,39 +104,60 @@ void Teleop::TeleopPeriodic() {
     }
 
     switch (m_gameMode) {
-        case GameMode::Cargo:
-            m_limelightCargo->SetLightOn();
-            m_limelightHatch->SetLightOff();
+        case GameMode::CargoInit:
             m_cargoIntake->RetractPlatformWheel();
+            m_wristResetTimer = GetMsecTime();
+            m_hatchIntake->SetIdle();
+            m_hatchIntake->ManualPuncherRetract();
+            m_gameMode = GameMode::CargoPeriodic;
+            break;
+        case GameMode::CargoPeriodic:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: cargo");
+            if (m_wristResetTimer - GetMsecTime() > 500) {
+                m_cargoIntake->RetractWrist();
+            }
             SmartDashboard::PutString("misc/limelight/currentLimelight",
                                       "cargo");
             break;
-        case GameMode::Hatch:
-            m_limelightCargo->SetLightOff();
-            m_limelightHatch->SetLightOn();
+        case GameMode::HatchInit:
             m_cargoIntake->RetractPlatformWheel();
+            m_cargoIntake->StopIntake();
+            m_wristResetTimer = GetMsecTime();
+            m_gameMode = GameMode::HatchPeriodic;
+            break;
+        case GameMode::HatchPeriodic:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: hatch");
+            if (m_wristResetTimer - GetMsecTime() > 500) {
+                m_cargoIntake->RetractWrist();
+            }
             break;
         case GameMode::EndGameInit:
-            m_limelightCargo->SetLightBlink();
-            m_limelightCargo->SetCameraDriver();
-            m_limelightHatch->SetCameraOff();
-            m_limelightHatch->SetLightBlink();
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameinit");
+            m_limelightHatch->SetCameraDriver();
+            m_limelightHatch->SetPiPSecondary();
             m_elevator->SetPosition(Elevator::PLATFORM);
-            if (m_elevator->GetPosition() > Elevator::PLATFORM - 1.0) {
+            if (m_elevator->GetPosition() > Elevator::PLATFORM - 2.0) {
                 m_cargoIntake->DeployPlatformWheel();
                 m_cargoIntake->ExtendWrist();
                 m_gameMode = GameMode::EndGamePeriodic;
             }
             break;
         case GameMode::EndGamePeriodic:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
+            if (m_stinger->GetUpperHall() &&
+                m_driverJoystick->GetRawButton(PoofsJoysticks::LeftTrigger)) {
+                // m_limelightCargo->SetLightBlink();
+            }
             break;
         case GameMode::RaiseIntake:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
             m_elevator->SetPosition(10.0);
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
             if (fabs(m_elevator->GetPosition() - 10.0) < 1.0) {
                 m_cargoIntake->RetractWrist();
                 m_cargoIntake->RetractPlatformWheel();
@@ -141,8 +165,6 @@ void Teleop::TeleopPeriodic() {
             }
             break;
     }
-
-    m_presetDispatcher->JoystickPeriodic(this);  // RightYAxis & LeftTriggerAxis
 
     switch (m_rumble) {
         case Rumble::on:
@@ -160,6 +182,26 @@ void Teleop::TeleopPeriodic() {
                     GenericHID ::RumbleType::kLeftRumble, 0);
             }
             break;
+    }
+
+    if (fabs(m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightYAxis)) >
+        0.2) {
+        m_elevator->SetManualInput();
+    }
+
+    if (fabs(m_operatorJoystick->GetRawAxisWithDeadband(
+            Xbox::LeftTriggerAxis)) > 0.25) {
+        switch (m_gameMode) {
+            case GameMode::CargoPeriodic:
+                m_cargoIntake->RetractWrist();
+                break;
+            case GameMode::HatchPeriodic:
+                m_hatchIntake->ManualPuncherRetract();
+                break;
+            case GameMode::EndGamePeriodic:
+                // Task
+                break;
+        }
     }
 }
 
@@ -184,38 +226,31 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
 void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == OPERATOR_JOYSTICK_PORT) {
         switch (button) {
-            case Xbox::BtnY:  // High Elevator Preset
-            case Xbox::BtnA:  // Low Preset
-            case Xbox::BtnX:  // Cargo Bay Preset
-                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
-                    this, button, pressedP);
-                break;
-            case Xbox::LeftBumper:   // Extend Intake
-            case Xbox::RightBumper:  // Intake
-            case Xbox::BtnB:         // Middle Elevator Preset
-                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
-                break;
-            case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
+            case Xbox::Back:
                 if (pressedP) {
                     m_gameMode = GameMode::EndGameInit;
+                    m_elevator->SetSoftLimit(
+                        Elevator::ENDGAME_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
                 }
                 else {
                     m_rumble = Rumble::off;
                 }
                 break;
+            case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
+                if (pressedP) {
+                }
+                break;
             case Xbox::DPadDownVirtBtn:
                 break;
             case Xbox::DPadLeftVirtBtn:  // Changes game mode to Cargo
                 if (pressedP) {
-                    m_gameMode = GameMode::Cargo;
-                    m_hatchIntake->SetIdle();
-                    m_hatchIntake->ManualPuncherRetract();
+                    m_gameMode = GameMode::CargoInit;
+                    m_elevator->SetSoftLimit(
+                        Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
-                    m_limelightCargo->SetCameraDriver();
-                    m_limelightCargo->SetLightOn();
-                    m_limelightHatch->SetCameraOff();
-                    m_limelightHatch->SetLightOff();
+                    m_limelightHatch->SetPiPSecondary();
+                    m_limelightHatch->SetCameraDriver();
                 }
                 else {
                     m_rumble = Rumble::off;
@@ -223,19 +258,27 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadRightVirtBtn:  // Changes game mode to Hatch
                 if (pressedP) {
-                    m_gameMode = GameMode::Hatch;
-                    m_cargoIntake->StopIntake();
-                    m_cargoIntake->RetractWrist();
-                    m_cargoIntake->RetractPlatformWheel();
+                    m_gameMode = GameMode::HatchInit;
+                    m_elevator->SetSoftLimit(
+                        Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
-                    m_limelightCargo->SetCameraOff();
-                    m_limelightCargo->SetLightOff();
+                    m_limelightHatch->SetPiPMain();
                     m_limelightHatch->SetCameraDriver();
-                    m_limelightHatch->SetLightOn();
                 }
                 else {
                     m_rumble = Rumble::off;
                 }
+                break;
+            case Xbox::BtnY:  // Middle Elevator Preset
+            case Xbox::BtnA:  // Low Preset
+            case Xbox::BtnX:  // Cargo Bay Preset
+                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
+                    this, button, pressedP);
+                break;
+            case Xbox::LeftBumper:   // Extend Intake
+            case Xbox::RightBumper:  // Intake
+            case Xbox::BtnB:
+                m_presetDispatcher->IntakeBumperPresets(this, button, pressedP);
                 break;
         }
     }

@@ -18,11 +18,17 @@ class PID;
 
 class LimelightDriveController : public DriveController {
 public:
+    enum class VisionOffset
+    {
+        Cargo,
+        Hatch
+    };
     /**
      * Construct a Limelight Drive controller.
      * @param limelight The limelight.
      */
-    LimelightDriveController(Limelight *limelight, bool inverted);
+    LimelightDriveController(Limelight *limelight, VisionOffset offset,
+                             bool isCompSkew);
     virtual ~LimelightDriveController();
 
     /**
@@ -38,6 +44,8 @@ public:
      */
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out) override;
+
+    double CalcScaleGoalAngleComp();
 
     /**
      * Checks with the controller to see if we are on target.
@@ -58,17 +66,24 @@ public:
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
         1.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT =
-        20.0;  // in inches from target to robot bumper
+        -3.0;  // in inches from target to robot bumper
     static constexpr double PERIOD = 3.0;
+    static constexpr double HATCH_VISION_OFFSET = 2.0;  // in degrees
+    static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
+    static constexpr double GOAL_ANGLE_COMP_MIN = 24.0;
+    static constexpr double GOAL_ANGLE_COMP_MAX = 40.0;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.06;
 
 private:
-    bool m_isInverted;
     bool m_onTarget;
     double m_leftSetpoint;
     double m_rightSetpoint;
+    double m_visionOffset;
+    bool m_isCompensatingSkew;
 
     double m_throttle;
     double m_turn;
+    double m_goalAngleComp;
 
     Limelight *m_limelight;
     PID *m_turnPid;

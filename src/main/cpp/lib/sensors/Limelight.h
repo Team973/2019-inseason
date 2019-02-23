@@ -25,7 +25,7 @@ public:
      * Constuct a Limelight Camera.
      * @param name The name of the limelight being constructed
      */
-    Limelight(const char *name);
+    Limelight(const char *name, bool inverted);
     virtual ~Limelight();
 
     /**
@@ -79,6 +79,10 @@ public:
         off,            /**< The limelight off pipeline */
         vision3d        /**< The limelight 3d pipeline */
     };
+
+    void SetPiPMain();
+
+    void SetPiPSecondary();
 
     /**
      * Sets the limelight's LEDs to on, off, or blink
@@ -184,6 +188,8 @@ public:
 
     /**
      * Gets the target skew
+     * Returns negative values when target is more distant on the right
+     * side of the robot and vice versa
      * @return target skew
      */
     double GetTargetSkew();
@@ -224,14 +230,16 @@ public:
      */
     double GetHorizontalDistance();
 
-    static constexpr double TARGET_HEIGHT = 24.25;  // in inches from ground
-    static constexpr double CAMERA_HEIGHT = 4.75;   // in inches from ground
+    static constexpr double TARGET_HEIGHT = 29.0;  // in inches from ground
+    static constexpr double CAMERA_HEIGHT = 46.0;  // in inches from ground
     static constexpr double CAMERA_ANGLE =
-        40.0 * (Constants::PI / 180.0);  // in degrees wrt ground
+        -26.0 * (Constants::PI / 180.0);  // in degrees wrt ground
+    static constexpr double CAMERA_BUMPER_OFFSET = 19.25;
 
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight
     const char *m_camName;
+    bool m_isInverted;
 
     LightMode m_lightMode;        // enum for LED state
     CameraMode m_cameraMode;      // enum for camera state

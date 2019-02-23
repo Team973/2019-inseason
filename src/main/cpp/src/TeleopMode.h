@@ -87,7 +87,7 @@ public:
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
-    static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
+    static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 0.9;
 
     friend class PresetHandlerDispatcher;
 
@@ -102,6 +102,7 @@ private:
         Openloop,
         LimelightCargo,
         LimelightHatch,
+        RegularLimelightHatch,
         AssistedCheesyHatch,
         AssistedCheesyCargo,
         Cheesy
@@ -126,5 +127,6 @@ private:
     Rumble m_rumble;
 
     uint32_t m_rumbleTimer;
+    uint32_t m_wristResetTimer;
 };
 }

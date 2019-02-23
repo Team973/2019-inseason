@@ -22,7 +22,7 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
         , m_limelightHatch(limelightHatch)
         , m_presetDispatcher(presetDispatcher)
         , m_rumble(Rumble::off)
-        , m_gameMode(GameMode::Hatch) {
+        , m_gameMode(GameMode::HatchInit) {
 }
 
 Test::~Test() {

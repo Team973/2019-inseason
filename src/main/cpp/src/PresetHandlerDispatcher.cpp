@@ -19,12 +19,11 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
     double ret = NO_PRESET_NO_CHANGE;
 
     switch (button) {
-        case Xbox::BtnY:
-            break;
         case Xbox::BtnA:  // Low Preset
             if (pressedP) {
                 return Elevator::LOW_ROCKET_CARGO;
             }
+            break;
         case Xbox::BtnX:  // Cargo Bay Preset
             if (pressedP) {
                 return Elevator::CARGO_SHIP_CARGO;
@@ -33,6 +32,11 @@ double PresetHandlerDispatcher::GetCargoPresetFromButton(uint32_t button,
         case Xbox::BtnB:
             if (pressedP) {
                 return Elevator::LOADING_STATION_CARGO;
+            }
+            break;
+        case Xbox::BtnY:
+            if (pressedP) {
+                return Elevator::MID_ROCKET_CARGO;
             }
             break;
     }
@@ -45,8 +49,6 @@ double PresetHandlerDispatcher::GetHatchPresetFromButton(uint32_t button,
     double ret = NO_PRESET_NO_CHANGE;
 
     switch (button) {
-        case Xbox::BtnY:
-            break;
         case Xbox::BtnA:  // Low Preset
             if (pressedP) {
                 return Elevator::LOW_ROCKET_HATCH;
@@ -59,6 +61,11 @@ double PresetHandlerDispatcher::GetHatchPresetFromButton(uint32_t button,
             break;
         case Xbox::BtnB:
             break;
+        case Xbox::BtnY:
+            if (pressedP) {
+                return Elevator::MID_ROCKET_CARGO;
+            }
+            break;
     }
 
     return ret;
@@ -69,12 +76,6 @@ double PresetHandlerDispatcher::GetEndGamePresetFromButton(uint32_t button,
     double ret = NO_PRESET_NO_CHANGE;
 
     switch (button) {
-        case Xbox::BtnY:  // High Elevator Preset
-            if (pressedP) {
-            }
-            else {
-            }
-            break;
         case Xbox::BtnA:  // Low Preset
             if (pressedP) {
             }
@@ -103,10 +104,10 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     double height = NO_PRESET_NO_CHANGE;
 
     switch (mode->m_gameMode) {
-        case GameMode::Cargo:
+        case GameMode::CargoPeriodic:
             height = GetCargoPresetFromButton(button, pressedP);
             break;
-        case GameMode::Hatch:
+        case GameMode::HatchPeriodic:
             height = GetHatchPresetFromButton(button, pressedP);
             break;
         case GameMode::EndGamePeriodic:
@@ -126,10 +127,10 @@ void PresetHandlerDispatcher::ElevatorDispatchPressedButtonToPreset(
     double height = NO_PRESET_NO_CHANGE;
 
     switch (mode->m_gameMode) {
-        case GameMode::Cargo:
+        case GameMode::CargoPeriodic:
             height = GetCargoPresetFromButton(button, pressedP);
             break;
-        case GameMode::Hatch:
+        case GameMode::HatchPeriodic:
             height = GetHatchPresetFromButton(button, pressedP);
             break;
         case GameMode::EndGamePeriodic:
@@ -148,7 +149,7 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                                                            uint32_t button,
                                                            bool pressedP) {
     switch (mode->m_gameMode) {
-        case GameMode::Cargo:
+        case GameMode::CargoPeriodic:
             if (pressedP) {
                 switch (button) {
                     case PoofsJoysticks::LeftTrigger:
@@ -181,12 +182,12 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                 }
             }
             break;
-        case GameMode::Hatch:
+        case GameMode::HatchPeriodic:
             if (pressedP) {
                 switch (button) {
                     case PoofsJoysticks::LeftTrigger:
                         mode->m_driveMode =
-                            Teleop::DriveMode::AssistedCheesyHatch;
+                            Teleop::DriveMode::RegularLimelightHatch;
                         break;
                     case PoofsJoysticks::RightTrigger:
                         mode->m_hatchIntake->Exhaust();
@@ -270,45 +271,17 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
     }
 }
 
-void PresetHandlerDispatcher::JoystickPeriodic(Teleop *mode) {
-    /**
-     * Operator Joystick
-     */
-    if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
-            Xbox::RightYAxis)) > 0.2) {
-        mode->m_elevator->SetManualInput();
-    }
-
-    if (fabs(mode->m_operatorJoystick->GetRawAxisWithDeadband(
-            Xbox::LeftTriggerAxis)) > 0.25) {
-        switch (mode->m_gameMode) {
-            case GameMode::Cargo:
-                mode->m_cargoIntake->GoToWristState(
-                    CargoIntake::CargoWristState::retracted);
-                break;
-            case GameMode::Hatch:
-                mode->m_hatchIntake->ManualPuncherRetract();
-                break;
-            case GameMode::EndGamePeriodic:
-                // Task
-                break;
-        }
-    }
-}
-
 void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                                                   bool pressedP) {
     switch (mode->m_gameMode) {
-        case GameMode::Cargo:
+        case GameMode::CargoPeriodic:
             if (pressedP) {
                 if (button == Xbox::LeftBumper) {
-                    mode->m_cargoIntake->GoToWristState(
-                        CargoIntake::CargoWristState::extended);
+                    mode->m_cargoIntake->ExtendWrist();
                 }
-                else if (button ==
-                         Xbox::RightBumper) {  // button == Xbox::RightBumper
+                else if (button == Xbox::RightBumper) {
                     mode->m_cargoIntake->RunIntake();
-                    mode->m_elevator->SetPosition(Elevator::GROUND);
+                    mode->m_elevator->SetPosition(Elevator::GROUND + 0.55);
                 }
                 else {
                     mode->m_elevator->SetPosition(
@@ -323,12 +296,12 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
             }
 
             break;
-        case GameMode::Hatch:
+        case GameMode::HatchPeriodic:
             if (pressedP) {
                 if (button == Xbox::LeftBumper) {
                     mode->m_hatchIntake->ManualPuncherActivate();
                 }
-                else {  // button == Xbox::RightBumper
+                else if (button == Xbox::RightBumper) {
                     mode->m_hatchIntake->RunIntake();
                     mode->m_elevator->SetPosition(Elevator::GROUND);
                 }

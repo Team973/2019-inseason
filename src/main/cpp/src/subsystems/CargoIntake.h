@@ -8,6 +8,7 @@
 #include "lib/managers/TaskMgr.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/filters/MovingAverageFilter.h"
+#include "lib/sensors/Limelight.h"
 
 using namespace frc;
 using namespace ctre;
@@ -30,7 +31,7 @@ public:
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoPlatformLock,
-                Solenoid *cargoWrist);
+                Solenoid *cargoWrist, Limelight *limelightCargo);
     virtual ~CargoIntake();
 
     /**
@@ -44,7 +45,6 @@ public:
         notRunning, /**< Stopped state. */
         reverse     /**< Outtaking state. */
     };
-
     /**
      * Cargo Wrist states.
      */
@@ -101,6 +101,16 @@ public:
      */
     CargoPlatformLockState GetPlatformLockState();
 
+    void EnableCoastMode();
+    void EnableBrakeMode();
+
+    /**
+     * The looping task periodic.
+     * @param mode The current robot mode.
+     */
+    void TaskPeriodic(RobotMode mode) override;
+
+private:
     /**
      * Sets the desired cargo intake state
      * @param newState The desired Cargo Intake state.
@@ -119,16 +129,6 @@ public:
      */
     void GoToPlatformLockState(CargoPlatformLockState newState);
 
-    void EnableCoastMode();
-    void EnableBrakeMode();
-
-    /**
-     * The looping task periodic.
-     * @param mode The current robot mode.
-     */
-    void TaskPeriodic(RobotMode mode) override;
-
-private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
 
@@ -141,6 +141,9 @@ private:
     CargoIntakeState m_cargoIntakeState;
     CargoWristState m_cargoWristState;
     CargoPlatformLockState m_cargoPlatformLockState;
+
+    Limelight *m_limelightCargo;
+    double m_cargoTimer;
 
     LogCell *m_current;
 

@@ -45,16 +45,19 @@ public:
     static constexpr double LOW_ROCKET_HATCH =
         0.5; /**< Low rocket hatch preset. */
     static constexpr double LOW_ROCKET_CARGO =
-        5.0; /**< Low rocket cargo preset. */
+        4.0; /**< Low rocket cargo preset. */
+    static constexpr double MID_ROCKET_HATCH = 27.0;
+    static constexpr double MID_ROCKET_CARGO = 27.0;
     static constexpr double LOADING_STATION_CARGO = 20.0;
     static constexpr double CARGO_SHIP_HATCH =
-        15.0; /**< Cargo ship hatch preset. */
+        0.5; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
         15.0;                                /**< Cargo ship cargo preset. */
     static constexpr double PLATFORM = 24.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
-        27.0; /**< Soft elevator height. */
+        27.3; /**< Soft elevator height. */
+    static constexpr double ENDGAME_HEIGHT_SOFT_LIMIT = 24.25;
     static constexpr double ELEVATOR_HALL_HEIGHT_OFFSET = 0.6;
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         4.0 / 4096.0; /**< Encoder in/click */
