@@ -134,7 +134,6 @@ void Teleop::TeleopPeriodic() {
         case GameMode::EndGameInit:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameinit");
             m_limelightHatch->SetCameraDriver();
-            m_limelightHatch->SetPiPSecondary();
             m_cargoIntake->StopIntake();
             m_hatchIntake->SetIdle();
             m_elevator->SetPosition(Elevator::PLATFORM);
@@ -177,7 +176,7 @@ void Teleop::TeleopPeriodic() {
                                           1);
             break;
         case Rumble::off:
-            if ((GetMsecTime() - m_rumbleTimer) > 150) {
+            if ((GetMsecTime() - m_rumbleTimer) > 500) {
                 m_operatorJoystick->SetRumble(
                     GenericHID ::RumbleType::kRightRumble, 0);
                 m_operatorJoystick->SetRumble(
@@ -251,7 +250,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_elevator->SetSoftLimit(
                         Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
-                    m_limelightHatch->SetPiPSecondary();
                     m_limelightHatch->SetCameraDriver();
                 }
                 else {
@@ -264,7 +262,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_elevator->SetSoftLimit(
                         Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
-                    m_limelightHatch->SetPiPMain();
                     m_limelightHatch->SetCameraDriver();
                 }
                 else {

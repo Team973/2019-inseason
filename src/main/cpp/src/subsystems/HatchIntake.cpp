@@ -84,7 +84,6 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
             break;
         case HatchIntakeState::hold:
             m_hatchRollers->Set(ControlMode::PercentOutput, -0.1);
-            m_limelightHatch->SetLightOff();
             break;
         case HatchIntakeState::exhaust:
             m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
