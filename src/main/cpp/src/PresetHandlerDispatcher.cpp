@@ -153,14 +153,11 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
             if (pressedP) {
                 switch (button) {
                     case PoofsJoysticks::LeftTrigger:
-                        mode->m_driveMode =
-                            Teleop::DriveMode::AssistedCheesyCargo;
                         break;
                     case PoofsJoysticks::RightTrigger:
                         mode->m_cargoIntake->Exhaust();
                         break;
                     case PoofsJoysticks::LeftBumper:
-                        mode->m_driveMode = Teleop::DriveMode::LimelightCargo;
                         break;
                     case PoofsJoysticks::RightBumper:
                         break;

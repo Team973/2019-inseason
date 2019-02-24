@@ -22,7 +22,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableDualActionJoystick *testStick, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
                CargoIntake *cargoIntake, Stinger *stinger,
-               Limelight *limelightCargo, Limelight *limelightHatch,
+               Limelight *limelightHatch,
                PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
@@ -34,7 +34,6 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_cargoIntake(cargoIntake)
         , m_gameMode(GameMode::HatchInit)
         , m_stinger(stinger)
-        , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_presetDispatcher(presetDispatcher)
         , m_rumble(Rumble::off) {
@@ -83,9 +82,6 @@ void Teleop::TeleopPeriodic() {
                 m_drive->OpenloopArcadeDrive(y, x);
             }
             break;
-        case DriveMode::LimelightCargo:
-            m_drive->LimelightCargoDrive();
-            break;
         case DriveMode::LimelightHatch:
             m_drive->LimelightHatchDrive();
             break;
@@ -94,9 +90,6 @@ void Teleop::TeleopPeriodic() {
             break;
         case DriveMode::AssistedCheesyHatch:
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
-            break;
-        case DriveMode::AssistedCheesyCargo:
-            m_drive->AssistedCheesyCargoDrive(y, x, quickturn, false);
             break;
         default:
             m_drive->CheesyDrive(y, x, quickturn, false);

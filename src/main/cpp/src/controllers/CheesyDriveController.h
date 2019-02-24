@@ -23,7 +23,7 @@ public:
     /**
      * Construct a Cheesy Drive controller.
      */
-    CheesyDriveController(Limelight *limelightCargo, Limelight *LimelightHatch);
+    CheesyDriveController(Limelight *LimelightHatch);
     virtual ~CheesyDriveController();
 
     /**
@@ -76,7 +76,6 @@ public:
     }
 
 private:
-    Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
     double m_leftOutput;

@@ -32,7 +32,7 @@ public:
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
              Elevator *elevator, CargoIntake *cargoIntake,
-             Limelight *limelightCargo, Limelight *limelightHatch);
+             Limelight *limelightHatch);
     virtual ~Disabled();
 
     /**
@@ -82,7 +82,6 @@ private:
     Elevator *m_elevator;
     CargoIntake *m_cargoIntake;
 
-    Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 };
 }

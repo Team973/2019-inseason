@@ -43,7 +43,7 @@ public:
            ObservableDualActionJoystick *testStick, Drive *drive,
            Elevator *elevator, HatchIntake *hatchintake,
            CargoIntake *cargoIntake, Stinger *stinger,
-           Limelight *limelightCargo, Limelight *limelightHatch,
+           Limelight *limelightHatch,
            PresetHandlerDispatcher *presetDispatcher);
 
     virtual ~Teleop();
@@ -100,11 +100,9 @@ private:
     enum class DriveMode
     {
         Openloop,
-        LimelightCargo,
         LimelightHatch,
         RegularLimelightHatch,
         AssistedCheesyHatch,
-        AssistedCheesyCargo,
         Cheesy
     };
     DriveMode m_driveMode;
@@ -117,7 +115,6 @@ private:
     PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 
-    Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
     enum class Rumble
     {

@@ -8,8 +8,7 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
            ObservableDualActionJoystick *testStick, Drive *drive,
            Elevator *elevator, HatchIntake *hatchIntake,
            CargoIntake *cargoIntake, Stinger *stinger,
-           Limelight *limelightCargo, Limelight *limelightHatch,
-           PresetHandlerDispatcher *presetDispatcher)
+           Limelight *limelightHatch, PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_testJoystick(testStick)
@@ -18,7 +17,6 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
         , m_hatchIntake(hatchIntake)
         , m_cargoIntake(cargoIntake)
         , m_stinger(stinger)
-        , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_presetDispatcher(presetDispatcher)
         , m_rumble(Rumble::off)
@@ -64,9 +62,6 @@ void Test::TestPeriodic() {
             else {
                 m_drive->OpenloopArcadeDrive(y, x);
             }
-            break;
-        case DriveMode::LimelightCargo:
-            m_drive->LimelightCargoDrive();
             break;
         case DriveMode::LimelightHatch:
             m_drive->LimelightHatchDrive();

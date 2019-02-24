@@ -41,7 +41,7 @@ public:
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
          ObservableDualActionJoystick *testStick, Drive *drive,
          Elevator *elevator, HatchIntake *hatchIntake, CargoIntake *cargoIntake,
-         Stinger *stinger, Limelight *limelightCargo, Limelight *limelightHatch,
+         Stinger *stinger, Limelight *limelightHatch,
          PresetHandlerDispatcher *presetDispatcher);
     virtual ~Test();
     void TestInit();
@@ -92,7 +92,6 @@ private:
     enum class DriveMode
     {
         Openloop,
-        LimelightCargo,
         LimelightHatch,
         AssistedCheesy,
         Cheesy
@@ -105,7 +104,6 @@ private:
     CargoIntake *m_cargoIntake;
     Stinger *m_stinger;
 
-    Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
     PresetHandlerDispatcher *m_presetDispatcher;
