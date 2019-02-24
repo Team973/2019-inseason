@@ -51,8 +51,6 @@ public:
     // void DriveDispatchJoystickBumper(Teleop *mode, uint32_t button,
     //                                  bool pressedP);
 
-    void JoystickPeriodic(Teleop *mode);
-
     void IntakeBumperPresets(Teleop *mode, uint32_t button, bool pressedP);
 
 private:

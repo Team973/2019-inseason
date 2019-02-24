@@ -31,8 +31,8 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->SetInverted(false);
 
     m_elevatorMotorA->Config_PID(0, 1.5, 0.0, 0.0, 0.0, 10);
-    m_elevatorMotorA->ConfigMotionCruiseVelocity(2500.0, 10);
-    m_elevatorMotorA->ConfigMotionAcceleration(1000.0, 10);
+    m_elevatorMotorA->ConfigMotionCruiseVelocity(3750.0, 10);
+    m_elevatorMotorA->ConfigMotionAcceleration(3000.0, 10);
     m_elevatorMotorA->SelectProfileSlot(0, 0);
 
     m_elevatorMotorA->EnableCurrentLimit(true);
@@ -119,9 +119,8 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
     DBStringPrintf(DBStringPos::DB_LINE7, "ep: %2.2lf",
                    m_elevatorMotorA->GetMotorOutputVoltage());
-    DBStringPrintf(DBStringPos::DB_LINE1, "E-Voltage: %f",
-                   m_elevatorMotorA->GetMotorOutputVoltage());
-
+    DBStringPrintf(DB_LINE2, "elevcurr: %2.2lf",
+                   m_elevatorMotorA->GetOutputCurrent());
     HallZero();
 
     switch (m_elevatorState) {
@@ -149,7 +148,6 @@ void Elevator::TaskPeriodic(RobotMode mode) {
             else {
                 m_elevatorMotorA->Set(ControlMode::PercentOutput, m_power);
             }
-
             break;
         case motionMagic:
             break;

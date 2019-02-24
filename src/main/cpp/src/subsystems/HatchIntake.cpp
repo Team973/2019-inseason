@@ -2,16 +2,21 @@
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
 #include "lib/util/WrapDash.h"
+#include "lib/sensors/Limelight.h"
+#include "src/TeleopMode.h"
 
 namespace frc973 {
 HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
-                         GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher)
+                         GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher,
+                         Limelight *limelightHatch)
         : m_scheduler(scheduler)
         , m_logger(logger)
         , m_hatchRollers(hatchRollers)
         , m_hatchPuncher(hatchPuncher)
         , m_hatchSolenoidState(HatchSolenoidState::manual)
-        , m_hatchIntakeState(HatchIntakeState::idle) {
+        , m_hatchIntakeState(HatchIntakeState::idle)
+        , m_limelightHatch(limelightHatch)
+        , m_hatchTimer(0.0) {
     this->m_scheduler->RegisterTask("HatchIntake", this, TASK_PERIODIC);
     m_hatchRollers->Set(ControlMode::PercentOutput, 0.0);
     m_hatchRollers->SetNeutralMode(NeutralMode::Coast);
@@ -45,14 +50,6 @@ void HatchIntake::Exhaust() {
     GoToIntakeState(HatchIntakeState::exhaust);
 }
 
-void HatchIntake::LaunchHatch() {
-    GoToIntakeState(HatchIntakeState::launch);
-}
-
-void HatchIntake::GrabHatch() {
-    GoToIntakeState(HatchIntakeState::intaking);
-}
-
 void HatchIntake::ManualPuncherActivate() {
     GoToPneumaticState(HatchSolenoidState::manualPunch);
     GoToIntakeState(HatchIntakeState::manual);
@@ -64,7 +61,7 @@ void HatchIntake::ManualPuncherRetract() {
 }
 
 bool HatchIntake::IsHatchInIntake() {
-    return (m_hatchRollers->GetOutputCurrent() > 30);
+    return (m_hatchRollers->GetOutputCurrent() > 35.0);
 }
 
 void HatchIntake::GoToPneumaticState(HatchSolenoidState newState) {
@@ -82,7 +79,7 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
         case HatchIntakeState::intaking:
             m_hatchRollers->Set(ControlMode::PercentOutput, -1.0);
             if (IsHatchInIntake()) {
-                GoToIntakeState(HatchIntakeState::hold);
+                m_limelightHatch->SetLightBlink();
             }
             break;
         case HatchIntakeState::hold:
@@ -90,10 +87,6 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
             break;
         case HatchIntakeState::exhaust:
             m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
-            break;
-        case HatchIntakeState::launch:
-            m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
-            GoToPneumaticState(HatchSolenoidState::launch);
             break;
         case HatchIntakeState::manual:
             // Do Nothing

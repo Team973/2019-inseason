@@ -63,18 +63,23 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
-        , m_limelightCargoDriveController(
-              new LimelightDriveController(limelightCargo, true))
-        , m_limelightHatchDriveController(
-              new LimelightDriveController(limelightHatch, false))
+        , m_limelightCargoDriveController(new LimelightDriveController(
+              limelightCargo, LimelightDriveController::VisionOffset::Cargo,
+              true))
+        , m_limelightHatchDriveController(new LimelightDriveController(
+              limelightHatch, LimelightDriveController::VisionOffset::Hatch,
+              true))
+        , m_regularLimelightHatchDriveController(new LimelightDriveController(
+              limelightHatch, LimelightDriveController::VisionOffset::Hatch,
+              false))
         , m_assistedCheesyDriveHatchController(
               new AssistedCheesyDriveController(
                   m_limelightHatch,
-                  AssistedCheesyDriveController::VisionOffset::Hatch, false))
+                  AssistedCheesyDriveController::VisionOffset::Hatch))
         , m_assistedCheesyDriveCargoController(
               new AssistedCheesyDriveController(
                   m_limelightCargo,
-                  AssistedCheesyDriveController::VisionOffset::Cargo, true))
+                  AssistedCheesyDriveController::VisionOffset::Cargo))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))
@@ -193,6 +198,12 @@ LimelightDriveController *Drive::LimelightHatchDrive() {
     this->SetDriveController(m_limelightHatchDriveController);
 
     return m_limelightHatchDriveController;
+}
+
+LimelightDriveController *Drive::RegularLimelightHatchDrive() {
+    this->SetDriveController(m_regularLimelightHatchDriveController);
+
+    return m_regularLimelightHatchDriveController;
 }
 
 AssistedCheesyDriveController *Drive::AssistedCheesyHatchDrive(

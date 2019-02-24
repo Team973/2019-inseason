@@ -5,6 +5,7 @@
 #include "lib/logging/LogSpreadsheet.h"
 #include "src/info/RobotInfo.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/sensors/Limelight.h"
 
 using namespace frc;
 
@@ -23,7 +24,8 @@ public:
      * @param hatchPuncher The hatch intake's puncher.
      */
     HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
-                GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher);
+                GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher,
+                Limelight *limelightHatch);
     virtual ~HatchIntake();
 
     /**
@@ -35,7 +37,6 @@ public:
         intaking, /**< Prime hatch intake for intaking. */
         hold,     /**< Hold the hatch. */
         exhaust,  /**< Place the hatch. */
-        launch,   /**< Launch the hatch. */
         manual    /**< Manual hatch intake control. */
     };
 
@@ -80,16 +81,6 @@ public:
     void Exhaust();
 
     /**
-     * Open the claw arms.
-     */
-    void OpenClaw();
-
-    /**
-     * Grab the hatch.
-     */
-    void GrabHatch();
-
-    /**
      * Launch the hatch.
      */
     void LaunchHatch();
@@ -119,10 +110,14 @@ private:
     GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
 
+    Limelight *m_limelightHatch;
+
     HatchIntakeState m_hatchIntakeState;
     HatchSolenoidState m_hatchSolenoidState;
 
     void GoToPneumaticState(HatchSolenoidState newState);
     void GoToIntakeState(HatchIntakeState newState);
+
+    double m_hatchTimer;
 };
 }

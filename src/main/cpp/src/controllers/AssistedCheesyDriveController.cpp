@@ -16,14 +16,14 @@ using namespace frc;
 namespace frc973 {
 
 AssistedCheesyDriveController::AssistedCheesyDriveController(
-    Limelight *limelight, VisionOffset offset, bool inverted)
+    Limelight *limelight, VisionOffset offset)
         : m_limelight(limelight)
         , m_visionOffset((offset == VisionOffset::Cargo ? CARGO_VISION_OFFSET
                                                         : HATCH_VISION_OFFSET))
-        , m_isInverted(inverted)
-        , m_visionTurnPID(new PID(
-              0.04, 0.0, 0.0))  // without quickturn p = 0.04 // with quickturn
-                                // - doesnt work normally p = 0.003
+        , m_visionTurnPID(
+              new PID(0.04, 0.0,
+                      0.002))  // without quickturn p = 0.04 // with quickturn
+                               // - doesnt work normally p = 0.003
         , m_leftOutput(0.0)
         , m_rightOutput(0.0)
         , m_oldWheel(0.0)
@@ -36,6 +36,7 @@ AssistedCheesyDriveController::~AssistedCheesyDriveController() {
 
 void AssistedCheesyDriveController::Start(DriveControlSignalReceiver *out) {
     m_limelight->SetCameraVision();
+    m_limelight->SetLightOn();
 }
 
 void AssistedCheesyDriveController::CalcDriveOutput(
@@ -50,19 +51,11 @@ void AssistedCheesyDriveController::CalcDriveOutput(
 void AssistedCheesyDriveController::SetJoysticks(double throttle, double turn,
                                                  bool isQuickTurn,
                                                  bool isHighGear) {
-    double sumTurn;
+    double sumTurn = turn + m_visionTurnPID->CalcOutputWithError(
+                                m_limelight->GetXOffset() - m_visionOffset);
 
-    if (m_isInverted) {
-        sumTurn = turn + m_visionTurnPID->CalcOutputWithError(
-                             m_limelight->GetXOffset() + m_visionOffset);
-        SmartDashboard::PutString("misc/limelight/currentLimelight", "cargo");
-    }
-    else {
-        sumTurn = turn + m_visionTurnPID->CalcOutputWithError(
-                             m_limelight->GetXOffset() - m_visionOffset);
-        SmartDashboard::PutString("misc/limelight/currentLimelight", "hatch");
-    }
     double negInertia = sumTurn - m_oldWheel;
+
     if (isQuickTurn) {
         sumTurn = Util::signSquare(sumTurn);
     }
