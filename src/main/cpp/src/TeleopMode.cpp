@@ -150,13 +150,13 @@ void Teleop::TeleopPeriodic() {
             break;
         case GameMode::RaiseIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
-            m_elevator->SetPosition(27.0);
+            m_elevator->SetPosition(Elevator::PLATFORM);
             m_cargoIntake->RetractPlatformWheel();
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
-            if (m_elevator->GetPosition() > Elevator::PLATFORM) {
+            if (m_elevator->GetPosition() > Elevator::PLATFORM - 2.0) {
                 m_cargoIntake->RetractWrist();
                 m_elevator->SetPosition(0.0);
                 m_gameMode = GameMode::EndGamePeriodic;

@@ -143,7 +143,7 @@ void Elevator::TaskPeriodic(RobotMode mode) {
         case manualVoltage:
             if (GetElevatorHall()) {
                 m_elevatorMotorA->Set(ControlMode::PercentOutput,
-                                      fmax(-0.3, m_power));
+                                      fmax(-0.25, m_power));
             }
             else {
                 m_elevatorMotorA->Set(ControlMode::PercentOutput, m_power);
