@@ -223,7 +223,6 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                             CargoIntake::CargoWristState::extended) {
                             mode->m_elevator->SetPower(
                                 Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO * 0.6);
-                            mode->m_stinger->SetPower(0.8);
                         }
                         else if (mode->m_cargoIntake->GetWristState() ==
                                  CargoIntake::CargoWristState::retracted) {
@@ -236,7 +235,6 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                     case PoofsJoysticks::LeftBumper:
                         mode->m_elevator->SetPower(
                             -Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
-                        mode->m_stinger->SetPower(-1.0);
                         break;
                     case PoofsJoysticks::RightBumper:
                         break;
@@ -248,18 +246,15 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                         if (mode->m_cargoIntake->GetWristState() ==
                             CargoIntake::CargoWristState::extended) {
                             mode->m_elevator->SetPower(0.0);
-                            mode->m_stinger->SetPower(0.0);
                         }
                         else if (mode->m_cargoIntake->GetWristState() ==
                                  CargoIntake::CargoWristState::retracted) {
-                            mode->m_stinger->SetPower(0.0);
                         }
                         break;
                     case PoofsJoysticks::RightTrigger:
                         break;
                     case PoofsJoysticks::LeftBumper:
                         mode->m_elevator->SetPower(0.0);
-                        mode->m_stinger->SetPower(0.0);
                         break;
                     case PoofsJoysticks::RightBumper:
                         break;
