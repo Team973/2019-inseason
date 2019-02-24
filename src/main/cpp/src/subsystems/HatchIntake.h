@@ -37,7 +37,6 @@ public:
         intaking, /**< Prime hatch intake for intaking. */
         hold,     /**< Hold the hatch. */
         exhaust,  /**< Place the hatch. */
-        launch,   /**< Launch the hatch. */
         manual    /**< Manual hatch intake control. */
     };
 
@@ -80,16 +79,6 @@ public:
      * Set hatch intake to exhausting.
      */
     void Exhaust();
-
-    /**
-     * Open the claw arms.
-     */
-    void OpenClaw();
-
-    /**
-     * Grab the hatch.
-     */
-    void GrabHatch();
 
     /**
      * Launch the hatch.

@@ -31,7 +31,7 @@ public:
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoPlatformLock,
-                Solenoid *cargoWrist, Limelight *limelightCargo);
+                Solenoid *cargoWrist, Limelight *limelightHatch);
     virtual ~CargoIntake();
 
     /**
@@ -142,7 +142,7 @@ private:
     CargoWristState m_cargoWristState;
     CargoPlatformLockState m_cargoPlatformLockState;
 
-    Limelight *m_limelightCargo;
+    Limelight *m_limelightHatch;
     double m_cargoTimer;
 
     LogCell *m_current;

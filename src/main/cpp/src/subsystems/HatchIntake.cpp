@@ -50,14 +50,6 @@ void HatchIntake::Exhaust() {
     GoToIntakeState(HatchIntakeState::exhaust);
 }
 
-void HatchIntake::LaunchHatch() {
-    GoToIntakeState(HatchIntakeState::launch);
-}
-
-void HatchIntake::GrabHatch() {
-    GoToIntakeState(HatchIntakeState::intaking);
-}
-
 void HatchIntake::ManualPuncherActivate() {
     GoToPneumaticState(HatchSolenoidState::manualPunch);
     GoToIntakeState(HatchIntakeState::manual);
@@ -87,23 +79,14 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
         case HatchIntakeState::intaking:
             m_hatchRollers->Set(ControlMode::PercentOutput, -1.0);
             if (IsHatchInIntake()) {
-                GoToIntakeState(HatchIntakeState::hold);
-                // m_limelightHatch->SetLightBlink();
-                m_hatchTimer = GetMsecTime();
+                m_limelightHatch->SetLightBlink();
             }
             break;
         case HatchIntakeState::hold:
             m_hatchRollers->Set(ControlMode::PercentOutput, -0.1);
-            if (m_hatchTimer - GetMsecTime() > 100) {
-                m_limelightHatch->SetLightOff();
-            }
             break;
         case HatchIntakeState::exhaust:
             m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
-            break;
-        case HatchIntakeState::launch:
-            m_hatchRollers->Set(ControlMode::PercentOutput, 1.0);
-            GoToPneumaticState(HatchSolenoidState::launch);
             break;
         case HatchIntakeState::manual:
             // Do Nothing

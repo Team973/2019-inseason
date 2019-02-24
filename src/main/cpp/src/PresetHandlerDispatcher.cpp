@@ -292,6 +292,7 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
             else {
                 if (button == Xbox::RightBumper || button == Xbox::BtnB) {
                     mode->m_cargoIntake->HoldCargo();
+                    mode->m_limelightHatch->SetLightOff();
                 }
             }
 
@@ -309,6 +310,7 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
             else {
                 if (button == Xbox::RightBumper) {
                     mode->m_hatchIntake->HoldHatch();
+                    mode->m_limelightHatch->SetLightOff();
                 }
             }
             break;
