@@ -46,6 +46,7 @@ public:
                          DriveControlSignalReceiver *out) override;
 
     double CalcScaleGoalAngleComp();
+    double CalcTurnComp();
 
     /**
      * Checks with the controller to see if we are on target.
@@ -70,8 +71,10 @@ public:
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET = 2.0;  // in degrees
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
-    static constexpr double GOAL_ANGLE_COMP_MIN = 24.0;
-    static constexpr double GOAL_ANGLE_COMP_MAX = 40.0;
+    static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
+    static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 40.0;
+    static constexpr double TURN_COMP_DISTANCE_MIN = -4.0;
+    static constexpr double TURN_COMP_DISTANCE_MAX = 4.0;
     static constexpr double GOAL_ANGLE_COMP_KP = 0.06;
 
 private:

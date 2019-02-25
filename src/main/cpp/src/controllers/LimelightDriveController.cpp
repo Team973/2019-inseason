@@ -35,16 +35,27 @@ void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
 double LimelightDriveController::CalcScaleGoalAngleComp() {
     return Util::bound(
         GOAL_ANGLE_COMP_KP * m_limelight->GetTargetSkew() *
-            Util::bound(1 / (GOAL_ANGLE_COMP_MAX - GOAL_ANGLE_COMP_MIN) *
+            Util::bound(1 /
+                                (GOAL_ANGLE_COMP_DISTANCE_MAX -
+                                 GOAL_ANGLE_COMP_DISTANCE_MIN) *
                                 m_limelight->GetHorizontalDistance() -
-                            (GOAL_ANGLE_COMP_MIN * 1 /
-                             (GOAL_ANGLE_COMP_MAX - GOAL_ANGLE_COMP_MIN)),
+                            (GOAL_ANGLE_COMP_DISTANCE_MIN * 1 /
+                             (GOAL_ANGLE_COMP_DISTANCE_MAX -
+                              GOAL_ANGLE_COMP_DISTANCE_MIN)),
                         0.0, 1.0),
         -0.35, 0.35);  // y = mx + b
                        // y = degree of compensation
                        // m = (1 - 0) / (max - min)
                        // x = distance to target
                        // b = y-int as plugged in to slope intercept equation
+}
+
+double LimelightDriveController::CalcTurnComp() {
+    return Util::bound(1 / (TURN_COMP_DISTANCE_MAX - TURN_COMP_DISTANCE_MIN) *
+                               m_limelight->GetHorizontalDistance() -
+                           (TURN_COMP_DISTANCE_MIN * 1 /
+                            (TURN_COMP_DISTANCE_MAX - TURN_COMP_DISTANCE_MIN)),
+                       -1.0, 1.0);
 }
 
 void LimelightDriveController::CalcDriveOutput(
