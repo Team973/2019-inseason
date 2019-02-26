@@ -111,11 +111,6 @@ private:
     GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
 
-    UsbCamera m_hatchCamera;
-    CameraServer *m_cameraServer;
-    VideoSink m_greyCam;
-
-    Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
     GreyTalonSRX *m_cargoIntakeMotor;

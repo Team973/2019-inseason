@@ -22,7 +22,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
                ObservableDualActionJoystick *testStick, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
                CargoIntake *cargoIntake, Stinger *stinger,
-               Limelight *limelightCargo, Limelight *limelightHatch,
+               Limelight *limelightHatch,
                PresetHandlerDispatcher *presetDispatcher)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
@@ -34,7 +34,6 @@ Teleop::Teleop(ObservablePoofsJoystick *driver,
         , m_cargoIntake(cargoIntake)
         , m_gameMode(GameMode::HatchInit)
         , m_stinger(stinger)
-        , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
         , m_presetDispatcher(presetDispatcher)
         , m_rumble(Rumble::off) {
@@ -83,9 +82,6 @@ void Teleop::TeleopPeriodic() {
                 m_drive->OpenloopArcadeDrive(y, x);
             }
             break;
-        case DriveMode::LimelightCargo:
-            m_drive->LimelightCargoDrive();
-            break;
         case DriveMode::LimelightHatch:
             m_drive->LimelightHatchDrive();
             break;
@@ -94,9 +90,6 @@ void Teleop::TeleopPeriodic() {
             break;
         case DriveMode::AssistedCheesyHatch:
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
-            break;
-        case DriveMode::AssistedCheesyCargo:
-            m_drive->AssistedCheesyCargoDrive(y, x, quickturn, false);
             break;
         default:
             m_drive->CheesyDrive(y, x, quickturn, false);
@@ -147,21 +140,18 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
-            if (m_stinger->GetUpperHall() &&
-                m_driverJoystick->GetRawButton(PoofsJoysticks::LeftTrigger)) {
-                // m_limelightCargo->SetLightBlink();
-            }
             break;
         case GameMode::RaiseIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
-            m_elevator->SetPosition(10.0);
+            m_elevator->SetPosition(Elevator::PLATFORM);
+            m_cargoIntake->RetractPlatformWheel();
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
-            if (fabs(m_elevator->GetPosition() - 10.0) < 1.0) {
+            if (m_elevator->GetPosition() > Elevator::PLATFORM - 2.0) {
                 m_cargoIntake->RetractWrist();
-                m_cargoIntake->RetractPlatformWheel();
+                m_elevator->SetPosition(0.0);
                 m_gameMode = GameMode::EndGamePeriodic;
             }
             break;
@@ -230,8 +220,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::Back:
                 if (pressedP) {
                     m_gameMode = GameMode::EndGameInit;
-                    m_elevator->SetSoftLimit(
-                        Elevator::ENDGAME_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
                 }
                 else {
@@ -247,8 +235,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadLeftVirtBtn:  // Changes game mode to Cargo
                 if (pressedP) {
                     m_gameMode = GameMode::CargoInit;
-                    m_elevator->SetSoftLimit(
-                        Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
                     m_limelightHatch->SetCameraDriver();
                 }
@@ -259,8 +245,6 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case Xbox::DPadRightVirtBtn:  // Changes game mode to Hatch
                 if (pressedP) {
                     m_gameMode = GameMode::HatchInit;
-                    m_elevator->SetSoftLimit(
-                        Elevator::ELEVATOR_HEIGHT_SOFT_LIMIT);
                     m_rumble = Rumble::on;
                     m_limelightHatch->SetCameraDriver();
                 }

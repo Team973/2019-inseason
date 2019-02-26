@@ -33,7 +33,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
              GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
              GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
-             Limelight *limelightCargo, Limelight *limelightHatch)
+             Limelight *limelightHatch)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveTalonA(leftDriveTalonA)
@@ -55,17 +55,12 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_rightPosZero(0.0)
         , m_gyro(gyro)
         , m_gyroZero(0.0)
-        , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch)
-        , m_cheesyDriveController(
-              new CheesyDriveController(limelightCargo, limelightHatch))
+        , m_cheesyDriveController(new CheesyDriveController(limelightHatch))
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
-        , m_limelightCargoDriveController(new LimelightDriveController(
-              limelightCargo, LimelightDriveController::VisionOffset::Cargo,
-              true))
         , m_limelightHatchDriveController(new LimelightDriveController(
               limelightHatch, LimelightDriveController::VisionOffset::Hatch,
               true))
@@ -76,10 +71,6 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               new AssistedCheesyDriveController(
                   m_limelightHatch,
                   AssistedCheesyDriveController::VisionOffset::Hatch))
-        , m_assistedCheesyDriveCargoController(
-              new AssistedCheesyDriveController(
-                  m_limelightCargo,
-                  AssistedCheesyDriveController::VisionOffset::Cargo))
         , m_angle()
         , m_angleRate()
         , m_angleLog(new LogCell("Angle"))
@@ -188,12 +179,6 @@ void Drive::VelocityArcadeDrive(double throttle, double turn) {
     m_velocityArcadeDriveController->SetJoysticks(throttle, turn);
 }
 
-LimelightDriveController *Drive::LimelightCargoDrive() {
-    this->SetDriveController(m_limelightCargoDriveController);
-
-    return m_limelightCargoDriveController;
-}
-
 LimelightDriveController *Drive::LimelightHatchDrive() {
     this->SetDriveController(m_limelightHatchDriveController);
 
@@ -212,14 +197,6 @@ AssistedCheesyDriveController *Drive::AssistedCheesyHatchDrive(
     m_assistedCheesyDriveHatchController->SetJoysticks(throttle, turn,
                                                        isQuickTurn, isHighGear);
     return m_assistedCheesyDriveHatchController;
-}
-
-AssistedCheesyDriveController *Drive::AssistedCheesyCargoDrive(
-    double throttle, double turn, bool isQuickTurn, bool isHighGear) {
-    this->SetDriveController(m_assistedCheesyDriveCargoController);
-    m_assistedCheesyDriveCargoController->SetJoysticks(throttle, turn,
-                                                       isQuickTurn, isHighGear);
-    return m_assistedCheesyDriveCargoController;
 }
 
 double Drive::GetLeftDist() const {
@@ -332,47 +309,6 @@ void Drive::DisableDriveCurrentLimit() {
 }
 
 void Drive::TaskPeriodic(RobotMode mode) {
-    // NetworkTable Voltages
-    SmartDashboard::PutNumber("drive/voltages/leftvoltage",
-                              m_leftDriveTalonA->GetBusVoltage());
-    SmartDashboard::PutNumber("drive/voltages/rightvoltage",
-                              m_rightDriveTalonA->GetMotorOutputVoltage());
-    SmartDashboard::PutNumber("drive/voltages/stingervoltage",
-                              m_stingerDriveMotor->GetMotorOutputVoltage());
-
-    // NetworkTable Currents
-    SmartDashboard::PutNumber("drive/currents/leftcurrent",
-                              m_leftDriveTalonA->GetOutputCurrent());
-    SmartDashboard::PutNumber("drive/currents/rightcurrent",
-                              m_rightDriveTalonA->GetOutputCurrent());
-    SmartDashboard::PutNumber("drive/currents/stingercurrent",
-                              m_stingerDriveMotor->GetOutputCurrent());
-
-    // NetworkTable Encoders
-    SmartDashboard::PutNumber("drive/encoders/leftencoder", GetLeftDist());
-    SmartDashboard::PutNumber("drive/encoders/rightencoder", GetRightDist());
-
-    // NetworkTable motor output
-    SmartDashboard::PutNumber("drive/outputs/leftratesetpoint",
-                              m_leftDriveOutput * DRIVE_IPS_FROM_CPDS);
-    SmartDashboard::PutNumber("drive/outputs/leftrateactual",
-                              Drive::GetLeftRate());
-
-    SmartDashboard::PutNumber("drive/outputs/rightratesetpoint",
-                              m_rightDriveOutput * DRIVE_IPS_FROM_CPDS);
-    SmartDashboard::PutNumber("drive/outputs/rightrateactual",
-                              Drive::GetRightRate());
-
-    // NetworkTable Limelight
-    SmartDashboard::PutNumber("drive/limelight/hatch/error",
-                              m_limelightHatch->GetXOffset());
-
-    SmartDashboard::PutNumber("drive/limelight/cargo/error",
-                              m_limelightCargo->GetXOffset());
-
-    // NetworkTable Gyro
-    SmartDashboard::PutNumber("drive/gyro/angle", this->GetAngle());
-
     m_angle = m_gyro->GetAngle();
 
     // Austin ADXRS450_Gyro config

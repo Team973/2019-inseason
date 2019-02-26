@@ -6,13 +6,11 @@ using namespace frc;
 namespace frc973 {
 Disabled::Disabled(ObservablePoofsJoystick *driver,
                    ObservableXboxJoystick *codriver, Elevator *elevator,
-                   CargoIntake *cargoIntake, Limelight *limelightCargo,
-                   Limelight *limelightHatch)
+                   CargoIntake *cargoIntake, Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_elevator(elevator)
         , m_cargoIntake(cargoIntake)
-        , m_limelightCargo(limelightCargo)
         , m_limelightHatch(limelightHatch) {
 }
 
@@ -20,9 +18,6 @@ Disabled::~Disabled() {
 }
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
-
-    m_limelightCargo->SetLightOff();
-    m_limelightCargo->SetCameraOff();
     m_limelightHatch->SetLightOff();
     m_limelightHatch->SetCameraOff();
     m_elevator->EnableBrakeMode();

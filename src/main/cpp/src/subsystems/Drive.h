@@ -65,7 +65,7 @@ public:
           GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
           GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
-          Limelight *limelightCargo, Limelight *limelightHatch);
+          Limelight *limelightHatch);
     virtual ~Drive();
 
     /**
@@ -156,7 +156,6 @@ public:
     /**
      * Set drive controller to use limelight in following a target
      */
-    LimelightDriveController *LimelightCargoDrive();
     LimelightDriveController *LimelightHatchDrive();
     LimelightDriveController *RegularLimelightHatchDrive();
 
@@ -168,18 +167,6 @@ public:
      * @param isHighGear 1 or 0 for if high gear is enabled
      */
     AssistedCheesyDriveController *AssistedCheesyHatchDrive(double throttle,
-                                                            double turn,
-                                                            bool isQuickTurn,
-                                                            bool isHighGear);
-
-    /*
-     * Set drive controller to use limelight and driver input to steer and drive
-     * @param trottle Joysticks left y-axis input
-     * @param turn Joysticks right x-axis input
-     * @param isQuickTurn 1 or 0 for if quickturn is enabled
-     * @param isHighGear 1 or 0 for if high gear is enabled
-     */
-    AssistedCheesyDriveController *AssistedCheesyCargoDrive(double throttle,
                                                             double turn,
                                                             bool isQuickTurn,
                                                             bool isHighGear);
@@ -303,7 +290,6 @@ private:
 
     ADXRS450_Gyro *m_gyro;
     double m_gyroZero;
-    Limelight *m_limelightCargo;
     Limelight *m_limelightHatch;
 
     CheesyDriveController *m_cheesyDriveController;
@@ -312,10 +298,8 @@ private:
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
-    LimelightDriveController *m_limelightCargoDriveController;
     LimelightDriveController *m_limelightHatchDriveController;
     LimelightDriveController *m_regularLimelightHatchDriveController;
-    AssistedCheesyDriveController *m_assistedCheesyDriveCargoController;
     AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 
     double m_angle;

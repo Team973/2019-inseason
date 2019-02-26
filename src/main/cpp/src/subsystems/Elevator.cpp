@@ -109,13 +109,6 @@ void Elevator::HallZero() {
 
 void Elevator::TaskPeriodic(RobotMode mode) {
     m_positionCell->LogDouble(GetPosition());
-    SmartDashboard::PutNumber("elevator/encoders/encoder", GetPosition());
-    SmartDashboard::PutNumber("elevator/outputs/current",
-                              m_elevatorMotorA->GetOutputCurrent());
-    SmartDashboard::PutNumber("elevator/motorA/velocity",
-                              m_elevatorMotorA->GetSelectedSensorVelocity(0));
-    SmartDashboard::PutNumber("elevator/motorB/velocity",
-                              m_elevatorMotorB->GetSelectedSensorVelocity(0));
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
     DBStringPrintf(DBStringPos::DB_LINE7, "ep: %2.2lf",
                    m_elevatorMotorA->GetMotorOutputVoltage());
@@ -143,7 +136,7 @@ void Elevator::TaskPeriodic(RobotMode mode) {
         case manualVoltage:
             if (GetElevatorHall()) {
                 m_elevatorMotorA->Set(ControlMode::PercentOutput,
-                                      fmax(-0.3, m_power));
+                                      fmax(-0.25, m_power));
             }
             else {
                 m_elevatorMotorA->Set(ControlMode::PercentOutput, m_power);

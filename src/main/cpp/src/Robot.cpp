@@ -45,17 +45,13 @@ Robot::Robot()
               new Solenoid(PCM_CAN_ID, CARGO_PLATFORM_LOCK_PCM_ID))
         , m_hatchRollers(new GreyTalonSRX(HATCH_ROLLER_CAN_ID))
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
-        , m_hatchCamera(UsbCamera("USB Camera 0", 0))
-        , m_cameraServer(CameraServer::GetInstance())
-        , m_greyCam(m_cameraServer->AddServer("serve_GreyCam", 1181))
-        , m_limelightCargo(new Limelight("limelight-cargo", false))
         , m_limelightHatch(new Limelight("limelight-hatch", false))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
                             m_rightDriveVictorB, m_stingerDriveMotor, m_gyro,
-                            m_limelightCargo, m_limelightHatch))
+                            m_limelightHatch))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick,
                                   m_elevatorHall))
@@ -73,17 +69,15 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
-                                  m_elevator, m_cargoIntake, m_limelightCargo,
-                                  m_limelightHatch))
+                                  m_elevator, m_cargoIntake, m_limelightHatch))
         , m_presetDispatcher(new PresetHandlerDispatcher())
-        , m_teleop(new Teleop(
-              m_driverJoystick, m_operatorJoystick, m_testJoystick, m_drive,
-              m_elevator, m_hatchIntake, m_cargoIntake, m_stinger,
-              m_limelightCargo, m_limelightHatch, m_presetDispatcher))
+        , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
+                              m_testJoystick, m_drive, m_elevator,
+                              m_hatchIntake, m_cargoIntake, m_stinger,
+                              m_limelightHatch, m_presetDispatcher))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
                           m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
-                          m_stinger, m_limelightCargo, m_limelightHatch,
-                          m_presetDispatcher))
+                          m_stinger, m_limelightHatch, m_presetDispatcher))
         , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
                                       m_testJoystick, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;
@@ -96,12 +90,6 @@ void Robot::Initialize() {
     m_compressor->Enable();
     m_logger->RegisterCell(m_matchIdentifier);
     m_logger->Start();
-
-    m_cameraServer->AddCamera(m_hatchCamera);
-    m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 320, 240, 10);
-    m_greyCam.SetSource(m_hatchCamera);
-
-    SmartDashboard::PutString("misc/limelight/currentLimelight", "hatch");
 }
 
 void Robot::DisabledStart() {
@@ -153,12 +141,6 @@ void Robot::TestStop() {
 }
 
 void Robot::AllStateContinuous() {
-    // NetworkTable Battery Voltage
-    SmartDashboard::PutNumber("misc/pdp/batteryvoltage", m_pdp->GetVoltage());
-    SmartDashboard::PutNumber("misc/limelight/cargo/target",
-                              m_limelightCargo->isTargetValid());
-    SmartDashboard::PutNumber("misc/limelight/hatch/target",
-                              m_limelightHatch->isTargetValid());
     m_matchIdentifier->LogPrintf(
         "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
