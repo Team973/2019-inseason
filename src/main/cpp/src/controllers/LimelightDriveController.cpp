@@ -43,23 +43,24 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                              (GOAL_ANGLE_COMP_DISTANCE_MAX -
                               GOAL_ANGLE_COMP_DISTANCE_MIN)),
                         0.0, 1.0),
-        -0.35, 0.35);  // y = mx + b
-                       // y = degree of compensation
-                       // m = (1 - 0) / (max - min)
-                       // x = distance to target
-                       // b = y-int as plugged in to slope intercept equation
+        -0.2, 0.2);  // y = mx + b
+                     // y = degree of compensation
+                     // m = (1 - 0) / (max - min)
+                     // x = distance to target
+                     // b = y-int as plugged in to slope intercept equation
 }
 
 double LimelightDriveController::CalcTurnComp() {
-    return Util::bound(1 / (TURN_COMP_DISTANCE_MAX - TURN_COMP_DISTANCE_MIN) *
+    return Util::bound(0.5 / (TURN_COMP_DISTANCE_MAX - TURN_COMP_DISTANCE_MIN) *
                                m_limelight->GetHorizontalDistance() -
                            (TURN_COMP_DISTANCE_MIN * 1 /
                             (TURN_COMP_DISTANCE_MAX - TURN_COMP_DISTANCE_MIN)),
-                       -1.0, 1.0);
+                       0.5, 1.0);
 }
 
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
+    m_limelight->SetLightOn();
     double offset = m_limelight->GetXOffset();
     double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError = distance - DISTANCE_SETPOINT;
@@ -69,25 +70,29 @@ void LimelightDriveController::CalcDriveOutput(
         m_rightSetpoint = 0.0;
     }
     else {
-        double turnPidOut = Util::bound(
-            -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET), -0.5,
-            0.5);
+        double turnPidOut =
+            Util::bound(
+                -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET),
+                -0.4, 0.4) *
+            CalcTurnComp();
         double throttlePidOut = Util::bound(
-            m_throttlePid->CalcOutputWithError(
-                -distError *
-                (pow(cos((offset * Constants::PI / 180.0) * PERIOD), 5))),
-            -0.5, 0.5);
+            m_throttlePid->CalcOutputWithError(-distError), -0.5,
+            0.5);  //(pow(cos((offset * Constants::PI / 180.0) * PERIOD), 5))),
         m_goalAngleComp = CalcScaleGoalAngleComp();
         if (m_isCompensatingSkew) {
             m_leftSetpoint = throttlePidOut + turnPidOut + m_goalAngleComp;
             m_rightSetpoint = throttlePidOut - turnPidOut - m_goalAngleComp;
+            DBStringPrintf(DBStringPos::DB_LINE1,
+                           "th:%2.2lf tu:%2.2lf gc:%2.2lf", throttlePidOut,
+                           turnPidOut, m_goalAngleComp);
         }
         else {
             m_leftSetpoint = throttlePidOut + turnPidOut;
             m_rightSetpoint = throttlePidOut - turnPidOut;
         }
     }
-
+    DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
+                   m_leftSetpoint, m_rightSetpoint);
     out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
                             m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
 
