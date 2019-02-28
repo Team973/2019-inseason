@@ -148,9 +148,9 @@ void Robot::AllStateContinuous() {
         DriverStation::GetInstance().GetReplayNumber());
     /*m_limelightHatch->SetCameraVision();
     m_limelightHatch->SetLightOn();
-    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf sk %2.2lf",
+    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf xo %2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
-                   m_limelightHatch->GetTargetSkew());*/
+                   m_limelightHatch->GetXOffset());*/
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
