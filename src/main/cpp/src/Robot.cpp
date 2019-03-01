@@ -89,6 +89,7 @@ Robot::~Robot() {
 void Robot::Initialize() {
     m_compressor->Enable();
     m_logger->RegisterCell(m_matchIdentifier);
+    m_limelightHatch->SetLightOff();
     m_logger->Start();
 }
 
