@@ -47,7 +47,8 @@ Robot::Robot()
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
         , m_limelightHatch(new Limelight("limelight-hatch", false))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
-        , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
+        , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
+        , m_matchTime(new LogCell("MatchTime", 32, true))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
                             m_rightDriveVictorB, m_stingerDriveMotor, m_gyro,
@@ -89,6 +90,8 @@ Robot::~Robot() {
 void Robot::Initialize() {
     m_compressor->Enable();
     m_logger->RegisterCell(m_matchIdentifier);
+    m_logger->RegisterCell(m_batteryVoltage);
+    m_logger->RegisterCell(m_matchTime);
     m_limelightHatch->SetLightOff();
     m_logger->Start();
 }
@@ -147,6 +150,8 @@ void Robot::AllStateContinuous() {
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
+    m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
+    m_matchTime->LogDouble(Timer::GetMatchTime());
     /*m_limelightHatch->SetCameraVision();
     m_limelightHatch->SetLightOn();
     DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf xo %2.2lf",

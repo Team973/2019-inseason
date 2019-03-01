@@ -153,6 +153,7 @@ private:
     LogCell *m_currentFollowerCell;
     LogCell *m_voltageFollowerCell;
     LogCell *m_controlModeCell;
+    LogCell *m_powerInputCell;
     DigitalInput *m_elevatorHall;
 };
 }

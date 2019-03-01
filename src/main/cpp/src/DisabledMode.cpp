@@ -18,7 +18,7 @@ Disabled::~Disabled() {
 }
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
-    m_elevator->EnableBrakeMode();
+    // m_elevator->EnableBrakeMode();
     m_cargoIntake->EnableBrakeMode();
 }
 

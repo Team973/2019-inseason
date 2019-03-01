@@ -118,7 +118,8 @@ private:
     Solenoid *m_cargoPlatformLock;
 
     LogCell *m_matchIdentifier;
-    LogCell *m_gameSpecificMessage;
+    LogCell *m_batteryVoltage;
+    LogCell *m_matchTime;
 
     CargoIntake *m_cargoIntake;
     Drive *m_drive;
