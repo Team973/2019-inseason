@@ -152,7 +152,7 @@ void Robot::AllStateContinuous() {
     DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf xo %2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset());*/
-    DBStringPrintf(DB_LINE3, "pdpea:%2.2lf b:%2.2lf", m_pdp->GetCurrent(13),
+    DBStringPrintf(DB_LINE5, "pdpea:%2.2lf b:%2.2lf", m_pdp->GetCurrent(13),
                    m_pdp->GetCurrent(2));
 }
 

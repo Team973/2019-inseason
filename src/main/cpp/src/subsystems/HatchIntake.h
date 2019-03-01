@@ -115,6 +115,9 @@ private:
     HatchIntakeState m_hatchIntakeState;
     HatchSolenoidState m_hatchSolenoidState;
 
+    LogCell *m_currentCell;
+    LogCell *m_voltageCell;
+
     void GoToPneumaticState(HatchSolenoidState newState);
     void GoToIntakeState(HatchIntakeState newState);
 

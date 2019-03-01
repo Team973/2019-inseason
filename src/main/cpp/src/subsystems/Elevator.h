@@ -148,6 +148,11 @@ private:
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;
     LogCell *m_positionCell;
+    LogCell *m_currentMasterCell;
+    LogCell *m_voltageMasterCell;
+    LogCell *m_currentFollowerCell;
+    LogCell *m_voltageFollowerCell;
+    LogCell *m_controlModeCell;
     DigitalInput *m_elevatorHall;
 };
 }

@@ -50,7 +50,15 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
 
     m_positionCell = new LogCell("Elevator Position", 32, true);
+    m_currentMasterCell = new LogCell("Elevator Master Current", 32, true);
+    m_currentFollowerCell = new LogCell("Elevator Follower Current", 32, true);
+    m_voltageMasterCell = new LogCell("Elevator Master Voltage", 32, true);
+    m_voltageFollowerCell = new LogCell("Elevator Follower Voltage", 32, true);
     logger->RegisterCell(m_positionCell);
+    logger->RegisterCell(m_currentMasterCell);
+    logger->RegisterCell(m_currentFollowerCell);
+    logger->RegisterCell(m_voltageMasterCell);
+    logger->RegisterCell(m_voltageFollowerCell);
 }
 
 Elevator::~Elevator() {
@@ -109,6 +117,10 @@ void Elevator::HallZero() {
 
 void Elevator::TaskPeriodic(RobotMode mode) {
     m_positionCell->LogDouble(GetPosition());
+    m_currentMasterCell->LogDouble(m_elevatorMotorA->GetOutputCurrent());
+    m_currentFollowerCell->LogDouble(m_elevatorMotorB->GetOutputCurrent());
+    m_voltageMasterCell->LogDouble(m_elevatorMotorA->GetMotorOutputVoltage());
+    m_voltageFollowerCell->LogDouble(m_elevatorMotorB->GetMotorOutputVoltage());
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
     DBStringPrintf(DBStringPos::DB_LINE7, "eap: %2.2lf b:%2.2lf",
                    m_elevatorMotorA->GetMotorOutputVoltage(),

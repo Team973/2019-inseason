@@ -145,7 +145,8 @@ private:
     Limelight *m_limelightHatch;
     double m_cargoTimer;
 
-    LogCell *m_current;
+    LogCell *m_currentCell;
+    LogCell *m_voltageCell;
 
     MovingAverageFilter *m_intakeCurentFilter;
 };
