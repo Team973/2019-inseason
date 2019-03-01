@@ -36,7 +36,7 @@ Robot::Robot()
         , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
         , m_stingerUpperHall(new DigitalInput(STINGER_UPPER_HALL_DIN_ID))
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
-        , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
+        , m_elevatorMotorB(new GreyTalonSRX(ELEVATOR_B_CAN_ID))
         , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
@@ -152,6 +152,8 @@ void Robot::AllStateContinuous() {
     DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf xo %2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset());*/
+    DBStringPrintf(DB_LINE3, "pdpea:%2.2lf b:%2.2lf", m_pdp->GetCurrent(13),
+                   m_pdp->GetCurrent(2));
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

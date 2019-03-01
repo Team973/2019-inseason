@@ -223,7 +223,6 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                         }
                         else if (mode->m_cargoIntake->GetWristState() ==
                                  CargoIntake::CargoWristState::retracted) {
-                            mode->m_stinger->SetPower(0.6);
                         }
                         break;
                     case PoofsJoysticks::RightTrigger:

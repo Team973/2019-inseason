@@ -7,7 +7,7 @@ using namespace frc;
 
 namespace frc973 {
 Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-                   GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
+                   GreyTalonSRX *elevatorMotorA, GreyTalonSRX *elevatorMotorB,
                    ObservableXboxJoystick *operatorJoystick,
                    DigitalInput *elevatorHall)
         : m_scheduler(scheduler)
@@ -110,10 +110,12 @@ void Elevator::HallZero() {
 void Elevator::TaskPeriodic(RobotMode mode) {
     m_positionCell->LogDouble(GetPosition());
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
-    DBStringPrintf(DBStringPos::DB_LINE7, "ep: %2.2lf",
-                   m_elevatorMotorA->GetMotorOutputVoltage());
-    DBStringPrintf(DB_LINE2, "elevcurr: %2.2lf",
-                   m_elevatorMotorA->GetOutputCurrent());
+    DBStringPrintf(DBStringPos::DB_LINE7, "eap: %2.2lf b:%2.2lf",
+                   m_elevatorMotorA->GetMotorOutputVoltage(),
+                   m_elevatorMotorB->GetMotorOutputVoltage());
+    DBStringPrintf(DB_LINE2, "eacurr:%2.2lf b:%2.2lf",
+                   m_elevatorMotorA->GetOutputCurrent(),
+                   m_elevatorMotorB->GetOutputCurrent());
     HallZero();
 
     switch (m_elevatorState) {
