@@ -108,6 +108,10 @@ private:
 
     ADXRS450_Gyro *m_gyro;
 
+    UsbCamera m_hatchCamera;
+    CameraServer *m_cameraServer;
+    VideoSink m_greyCam;
+
     GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
 

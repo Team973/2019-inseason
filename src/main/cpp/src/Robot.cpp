@@ -39,6 +39,9 @@ Robot::Robot()
         , m_elevatorMotorB(new GreyTalonSRX(ELEVATOR_B_CAN_ID))
         , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
         , m_gyro(new ADXRS450_Gyro())
+        , m_hatchCamera(UsbCamera("USB Cmera 0", 0))
+        , m_cameraServer(CameraServer::GetInstance())
+        , m_greyCam(m_cameraServer->AddServer("serve_GreyCam", 1181))
         , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
         , m_cargoWrist(new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_PCM_ID))
         , m_cargoPlatformLock(
@@ -89,11 +92,16 @@ Robot::~Robot() {
 
 void Robot::Initialize() {
     m_compressor->Enable();
+    m_logger->Start();
     m_logger->RegisterCell(m_matchIdentifier);
     m_logger->RegisterCell(m_batteryVoltage);
     m_logger->RegisterCell(m_matchTime);
+
+    m_cameraServer->AddCamera(m_hatchCamera);
+    m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
+    m_greyCam.SetSource(m_hatchCamera);
+
     m_limelightHatch->SetLightOff();
-    m_logger->Start();
 }
 
 void Robot::DisabledStart() {
