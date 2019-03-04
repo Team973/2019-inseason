@@ -7,7 +7,7 @@ using namespace frc;
 
 namespace frc973 {
 Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-                   GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
+                   GreyTalonSRX *elevatorMotorA, GreyTalonSRX *elevatorMotorB,
                    ObservableXboxJoystick *operatorJoystick,
                    DigitalInput *elevatorHall)
         : m_scheduler(scheduler)
@@ -50,7 +50,20 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->Set(ControlMode::PercentOutput, 0.0);
 
     m_positionCell = new LogCell("Elevator Position", 32, true);
+    m_currentMasterCell = new LogCell("Elevator Master Current", 32, true);
+    m_currentFollowerCell = new LogCell("Elevator Follower Current", 32, true);
+    m_voltageMasterCell = new LogCell("Elevator Master Voltage", 32, true);
+    m_voltageFollowerCell = new LogCell("Elevator Follower Voltage", 32, true);
+    m_controlModeCell = new LogCell("ControlMode Elevator", 32, true);
+    m_powerInputCell = new LogCell("Elevator Power Input", 32, true);
+
     logger->RegisterCell(m_positionCell);
+    logger->RegisterCell(m_currentMasterCell);
+    logger->RegisterCell(m_currentFollowerCell);
+    logger->RegisterCell(m_voltageMasterCell);
+    logger->RegisterCell(m_voltageFollowerCell);
+    logger->RegisterCell(m_controlModeCell);
+    logger->RegisterCell(m_powerInputCell);
 }
 
 Elevator::~Elevator() {
@@ -109,11 +122,19 @@ void Elevator::HallZero() {
 
 void Elevator::TaskPeriodic(RobotMode mode) {
     m_positionCell->LogDouble(GetPosition());
+    m_currentMasterCell->LogDouble(m_elevatorMotorA->GetOutputCurrent());
+    m_currentFollowerCell->LogDouble(m_elevatorMotorB->GetOutputCurrent());
+    m_voltageMasterCell->LogDouble(m_elevatorMotorA->GetMotorOutputVoltage());
+    m_voltageFollowerCell->LogDouble(m_elevatorMotorB->GetMotorOutputVoltage());
+    m_controlModeCell->LogInt(m_elevatorState);
+    m_powerInputCell->LogDouble(m_power);
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
-    DBStringPrintf(DBStringPos::DB_LINE7, "ep: %2.2lf",
-                   m_elevatorMotorA->GetMotorOutputVoltage());
-    DBStringPrintf(DB_LINE2, "elevcurr: %2.2lf",
-                   m_elevatorMotorA->GetOutputCurrent());
+    DBStringPrintf(DBStringPos::DB_LINE7, "eap: %2.2lf b:%2.2lf",
+                   m_elevatorMotorA->GetMotorOutputVoltage(),
+                   m_elevatorMotorB->GetMotorOutputVoltage());
+    DBStringPrintf(DB_LINE2, "eacurr:%2.2lf b:%2.2lf",
+                   m_elevatorMotorA->GetOutputCurrent(),
+                   m_elevatorMotorB->GetOutputCurrent());
     HallZero();
 
     switch (m_elevatorState) {

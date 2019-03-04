@@ -45,42 +45,13 @@ SplineDriveController::SplineDriveController(DriveStateProvider *state,
         , m_r_vel_pid(VELOCITY_KP, VELOCITY_KI, VELOCITY_KD)
         , m_a_pos_pid(ANGULAR_POSITION_KP, ANGULAR_POSITION_KI,
                       ANGULAR_POSITION_KD)
-        , m_a_rate_pid(ANGULAR_RATE_KP, ANGULAR_RATE_KI, ANGULAR_RATE_KD)
-        , m_l_pos_setpt_log(new LogCell("s_left pos incr goal"))
-        , m_l_pos_real_log(new LogCell("s_left pos incr actual"))
-        , m_l_vel_setpt_log(new LogCell("s_left vel incr goal"))
-        , m_l_vel_real_log(new LogCell("s_left vel incr actual"))
-        , m_r_pos_setpt_log(new LogCell("s_right pos incr goal"))
-        , m_r_pos_real_log(new LogCell("s_right pos incr actual"))
-        , m_r_vel_setpt_log(new LogCell("s_right vel incr goal"))
-        , m_r_vel_real_log(new LogCell("s_right vel incr actual"))
-        , m_a_pos_setpt_log(new LogCell("s_angular pos incr goal"))
-        , m_a_pos_real_log(new LogCell("s_angular pos incr actual"))
-        , m_angle_endgoal_log(new LogCell("s_angle pos end goal"))
-        , m_left_output(new LogCell("s_left output"))
-        , m_right_output(new LogCell("s_right output")) {
+        , m_a_rate_pid(ANGULAR_RATE_KP, ANGULAR_RATE_KI, ANGULAR_RATE_KD) {
     m_l_pos_pid.SetBounds(-100, 100);
     m_l_vel_pid.SetBounds(-100, 100);
     m_r_pos_pid.SetBounds(-100, 100);
     m_r_vel_pid.SetBounds(-100, 100);
     m_a_pos_pid.SetBounds(-100, 100);
     m_a_rate_pid.SetBounds(-100, 100);
-
-    if (logger) {
-        logger->RegisterCell(m_l_pos_setpt_log);
-        logger->RegisterCell(m_l_pos_real_log);
-        logger->RegisterCell(m_l_vel_setpt_log);
-        logger->RegisterCell(m_l_vel_real_log);
-        logger->RegisterCell(m_r_pos_setpt_log);
-        logger->RegisterCell(m_r_pos_real_log);
-        logger->RegisterCell(m_r_vel_setpt_log);
-        logger->RegisterCell(m_r_vel_real_log);
-        logger->RegisterCell(m_a_pos_setpt_log);
-        logger->RegisterCell(m_a_pos_real_log);
-        logger->RegisterCell(m_angle_endgoal_log);
-        logger->RegisterCell(m_left_output);
-        logger->RegisterCell(m_right_output);
-    }
 }
 
 SplineDriveController::~SplineDriveController() {
@@ -174,47 +145,6 @@ void SplineDriveController::CalcDriveOutput(DriveStateProvider *state,
     else {
         m_done = true;
     }
-
-    SmartDashboard::PutNumber("drive/outputs/anglesetpoint",
-                              Util::CalcAngleError(heading - 360.0, 0));
-    SmartDashboard::PutNumber("drive/outputs/angleactual",
-                              Util::CalcAngleError(AngleFromStart(), 0));
-    SmartDashboard::PutNumber("drive/outputs/leftpossetpoint", leftDist);
-    SmartDashboard::PutNumber("drive/outputs/rightpossetpoint", rightDist);
-    SmartDashboard::PutNumber("drive/outputs/leftposnow", LeftDistFromStart());
-    SmartDashboard::PutNumber("drive/outputs/rightposnow",
-                              RightDistFromStart());
-    SmartDashboard::PutNumber("drive/outputs/leftvelff", left_l_vel_ff);
-    SmartDashboard::PutNumber("drive/outputs/rightvelff", right_l_vel_ff);
-    SmartDashboard::PutNumber("drive/outputs/angratesetpoint", angularRate);
-    SmartDashboard::PutNumber("drive/outputs/angratenow",
-                              state->GetAngularRate());
-
-    DBStringPrintf(DB_LINE1, "lo%0.3lf ro%0.3lf", m_left_output,
-                   m_right_output);
-    DBStringPrintf(DB_LINE2, "lpset%2.2lf lp%2.2lf", leftDist,
-                   LeftDistFromStart());
-    DBStringPrintf(DB_LINE3, "lvset%2.2lf lv%2.2lf", leftVel,
-                   state->GetLeftRate());
-    DBStringPrintf(DB_LINE4, "rpset%2.2lf rp%2.2lf", rightDist,
-                   RightDistFromStart());
-    DBStringPrintf(DB_LINE5, "rvset%2.2lf rv%2.2lf", rightVel,
-                   state->GetRightRate());
-    DBStringPrintf(DB_LINE6, "apset%2.2lf ap%2.2lf", heading, AngleFromStart());
-
-    m_l_pos_setpt_log->LogDouble(leftDist);
-    m_l_pos_real_log->LogDouble(LeftDistFromStart());
-    m_l_vel_setpt_log->LogDouble(leftVel);
-    m_l_vel_real_log->LogDouble(state->GetLeftRate());
-    m_r_pos_setpt_log->LogDouble(rightDist);
-    m_r_pos_real_log->LogDouble(RightDistFromStart());
-    m_r_vel_setpt_log->LogDouble(rightVel);
-    m_r_vel_real_log->LogDouble(state->GetRightRate());
-    m_a_pos_setpt_log->LogDouble(heading);
-    m_a_pos_real_log->LogDouble(AngleFromStart());
-    m_angle_endgoal_log->LogDouble(heading);
-    m_left_output->LogDouble(left_output);
-    m_right_output->LogDouble(right_output);
 }
 
 double SplineDriveController::GetSplinePercentComplete() const {

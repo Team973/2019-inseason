@@ -28,6 +28,11 @@ HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_hatchRollers->EnableVoltageCompensation(false);
     m_hatchRollers->SetInverted(false);
     m_hatchRollers->ConfigNeutralDeadband(0.01);
+
+    m_currentCell = new LogCell("Hatch Current", 32, true);
+    m_voltageCell = new LogCell("Hatch Voltage", 32, true);
+    logger->RegisterCell(m_currentCell);
+    logger->RegisterCell(m_voltageCell);
 }
 
 HatchIntake::~HatchIntake() {
@@ -72,6 +77,8 @@ void HatchIntake::GoToIntakeState(HatchIntakeState newState) {
 }
 
 void HatchIntake::TaskPeriodic(RobotMode mode) {
+    m_currentCell->LogDouble(m_hatchRollers->GetOutputCurrent());
+    m_voltageCell->LogDouble(m_hatchRollers->GetMotorOutputVoltage());
     switch (m_hatchIntakeState) {
         case HatchIntakeState::idle:
             m_hatchRollers->Set(ControlMode::PercentOutput, 0.0);

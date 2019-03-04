@@ -100,11 +100,6 @@ void Stinger::GoToStingerState(Stinger::StingerState newState) {
 
 void Stinger::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_stingerElevatorMotor->GetOutputCurrent());
-    DBStringPrintf(DBStringPos::DB_LINE5, "uh: %d lh:%d sv:%2.2lf",
-                   GetUpperHall(), GetLowerHall(),
-                   m_stingerElevatorMotor->GetMotorOutputVoltage());
-    DBStringPrintf(DB_LINE1, "stingexcurr: %2.2lf",
-                   m_stingerElevatorMotor->GetOutputCurrent());
     switch (m_stingerState) {
         case StingerState::manualVoltage:
             if (m_power > 0.0 && GetStingerElevatorHallState() ==

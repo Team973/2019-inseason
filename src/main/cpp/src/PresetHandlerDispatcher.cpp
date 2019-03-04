@@ -223,7 +223,6 @@ void PresetHandlerDispatcher::DriveDispatchJoystickButtons(Teleop *mode,
                         }
                         else if (mode->m_cargoIntake->GetWristState() ==
                                  CargoIntake::CargoWristState::retracted) {
-                            mode->m_stinger->SetPower(0.6);
                         }
                         break;
                     case PoofsJoysticks::RightTrigger:
@@ -273,7 +272,7 @@ void PresetHandlerDispatcher::IntakeBumperPresets(Teleop *mode, uint32_t button,
                 }
                 else if (button == Xbox::RightBumper) {
                     mode->m_cargoIntake->RunIntake();
-                    mode->m_elevator->SetPosition(Elevator::GROUND + 0.3);
+                    mode->m_elevator->SetPosition(Elevator::GROUND + 1.0);
                 }
                 else {
                     mode->m_elevator->SetPosition(

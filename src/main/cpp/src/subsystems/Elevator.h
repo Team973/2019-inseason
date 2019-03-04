@@ -46,8 +46,8 @@ public:
         0.5; /**< Low rocket hatch preset. */
     static constexpr double LOW_ROCKET_CARGO =
         4.0; /**< Low rocket cargo preset. */
-    static constexpr double MID_ROCKET_HATCH = 27.0;
-    static constexpr double MID_ROCKET_CARGO = 27.0;
+    static constexpr double MID_ROCKET_HATCH = 27.5;
+    static constexpr double MID_ROCKET_CARGO = 27.5;
     static constexpr double LOADING_STATION_CARGO = 20.0;
     static constexpr double CARGO_SHIP_HATCH =
         0.5; /**< Cargo ship hatch preset. */
@@ -56,7 +56,7 @@ public:
     static constexpr double PLATFORM = 23.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
-        27.3; /**< Soft elevator height. */
+        27.5; /**< Soft elevator height. */
     static constexpr double ENDGAME_HEIGHT_SOFT_LIMIT = 24.25;
     static constexpr double ELEVATOR_HALL_HEIGHT_OFFSET = 0.6;
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
@@ -71,7 +71,7 @@ public:
      * @param elevatorMotor The elevator Talon.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
+             GreyTalonSRX *elevatorMotorA, GreyTalonSRX *elevatorMotorB,
              ObservableXboxJoystick *operatorJoystick,
              DigitalInput *elevatorHall);
     virtual ~Elevator();
@@ -138,7 +138,7 @@ private:
     TaskMgr *m_scheduler;
 
     GreyTalonSRX *m_elevatorMotorA;
-    VictorSPX *m_elevatorMotorB;
+    GreyTalonSRX *m_elevatorMotorB;
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
@@ -148,6 +148,12 @@ private:
     uint32_t m_zeroingTime;
     ElevatorState m_elevatorState;
     LogCell *m_positionCell;
+    LogCell *m_currentMasterCell;
+    LogCell *m_voltageMasterCell;
+    LogCell *m_currentFollowerCell;
+    LogCell *m_voltageFollowerCell;
+    LogCell *m_controlModeCell;
+    LogCell *m_powerInputCell;
     DigitalInput *m_elevatorHall;
 };
 }

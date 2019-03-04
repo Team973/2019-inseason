@@ -69,7 +69,8 @@ public:
     static constexpr double DISTANCE_SETPOINT =
         -3.0;  // in inches from target to robot bumper
     static constexpr double PERIOD = 3.0;
-    static constexpr double HATCH_VISION_OFFSET = 2.0;  // in degrees
+    static constexpr double HATCH_VISION_OFFSET =
+        0.96;  // in degrees 2.0 at p-field
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 40.0;

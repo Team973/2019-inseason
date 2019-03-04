@@ -36,9 +36,12 @@ Robot::Robot()
         , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
         , m_stingerUpperHall(new DigitalInput(STINGER_UPPER_HALL_DIN_ID))
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
-        , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
+        , m_elevatorMotorB(new GreyTalonSRX(ELEVATOR_B_CAN_ID))
         , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
         , m_gyro(new ADXRS450_Gyro())
+        , m_hatchCamera(UsbCamera("USB Cmera 0", 0))
+        , m_cameraServer(CameraServer::GetInstance())
+        , m_greyCam(m_cameraServer->AddServer("serve_GreyCam", 1181))
         , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
         , m_cargoWrist(new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_PCM_ID))
         , m_cargoPlatformLock(
@@ -47,7 +50,8 @@ Robot::Robot()
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
         , m_limelightHatch(new Limelight("limelight-hatch", false))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
-        , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
+        , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
+        , m_matchTime(new LogCell("MatchTime", 32, true))
         , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
                             m_leftDriveVictorB, m_rightDriveTalonA,
                             m_rightDriveVictorB, m_stingerDriveMotor, m_gyro,
@@ -88,8 +92,16 @@ Robot::~Robot() {
 
 void Robot::Initialize() {
     m_compressor->Enable();
-    m_logger->RegisterCell(m_matchIdentifier);
     m_logger->Start();
+    m_logger->RegisterCell(m_matchIdentifier);
+    m_logger->RegisterCell(m_batteryVoltage);
+    m_logger->RegisterCell(m_matchTime);
+
+    m_cameraServer->AddCamera(m_hatchCamera);
+    m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
+    m_greyCam.SetSource(m_hatchCamera);
+
+    m_limelightHatch->SetLightOff();
 }
 
 void Robot::DisabledStart() {
@@ -146,11 +158,15 @@ void Robot::AllStateContinuous() {
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
+    m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
+    m_matchTime->LogDouble(Timer::GetMatchTime());
     /*m_limelightHatch->SetCameraVision();
     m_limelightHatch->SetLightOn();
-    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf sk %2.2lf",
+    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf xo %2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
-                   m_limelightHatch->GetTargetSkew());*/
+                   m_limelightHatch->GetXOffset());*/
+    DBStringPrintf(DB_LINE5, "pdpea:%2.2lf b:%2.2lf", m_pdp->GetCurrent(13),
+                   m_pdp->GetCurrent(2));
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
