@@ -2,7 +2,6 @@
 #include <iostream>
 #include "src/info/RobotInfo.h"
 #include "src/DisabledMode.h"
-#include "src/PresetHandlerDispatcher.h"
 #include "src/AutonomousMode.h"
 #include "src/TeleopMode.h"
 #include "src/TestMode.h"
@@ -74,14 +73,13 @@ Robot::Robot()
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
                                   m_elevator, m_cargoIntake, m_limelightHatch))
-        , m_presetDispatcher(new PresetHandlerDispatcher())
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
                               m_testJoystick, m_drive, m_elevator,
                               m_hatchIntake, m_cargoIntake, m_stinger,
-                              m_limelightHatch, m_presetDispatcher))
+                              m_limelightHatch))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
                           m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
-                          m_stinger, m_limelightHatch, m_presetDispatcher))
+                          m_stinger, m_limelightHatch))
         , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
                                       m_testJoystick, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;

@@ -1,5 +1,4 @@
 #include "src/TestMode.h"
-#include "src/PresetHandlerDispatcher.h"
 
 using namespace frc;
 
@@ -8,7 +7,7 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
            ObservableDualActionJoystick *testStick, Drive *drive,
            Elevator *elevator, HatchIntake *hatchIntake,
            CargoIntake *cargoIntake, Stinger *stinger,
-           Limelight *limelightHatch, PresetHandlerDispatcher *presetDispatcher)
+           Limelight *limelightHatch)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_testJoystick(testStick)
@@ -18,9 +17,7 @@ Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
         , m_cargoIntake(cargoIntake)
         , m_stinger(stinger)
         , m_limelightHatch(limelightHatch)
-        , m_presetDispatcher(presetDispatcher)
-        , m_rumble(Rumble::off)
-        , m_gameMode(GameMode::HatchInit) {
+        , m_rumble(Rumble::off) {
 }
 
 Test::~Test() {
@@ -139,10 +136,6 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == OPERATOR_JOYSTICK_PORT) {
         switch (button) {
             case Xbox::BtnY:
-                // Elevator to preset height, then...
-                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
-                    this, button, pressedP);
-
                 if (pressedP) {
                     m_hatchIntake->RunIntake();
                 }
@@ -151,10 +144,6 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 }
                 break;
             case Xbox::BtnA:
-                // Elevator to preset height, then...
-                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
-                    this, button, pressedP);
-
                 if (pressedP) {
                     m_hatchIntake->Exhaust();
                 }
@@ -163,10 +152,6 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 }
                 break;
             case Xbox::BtnX:
-                // Elevator to preset height, then...
-                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
-                    this, button, pressedP);
-
                 if (pressedP) {
                     m_cargoIntake->DeployPlatformWheel();
                 }
@@ -175,10 +160,6 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 }
                 break;
             case Xbox::BtnB:
-                // Elevator to preset height, then...
-                m_presetDispatcher->ElevatorDispatchPressedButtonToPreset(
-                    this, button, pressedP);
-
                 if (pressedP) {
                     m_hatchIntake->ManualPuncherActivate();
                 }
