@@ -251,7 +251,7 @@ void Drive::SetDriveOutputIPS(double left, double right) {
     }
     else {
         m_leftDriveSparkA->GetPIDController().SetReference(
-            -m_leftDriveOutput, ControlType::kVelocity);
+            m_leftDriveOutput, ControlType::kVelocity);
         m_rightDriveSparkA->GetPIDController().SetReference(
             m_rightDriveOutput, ControlType::kVelocity);
     }
@@ -272,7 +272,7 @@ void Drive::SetDriveOutputPosInches(double left, double right) {
     }
     else {
         m_leftDriveSparkA->GetPIDController().SetReference(
-            -m_leftDriveOutput, ControlType::kPosition);
+            m_leftDriveOutput, ControlType::kPosition);
         m_rightDriveSparkA->GetPIDController().SetReference(
             m_rightDriveOutput, ControlType::kPosition);
     }
@@ -287,7 +287,7 @@ void Drive::SetDriveOutputVBus(double left, double right) {
         m_rightDriveSparkA->Set(0.0);
     }
     else {
-        m_leftDriveSparkA->Set(-m_leftDriveOutput);
+        m_leftDriveSparkA->Set(m_leftDriveOutput);
         m_rightDriveSparkA->Set(m_rightDriveOutput);
     }
 }

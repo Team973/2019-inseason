@@ -31,10 +31,10 @@ static const int COMPRESSOR_RELAY = 0;
 /**
  * Drive Subsystem
  **/
-static const int RIGHT_DRIVE_A_ID = 1;
-static const int RIGHT_DRIVE_B_ID = 2;
-static const int LEFT_DRIVE_A_ID = 16;
-static const int LEFT_DRIVE_B_ID = 15;
+static const int RIGHT_DRIVE_A_ID = 16;
+static const int RIGHT_DRIVE_B_ID = 15;
+static const int LEFT_DRIVE_A_ID = 1;
+static const int LEFT_DRIVE_B_ID = 2;
 
 /**
  * Elevator Subsystem
