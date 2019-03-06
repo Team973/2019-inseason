@@ -26,20 +26,21 @@
 
 using namespace frc;
 using namespace ctre;
+using namespace rev;
 using namespace trajectories;
 
 namespace frc973 {
 Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
-             GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
+             GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
+             GreySparkMax *rightDriveSparkA, GreySparkMax *rightDriveSparkB,
              GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
              Limelight *limelightHatch)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
-        , m_leftDriveTalonA(leftDriveTalonA)
-        , m_leftDriveVictorB(leftDriveVictorB)
-        , m_rightDriveTalonA(rightDriveTalonA)
-        , m_rightDriveVictorB(rightDriveVictorB)
+        , m_leftDriveSparkA(leftDriveSparkA)
+        , m_leftDriveSparkB(leftDriveSparkB)
+        , m_rightDriveSparkA(rightDriveSparkA)
+        , m_rightDriveSparkB(rightDriveSparkB)
         , m_stingerDriveMotor(stingerDriveMotor)
         , m_controlMode(ControlMode::PercentOutput)
         , m_leftDriveOutput(0.0)
@@ -63,10 +64,10 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
         , m_limelightHatchDriveController(new LimelightDriveController(
               limelightHatch, LimelightDriveController::VisionOffset::Hatch,
-              true))
+              false))
         , m_regularLimelightHatchDriveController(new LimelightDriveController(
               limelightHatch, LimelightDriveController::VisionOffset::Hatch,
-              false))
+              true))
         , m_assistedCheesyDriveHatchController(
               new AssistedCheesyDriveController(
                   m_limelightHatch,
@@ -81,25 +82,19 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_rightDistRateLog(new LogCell("Right Encoder Rate"))
         , m_currentLog(new LogCell("Drive current")) {
     this->m_scheduler->RegisterTask("Drive", this, TASK_PERIODIC);
-    m_leftDriveTalonA->SetNeutralMode(Coast);
-    m_leftDriveTalonA->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 10);
-    m_leftDriveTalonA->SetSensorPhase(false);
-    m_leftDriveTalonA->SetInverted(false);
-    m_leftDriveTalonA->SelectProfileSlot(0, 0);
-    m_leftDriveTalonA->Config_PID(0, 0.0, 0.0, 0.0, 0.0, 10);
+    m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
+    m_leftDriveSparkA->SetInverted(false);
+    m_leftDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
 
-    m_leftDriveVictorB->Follow(*m_leftDriveTalonA);
-    m_leftDriveVictorB->SetInverted(false);
+    m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
+    m_leftDriveSparkB->SetInverted(false);
 
-    m_rightDriveTalonA->SetNeutralMode(Coast);
-    m_rightDriveTalonA->ConfigSelectedFeedbackSensor(QuadEncoder, 0, 10);
-    m_rightDriveTalonA->SetSensorPhase(false);
-    m_rightDriveTalonA->SetInverted(false);
-    m_rightDriveTalonA->SelectProfileSlot(0, 0);
-    m_rightDriveTalonA->Config_PID(0, 0.0, 0.0, 0.0, 0.0, 10);
+    m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
+    m_rightDriveSparkA->SetInverted(false);
+    m_rightDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
 
-    m_rightDriveVictorB->Follow(*m_rightDriveTalonA);
-    m_rightDriveVictorB->SetInverted(false);
+    m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
+    m_rightDriveSparkB->SetInverted(false);
 
     m_stingerDriveMotor->SetNeutralMode(Coast);
     m_stingerDriveMotor->SetInverted(false);
@@ -188,7 +183,7 @@ LimelightDriveController *Drive::LimelightHatchDrive() {
 LimelightDriveController *Drive::RegularLimelightHatchDrive() {
     this->SetDriveController(m_regularLimelightHatchDriveController);
 
-    return m_regularLimelightHatchDriveController;
+    return m_limelightHatchDriveController;
 }
 
 AssistedCheesyDriveController *Drive::AssistedCheesyHatchDrive(
@@ -200,25 +195,23 @@ AssistedCheesyDriveController *Drive::AssistedCheesyHatchDrive(
 }
 
 double Drive::GetLeftDist() const {
-    return -m_leftDriveTalonA->GetSelectedSensorPosition(0) *
-               DRIVE_DIST_PER_CLICK -
+    return -m_leftDriveSparkA->GetEncoder().GetPosition() *
+               DRIVE_DIST_PER_REVOLUTION -
            m_leftPosZero;
 }
 
 double Drive::GetRightDist() const {
-    return m_rightDriveTalonA->GetSelectedSensorPosition(0) *
-               DRIVE_DIST_PER_CLICK -
+    return m_rightDriveSparkA->GetEncoder().GetPosition() *
+               DRIVE_DIST_PER_REVOLUTION -
            m_rightPosZero;
 }
 
 double Drive::GetLeftRate() const {
-    return -m_leftDriveTalonA->GetSelectedSensorVelocity(0) *
-           DRIVE_IPS_FROM_CPDS;
+    return -m_leftDriveSparkA->GetEncoder().GetVelocity() * DRIVE_IPS_FROM_RPM;
 }
 
 double Drive::GetRightRate() const {
-    return m_rightDriveTalonA->GetSelectedSensorVelocity(0) *
-           DRIVE_IPS_FROM_CPDS;
+    return m_rightDriveSparkA->GetEncoder().GetVelocity() * DRIVE_IPS_FROM_RPM;
 }
 
 double Drive::GetDist() const {
@@ -230,8 +223,8 @@ double Drive::GetRate() const {
 }
 
 double Drive::GetDriveCurrent() const {
-    return (fabs(m_rightDriveTalonA->GetOutputCurrent()) +
-            fabs(m_leftDriveTalonA->GetOutputCurrent())) /
+    return (fabs(m_rightDriveSparkA->GetOutputCurrent()) +
+            fabs(m_leftDriveSparkA->GetOutputCurrent())) /
            2.0;
 }
 
@@ -247,16 +240,20 @@ void Drive::SetDriveOutputIPS(double left, double right) {
     m_leftDriveOutput = left;
     m_rightDriveOutput = right;
 
-    m_leftDriveOutput /= DRIVE_IPS_FROM_CPDS;
-    m_rightDriveOutput /= DRIVE_IPS_FROM_CPDS;
+    m_leftDriveOutput /= DRIVE_IPS_FROM_RPM;
+    m_rightDriveOutput /= DRIVE_IPS_FROM_RPM;
 
     if (std::isnan(m_leftDriveOutput) || std::isnan(m_rightDriveOutput)) {
-        m_leftDriveTalonA->Set(ControlMode::Velocity, 0.0);
-        m_rightDriveTalonA->Set(ControlMode::Velocity, 0.0);
+        m_leftDriveSparkA->GetPIDController().SetReference(
+            0.0, ControlType::kVelocity);
+        m_rightDriveSparkA->GetPIDController().SetReference(
+            0.0, ControlType::kVelocity);
     }
     else {
-        m_leftDriveTalonA->Set(ControlMode::Velocity, -m_leftDriveOutput);
-        m_rightDriveTalonA->Set(ControlMode::Velocity, m_rightDriveOutput);
+        m_leftDriveSparkA->GetPIDController().SetReference(
+            -m_leftDriveOutput, ControlType::kVelocity);
+        m_rightDriveSparkA->GetPIDController().SetReference(
+            m_rightDriveOutput, ControlType::kVelocity);
     }
 }
 
@@ -264,16 +261,20 @@ void Drive::SetDriveOutputPosInches(double left, double right) {
     m_leftDriveOutput = left;
     m_rightDriveOutput = right;
 
-    m_leftDriveOutput /= DRIVE_DIST_PER_CLICK;
-    m_rightDriveOutput /= DRIVE_DIST_PER_CLICK;
+    m_leftDriveOutput /= DRIVE_DIST_PER_REVOLUTION;
+    m_rightDriveOutput /= DRIVE_DIST_PER_REVOLUTION;
 
     if (std::isnan(m_leftDriveOutput) || std::isnan(m_rightDriveOutput)) {
-        m_leftDriveTalonA->Set(ControlMode::Position, 0.0);
-        m_rightDriveTalonA->Set(ControlMode::Position, 0.0);
+        m_leftDriveSparkA->GetPIDController().SetReference(
+            0.0, ControlType::kPosition);
+        m_rightDriveSparkA->GetPIDController().SetReference(
+            0.0, ControlType::kPosition);
     }
     else {
-        m_leftDriveTalonA->Set(ControlMode::Position, -m_leftDriveOutput);
-        m_rightDriveTalonA->Set(ControlMode::Position, m_rightDriveOutput);
+        m_leftDriveSparkA->GetPIDController().SetReference(
+            -m_leftDriveOutput, ControlType::kPosition);
+        m_rightDriveSparkA->GetPIDController().SetReference(
+            m_rightDriveOutput, ControlType::kPosition);
     }
 }
 
@@ -282,29 +283,24 @@ void Drive::SetDriveOutputVBus(double left, double right) {
     m_rightDriveOutput = right;
 
     if (std::isnan(m_leftDriveOutput) || std::isnan(m_rightDriveOutput)) {
-        m_leftDriveTalonA->Set(ControlMode::PercentOutput, 0.0);
-        m_rightDriveTalonA->Set(ControlMode::PercentOutput, 0.0);
+        m_leftDriveSparkA->Set(0.0);
+        m_rightDriveSparkA->Set(0.0);
     }
     else {
-        m_leftDriveTalonA->Set(ControlMode::PercentOutput, -m_leftDriveOutput);
-        m_rightDriveTalonA->Set(ControlMode::PercentOutput, m_rightDriveOutput);
+        m_leftDriveSparkA->Set(-m_leftDriveOutput);
+        m_rightDriveSparkA->Set(m_rightDriveOutput);
     }
 }
 void Drive::ConfigDriveCurrentLimit(double limit) {
-    m_leftDriveTalonA->EnableCurrentLimit(true);
-    m_leftDriveTalonA->ConfigContinuousCurrentLimit(limit, 10);
+    m_leftDriveSparkA->SetSmartCurrentLimit(limit);
 
-    m_rightDriveTalonA->EnableCurrentLimit(true);
-    m_rightDriveTalonA->ConfigContinuousCurrentLimit(limit, 10);
+    m_rightDriveSparkA->SetSmartCurrentLimit(limit);
 
     m_stingerDriveMotor->EnableCurrentLimit(true);
     m_stingerDriveMotor->ConfigContinuousCurrentLimit(limit, 10);
 }
 void Drive::DisableDriveCurrentLimit() {
-    m_leftDriveTalonA->EnableCurrentLimit(false);
-
-    m_rightDriveTalonA->EnableCurrentLimit(false);
-
+    // spark can't disable?
     m_stingerDriveMotor->EnableCurrentLimit(false);
 }
 
@@ -328,24 +324,23 @@ void Drive::TaskPeriodic(RobotMode mode) {
     m_rightDistRateLog->LogDouble(GetRightRate());
 
     if (m_controlMode == ControlMode::Velocity) {
-        m_leftDriveOutputLog->LogDouble(m_leftDriveOutput *
-                                        DRIVE_IPS_FROM_CPDS);
+        m_leftDriveOutputLog->LogDouble(m_leftDriveOutput * DRIVE_IPS_FROM_RPM);
         m_rightDriveOutputLog->LogDouble(m_rightDriveOutput *
-                                         DRIVE_IPS_FROM_CPDS);
+                                         DRIVE_IPS_FROM_RPM);
     }
     else if (m_controlMode == ControlMode::Position) {
         m_leftDriveOutputLog->LogDouble(m_leftDriveOutput *
-                                        DRIVE_DIST_PER_CLICK);
+                                        DRIVE_DIST_PER_REVOLUTION);
         m_rightDriveOutputLog->LogDouble(m_rightDriveOutput *
-                                         DRIVE_DIST_PER_CLICK);
+                                         DRIVE_DIST_PER_REVOLUTION);
     }
     else {
         m_leftDriveOutputLog->LogDouble(m_leftDriveOutput);
         m_rightDriveOutputLog->LogDouble(m_rightDriveOutput);
     }
 
-    m_leftVoltageLog->LogDouble(m_leftDriveTalonA->GetMotorOutputVoltage());
-    m_rightVoltageLog->LogDouble(m_rightDriveTalonA->GetMotorOutputVoltage());
+    m_leftVoltageLog->LogDouble(m_leftDriveSparkA->GetAppliedOutput());
+    m_rightVoltageLog->LogDouble(m_rightDriveSparkA->GetAppliedOutput());
     m_stingerVoltageLog->LogDouble(
         m_stingerDriveMotor->GetMotorOutputVoltage());
 

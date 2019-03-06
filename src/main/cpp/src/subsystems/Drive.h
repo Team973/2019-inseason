@@ -9,6 +9,7 @@
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreySparkMax.h"
 #include "src/info/RobotInfo.h"
 #include "lib/bases/DriveBase.h"
 #include "networktables/NetworkTableInstance.h"
@@ -62,8 +63,8 @@ public:
      * @param gyro The gyro object.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
-          GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
-          GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
+          GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
+          GreySparkMax *rightDriveSparkA, GreySparkMax *rightDriveSparkB,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
           Limelight *limelightHatch);
     virtual ~Drive();
@@ -266,10 +267,10 @@ public:
 private:
     LogSpreadsheet *m_logger;
 
-    GreyTalonSRX *m_leftDriveTalonA;
-    VictorSPX *m_leftDriveVictorB;
-    GreyTalonSRX *m_rightDriveTalonA;
-    VictorSPX *m_rightDriveVictorB;
+    GreySparkMax *m_leftDriveSparkA;
+    GreySparkMax *m_leftDriveSparkB;
+    GreySparkMax *m_rightDriveSparkA;
+    GreySparkMax *m_rightDriveSparkB;
 
     GreyTalonSRX *m_stingerDriveMotor;
 

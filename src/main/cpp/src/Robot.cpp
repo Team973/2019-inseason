@@ -26,10 +26,14 @@ Robot::Robot()
         , m_testJoystick(
               new ObservableDualActionJoystick(TEST_JOYSTICK_PORT, this, this))
         , m_logger(new LogSpreadsheet(this))
-        , m_leftDriveTalonA(new GreyTalonSRX(LEFT_DRIVE_A_CAN_ID))
-        , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
-        , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
-        , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
+        , m_leftDriveSparkA(new GreySparkMax(
+              LEFT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
+        , m_leftDriveSparkB(new GreySparkMax(
+              LEFT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkA(new GreySparkMax(
+              RIGHT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkB(new GreySparkMax(
+              RIGHT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
         , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
         , m_stingerElevatorMotor(new GreyTalonSRX(STINGER_ELEVATOR_CAN_ID))
         , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
@@ -51,9 +55,9 @@ Robot::Robot()
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
         , m_matchTime(new LogCell("MatchTime", 32, true))
-        , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
-                            m_leftDriveVictorB, m_rightDriveTalonA,
-                            m_rightDriveVictorB, m_stingerDriveMotor, m_gyro,
+        , m_drive(new Drive(this, m_logger, m_leftDriveSparkA,
+                            m_leftDriveSparkB, m_rightDriveSparkA,
+                            m_rightDriveSparkB, m_stingerDriveMotor, m_gyro,
                             m_limelightHatch))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick,
