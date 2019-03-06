@@ -103,7 +103,7 @@ private:
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
     GreyTalonSRX *m_elevatorMotorA;
-    GreyTalonSRX *m_elevatorMotorB;
+    VictorSPX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;
 
     ADXRS450_Gyro *m_gyro;
