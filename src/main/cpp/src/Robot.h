@@ -103,10 +103,14 @@ private:
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
     GreyTalonSRX *m_elevatorMotorA;
-    VictorSPX *m_elevatorMotorB;
+    GreyTalonSRX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;
 
     ADXRS450_Gyro *m_gyro;
+
+    UsbCamera m_hatchCamera;
+    CameraServer *m_cameraServer;
+    VideoSink m_greyCam;
 
     GreyTalonSRX *m_hatchRollers;
     Solenoid *m_hatchPuncher;
@@ -118,7 +122,8 @@ private:
     Solenoid *m_cargoPlatformLock;
 
     LogCell *m_matchIdentifier;
-    LogCell *m_gameSpecificMessage;
+    LogCell *m_batteryVoltage;
+    LogCell *m_matchTime;
 
     CargoIntake *m_cargoIntake;
     Drive *m_drive;
