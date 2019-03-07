@@ -62,7 +62,7 @@ public:
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         4.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
-        0.06; /**< The elevator's feed forward. */
+        0.045; /**< The elevator's feed forward. */
 
     /**
      * Contruct an elevator.
@@ -71,7 +71,7 @@ public:
      * @param elevatorMotor The elevator Talon.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreyTalonSRX *elevatorMotorA, GreyTalonSRX *elevatorMotorB,
+             GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
              ObservableXboxJoystick *operatorJoystick,
              DigitalInput *elevatorHall);
     virtual ~Elevator();
@@ -138,7 +138,7 @@ private:
     TaskMgr *m_scheduler;
 
     GreyTalonSRX *m_elevatorMotorA;
-    GreyTalonSRX *m_elevatorMotorB;
+    VictorSPX *m_elevatorMotorB;
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;

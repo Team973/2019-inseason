@@ -17,6 +17,7 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreySparkMax.h"
 #include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
@@ -43,7 +44,6 @@ class Disabled;
 class Autonomous;
 class Drive;
 class Elevator;
-class PresetHandlerDispatcher;
 
 /**
  * Defines the robot.
@@ -93,17 +93,17 @@ private:
 
     LogSpreadsheet *m_logger;
 
-    GreyTalonSRX *m_leftDriveTalonA;
-    VictorSPX *m_leftDriveVictorB;
-    GreyTalonSRX *m_rightDriveTalonA;
-    VictorSPX *m_rightDriveVictorB;
+    GreySparkMax *m_leftDriveSparkA;
+    GreySparkMax *m_leftDriveSparkB;
+    GreySparkMax *m_rightDriveSparkA;
+    GreySparkMax *m_rightDriveSparkB;
 
     GreyTalonSRX *m_stingerDriveMotor;
     GreyTalonSRX *m_stingerElevatorMotor;
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
     GreyTalonSRX *m_elevatorMotorA;
-    GreyTalonSRX *m_elevatorMotorB;
+    VictorSPX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;
 
     ADXRS450_Gyro *m_gyro;
