@@ -67,10 +67,10 @@ public:
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
         1.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT =
-        -3.0;  // in inches from target to robot bumper
+        -5.0;  // in inches from target to robot bumper
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
-        0.96;  // in degrees 2.0 at p-field
+        -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 40.0;

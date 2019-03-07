@@ -231,7 +231,7 @@ public:
     double GetHorizontalDistance();
 
     static constexpr double TARGET_HEIGHT = 29.0;  // in inches from ground
-    static constexpr double CAMERA_HEIGHT = 46.0;  // in inches from ground
+    static constexpr double CAMERA_HEIGHT = 47.0;  // in inches from ground
     static constexpr double CAMERA_ANGLE =
         -26.0 * (Constants::PI / 180.0);  // in degrees wrt ground
     static constexpr double CAMERA_BUMPER_OFFSET = 19.25;
