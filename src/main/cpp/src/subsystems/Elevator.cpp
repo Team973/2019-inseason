@@ -38,7 +38,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->EnableCurrentLimit(true);
     m_elevatorMotorA->ConfigPeakCurrentDuration(0, 10);
     m_elevatorMotorA->ConfigPeakCurrentLimit(0, 10);
-    m_elevatorMotorA->ConfigContinuousCurrentLimit(60, 10);
+    m_elevatorMotorA->ConfigContinuousCurrentLimit(35, 10);
     m_elevatorMotorA->EnableVoltageCompensation(false);
     m_elevatorMotorA->ConfigForwardSoftLimitEnable(true, 10);
     m_elevatorMotorA->ConfigForwardSoftLimitThreshold(
