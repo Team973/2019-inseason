@@ -394,7 +394,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                         case GameMode::CargoPeriodic:
                             m_cargoIntake->RunIntake();
-                            m_elevator->SetPosition(Elevator::GROUND + 1.0);
+                            m_elevator->SetPosition(Elevator::GROUND + 0.55);
                             break;
                     }
                 }
@@ -405,7 +405,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             m_limelightHatch->SetLightOff();
                             break;
                         case GameMode::CargoPeriodic:
-                            m_cargoIntake->StopIntake();
+                            m_cargoIntake->HoldCargo();
                             m_limelightHatch->SetLightOff();
                             break;
                     }

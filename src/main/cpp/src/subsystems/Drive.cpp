@@ -84,6 +84,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     this->m_scheduler->RegisterTask("Drive", this, TASK_PERIODIC);
     m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_leftDriveSparkA->SetInverted(false);
+    m_leftDriveSparkA->SetOpenLoopRampRate(0.2);
     m_leftDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
@@ -91,6 +92,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_rightDriveSparkA->SetInverted(false);
+    m_rightDriveSparkA->SetOpenLoopRampRate(0.2);
     m_rightDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);

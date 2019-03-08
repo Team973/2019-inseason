@@ -47,6 +47,7 @@ public:
 
     double CalcScaleGoalAngleComp();
     double CalcTurnComp();
+    double CalcThrottleCap();
 
     /**
      * Checks with the controller to see if we are on target.
@@ -70,12 +71,16 @@ public:
         -5.0;  // in inches from target to robot bumper
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
-        -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
+        0.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 40.0;
     static constexpr double TURN_COMP_DISTANCE_MIN = 6.0;
     static constexpr double TURN_COMP_DISTANCE_MAX = 24.0;
+    static constexpr double THROTTLE_CAP_DISTANCE_MIN = 24.0;
+    static constexpr double THROTTLE_CAP_DISTANCE_MAX = 60.0;
+    static constexpr double THROTTLE_MIN = 0.2;
+    static constexpr double THROTTLE_MAX = 0.5;
     static constexpr double GOAL_ANGLE_COMP_KP = 0.04;
 
 private:

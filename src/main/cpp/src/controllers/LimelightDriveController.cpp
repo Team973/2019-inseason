@@ -58,6 +58,15 @@ double LimelightDriveController::CalcTurnComp() {
                        0.5, 1.0);
 }
 
+double LimelightDriveController::CalcThrottleCap() {
+    return THROTTLE_MIN +
+           (1.0 / (THROTTLE_CAP_DISTANCE_MAX - THROTTLE_CAP_DISTANCE_MIN) *
+                m_limelight->GetHorizontalDistance() -
+            (THROTTLE_CAP_DISTANCE_MIN * 1 /
+             (THROTTLE_CAP_DISTANCE_MAX - THROTTLE_CAP_DISTANCE_MIN))) *
+               (THROTTLE_MAX - THROTTLE_MIN);
+}
+
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
     m_limelight->SetLightOn();
@@ -76,8 +85,9 @@ void LimelightDriveController::CalcDriveOutput(
                 -0.4, 0.4) *
             CalcTurnComp();
         double throttlePidOut = Util::bound(
-            m_throttlePid->CalcOutputWithError(-distError), -0.5,
-            0.5);  //(pow(cos((offset * Constants::PI / 180.0) * PERIOD), 5))),
+            m_throttlePid->CalcOutputWithError(-distError), -CalcThrottleCap(),
+            CalcThrottleCap());  //(pow(cos((offset * Constants::PI / 180.0) *
+                                 //PERIOD), 5))),
         m_goalAngleComp = CalcScaleGoalAngleComp();
         if (m_isCompensatingSkew) {
             m_leftSetpoint = throttlePidOut + turnPidOut + m_goalAngleComp;
