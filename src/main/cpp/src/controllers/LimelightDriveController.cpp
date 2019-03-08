@@ -84,10 +84,10 @@ void LimelightDriveController::CalcDriveOutput(
                 -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET),
                 -0.4, 0.4) *
             CalcTurnComp();
-        double throttlePidOut = Util::bound(
-            m_throttlePid->CalcOutputWithError(-distError), -CalcThrottleCap(),
-            CalcThrottleCap());  //(pow(cos((offset * Constants::PI / 180.0) *
-                                 //PERIOD), 5))),
+        double throttlePidOut =
+            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.3,
+                        0.3);  //(pow(cos((offset * Constants::PI / 180.0) *
+                               // PERIOD), 5))),
         m_goalAngleComp = CalcScaleGoalAngleComp();
         if (m_isCompensatingSkew) {
             m_leftSetpoint = throttlePidOut + turnPidOut + m_goalAngleComp;
