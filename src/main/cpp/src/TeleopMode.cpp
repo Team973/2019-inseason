@@ -120,13 +120,25 @@ void Teleop::TeleopPeriodic() {
                 m_cargoIntake->RetractWrist();
             }
             break;
-        case GameMode::EndGameInit:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: endgameinit");
+        case GameMode::ThirdLevelEndGameInit:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: ThirdLevelEndGameinit");
             m_limelightHatch->SetCameraDriver();
             m_cargoIntake->StopIntake();
             m_hatchIntake->SetIdle();
-            m_elevator->SetPosition(Elevator::PLATFORM);
-            if (m_elevator->GetPosition() > Elevator::PLATFORM - 2.0) {
+            m_elevator->SetPosition(Elevator::THIRD_PLATFORM);
+            if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 2.0) {
+                m_cargoIntake->DeployPlatformWheel();
+                m_cargoIntake->ExtendWrist();
+                m_gameMode = GameMode::EndGamePeriodic;
+            }
+            break;
+        case GameMode::SecondLevelEndGameInit:
+            DBStringPrintf(DBStringPos::DB_LINE8, "gm: SecondLevelEndGameinit");
+            m_limelightHatch->SetCameraDriver();
+            m_cargoIntake->StopIntake();
+            m_hatchIntake->SetIdle();
+            m_elevator->SetPosition(Elevator::SECOND_PLATFORM);
+            if (m_elevator->GetPosition() > Elevator::SECOND_PLATFORM - 2.0) {
                 m_cargoIntake->DeployPlatformWheel();
                 m_cargoIntake->ExtendWrist();
                 m_gameMode = GameMode::EndGamePeriodic;
@@ -139,13 +151,13 @@ void Teleop::TeleopPeriodic() {
             break;
         case GameMode::RaiseIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
-            m_elevator->SetPosition(Elevator::PLATFORM);
+            m_elevator->SetPosition(Elevator::THIRD_PLATFORM);
             m_cargoIntake->RetractPlatformWheel();
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
-            if (m_elevator->GetPosition() > Elevator::PLATFORM - 2.0) {
+            if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 2.0) {
                 m_cargoIntake->RetractWrist();
                 m_elevator->SetPosition(0.0);
                 m_gameMode = GameMode::EndGamePeriodic;
@@ -304,7 +316,16 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case Xbox::Back:
                 if (pressedP) {
-                    m_gameMode = GameMode::EndGameInit;
+                    m_gameMode = GameMode::ThirdLevelEndGameInit;
+                    m_rumble = Rumble::on;
+                }
+                else {
+                    m_rumble = Rumble::off;
+                }
+                break;
+            case Xbox::Start:
+                if (pressedP) {
+                    m_gameMode = GameMode::SecondLevelEndGameInit;
                     m_rumble = Rumble::on;
                 }
                 else {

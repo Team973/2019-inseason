@@ -52,8 +52,9 @@ public:
     static constexpr double CARGO_SHIP_HATCH =
         0.5; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
-        15.0;                                /**< Cargo ship cargo preset. */
-    static constexpr double PLATFORM = 23.0; /**< Platform preset. */
+        15.0; /**< Cargo ship cargo preset. */
+    static constexpr double THIRD_PLATFORM = 23.0; /**< Platform preset. */
+    static constexpr double SECOND_PLATFORM = 6.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
         27.5; /**< Soft elevator height. */

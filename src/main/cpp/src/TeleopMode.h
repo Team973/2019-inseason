@@ -124,7 +124,8 @@ private:
         CargoPeriodic,
         HatchInit,
         HatchPeriodic,
-        EndGameInit,
+        ThirdLevelEndGameInit,
+        SecondLevelEndGameInit,
         EndGamePeriodic,
         RaiseIntake,
         ResetIntake
