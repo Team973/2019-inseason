@@ -1,4 +1,6 @@
 #include "src/TestMode.h"
+#include "src/controllers/ConstantArcSplineDriveController.h"
+#include "lib/profiles/MotionProfile.h"
 
 using namespace frc;
 
@@ -210,10 +212,13 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadLeftVirtBtn:
                 if (pressedP) {
-                    m_rumble = Rumble::on;
+                    m_drive
+                        ->ConstantArcSplineDrive(DriveBase::RelativeTo::Now,
+                                                 60.0, 0.0)
+                        ->SetMaxVelAccel(70.0, 70.0)
+                        ->SetStartEndVel(0.0, 70.0);
                 }
                 else {
-                    m_rumble = Rumble::off;
                 }
                 break;
             case Xbox::DPadRightVirtBtn:

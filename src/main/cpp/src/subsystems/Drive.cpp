@@ -13,6 +13,7 @@
 #include "src/controllers/OpenloopArcadeDriveController.h"
 #include "src/controllers/PIDDriveController.h"
 #include "src/controllers/SplineDriveController.h"
+#include "src/controllers/ConstantArcSplineDriveController.h"
 #include "src/controllers/VelocityArcadeDriveController.h"
 #include "src/controllers/LimelightDriveController.h"
 #include "src/controllers/AssistedCheesyDriveController.h"
@@ -61,6 +62,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
         , m_splineDriveController(new SplineDriveController(this, logger))
+        , m_constantArcSplineDriveController(
+              new ConstantArcSplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
         , m_limelightHatchDriveController(new LimelightDriveController(
               limelightHatch, LimelightDriveController::VisionOffset::Hatch,
@@ -161,6 +164,13 @@ SplineDriveController *Drive::SplineDrive(
     this->SetDriveController(m_splineDriveController);
     m_splineDriveController->SetTarget(trajectory, relativity);
     return m_splineDriveController;
+}
+
+ConstantArcSplineDriveController *Drive::ConstantArcSplineDrive(
+    RelativeTo relativity, double distance, double angle) {
+    this->SetDriveController(m_constantArcSplineDriveController);
+    m_constantArcSplineDriveController->SetTarget(relativity, distance, angle);
+    return m_constantArcSplineDriveController;
 }
 
 double Drive::GetSplinePercentComplete() {

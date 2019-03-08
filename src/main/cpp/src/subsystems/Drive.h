@@ -27,6 +27,7 @@ class Limelight;
 class OpenloopArcadeDriveController;
 class PIDDriveController;
 class SplineDriveController;
+class ConstantArcSplineDriveController;
 class VelocityArcadeDriveController;
 class LimelightDriveController;
 class AssistedCheesyDriveController;
@@ -131,6 +132,9 @@ public:
      */
     SplineDriveController *SplineDrive(
         trajectories::TrajectoryDescription *trajectory, RelativeTo relativity);
+
+    ConstantArcSplineDriveController *ConstantArcSplineDrive(
+        RelativeTo relativity, double distance, double angle);
 
     /**
      * Return the Spline drive controller.
@@ -298,6 +302,7 @@ private:
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
+    ConstantArcSplineDriveController *m_constantArcSplineDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
     LimelightDriveController *m_limelightHatchDriveController;
     LimelightDriveController *m_regularLimelightHatchDriveController;
