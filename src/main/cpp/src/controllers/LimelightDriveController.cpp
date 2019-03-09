@@ -15,7 +15,7 @@ LimelightDriveController::LimelightDriveController(Limelight *limelight,
         , m_goalAngleComp(0.0)
         , m_limelight(limelight)
         , m_turnPid(new PID(0.02, 0.0, 0.001))
-        , m_throttlePid(new PID(0.03, 0.0, 0.003)) {
+        , m_throttlePid(new PID(0.02, 0.0, 0.003)) {
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -30,44 +30,46 @@ void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
 }
 
 double LimelightDriveController::CalcScaleGoalAngleComp() {
-    return Util::bound(
-        GOAL_ANGLE_COMP_KP * m_limelight->GetTargetSkew() *
-            Util::bound(1 /
-                                (GOAL_ANGLE_COMP_DISTANCE_MAX -
-                                 GOAL_ANGLE_COMP_DISTANCE_MIN) *
-                                m_limelight->GetHorizontalDistance() -
-                            (GOAL_ANGLE_COMP_DISTANCE_MIN * 1 /
-                             (GOAL_ANGLE_COMP_DISTANCE_MAX -
-                              GOAL_ANGLE_COMP_DISTANCE_MIN)),
-                        0.0, 1.0),
-        -0.2, 0.2);  // y = mx + b
-                     // y = degree of compensation
-                     // m = (1 - 0) / (max - min)
-                     // x = distance to target
-                     // b = y-int as plugged in to slope intercept equation
+    double dist_multiplier = Util::bound(
+        Util::interpolate(Util::Point(GOAL_ANGLE_COMP_DISTANCE_MIN, 0),
+                          Util::Point(GOAL_ANGLE_COMP_DISTANCE_MAX, 1),
+                          m_limelight->GetHorizontalDistance()),
+        0.0, 1.0);
+    double skew = m_limelight->GetTargetSkew();
+    double angle_comp =
+        Util::bound(GOAL_ANGLE_COMP_KP * skew * dist_multiplier, -0.2, 0.2);
+    DBStringPrintf(DB_LINE3, "s:%2.1lf m:%2.1lf ac:%2.1lf", skew,
+                   dist_multiplier, angle_comp);
+    DBStringPrintf(DB_LINE7, "t_dist: %2.2lf",
+                   m_limelight->GetHorizontalDistance());
+    return angle_comp;  // y = mx + b
+                        // y = degree of compensation
+                        // m = (1 - 0) / (max - min)
+                        // x = distance to target
+                        // b = y-int as plugged in to slope intercept equation
 }
 
 double LimelightDriveController::CalcTurnComp() {
-    return Util::bound(0.5 / (TURN_COMP_DISTANCE_MAX - TURN_COMP_DISTANCE_MIN) *
-                               m_limelight->GetHorizontalDistance() -
-                           (TURN_COMP_DISTANCE_MIN * 1 /
-                            (TURN_COMP_DISTANCE_MAX - TURN_COMP_DISTANCE_MIN)),
-                       0.5, 1.0);
+    return Util::bound(
+        Util::interpolate(Util::Point(TURN_COMP_DISTANCE_MIN, 0.5),
+                          Util::Point(TURN_COMP_DISTANCE_MAX, 1.0),
+                          m_limelight->GetHorizontalDistance()),
+        0.5, 1.0);
 }
 
 double LimelightDriveController::CalcThrottleCap() {
+    /*
     return THROTTLE_MIN +
            (1.0 / (THROTTLE_CAP_DISTANCE_MAX - THROTTLE_CAP_DISTANCE_MIN) *
                 m_limelight->GetHorizontalDistance() -
             (THROTTLE_CAP_DISTANCE_MIN * 1 /
              (THROTTLE_CAP_DISTANCE_MAX - THROTTLE_CAP_DISTANCE_MIN))) *
                (THROTTLE_MAX - THROTTLE_MIN);
+               */
 }
 
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
-    DBStringPrintf(DB_LINE3, "Skew: %d", m_isCompensatingSkew);
-
     m_limelight->SetLightOn();
     double offset = m_limelight->GetXOffset();
     double distance = m_limelight->GetHorizontalDistance();  // in inches
@@ -84,8 +86,8 @@ void LimelightDriveController::CalcDriveOutput(
                 -0.4, 0.4) *
             CalcTurnComp();
         double throttlePidOut =
-            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.3,
-                        0.3);  //(pow(cos((offset * Constants::PI / 180.0) *
+            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.7,
+                        0.7);  //(pow(cos((offset * Constants::PI / 180.0) *
                                // PERIOD), 5))),
         m_goalAngleComp = CalcScaleGoalAngleComp();
         if (m_isCompensatingSkew) {
@@ -98,6 +100,8 @@ void LimelightDriveController::CalcDriveOutput(
         else {
             m_leftSetpoint = throttlePidOut + turnPidOut;
             m_rightSetpoint = throttlePidOut - turnPidOut;
+            DBStringPrintf(DBStringPos::DB_LINE1, "th:%2.2lf tu:%2.2lf",
+                           throttlePidOut, turnPidOut);
         }
     }
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
