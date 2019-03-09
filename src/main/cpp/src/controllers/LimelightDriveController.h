@@ -18,17 +18,11 @@ class PID;
 
 class LimelightDriveController : public DriveController {
 public:
-    enum class VisionOffset
-    {
-        Cargo,
-        Hatch
-    };
     /**
      * Construct a Limelight Drive controller.
      * @param limelight The limelight.
      */
-    LimelightDriveController(Limelight *limelight, VisionOffset offset,
-                             bool isCompSkew);
+    LimelightDriveController(Limelight *limelight, bool isCompSkew);
     virtual ~LimelightDriveController();
 
     /**
@@ -87,7 +81,6 @@ private:
     bool m_onTarget;
     double m_leftSetpoint;
     double m_rightSetpoint;
-    double m_visionOffset;
     bool m_isCompensatingSkew;
 
     double m_throttle;

@@ -15,7 +15,6 @@
 #include "src/controllers/SplineDriveController.h"
 #include "src/controllers/ConstantArcSplineDriveController.h"
 #include "src/controllers/VelocityArcadeDriveController.h"
-#include "src/controllers/LimelightDriveController.h"
 #include "src/controllers/AssistedCheesyDriveController.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
@@ -65,12 +64,10 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_constantArcSplineDriveController(
               new ConstantArcSplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
-        , m_limelightHatchDriveController(new LimelightDriveController(
-              limelightHatch, LimelightDriveController::VisionOffset::Hatch,
-              false))
-        , m_regularLimelightHatchDriveController(new LimelightDriveController(
-              limelightHatch, LimelightDriveController::VisionOffset::Hatch,
-              true))
+        , m_limelightDriveWithoutSkew(
+              new LimelightDriveController(limelightHatch, false))
+        , m_limelightDriveWithSkew(
+              new LimelightDriveController(limelightHatch, true))
         , m_assistedCheesyDriveHatchController(
               new AssistedCheesyDriveController(
                   m_limelightHatch,
@@ -128,12 +125,6 @@ void Drive::CheesyDrive(double throttle, double turn, bool isQuickTurn,
                                           isHighGear);
 }
 
-LimelightDriveController *Drive::LimelightDrive() {
-    this->SetDriveController(m_limelightDriveController);
-
-    return m_limelightDriveController;
-}
-
 void Drive::OpenloopArcadeDrive(double throttle, double turn) {
     this->SetDriveController(m_openloopArcadeDriveController);
     m_openloopArcadeDriveController->SetJoysticks(throttle, turn);
@@ -186,16 +177,16 @@ void Drive::VelocityArcadeDrive(double throttle, double turn) {
     m_velocityArcadeDriveController->SetJoysticks(throttle, turn);
 }
 
-LimelightDriveController *Drive::LimelightHatchDrive() {
-    this->SetDriveController(m_limelightHatchDriveController);
+LimelightDriveController *Drive::LimelightDriveWithoutSkew() {
+    this->SetDriveController(m_limelightDriveWithoutSkew);
 
-    return m_limelightHatchDriveController;
+    return m_limelightDriveWithoutSkew;
 }
 
-LimelightDriveController *Drive::RegularLimelightHatchDrive() {
-    this->SetDriveController(m_regularLimelightHatchDriveController);
+LimelightDriveController *Drive::LimelightDriveWithSkew() {
+    this->SetDriveController(m_limelightDriveWithSkew);
 
-    return m_limelightHatchDriveController;
+    return m_limelightDriveWithSkew;
 }
 
 AssistedCheesyDriveController *Drive::AssistedCheesyHatchDrive(

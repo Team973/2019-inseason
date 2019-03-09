@@ -29,7 +29,6 @@ class PIDDriveController;
 class SplineDriveController;
 class ConstantArcSplineDriveController;
 class VelocityArcadeDriveController;
-class LimelightDriveController;
 class AssistedCheesyDriveController;
 class Limelight;
 class LogSpreadsheet;
@@ -161,8 +160,8 @@ public:
     /**
      * Set drive controller to use limelight in following a target
      */
-    LimelightDriveController *LimelightHatchDrive();
-    LimelightDriveController *RegularLimelightHatchDrive();
+    LimelightDriveController *LimelightDriveWithSkew();
+    LimelightDriveController *LimelightDriveWithoutSkew();
 
     /*
      * Set drive controller to use limelight and driver input to steer and drive
@@ -298,14 +297,13 @@ private:
     Limelight *m_limelightHatch;
 
     CheesyDriveController *m_cheesyDriveController;
-    LimelightDriveController *m_limelightDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
     ConstantArcSplineDriveController *m_constantArcSplineDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
-    LimelightDriveController *m_limelightHatchDriveController;
-    LimelightDriveController *m_regularLimelightHatchDriveController;
+    LimelightDriveController *m_limelightDriveWithSkew;
+    LimelightDriveController *m_limelightDriveWithoutSkew;
     AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 
     double m_angle;

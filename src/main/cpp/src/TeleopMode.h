@@ -98,8 +98,8 @@ private:
     enum class DriveMode
     {
         Openloop,
-        LimelightHatch,
-        RegularLimelightHatch,
+        LimelightDriveWithSkew,
+        LimelightDriveWithoutSkew,
         AssistedCheesyHatch,
         Cheesy
     };

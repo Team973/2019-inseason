@@ -63,6 +63,7 @@ void Teleop::TeleopPeriodic() {
 
     switch (m_driveMode) {
         case DriveMode::Cheesy:
+            DBStringPrintf(DB_LINE2, "Drive Mode: Cheesy Drive");
             if (softwareLowGear) {
                 m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
             }
@@ -71,6 +72,7 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case DriveMode::Openloop:
+            DBStringPrintf(DB_LINE2, "Drive Open Loop");
             if (softwareLowGear) {
                 m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
             }
@@ -78,13 +80,16 @@ void Teleop::TeleopPeriodic() {
                 m_drive->OpenloopArcadeDrive(y, x);
             }
             break;
-        case DriveMode::LimelightHatch:
-            m_drive->LimelightHatchDrive();
+        case DriveMode::LimelightDriveWithSkew:
+            DBStringPrintf(DB_LINE2, "Drive lime with skewh");
+            m_drive->LimelightDriveWithSkew();
             break;
-        case DriveMode::RegularLimelightHatch:
-            m_drive->RegularLimelightHatchDrive();
+        case DriveMode::LimelightDriveWithoutSkew:
+            DBStringPrintf(DB_LINE2, "Drive lime no skew");
+            m_drive->LimelightDriveWithoutSkew();
             break;
         case DriveMode::AssistedCheesyHatch:
+            DBStringPrintf(DB_LINE2, "Drive Assisted Cheesy");
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
         default:
@@ -215,7 +220,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::RegularLimelightHatch;
+                            m_driveMode = DriveMode::LimelightDriveWithoutSkew;
                             break;
                         case GameMode::CargoPeriodic:
                             break;
@@ -282,7 +287,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::LimelightHatch;
+                            m_driveMode = DriveMode::LimelightDriveWithSkew;
                             break;
                         case GameMode::CargoPeriodic:
                             break;

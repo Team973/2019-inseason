@@ -5,13 +5,10 @@
 
 namespace frc973 {
 LimelightDriveController::LimelightDriveController(Limelight *limelight,
-                                                   VisionOffset offset,
                                                    bool isCompSkew)
         : m_onTarget(false)
         , m_leftSetpoint(0.0)
         , m_rightSetpoint(0.0)
-        , m_visionOffset((offset == VisionOffset::Cargo ? CARGO_VISION_OFFSET
-                                                        : HATCH_VISION_OFFSET))
         , m_isCompensatingSkew(isCompSkew)
         , m_throttle(0.0)
         , m_turn(0.0)
@@ -69,6 +66,8 @@ double LimelightDriveController::CalcThrottleCap() {
 
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
+    DBStringPrintf(DB_LINE3, "Skew: %d", m_isCompensatingSkew);
+
     m_limelight->SetLightOn();
     double offset = m_limelight->GetXOffset();
     double distance = m_limelight->GetHorizontalDistance();  // in inches
