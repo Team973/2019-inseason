@@ -9,6 +9,7 @@
 #include "lib/util/WrapDash.h"
 #include "lib/util/Util.h"
 #include "lib/util/WrapDash.h"
+#include "lib/bases/DriveBase.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Drive.h"
@@ -92,7 +93,9 @@ private:
         Openloop,
         LimelightHatch,
         AssistedCheesy,
-        Cheesy
+        Cheesy,
+        PIDDrive,
+        PIDTurn
     };
     DriveMode m_driveMode;
 

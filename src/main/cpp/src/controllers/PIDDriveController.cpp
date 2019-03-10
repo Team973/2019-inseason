@@ -88,8 +88,11 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
                    m_prevDist);
     DBStringPrintf(DBStringPos::DB_LINE6, "err d %.3lf a %.3lf",
                    m_targetDist - m_prevDist, m_targetAngle - m_prevAngle);
+    DBStringPrintf(DB_LINE0, "Drive N: %f, S: %f, E: %f", m_prevDist,
+                   m_targetDist, GetDistError());
+    DBStringPrintf(DB_LINE1, "Turn N: %f, S: %f, E: %f", m_prevAngle,
+                   m_targetAngle, GetAngleError());
 }
-
 /*
  * dist and angle are relative to current position
  */

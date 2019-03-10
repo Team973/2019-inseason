@@ -8,11 +8,21 @@ namespace frc973 {
 Autonomous::Autonomous(ObservablePoofsJoystick *driver,
                        ObservableXboxJoystick *codriver,
                        ObservableDualActionJoystick *testJoystick,
-                       Teleop *teleop)
+                       Teleop *teleop, ADXRS450_Gyro *gyro, Drive *drive,
+                       CargoIntake *cargoIntake, HatchIntake *hatchIntake,
+                       Elevator *elevator)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_testJoystick(testJoystick)
-        , m_teleop(teleop) {
+        , m_teleop(teleop)
+        , m_autoState(AutoState::CargoShipThenRocket)
+        , m_direction(1.0)  // counterclockwise is positive
+        , m_autoStep(0)
+        , m_gyro(gyro)
+        , m_drive(drive)
+        , m_cargoIntake(cargoIntake)
+        , m_hatchIntake(hatchIntake)
+        , m_elevator(elevator) {
 }
 
 Autonomous::~Autonomous() {
@@ -21,25 +31,41 @@ Autonomous::~Autonomous() {
 void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
     m_teleop->TeleopInit();
+    m_gyro->Reset();
+    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) <
+        0.0) {
+        m_direction = -1.0;
+    }
+    else {
+        m_direction = 1.0;
+    }
+
     std::cout << "Autonomous Start" << std::endl;
 }
 
 void Autonomous::AutonomousPeriodic() {
-    /*if (fabs(m_driverJoystick->GetRawAxisWithDeadband()) > 0.25) {
+    if (fabs(m_driverJoystick->GetRawAxisWithDeadband(
+            PoofsJoysticks::LeftYAxis)) > 0.50) {
+        m_autoState = AutoState::Manual;
     }
-    else{
-        m_routine->Execute
-    }
-    switch (m_autoState)
-    {
-        case Rocket
-        case Manual:
+
+    switch (m_autoState) {
+        case AutoState::TwoRocket:
+            // TwoRocketAuto();
+            break;
+        case AutoState::TwoCargoShip:
+            // TwoCargoShipAuto();
+            break;
+        case AutoState::CargoShipThenRocket:
+            // CargoShipThenRocketAuto();
+            break;
+        case AutoState::Manual:
             m_teleop->TeleopPeriodic();
             break;
         default:
             m_teleop->TeleopPeriodic();
             break;
-    }*/
+    }
 }
 void Autonomous::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                      bool pressedP) {

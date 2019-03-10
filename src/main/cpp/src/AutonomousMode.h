@@ -25,7 +25,9 @@ public:
      */
     Autonomous(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver,
-               ObservableDualActionJoystick *testJoystick, Teleop *teleop);
+               ObservableDualActionJoystick *testJoystick, Teleop *teleop,
+               ADXRS450_Gyro *gyro, Drive *drive, CargoIntake *cargoIntake,
+               HatchIntake *hatchIntake, Elevator *elevator);
     virtual ~Autonomous();
 
     /**
@@ -68,38 +70,52 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    friend class PresetHandlerDispatcher;
-
-private:
     enum class AutoState
     {
-        DriveForwardFromCenter,
-        DriveForwardOffLeftPlatform,
-        DriveForwardOffRightPlatform,
-        TurnTowardLeftCargoFront,
-        TurnTowardRightCargoFront,
-        VisionRightCargoFront,
-        VisionLeftCargoFront,
-        ScoreRightCargoFront,
-        ScoreLeftCargoFront,
-        BackupRightCargoFront,
-        BackupLeftCargoFront,
-        TurnClockwiseFromCargoScore,
-        TurnCounterClockwiseFromCargoScore,
-        DriveTowardHatchHumanLeft,
-        DriveTowardHatchHumanRight,
-        VisionFetchHumanHatch,
-        BackupFromRightHumanHatch,
-        BackupFromLeftHumanHatch,
-        DriveTowardFrontLowerRocket
-
+        TwoRocket,
+        TwoCargoShip,
+        CargoShipThenRocket,
+        Manual
     };
+
+private:
+    /* enum class AutoState
+     {
+         DriveForwardFromCenter,
+         DriveForwardOffLeftPlatform,
+         DriveForwardOffRightPlatform,
+         TurnTowardLeftCargoFront,
+         TurnTowardRightCargoFront,
+         VisionRightCargoFront,
+         VisionLeftCargoFront,
+         ScoreRightCargoFront,
+         ScoreLeftCargoFront,
+         BackupRightCargoFront,
+         BackupLeftCargoFront,
+         TurnClockwiseFromCargoScore,
+         TurnCounterClockwiseFromCargoScore,
+         DriveTowardHatchHumanLeft,
+         DriveTowardHatchHumanRight,
+         VisionFetchHumanHatch,
+         BackupFromRightHumanHatch,
+         BackupFromLeftHumanHatch,
+         DriveTowardFrontLowerRocket
+
+     };*/
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
     ObservableDualActionJoystick *m_testJoystick;
 
     Teleop *m_teleop;
-    AutoState m_autostate;
+    AutoState m_autoState;
+    double m_direction;
+    int m_autoStep;
+    ADXRS450_Gyro *m_gyro;
+
+    Drive *m_drive;
+    CargoIntake *m_cargoIntake;
+    HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
 };
 }
