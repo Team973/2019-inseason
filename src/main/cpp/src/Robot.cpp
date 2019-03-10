@@ -167,13 +167,6 @@ void Robot::AllStateContinuous() {
         DriverStation::GetInstance().GetReplayNumber());
     m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
     m_matchTime->LogDouble(Timer::GetMatchTime());
-    /*m_limelightHatch->SetCameraVision();
-    m_limelightHatch->SetLightOn();
-    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf yo %2.2lf",
-                   m_limelightHatch->GetHorizontalDistance(),
-                   m_limelightHatch->GetYOffset());*/
-    /*DBStringPrintf(DB_LINE5, "pdpea:%2.2lf b:%2.2lf", m_pdp->GetCurrent(13),
-                   m_pdp->GetCurrent(2));*/
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
