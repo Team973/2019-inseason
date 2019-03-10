@@ -18,7 +18,6 @@
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/HatchIntake.h"
-#include "src/GameMode.h"
 #include "src/subsystems/Stinger.h"
 #include <iostream>
 
@@ -43,8 +42,7 @@ public:
            ObservableDualActionJoystick *testStick, Drive *drive,
            Elevator *elevator, HatchIntake *hatchintake,
            CargoIntake *cargoIntake, Stinger *stinger,
-           Limelight *limelightHatch,
-           PresetHandlerDispatcher *presetDispatcher);
+           Limelight *limelightHatch);
 
     virtual ~Teleop();
 
@@ -100,19 +98,16 @@ private:
     enum class DriveMode
     {
         Openloop,
-        LimelightHatch,
-        RegularLimelightHatch,
+        LimelightDriveWithSkew,
+        LimelightDriveWithoutSkew,
         AssistedCheesyHatch,
         Cheesy
     };
     DriveMode m_driveMode;
     CargoIntake *m_cargoIntake;
 
-    GameMode m_gameMode;
-
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
-    PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 
     Limelight *m_limelightHatch;
@@ -122,6 +117,20 @@ private:
         off
     };
     Rumble m_rumble;
+
+    enum class GameMode
+    {
+        CargoInit,
+        CargoPeriodic,
+        HatchInit,
+        HatchPeriodic,
+        ThirdLevelEndGameInit,
+        SecondLevelEndGameInit,
+        EndGamePeriodic,
+        RaiseIntake,
+        ResetIntake
+    };
+    GameMode m_gameMode;
 
     uint32_t m_rumbleTimer;
     uint32_t m_wristResetTimer;

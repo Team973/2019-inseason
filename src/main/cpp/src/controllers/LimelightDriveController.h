@@ -18,17 +18,11 @@ class PID;
 
 class LimelightDriveController : public DriveController {
 public:
-    enum class VisionOffset
-    {
-        Cargo,
-        Hatch
-    };
     /**
      * Construct a Limelight Drive controller.
      * @param limelight The limelight.
      */
-    LimelightDriveController(Limelight *limelight, VisionOffset offset,
-                             bool isCompSkew);
+    LimelightDriveController(Limelight *limelight, bool isCompSkew);
     virtual ~LimelightDriveController();
 
     /**
@@ -47,6 +41,7 @@ public:
 
     double CalcScaleGoalAngleComp();
     double CalcTurnComp();
+    double CalcThrottleCap();
 
     /**
      * Checks with the controller to see if we are on target.
@@ -67,22 +62,25 @@ public:
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
         1.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT =
-        -3.0;  // in inches from target to robot bumper
+        -7.0;  // in inches from target to robot bumper
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
-        0.96;  // in degrees 2.0 at p-field
+        -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
-    static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 40.0;
-    static constexpr double TURN_COMP_DISTANCE_MIN = -4.0;
-    static constexpr double TURN_COMP_DISTANCE_MAX = 4.0;
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.06;
+    static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 60.0;
+    static constexpr double TURN_COMP_DISTANCE_MIN = 6.0;
+    static constexpr double TURN_COMP_DISTANCE_MAX = 24.0;
+    static constexpr double THROTTLE_CAP_DISTANCE_MIN = 24.0;
+    static constexpr double THROTTLE_CAP_DISTANCE_MAX = 60.0;
+    static constexpr double THROTTLE_MIN = 0.2;
+    static constexpr double THROTTLE_MAX = 0.5;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.04;
 
 private:
     bool m_onTarget;
     double m_leftSetpoint;
     double m_rightSetpoint;
-    double m_visionOffset;
     bool m_isCompensatingSkew;
 
     double m_throttle;

@@ -9,6 +9,7 @@
 #include "frc/WPILib.h"
 #include "ctre/Phoenix.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreySparkMax.h"
 #include "src/info/RobotInfo.h"
 #include "lib/bases/DriveBase.h"
 #include "networktables/NetworkTableInstance.h"
@@ -26,8 +27,8 @@ class Limelight;
 class OpenloopArcadeDriveController;
 class PIDDriveController;
 class SplineDriveController;
+class ConstantArcSplineDriveController;
 class VelocityArcadeDriveController;
-class LimelightDriveController;
 class AssistedCheesyDriveController;
 class Limelight;
 class LogSpreadsheet;
@@ -62,8 +63,8 @@ public:
      * @param gyro The gyro object.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
-          GreyTalonSRX *leftDriveTalonA, VictorSPX *leftDriveVictorB,
-          GreyTalonSRX *rightDriveTalonA, VictorSPX *rightDriveVictorB,
+          GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
+          GreySparkMax *rightDriveSparkA, GreySparkMax *rightDriveSparkB,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
           Limelight *limelightHatch);
     virtual ~Drive();
@@ -131,6 +132,9 @@ public:
     SplineDriveController *SplineDrive(
         trajectories::TrajectoryDescription *trajectory, RelativeTo relativity);
 
+    ConstantArcSplineDriveController *ConstantArcSplineDrive(
+        RelativeTo relativity, double distance, double angle);
+
     /**
      * Return the Spline drive controller.
      * @return The drive controller.
@@ -156,8 +160,8 @@ public:
     /**
      * Set drive controller to use limelight in following a target
      */
-    LimelightDriveController *LimelightHatchDrive();
-    LimelightDriveController *RegularLimelightHatchDrive();
+    LimelightDriveController *LimelightDriveWithSkew();
+    LimelightDriveController *LimelightDriveWithoutSkew();
 
     /*
      * Set drive controller to use limelight and driver input to steer and drive
@@ -266,10 +270,10 @@ public:
 private:
     LogSpreadsheet *m_logger;
 
-    GreyTalonSRX *m_leftDriveTalonA;
-    VictorSPX *m_leftDriveVictorB;
-    GreyTalonSRX *m_rightDriveTalonA;
-    VictorSPX *m_rightDriveVictorB;
+    GreySparkMax *m_leftDriveSparkA;
+    GreySparkMax *m_leftDriveSparkB;
+    GreySparkMax *m_rightDriveSparkA;
+    GreySparkMax *m_rightDriveSparkB;
 
     GreyTalonSRX *m_stingerDriveMotor;
 
@@ -293,13 +297,13 @@ private:
     Limelight *m_limelightHatch;
 
     CheesyDriveController *m_cheesyDriveController;
-    LimelightDriveController *m_limelightDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
     PIDDriveController *m_pidDriveController;
     SplineDriveController *m_splineDriveController;
+    ConstantArcSplineDriveController *m_constantArcSplineDriveController;
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
-    LimelightDriveController *m_limelightHatchDriveController;
-    LimelightDriveController *m_regularLimelightHatchDriveController;
+    LimelightDriveController *m_limelightDriveWithSkew;
+    LimelightDriveController *m_limelightDriveWithoutSkew;
     AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 
     double m_angle;

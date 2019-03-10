@@ -274,6 +274,21 @@ inline double normalize(double n, double sl, double sh, double tl, double th) {
 constexpr inline double signum(double x) {
     return (x < 0) ? -1 : (x > 0) ? 1 : 0;
 }
+
+struct Point {
+    double x, y;
+    Point(double _X, double _Y) : x(_X), y(_Y) {
+    }
+};
+
+/**
+ * Given two points on a line, return the y value on this point at the given x
+ */
+inline double interpolate(Point a, Point b, double x) {
+    double slope = (b.y - a.y) / (b.x - a.x);
+    double intercept = a.y - (slope * a.x);
+    return slope * x + intercept;
+}
 }  // Util
 
 }  // frc973

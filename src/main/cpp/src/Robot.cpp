@@ -2,7 +2,6 @@
 #include <iostream>
 #include "src/info/RobotInfo.h"
 #include "src/DisabledMode.h"
-#include "src/PresetHandlerDispatcher.h"
 #include "src/AutonomousMode.h"
 #include "src/TeleopMode.h"
 #include "src/TestMode.h"
@@ -27,16 +26,20 @@ Robot::Robot()
         , m_testJoystick(
               new ObservableDualActionJoystick(TEST_JOYSTICK_PORT, this, this))
         , m_logger(new LogSpreadsheet(this))
-        , m_leftDriveTalonA(new GreyTalonSRX(LEFT_DRIVE_A_CAN_ID))
-        , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
-        , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
-        , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
+        , m_leftDriveSparkA(new GreySparkMax(
+              LEFT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
+        , m_leftDriveSparkB(new GreySparkMax(
+              LEFT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkA(new GreySparkMax(
+              RIGHT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkB(new GreySparkMax(
+              RIGHT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
         , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
         , m_stingerElevatorMotor(new GreyTalonSRX(STINGER_ELEVATOR_CAN_ID))
         , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
         , m_stingerUpperHall(new DigitalInput(STINGER_UPPER_HALL_DIN_ID))
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
-        , m_elevatorMotorB(new GreyTalonSRX(ELEVATOR_B_CAN_ID))
+        , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
         , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_hatchCamera(UsbCamera("USB Cmera 0", 0))
@@ -52,9 +55,9 @@ Robot::Robot()
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
         , m_matchTime(new LogCell("MatchTime", 32, true))
-        , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
-                            m_leftDriveVictorB, m_rightDriveTalonA,
-                            m_rightDriveVictorB, m_stingerDriveMotor, m_gyro,
+        , m_drive(new Drive(this, m_logger, m_leftDriveSparkA,
+                            m_leftDriveSparkB, m_rightDriveSparkA,
+                            m_rightDriveSparkB, m_stingerDriveMotor, m_gyro,
                             m_limelightHatch))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick,
@@ -74,14 +77,13 @@ Robot::Robot()
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
                                   m_elevator, m_cargoIntake, m_limelightHatch))
-        , m_presetDispatcher(new PresetHandlerDispatcher())
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
                               m_testJoystick, m_drive, m_elevator,
                               m_hatchIntake, m_cargoIntake, m_stinger,
-                              m_limelightHatch, m_presetDispatcher))
+                              m_limelightHatch))
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
                           m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
-                          m_stinger, m_limelightHatch, m_presetDispatcher))
+                          m_stinger, m_limelightHatch))
         , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
                                       m_testJoystick, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;
@@ -162,11 +164,11 @@ void Robot::AllStateContinuous() {
     m_matchTime->LogDouble(Timer::GetMatchTime());
     /*m_limelightHatch->SetCameraVision();
     m_limelightHatch->SetLightOn();
-    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf xo %2.2lf",
+    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf yo %2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
-                   m_limelightHatch->GetXOffset());*/
-    DBStringPrintf(DB_LINE5, "pdpea:%2.2lf b:%2.2lf", m_pdp->GetCurrent(13),
-                   m_pdp->GetCurrent(2));
+                   m_limelightHatch->GetYOffset());*/
+    /*DBStringPrintf(DB_LINE5, "pdpea:%2.2lf b:%2.2lf", m_pdp->GetCurrent(13),
+                   m_pdp->GetCurrent(2));*/
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

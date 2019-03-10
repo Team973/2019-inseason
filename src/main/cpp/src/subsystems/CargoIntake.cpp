@@ -117,8 +117,6 @@ void CargoIntake::EnableCoastMode() {
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_currentCell->LogDouble(m_cargoIntakeMotor->GetOutputCurrent());
     m_voltageCell->LogDouble(m_cargoIntakeMotor->GetMotorOutputVoltage());
-    DBStringPrintf(DBStringPos::DB_LINE6, "cp %2.2lf",
-                   m_cargoIntakeMotor->GetOutputCurrent());
     double filteredCurrent =
         m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {

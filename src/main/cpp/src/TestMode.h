@@ -15,7 +15,6 @@
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
-#include "src/GameMode.h"
 #include "src/subsystems/Stinger.h"
 #include <iostream>
 
@@ -41,8 +40,7 @@ public:
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
          ObservableDualActionJoystick *testStick, Drive *drive,
          Elevator *elevator, HatchIntake *hatchIntake, CargoIntake *cargoIntake,
-         Stinger *stinger, Limelight *limelightHatch,
-         PresetHandlerDispatcher *presetDispatcher);
+         Stinger *stinger, Limelight *limelightHatch);
     virtual ~Test();
     void TestInit();
 
@@ -97,7 +95,6 @@ private:
         Cheesy
     };
     DriveMode m_driveMode;
-    GameMode m_gameMode;
 
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
@@ -105,8 +102,6 @@ private:
     Stinger *m_stinger;
 
     Limelight *m_limelightHatch;
-
-    PresetHandlerDispatcher *m_presetDispatcher;
 
     enum class Rumble
     {
