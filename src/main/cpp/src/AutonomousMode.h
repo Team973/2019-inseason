@@ -71,10 +71,35 @@ public:
     friend class PresetHandlerDispatcher;
 
 private:
+    enum class AutoState
+    {
+        DriveForwardFromCenter,
+        DriveForwardOffLeftPlatform,
+        DriveForwardOffRightPlatform,
+        TurnTowardLeftCargoFront,
+        TurnTowardRightCargoFront,
+        VisionRightCargoFront,
+        VisionLeftCargoFront,
+        ScoreRightCargoFront,
+        ScoreLeftCargoFront,
+        BackupRightCargoFront,
+        BackupLeftCargoFront,
+        TurnClockwiseFromCargoScore,
+        TurnCounterClockwiseFromCargoScore,
+        DriveTowardHatchHumanLeft,
+        DriveTowardHatchHumanRight,
+        VisionFetchHumanHatch,
+        BackupFromRightHumanHatch,
+        BackupFromLeftHumanHatch,
+        DriveTowardFrontLowerRocket
+
+    };
+
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
     ObservableDualActionJoystick *m_testJoystick;
 
     Teleop *m_teleop;
+    AutoState m_autostate;
 };
 }
