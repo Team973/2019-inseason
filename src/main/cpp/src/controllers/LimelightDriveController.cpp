@@ -36,12 +36,18 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                           m_limelight->GetHorizontalDistance()),
         0.0, 1.0);
     double skew = m_limelight->GetTargetSkew();
-    double angle_comp =
-        Util::bound(GOAL_ANGLE_COMP_KP * skew * dist_multiplier, -0.2, 0.2);
+    double skew_multiplier =
+        Util::bound(Util::interpolate(Util::Point(17, 1), Util::Point(24, 0),
+                                      fabs(m_limelight->GetXOffset())),
+                    0.0, 1.0);
+    double angle_comp = Util::bound(
+        GOAL_ANGLE_COMP_KP * skew * dist_multiplier * skew_multiplier, -0.2,
+        0.2);
     DBStringPrintf(DB_LINE3, "s:%2.1lf m:%2.1lf ac:%2.1lf", skew,
                    dist_multiplier, angle_comp);
-    DBStringPrintf(DB_LINE7, "t_dist: %2.2lf",
-                   m_limelight->GetHorizontalDistance());
+    DBStringPrintf(DB_LINE7, "t_dist: %2.2lf xo:%2.2lf",
+                   m_limelight->GetHorizontalDistance(),
+                   m_limelight->GetXOffset());
     return angle_comp;  // y = mx + b
                         // y = degree of compensation
                         // m = (1 - 0) / (max - min)
@@ -51,7 +57,7 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
 
 double LimelightDriveController::CalcTurnComp() {
     return Util::bound(
-        Util::interpolate(Util::Point(TURN_COMP_DISTANCE_MIN, 0.5),
+        Util::interpolate(Util::Point(TURN_COMP_DISTANCE_MIN, 0.6),
                           Util::Point(TURN_COMP_DISTANCE_MAX, 1.0),
                           m_limelight->GetHorizontalDistance()),
         0.5, 1.0);
