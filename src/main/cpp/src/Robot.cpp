@@ -30,10 +30,14 @@ Robot::Robot()
               LEFT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
         , m_leftDriveSparkB(new GreySparkMax(
               LEFT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
+        , m_leftDriveSparkC(new GreySparkMax(
+              LEFT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
         , m_rightDriveSparkA(new GreySparkMax(
               RIGHT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
         , m_rightDriveSparkB(new GreySparkMax(
               RIGHT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkC(new GreySparkMax(
+              RIGHT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
         , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
         , m_stingerElevatorMotor(new GreyTalonSRX(STINGER_ELEVATOR_CAN_ID))
         , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
@@ -56,8 +60,9 @@ Robot::Robot()
         , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
         , m_matchTime(new LogCell("MatchTime", 32, true))
         , m_drive(new Drive(this, m_logger, m_leftDriveSparkA,
-                            m_leftDriveSparkB, m_rightDriveSparkA,
-                            m_rightDriveSparkB, m_stingerDriveMotor, m_gyro,
+                            m_leftDriveSparkB, m_leftDriveSparkC,
+                            m_rightDriveSparkA, m_rightDriveSparkB,
+                            m_rightDriveSparkC, m_stingerDriveMotor, m_gyro,
                             m_limelightHatch))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick,

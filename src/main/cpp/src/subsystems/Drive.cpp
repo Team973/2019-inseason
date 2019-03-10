@@ -32,15 +32,18 @@ using namespace trajectories;
 namespace frc973 {
 Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
-             GreySparkMax *rightDriveSparkA, GreySparkMax *rightDriveSparkB,
+             GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
+             GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
              GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
              Limelight *limelightHatch)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveSparkA(leftDriveSparkA)
         , m_leftDriveSparkB(leftDriveSparkB)
+        , m_leftDriveSparkC(leftDriveSparkC)
         , m_rightDriveSparkA(rightDriveSparkA)
         , m_rightDriveSparkB(rightDriveSparkB)
+        , m_rightDriveSparkC(rightDriveSparkC)
         , m_stingerDriveMotor(stingerDriveMotor)
         , m_controlMode(ControlMode::PercentOutput)
         , m_leftDriveOutput(0.0)
@@ -89,6 +92,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
     m_leftDriveSparkB->SetInverted(false);
+    m_leftDriveSparkC->Follow(*m_leftDriveSparkA);
+    m_leftDriveSparkC->SetInverted(false);
 
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_rightDriveSparkA->SetInverted(false);
@@ -97,6 +102,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
     m_rightDriveSparkB->SetInverted(false);
+    m_rightDriveSparkC->Follow(*m_rightDriveSparkA);
+    m_rightDriveSparkC->SetInverted(false);
 
     m_stingerDriveMotor->SetNeutralMode(Coast);
     m_stingerDriveMotor->SetInverted(false);

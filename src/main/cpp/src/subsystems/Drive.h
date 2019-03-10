@@ -64,7 +64,8 @@ public:
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
           GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
-          GreySparkMax *rightDriveSparkA, GreySparkMax *rightDriveSparkB,
+          GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
+          GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
           Limelight *limelightHatch);
     virtual ~Drive();
@@ -230,6 +231,12 @@ public:
     double GetAngularRate() const override;
 
     /**
+     * Return the left maximum side temperature in celcius.
+     * @return The left side temperature in celcius.
+     */
+    // double GetLeftTemperature();
+
+    /**
      * Used by the DriveController to set motor values in inches/second.
      * @param left Velocity to send to left motors.
      * @param right Velocity to send to right motors.
@@ -272,8 +279,10 @@ private:
 
     GreySparkMax *m_leftDriveSparkA;
     GreySparkMax *m_leftDriveSparkB;
+    GreySparkMax *m_leftDriveSparkC;
     GreySparkMax *m_rightDriveSparkA;
     GreySparkMax *m_rightDriveSparkB;
+    GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
 

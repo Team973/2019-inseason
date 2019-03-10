@@ -25,7 +25,21 @@ void Autonomous::AutonomousInit() {
 }
 
 void Autonomous::AutonomousPeriodic() {
-    m_teleop->TeleopPeriodic();
+    /*if (fabs(m_driverJoystick->GetRawAxisWithDeadband()) > 0.25) {
+    }
+    else{
+        m_routine->Execute
+    }
+    switch (m_autoState)
+    {
+        case Rocket
+        case Manual:
+            m_teleop->TeleopPeriodic();
+            break;
+        default:
+            m_teleop->TeleopPeriodic();
+            break;
+    }*/
 }
 void Autonomous::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                      bool pressedP) {

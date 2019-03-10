@@ -95,8 +95,10 @@ private:
 
     GreySparkMax *m_leftDriveSparkA;
     GreySparkMax *m_leftDriveSparkB;
+    GreySparkMax *m_leftDriveSparkC;
     GreySparkMax *m_rightDriveSparkA;
     GreySparkMax *m_rightDriveSparkB;
+    GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
     GreyTalonSRX *m_stingerElevatorMotor;
