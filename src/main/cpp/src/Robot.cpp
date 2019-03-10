@@ -89,8 +89,9 @@ Robot::Robot()
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
                           m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
                           m_stinger, m_limelightHatch))
-        , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
-                                      m_testJoystick, m_teleop)) {
+        , m_autonomous(new Autonomous(
+              m_driverJoystick, m_operatorJoystick, m_testJoystick, m_teleop,
+              m_gyro, m_drive, m_cargoIntake, m_hatchIntake, m_elevator)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
