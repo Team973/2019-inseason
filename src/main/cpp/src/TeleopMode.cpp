@@ -81,7 +81,7 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case DriveMode::LimelightDriveWithSkew:
-            DBStringPrintf(DB_LINE2, "Drive lime with skewh");
+            DBStringPrintf(DB_LINE2, "Drive lime with skew");
             m_drive->LimelightDriveWithSkew();
             break;
         case DriveMode::LimelightDriveWithoutSkew:

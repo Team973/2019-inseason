@@ -70,7 +70,7 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-	enum class AutoState
+    enum class AutoState
     {
         TwoRocket,
         TwoCargoShip,
@@ -78,8 +78,18 @@ public:
         Manual
     };
 
-	Autonomous::AutoState GetAutoState() const;
-    void SetAutoState(Autonomous::AutoState autoState);
+    AutoState GetAutoState() const;
+    void SetAutoState(AutoState autoState);
+
+    enum class AutoStateStartPosition
+    {
+        LeftHabLevel2,
+        CenterHab,
+        RightHabLevel2
+    };
+
+    AutoStateStartPosition GetAutoStateStartPosition() const;
+    void SetAutoStateStartPosition(AutoStateStartPosition startPos);
 
 private:
     void TwoRocketAuto();
@@ -88,12 +98,14 @@ private:
     void TwoCargoShipAuto();
     void CargoShipThenRocketAuto();
 
-	ObservablePoofsJoystick *m_driverJoystick;
+    ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
     ObservableDualActionJoystick *m_testJoystick;
 
     Teleop *m_teleop;
     AutoState m_autoState;
+    AutoStateStartPosition m_autoStateStartPosition;
+    double m_autoTimer;
     double m_direction;
     int m_autoStep;
     ADXRS450_Gyro *m_gyro;
