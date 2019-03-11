@@ -44,14 +44,11 @@ void Autonomous::AutonomousInit() {
 }
 
 void Autonomous::AutonomousPeriodic() {
-	// Any stick movement beyond a "DEAD_BAND" 0.5 will put us in manual and stay in manual
-	float driverStickLeftOrRightAxis = fabs(m_driverJoystick->GetRawAxisWithDeadband(
-            PoofsJoysticks::LeftYAxis)) +  fabs(m_driverJoystick->GetRawAxisWithDeadband(
-            PoofsJoysticks::RightYAxis)) + fabs(m_driverJoystick->GetRawAxisWithDeadband(
-            PoofsJoysticks::LeftXAxis)) + fabs(m_driverJoystick->GetRawAxisWithDeadband(
-            PoofsJoysticks::RightXAxis));
-
-    if (m_autoState != AutoState::Manual && driverStickLeftOrRightAxis > 0.50) {
+    // Any stick movement beyond a "DEAD_BAND" 0.5 will put us in manual and
+    // stay in manual
+    if (m_autoState != AutoState::Manual &&
+        fabs(m_driverJoystick->GetRawAxisWithDeadband(
+            PoofsJoysticks::LeftYAxis)) > 0.50) {
         m_autoState = AutoState::Manual;
     }
 
