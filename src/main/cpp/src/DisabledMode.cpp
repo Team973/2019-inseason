@@ -6,12 +6,14 @@ using namespace frc;
 namespace frc973 {
 Disabled::Disabled(ObservablePoofsJoystick *driver,
                    ObservableXboxJoystick *codriver, Elevator *elevator,
-                   CargoIntake *cargoIntake, Limelight *limelightHatch)
+                   CargoIntake *cargoIntake, Limelight *limelightHatch,
+                   Autonomous *autonomous)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_elevator(elevator)
         , m_cargoIntake(cargoIntake)
-        , m_limelightHatch(limelightHatch) {
+        , m_limelightHatch(limelightHatch)
+		, m_autonomous(autonomous) {
 }
 
 Disabled::~Disabled() {

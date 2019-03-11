@@ -70,13 +70,16 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    enum class AutoState
+	enum class AutoState
     {
         TwoRocket,
         TwoCargoShip,
         CargoShipThenRocket,
         Manual
     };
+
+	Autonomous::AutoState GetAutoState() const;
+    void SetAutoState(Autonomous::AutoState autoState);
 
 private:
     /* enum class AutoState

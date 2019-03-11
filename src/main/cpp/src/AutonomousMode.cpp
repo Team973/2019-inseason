@@ -84,4 +84,12 @@ void Autonomous::HandleDualActionJoystick(uint32_t port, uint32_t button,
 void Autonomous::AutonomousStop() {
     m_teleop->TeleopStop();
 }
+
+Autonomous::AutoState Autonomous::GetAutoState() const {
+    return m_autoState;
+}
+
+void Autonomous::SetAutoState(Autonomous::AutoState autoState) {
+    m_autoState = autoState;
+}
 }
