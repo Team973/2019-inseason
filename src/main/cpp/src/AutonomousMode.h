@@ -82,31 +82,13 @@ public:
     void SetAutoState(Autonomous::AutoState autoState);
 
 private:
-    /* enum class AutoState
-     {
-         DriveForwardFromCenter,
-         DriveForwardOffLeftPlatform,
-         DriveForwardOffRightPlatform,
-         TurnTowardLeftCargoFront,
-         TurnTowardRightCargoFront,
-         VisionRightCargoFront,
-         VisionLeftCargoFront,
-         ScoreRightCargoFront,
-         ScoreLeftCargoFront,
-         BackupRightCargoFront,
-         BackupLeftCargoFront,
-         TurnClockwiseFromCargoScore,
-         TurnCounterClockwiseFromCargoScore,
-         DriveTowardHatchHumanLeft,
-         DriveTowardHatchHumanRight,
-         VisionFetchHumanHatch,
-         BackupFromRightHumanHatch,
-         BackupFromLeftHumanHatch,
-         DriveTowardFrontLowerRocket
+    void TwoRocketAuto();
+    void TwoRocketAutoFront();
+    void TwoRocketAutoBack();
+    void TwoCargoShipAuto();
+    void CargoShipThenRocketAuto();
 
-     };*/
-
-    ObservablePoofsJoystick *m_driverJoystick;
+	ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
     ObservableDualActionJoystick *m_testJoystick;
 

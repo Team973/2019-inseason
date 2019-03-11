@@ -15,7 +15,7 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driver,
         , m_operatorJoystick(codriver)
         , m_testJoystick(testJoystick)
         , m_teleop(teleop)
-        , m_autoState(AutoState::CargoShipThenRocket)
+        , m_autoState(AutoState::CargoShipThenRocket) // @Kyle maybe our default should be Manual, so no surprise? not sure.
         , m_direction(1.0)  // counterclockwise is positive
         , m_autoStep(0)
         , m_gyro(gyro)
@@ -44,7 +44,7 @@ void Autonomous::AutonomousInit() {
 }
 
 void Autonomous::AutonomousPeriodic() {
-    // Any stick movement beyond a "DEAD_BAND" 0.5 will put us in manual and
+    // Driver throttle stick movement beyond a "DEAD_BAND" 0.5 will put us in manual and
     // stay in manual
     if (m_autoState != AutoState::Manual &&
         fabs(m_driverJoystick->GetRawAxisWithDeadband(
@@ -54,13 +54,13 @@ void Autonomous::AutonomousPeriodic() {
 
     switch (m_autoState) {
         case AutoState::TwoRocket:
-            // TwoRocketAuto();
+            TwoRocketAuto();
             break;
         case AutoState::TwoCargoShip:
-            // TwoCargoShipAuto();
+            TwoCargoShipAuto();
             break;
         case AutoState::CargoShipThenRocket:
-            // CargoShipThenRocketAuto();
+            CargoShipThenRocketAuto();
             break;
         case AutoState::Manual:
             m_teleop->TeleopPeriodic();
