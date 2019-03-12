@@ -75,7 +75,7 @@ public:
     static constexpr double THROTTLE_CAP_DISTANCE_MAX = 60.0;
     static constexpr double THROTTLE_MIN = 0.2;
     static constexpr double THROTTLE_MAX = 0.5;
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.04;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.03;
 
 private:
     bool m_onTarget;

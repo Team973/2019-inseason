@@ -15,7 +15,7 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driver,
         , m_operatorJoystick(codriver)
         , m_testJoystick(testJoystick)
         , m_teleop(teleop)
-        , m_autoState(AutoState::CargoShipThenRocket)
+        , m_autoState(AutoState::Manual)
         , m_direction(1.0)  // counterclockwise is positive
         , m_autoStep(0)
         , m_gyro(gyro)

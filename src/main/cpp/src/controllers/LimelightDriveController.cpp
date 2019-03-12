@@ -14,7 +14,7 @@ LimelightDriveController::LimelightDriveController(Limelight *limelight,
         , m_turn(0.0)
         , m_goalAngleComp(0.0)
         , m_limelight(limelight)
-        , m_turnPid(new PID(0.02, 0.0, 0.001))
+        , m_turnPid(new PID(0.015, 0.0, 0.002))
         , m_throttlePid(new PID(0.02, 0.0, 0.003)) {
 }
 
@@ -57,7 +57,7 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
 
 double LimelightDriveController::CalcTurnComp() {
     return Util::bound(
-        Util::interpolate(Util::Point(TURN_COMP_DISTANCE_MIN, 0.6),
+        Util::interpolate(Util::Point(TURN_COMP_DISTANCE_MIN, 0.5),
                           Util::Point(TURN_COMP_DISTANCE_MAX, 1.0),
                           m_limelight->GetHorizontalDistance()),
         0.5, 1.0);

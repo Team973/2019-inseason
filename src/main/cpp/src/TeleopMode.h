@@ -124,7 +124,9 @@ private:
         HatchPeriodic,
         ThirdLevelEndGameInit,
         SecondLevelEndGameInit,
-        EndGamePeriodic,
+        ThirdLevelEndGamePeriodic,
+        SecondLevelEndGamePeriodic,
+        SecondLevelStabilize,
         RaiseIntake,
         ResetIntake
     };
