@@ -1,3 +1,13 @@
 #include "src/AutonomousMode.h"
+#include "src/auto/AutoCommon.h"
 
-namespace frc {}
+using namespace frc;
+
+namespace frc973 {
+
+void Autonomous::TwoRocketAuto() {
+}
+
+void Autonomous::TwoRocketAutoFront() {
+}
+}

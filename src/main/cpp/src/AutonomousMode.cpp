@@ -16,6 +16,8 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driver,
         , m_testJoystick(testJoystick)
         , m_teleop(teleop)
         , m_autoState(AutoState::Manual)
+        , m_autoStateStartPosition(AutoStateStartPosition::LeftHabLevel2)
+        , m_autoTimer(0.0)
         , m_direction(1.0)  // counterclockwise is positive
         , m_autoStep(0)
         , m_gyro(gyro)
@@ -44,8 +46,8 @@ void Autonomous::AutonomousInit() {
 }
 
 void Autonomous::AutonomousPeriodic() {
-    // Any stick movement beyond a "DEAD_BAND" 0.5 will put us in manual and
-    // stay in manual
+    // Driver throttle stick movement beyond a "DEAD_BAND" 0.5 will put us in
+    // manual and stay in manual
     if (m_autoState != AutoState::Manual &&
         fabs(m_driverJoystick->GetRawAxisWithDeadband(
             PoofsJoysticks::LeftYAxis)) > 0.50) {
@@ -54,13 +56,13 @@ void Autonomous::AutonomousPeriodic() {
 
     switch (m_autoState) {
         case AutoState::TwoRocket:
-            // TwoRocketAuto();
+            TwoRocketAuto();
             break;
         case AutoState::TwoCargoShip:
-            // TwoCargoShipAuto();
+            TwoCargoShipAuto();
             break;
         case AutoState::CargoShipThenRocket:
-            // CargoShipThenRocketAuto();
+            CargoShipThenRocketAuto();
             break;
         case AutoState::Manual:
             m_teleop->TeleopPeriodic();
@@ -92,7 +94,16 @@ Autonomous::AutoState Autonomous::GetAutoState() const {
     return m_autoState;
 }
 
-void Autonomous::SetAutoState(Autonomous::AutoState autoState) {
+void Autonomous::SetAutoState(AutoState autoState) {
     m_autoState = autoState;
+}
+
+Autonomous::AutoStateStartPosition Autonomous::GetAutoStateStartPosition()
+    const {
+    return m_autoStateStartPosition;
+}
+
+void Autonomous::SetAutoStateStartPosition(AutoStateStartPosition startPos) {
+    m_autoStateStartPosition = startPos;
 }
 }
