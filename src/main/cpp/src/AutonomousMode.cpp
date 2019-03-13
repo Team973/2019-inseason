@@ -34,12 +34,19 @@ void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
     m_teleop->TeleopInit();
     m_gyro->Reset();
+    m_direction = 1.0;
+
     if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) <
         0.0) {
         m_direction = -1.0;
+        m_autoStateStartPosition = AutoStateStartPosition::LeftHabLevel2;
+    }
+    else if (m_driverJoystick->GetRawAxisWithDeadband(
+                 PoofsJoysticks::RightXAxis) > 0.0) {
+        m_autoStateStartPosition = AutoStateStartPosition::RightHabLevel2;
     }
     else {
-        m_direction = 1.0;
+        m_autoStateStartPosition = AutoStateStartPosition::CenterHab;
     }
 
     std::cout << "Autonomous Start" << std::endl;
@@ -96,14 +103,5 @@ Autonomous::AutoState Autonomous::GetAutoState() const {
 
 void Autonomous::SetAutoState(AutoState autoState) {
     m_autoState = autoState;
-}
-
-Autonomous::AutoStateStartPosition Autonomous::GetAutoStateStartPosition()
-    const {
-    return m_autoStateStartPosition;
-}
-
-void Autonomous::SetAutoStateStartPosition(AutoStateStartPosition startPos) {
-    m_autoStateStartPosition = startPos;
 }
 }

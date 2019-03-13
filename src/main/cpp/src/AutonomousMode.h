@@ -88,9 +88,6 @@ public:
         RightHabLevel2
     };
 
-    AutoStateStartPosition GetAutoStateStartPosition() const;
-    void SetAutoStateStartPosition(AutoStateStartPosition startPos);
-
 private:
     void TwoRocketAuto();
     void TwoRocketAutoFront();

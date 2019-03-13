@@ -5,8 +5,7 @@ build:
 	reset && clear
 	./gradlew build
 
-all:
-	./gradlew build
+all: build
 	./gradlew deploy
 
 downloadlogs:

@@ -87,8 +87,6 @@ void Disabled::HandleXboxJoystick(uint32_t port, uint32_t button,
             break;
         case Xbox::DPadUpVirtBtn:
             if (pressedP) {
-                m_autonomous->SetAutoStateStartPosition(
-                    Autonomous::AutoStateStartPosition::CenterHab);
             }
             else {
             }
@@ -101,16 +99,12 @@ void Disabled::HandleXboxJoystick(uint32_t port, uint32_t button,
             break;
         case Xbox::DPadLeftVirtBtn:
             if (pressedP) {
-                m_autonomous->SetAutoStateStartPosition(
-                    Autonomous::AutoStateStartPosition::LeftHabLevel2);
             }
             else {
             }
             break;
         case Xbox::DPadRightVirtBtn:
             if (pressedP) {
-                m_autonomous->SetAutoStateStartPosition(
-                    Autonomous::AutoStateStartPosition::RightHabLevel2);
             }
             else {
             }
