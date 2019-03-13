@@ -34,7 +34,7 @@ void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
     m_teleop->TeleopInit();
     m_gyro->Reset();
-    m_direction = 1.0;
+    m_direction = 1.0; // positive counterclockwise default
 
     if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) <
         0.0) {

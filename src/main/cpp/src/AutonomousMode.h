@@ -93,7 +93,7 @@ private:
     void TwoRocketAutoFront();
     void TwoRocketAutoBack();
     void TwoCargoShipAuto();
-    void CargoShipThenRocketAuto();
+    void CargoShipThenRocketAuto(const bool doCargoOnly = false);
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;

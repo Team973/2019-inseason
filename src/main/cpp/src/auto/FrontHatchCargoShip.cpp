@@ -7,10 +7,6 @@ using namespace frc;
 namespace frc973 {
 
 /* enumerated AutoSteps
-ScoreRightCargoFront,
-ScoreLeftCargoFront,
-BackupRightCargoFront,
-BackupLeftCargoFront,
 TurnClockwiseFromCargoScore,
 TurnCounterClockwiseFromCargoScore,
 DriveTowardHatchHumanLeft,
@@ -32,7 +28,7 @@ Segment *left_trajectory;  **< The left trajectory. *
 Segment *right_trajectory; **< The right trajectory. *
 */
 
-void Autonomous::CargoShipThenRocketAuto() {
+void Autonomous::CargoShipThenRocketAuto(const bool doCargoOnly) {
     double initial_dist = HAB_TO_FIELD_DISTANCE;
     double start_angle = m_drive->GetAngle();
     // struct TrajectoryDescription trajDesc = { 0.0, 0.0, 0.0, 0.0, 0.0, 0,
@@ -75,10 +71,35 @@ void Autonomous::CargoShipThenRocketAuto() {
             break;
         case 3:  // VisionCargoFront
             m_drive->LimelightDriveWithSkew();
+
+            if (m_drive->OnTarget()) {
+                m_autoStep++;
+            }
+
+            break;
+        case 4:  // ScoreCargoFront
+            m_hatchIntake->Exhaust();
+            m_autoStep++;
+            break;
+        case 5: // BackupCargoFront
+            m_drive->PIDDrive(-12.0, 0.0,
+                              DriveBase::RelativeTo::Now, 0.0);
+            m_autoStep++;
+            break;
+        case 6:
+            if (m_drive->OnTarget()) {
+                m_autoStep++;
+            }
+
+            break;
+        default:
             break;
     }
 }
 
 void Autonomous::TwoCargoShipAuto() {
+    if (m_autoStep < 7) {
+        CargoShipThenRocketAuto(true);
+    }
 }
 }
