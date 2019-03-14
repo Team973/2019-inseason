@@ -73,11 +73,10 @@ public:
      */
     enum class PipelineMode
     {
-        drive,          /**< The limelight drive pipeline */
-        default_vision, /**< The limelight default vision pipeline */
-        target_vision,  /**< The limelight target vision pipeline */
-        off,            /**< The limelight off pipeline */
-        vision3d        /**< The limelight 3d pipeline */
+        drive,         /**< The limelight drive pipeline */
+        vision_center, /**< The limelight default vision pipeline */
+        vision_right,  /**< The limelight target vision pipeline */
+        vision_left,   /**< The limelight off pipeline */
     };
 
     void SetPiPMain();
@@ -137,30 +136,25 @@ public:
     void SetLightBlink();
 
     /**
-     * Sets the limelight's camera to use target vision settings
-     */
-    void SetCameraVision();
-
-    /**
      * Sets the limelight's cameras to use driver settings (just raw feedback)
      */
     void SetCameraDriver();
 
     /**
+     * Sets the limelight's camera to use target vision settings
+     */
+    void SetCameraVisionCenter();
+
+    /**
      * Sets the limelight's camera to use default vision settings
      */
-    void SetCameraDefaultVision();
+    void SetCameraVisionRight();
 
     /**
      * Sets the limelight's camera to use off settings (disables as much
      * feedback as possible)
      */
-    void SetCameraOff();
-
-    /**
-     * Sets the limelight's camera to use 3d processing vision settings
-     */
-    void SetCamera3D();
+    void SetCameraVisionLeft();
 
     /**
      * Checks if target is present or not

@@ -11,7 +11,8 @@
 #include "lib/util/Util.h"
 #include "lib/sensors/Limelight.h"
 #include "src/info/RobotInfo.h"
-
+#include "lib/helpers/PoofsJoystickHelper.h"
+#include "src/subsystems/HatchIntake.h"
 namespace frc973 {
 
 class PID;
@@ -22,7 +23,9 @@ public:
      * Construct a Limelight Drive controller.
      * @param limelight The limelight.
      */
-    LimelightDriveController(Limelight *limelight, bool isCompSkew);
+    LimelightDriveController(Limelight *limelight, bool isCompSkew,
+                             ObservablePoofsJoystick *driverJoystick,
+                             HatchIntake *hatchIntake);
     virtual ~LimelightDriveController();
 
     /**
@@ -61,8 +64,9 @@ public:
 
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
         1.0;  // in native units per degree
-    static constexpr double DISTANCE_SETPOINT =
-        -7.0;  // in inches from target to robot bumper
+    static constexpr double DISTANCE_SETPOINT_ROCKET =
+        -7.0 + 6.0;  // in inches from target to robot bumper
+    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -7.0;
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
         -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
@@ -82,6 +86,8 @@ private:
     double m_leftSetpoint;
     double m_rightSetpoint;
     bool m_isCompensatingSkew;
+    HatchIntake *m_hatchIntake;
+    ObservablePoofsJoystick *m_driverJoystick;
 
     double m_throttle;
     double m_turn;

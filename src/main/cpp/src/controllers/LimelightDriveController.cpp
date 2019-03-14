@@ -4,12 +4,15 @@
 #include "lib/helpers/PID.h"
 
 namespace frc973 {
-LimelightDriveController::LimelightDriveController(Limelight *limelight,
-                                                   bool isCompSkew)
+LimelightDriveController::LimelightDriveController(
+    Limelight *limelight, bool isCompSkew,
+    ObservablePoofsJoystick *driverJoystick, HatchIntake *hatchIntake)
         : m_onTarget(false)
         , m_leftSetpoint(0.0)
         , m_rightSetpoint(0.0)
         , m_isCompensatingSkew(isCompSkew)
+        , m_driverJoystick(driverJoystick)
+        , m_hatchIntake(hatchIntake)
         , m_throttle(0.0)
         , m_turn(0.0)
         , m_goalAngleComp(0.0)
@@ -24,7 +27,7 @@ LimelightDriveController::~LimelightDriveController() {
 
 void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
     printf("Turning on Limelight Drive Mode\n");
-    m_limelight->SetCameraVision();
+    m_limelight->SetCameraVisionCenter();
     m_limelight->SetLightOn();
     m_onTarget = false;
 }
@@ -79,7 +82,14 @@ void LimelightDriveController::CalcDriveOutput(
     m_limelight->SetLightOn();
     double offset = m_limelight->GetXOffset();
     double distance = m_limelight->GetHorizontalDistance();  // in inches
-    double distError = distance - DISTANCE_SETPOINT;
+    double distError;
+    if (m_hatchIntake->GetHatchPuncherState() ==
+        HatchIntake::HatchSolenoidState::manualPunch) {
+        distError = distance - DISTANCE_SETPOINT_ROCKET;
+    }
+    else {
+        distError = distance - DISTANCE_SETPOINT_CARGO_BAY;
+    }
 
     if (!m_limelight->isTargetValid() || m_onTarget) {
         m_leftSetpoint = 0.0;
@@ -96,9 +106,13 @@ void LimelightDriveController::CalcDriveOutput(
                         0.7);  //(pow(cos((offset * Constants::PI / 180.0) *
                                // PERIOD), 5))),
         m_goalAngleComp = CalcScaleGoalAngleComp();
+        double driverComp = 0.1 * m_driverJoystick->GetRawAxisWithDeadband(
+                                      PoofsJoysticks::LeftYAxis);
         if (m_isCompensatingSkew) {
-            m_leftSetpoint = throttlePidOut + turnPidOut + m_goalAngleComp;
-            m_rightSetpoint = throttlePidOut - turnPidOut - m_goalAngleComp;
+            m_leftSetpoint =
+                throttlePidOut + turnPidOut + m_goalAngleComp;  // - driverComp;
+            m_rightSetpoint =
+                throttlePidOut - turnPidOut - m_goalAngleComp;  // - driverComp;
             DBStringPrintf(DBStringPos::DB_LINE1,
                            "th:%2.2lf tu:%2.2lf gc:%2.2lf", throttlePidOut,
                            turnPidOut, m_goalAngleComp);

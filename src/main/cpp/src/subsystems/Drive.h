@@ -11,9 +11,11 @@
 #include "lib/helpers/GreyTalon.h"
 #include "lib/helpers/GreySparkMax.h"
 #include "src/info/RobotInfo.h"
+#include "src/subsystems/HatchIntake.h"
 #include "lib/bases/DriveBase.h"
 #include "networktables/NetworkTableInstance.h"
 #include "lib/logging/LogSpreadsheet.h"
+#include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/trajectories/structs.h"
 
 using namespace frc;
@@ -67,7 +69,8 @@ public:
           GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
           GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
-          Limelight *limelightHatch);
+          Limelight *limelightHatch, HatchIntake *hatchIntake,
+          ObservablePoofsJoystick *driverJoystick);
     virtual ~Drive();
 
     /**
@@ -304,6 +307,8 @@ private:
     ADXRS450_Gyro *m_gyro;
     double m_gyroZero;
     Limelight *m_limelightHatch;
+    HatchIntake *m_hatchIntake;
+    ObservablePoofsJoystick *m_driverJoystick;
 
     CheesyDriveController *m_cheesyDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;

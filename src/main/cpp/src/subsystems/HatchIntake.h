@@ -97,6 +97,8 @@ public:
      */
     void ManualPuncherRetract();
 
+    HatchSolenoidState GetHatchPuncherState();
+
     /**
      * Periodically update information about the hatch intake.
      * @param mode The current robot mode.

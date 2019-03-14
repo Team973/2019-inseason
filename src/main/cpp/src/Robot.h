@@ -128,9 +128,9 @@ private:
     LogCell *m_matchTime;
 
     CargoIntake *m_cargoIntake;
+    HatchIntake *m_hatchIntake;
     Drive *m_drive;
     Elevator *m_elevator;
-    HatchIntake *m_hatchIntake;
     PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 
