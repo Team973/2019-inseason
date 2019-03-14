@@ -14,6 +14,9 @@ else
 	clear && reset
 endif
 
+list:
+	@grep '^[^#[:space:]|.].*:' Makefile
+
 downloadlogs:
 	python3 ./tools/log/downloadlogs.py 973
 
