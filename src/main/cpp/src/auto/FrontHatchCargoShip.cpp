@@ -52,13 +52,13 @@ void Autonomous::CargoShipThenRocketAuto(const bool doCargoOnly) {
     switch (m_autoStep) {
         case 0:  // DriveForwardFromAny left, center, or rights (off the Hab)
             m_drive->PIDDrive(initial_dist, 0.0,
-                              DriveBase::RelativeTo::Absolute, 0.0);
+                              DriveBase::RelativeTo::Absolute, 1.0);
             m_autoStep++;
             break;
         case 1:  // TurnTowardCargoFront
             if (m_drive->OnTarget()) {
                 m_drive->PIDTurn(HAB_TURN_TOWARD_TARGET * m_direction,
-                                 DriveBase::RelativeTo::Now, 0.0);
+                                 DriveBase::RelativeTo::Now, 1.0);
                 m_autoStep++;
             }
 
@@ -83,7 +83,7 @@ void Autonomous::CargoShipThenRocketAuto(const bool doCargoOnly) {
             break;
         case 5: // BackupCargoFront
             m_drive->PIDDrive(-12.0, 0.0,
-                              DriveBase::RelativeTo::Now, 0.0);
+                              DriveBase::RelativeTo::Now, 1.0);
             m_autoStep++;
             break;
         case 6:
