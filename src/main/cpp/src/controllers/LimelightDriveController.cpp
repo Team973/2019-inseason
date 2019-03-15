@@ -102,7 +102,6 @@ void LimelightDriveController::CalcDriveOutput(
                 -0.4, 0.4) *
             CalcTurnComp();
         double throttlePidOut =
-            THROTTLE_FEED_FORWARD +
             Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.7,
                         0.7);  //(pow(cos((offset * Constants::PI / 180.0) *
                                // PERIOD), 5))),
