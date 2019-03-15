@@ -34,15 +34,15 @@ void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
     m_teleop->TeleopInit();
     m_gyro->Reset();
-    m_direction = 1.0; // positive counterclockwise default
+    m_direction = 1.0;  // positive counterclockwise default
 
     if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) <
-        0.0) {
+        -0.5) {
         m_direction = -1.0;
         m_autoStateStartPosition = AutoStateStartPosition::LeftHabLevel2;
     }
     else if (m_driverJoystick->GetRawAxisWithDeadband(
-                 PoofsJoysticks::RightXAxis) > 0.0) {
+                 PoofsJoysticks::RightXAxis) > 0.5) {
         m_autoStateStartPosition = AutoStateStartPosition::RightHabLevel2;
     }
     else {
@@ -81,17 +81,23 @@ void Autonomous::AutonomousPeriodic() {
 }
 void Autonomous::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                      bool pressedP) {
-    m_teleop->HandlePoofsJoystick(port, button, pressedP);
+    if (m_autoState == AutoState::Manual) {
+        m_teleop->HandlePoofsJoystick(port, button, pressedP);
+    }
 }
 
 void Autonomous::HandleXboxJoystick(uint32_t port, uint32_t button,
                                     bool pressedP) {
-    m_teleop->HandleXboxJoystick(port, button, pressedP);
+    if (m_autoState == AutoState::Manual) {
+        m_teleop->HandleXboxJoystick(port, button, pressedP);
+    }
 }
 
 void Autonomous::HandleDualActionJoystick(uint32_t port, uint32_t button,
                                           bool pressedP) {
-    m_teleop->HandleDualActionJoystick(port, button, pressedP);
+    if (m_autoState == AutoState::Manual) {
+        m_teleop->HandleDualActionJoystick(port, button, pressedP);
+    }
 }
 void Autonomous::AutonomousStop() {
     m_teleop->TeleopStop();

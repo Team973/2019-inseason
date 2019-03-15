@@ -134,7 +134,7 @@ void Teleop::TeleopPeriodic() {
             m_elevator->SetPosition(Elevator::THIRD_PLATFORM);
             if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 2.0) {
                 m_cargoIntake->DeployPlatformWheel();
-                m_cargoIntake->ExtendWrist();
+                m_cargoIntake->RetractWrist();  // ExtendWrist();
                 m_gameMode = GameMode::ThirdLevelEndGamePeriodic;
             }
             break;
@@ -146,7 +146,7 @@ void Teleop::TeleopPeriodic() {
             m_elevator->SetPosition(Elevator::SECOND_PLATFORM);
             if (m_elevator->GetPosition() > Elevator::SECOND_PLATFORM - 2.0) {
                 m_cargoIntake->DeployPlatformWheel();
-                m_cargoIntake->ExtendWrist();
+                m_cargoIntake->RetractWrist();  // ExtendWrist();
                 m_gameMode = GameMode::SecondLevelEndGamePeriodic;
             }
             break;
@@ -176,7 +176,7 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
             if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 2.0) {
                 m_cargoIntake->RetractWrist();
-                m_elevator->SetPosition(0.0);
+                m_elevator->SetPosition(0.4);
                 m_gameMode = GameMode::ThirdLevelEndGamePeriodic;
             }
             break;
