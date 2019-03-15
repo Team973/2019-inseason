@@ -436,7 +436,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                         case GameMode::CargoPeriodic:
                             m_cargoIntake->RunIntake();
-                            m_elevator->SetPosition(Elevator::GROUND + 0.55);
+                            m_elevator->SetPosition(Elevator::GROUND + 0.8);
                             break;
                     }
                 }

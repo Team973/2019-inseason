@@ -59,19 +59,19 @@ Robot::Robot()
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
         , m_matchTime(new LogCell("MatchTime", 32, true))
+        , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
+                                        m_hatchPuncher, m_limelightHatch))
         , m_drive(new Drive(this, m_logger, m_leftDriveSparkA,
                             m_leftDriveSparkB, m_leftDriveSparkC,
                             m_rightDriveSparkA, m_rightDriveSparkB,
                             m_rightDriveSparkC, m_stingerDriveMotor, m_gyro,
-                            m_limelightHatch))
+                            m_limelightHatch, m_hatchIntake, m_driverJoystick))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick,
                                   m_elevatorHall))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoPlatformLock, m_cargoWrist,
                                         m_limelightHatch))
-        , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
-                                        m_hatchPuncher, m_limelightHatch))
         , m_stinger(new Stinger(this, m_logger, m_stingerElevatorMotor,
                                 m_stingerDriveMotor, m_stingerLowerHall,
                                 m_stingerUpperHall))
@@ -81,7 +81,8 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
-                                  m_elevator, m_cargoIntake, m_limelightHatch, m_autonomous))
+                                  m_elevator, m_cargoIntake, m_limelightHatch,
+                                  m_autonomous))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
                               m_testJoystick, m_drive, m_elevator,
                               m_hatchIntake, m_cargoIntake, m_stinger,

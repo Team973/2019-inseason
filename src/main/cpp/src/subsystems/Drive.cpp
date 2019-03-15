@@ -35,7 +35,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
              GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
              GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
-             Limelight *limelightHatch)
+             Limelight *limelightHatch, HatchIntake *hatchIntake,
+             ObservablePoofsJoystick *driverJoystick)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveSparkA(leftDriveSparkA)
@@ -60,6 +61,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_gyro(gyro)
         , m_gyroZero(0.0)
         , m_limelightHatch(limelightHatch)
+        , m_hatchIntake(hatchIntake)
+        , m_driverJoystick(driverJoystick)
         , m_cheesyDriveController(new CheesyDriveController(limelightHatch))
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
@@ -67,10 +70,10 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_constantArcSplineDriveController(
               new ConstantArcSplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
-        , m_limelightDriveWithoutSkew(
-              new LimelightDriveController(limelightHatch, false))
-        , m_limelightDriveWithSkew(
-              new LimelightDriveController(limelightHatch, true))
+        , m_limelightDriveWithoutSkew(new LimelightDriveController(
+              limelightHatch, false, m_driverJoystick, m_hatchIntake))
+        , m_limelightDriveWithSkew(new LimelightDriveController(
+              limelightHatch, true, m_driverJoystick, m_hatchIntake))
         , m_assistedCheesyDriveHatchController(
               new AssistedCheesyDriveController(
                   m_limelightHatch,
@@ -87,7 +90,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     this->m_scheduler->RegisterTask("Drive", this, TASK_PERIODIC);
     m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_leftDriveSparkA->SetInverted(false);
-    m_leftDriveSparkA->SetOpenLoopRampRate(0.4);
+    m_leftDriveSparkA->SetOpenLoopRampRate(0.3);
     m_leftDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
@@ -97,7 +100,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_rightDriveSparkA->SetInverted(false);
-    m_rightDriveSparkA->SetOpenLoopRampRate(0.4);
+    m_rightDriveSparkA->SetOpenLoopRampRate(0.3);
     m_rightDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);

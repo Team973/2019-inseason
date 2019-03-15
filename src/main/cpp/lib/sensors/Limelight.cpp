@@ -11,7 +11,7 @@ Limelight::Limelight(const char *name, bool inverted)
         , m_cameraMode(CameraMode::onDriver)
         , m_streamMode(StreamMode::standard)
         , m_snapshotMode(SnapshotMode::stop)
-        , m_pipelineMode(PipelineMode::off)
+        , m_pipelineMode(PipelineMode::drive)
         , m_targetStatus(false)
         , m_horizontalOffset(0.0)
         , m_verticalOffset(0.0)
@@ -63,17 +63,14 @@ void Limelight::SetPipeline(PipelineMode mode) {
         case PipelineMode::drive:
             SetPipelineIndex(0);
             break;
-        case PipelineMode::default_vision:
+        case PipelineMode::vision_center:
             SetPipelineIndex(1);
             break;
-        case PipelineMode::target_vision:
+        case PipelineMode::vision_right:
             SetPipelineIndex(2);
             break;
-        case PipelineMode::off:
+        case PipelineMode::vision_left:
             SetPipelineIndex(3);
-            break;
-        case PipelineMode::vision3d:
-            SetPipelineIndex(4);
             break;
     }
 }
@@ -128,32 +125,26 @@ void Limelight::SetLightBlink() {
     SetLightMode(LightMode::blink);
 }
 
-void Limelight::SetCameraVision() {
-    SetPipeline(PipelineMode::target_vision);
-    SetCameraMode(CameraMode::onVision);
-    SetLightOn();
-}
-
 void Limelight::SetCameraDriver() {
     SetPipeline(PipelineMode::drive);
     SetCameraMode(CameraMode::onDriver);
     SetLightOff();
 }
 
-void Limelight::SetCameraDefaultVision() {
-    SetPipeline(PipelineMode::default_vision);
+void Limelight::SetCameraVisionCenter() {
+    SetPipeline(PipelineMode::vision_center);
     SetCameraMode(CameraMode::onVision);
     SetLightOn();
 }
 
-void Limelight::SetCameraOff() {
-    SetPipeline(PipelineMode::off);
+void Limelight::SetCameraVisionRight() {
+    SetPipeline(PipelineMode::vision_right);
     SetCameraMode(CameraMode::onDriver);
     SetLightOff();
 }
 
-void Limelight::SetCamera3D() {
-    SetPipeline(PipelineMode::vision3d);
+void Limelight::SetCameraVisionLeft() {
+    SetPipeline(PipelineMode::vision_left);
     SetCameraMode(CameraMode::onVision);
     SetLightOn();
 }
