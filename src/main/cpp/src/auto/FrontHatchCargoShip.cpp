@@ -17,22 +17,9 @@ BackupFromLeftHumanHatch,
 DriveTowardFrontLowerRocket
 */
 
-/* TrajectoryDescription
-double timestep;           **< The timestep. *
-double max_vel;            **< The maximum velocity. *
-double max_accel;          **< The maximum acceleration. *
-double max_jerk;           **< The maximum jerk. *
-double wheelbase_width;    **< The maximum velocity. *
-int length;                **< The length. *
-Segment *left_trajectory;  **< The left trajectory. *
-Segment *right_trajectory; **< The right trajectory. *
-*/
-
 void Autonomous::CargoShipThenRocketAuto(const bool doCargoOnly) {
     double initial_dist = HAB_TO_FIELD_DISTANCE;
     double start_angle = m_drive->GetAngle();
-    // struct TrajectoryDescription trajDesc = { 0.0, 0.0, 0.0, 0.0, 0.0, 0,
-    // nullptr, nullptr };
 
     switch (m_autoStateStartPosition) {
         case AutoStateStartPosition::LeftHabLevel2:
@@ -81,9 +68,8 @@ void Autonomous::CargoShipThenRocketAuto(const bool doCargoOnly) {
             m_hatchIntake->Exhaust();
             m_autoStep++;
             break;
-        case 5: // BackupCargoFront
-            m_drive->PIDDrive(-12.0, 0.0,
-                              DriveBase::RelativeTo::Now, 1.0);
+        case 5:  // BackupCargoFront
+            m_drive->PIDDrive(-12.0, 0.0, DriveBase::RelativeTo::Now, 1.0);
             m_autoStep++;
             break;
         case 6:

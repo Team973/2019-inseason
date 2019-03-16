@@ -53,7 +53,7 @@ public:
         0.5; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
         15.0; /**< Cargo ship cargo preset. */
-    static constexpr double THIRD_PLATFORM = 23.0;  /**< Platform preset. */
+    static constexpr double THIRD_PLATFORM = 26.0;  /**< Platform preset. */
     static constexpr double SECOND_PLATFORM = 10.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
@@ -63,7 +63,7 @@ public:
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         4.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
-        0.045; /**< The elevator's feed forward. */
+        0.06; /**< The elevator's feed forward. */
 
     /**
      * Contruct an elevator.
