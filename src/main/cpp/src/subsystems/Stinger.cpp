@@ -11,6 +11,10 @@ Stinger::Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_stingerDriveMotor(stingerDriveMotor)
         , m_stingerLowerHall(stingerLowerHall)
         , m_stingerUpperHall(stingerUpperHall)
+        , m_kickOffPneumatic(
+              new DoubleSolenoid(PCM_CAN_ID, KICKOFF_FORWARD, KICKOFF_REVERSE))
+        , m_sneakyClimb(new DoubleSolenoid(PCM_CAN_ID, SNEAKY_CLIMB_FORWARD,
+                                           SNEAKY_CLIMB_REVERSE))
         , m_power(0.0)
         , m_stingerState(StingerState::manualVoltage) {
     this->m_scheduler->RegisterTask("Stinger", this, TASK_PERIODIC);
@@ -30,6 +34,9 @@ Stinger::Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_stingerElevatorMotor->EnableVoltageCompensation(false);
 
     m_stingerElevatorMotor->Set(ControlMode::PercentOutput, 0.0);
+
+    m_kickOffPneumatic->Set(DoubleSolenoid::Value::kReverse);
+    m_sneakyClimb->Set(DoubleSolenoid::Value::kReverse);
 
     m_current = new LogCell("Stinger Current", 32, true);
     m_logger->RegisterCell(m_current);
@@ -98,8 +105,27 @@ void Stinger::GoToStingerState(Stinger::StingerState newState) {
     m_stingerState = newState;
 }
 
+void Stinger::SetKickUpEnable() {
+    m_kickOffPneumatic->Set(DoubleSolenoid::Value::kForward);
+}
+
+void Stinger::SetKickUpDisable() {
+    m_kickOffPneumatic->Set(DoubleSolenoid::Value::kReverse);
+}
+
+void Stinger::DeploySwitchBlade() {
+    m_sneakyClimb->Set(DoubleSolenoid::Value::kForward);
+}
+
+void Stinger::RetractSwitchBlade() {
+    m_sneakyClimb->Set(DoubleSolenoid::Value::kReverse);
+}
+
 void Stinger::TaskPeriodic(RobotMode mode) {
     m_current->LogDouble(m_stingerElevatorMotor->GetOutputCurrent());
+
+    DBStringPrintf(DBStringPos::DB_LINE6, "pldrivec:%2.2lf",
+                   m_stingerDriveMotor->GetOutputCurrent());
     switch (m_stingerState) {
         case StingerState::manualVoltage:
             if (m_power > 0.0 && GetStingerElevatorHallState() ==

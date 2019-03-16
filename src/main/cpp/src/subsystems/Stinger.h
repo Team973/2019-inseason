@@ -99,6 +99,12 @@ public:
      */
     StingerElevatorHallState GetStingerElevatorHallState();
 
+    void SetKickUpEnable();
+    void SetKickUpDisable();
+
+    void DeploySwitchBlade();
+    void RetractSwitchBlade();
+
     /**
      * The periodic loooping task for the stinger elevator.
      * @param mode The current robot mode.
@@ -114,6 +120,9 @@ private:
     GreyTalonSRX *m_stingerDriveMotor;
     DigitalInput *m_stingerLowerHall;
     DigitalInput *m_stingerUpperHall;
+
+    DoubleSolenoid *m_kickOffPneumatic;
+    DoubleSolenoid *m_sneakyClimb;
 
     double m_power;
 

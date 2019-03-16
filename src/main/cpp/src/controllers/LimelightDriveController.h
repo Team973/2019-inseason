@@ -80,7 +80,7 @@ public:
     static constexpr double THROTTLE_FEED_FORWARD = 0.05;
     static constexpr double THROTTLE_MIN = 0.2;
     static constexpr double THROTTLE_MAX = 0.5;
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.03;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.027;
 
 private:
     bool m_onTarget;

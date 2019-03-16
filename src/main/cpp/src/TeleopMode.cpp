@@ -42,6 +42,8 @@ void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
     m_elevator->EnableCoastMode();
     m_cargoIntake->EnableCoastMode();
+    m_stinger->RetractSwitchBlade();
+    m_stinger->SetKickUpDisable();
 }
 
 void Teleop::TeleopPeriodic() {
@@ -132,9 +134,9 @@ void Teleop::TeleopPeriodic() {
             m_cargoIntake->StopIntake();
             m_hatchIntake->SetIdle();
             m_elevator->SetPosition(Elevator::THIRD_PLATFORM);
-            if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 2.0) {
+            if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 1.0) {
                 m_cargoIntake->DeployPlatformWheel();
-                m_cargoIntake->ExtendWrist();
+                m_cargoIntake->RetractWrist();
                 m_gameMode = GameMode::ThirdLevelEndGamePeriodic;
             }
             break;
@@ -146,7 +148,7 @@ void Teleop::TeleopPeriodic() {
             m_elevator->SetPosition(Elevator::SECOND_PLATFORM);
             if (m_elevator->GetPosition() > Elevator::SECOND_PLATFORM - 2.0) {
                 m_cargoIntake->DeployPlatformWheel();
-                m_cargoIntake->ExtendWrist();
+                m_cargoIntake->RetractWrist();
                 m_gameMode = GameMode::SecondLevelEndGamePeriodic;
             }
             break;
@@ -159,7 +161,7 @@ void Teleop::TeleopPeriodic() {
             }
             else if (m_driverJoystick->GetRawButton(
                          PoofsJoysticks::LeftTrigger)) {
-                m_elevator->SetPower(-0.14);
+                m_elevator->SetPower(-0.08);
             }
             else {
                 m_elevator->SetPower(0.0);
@@ -304,7 +306,10 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
+                            break;
                         case GameMode::SecondLevelEndGamePeriodic:
+                            m_elevator->SetPower(
+                                -Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
                             break;
                     }
                 }
@@ -317,6 +322,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
                         case GameMode::SecondLevelEndGamePeriodic:
+                            m_elevator->SetPower(0.0);
                             break;
                     }
                 }
@@ -392,6 +398,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                         case GameMode::CargoPeriodic:
                             m_elevator->SetPosition(Elevator::MID_ROCKET_CARGO);
                             break;
+                        case GameMode::ThirdLevelEndGamePeriodic:
+                            m_stinger->SetKickUpEnable();
+                            break;
                     }
                 }
                 break;
@@ -404,6 +413,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                         case GameMode::CargoPeriodic:
                             m_elevator->SetPosition(Elevator::LOW_ROCKET_CARGO);
                             break;
+                        case GameMode::ThirdLevelEndGamePeriodic:
+                            m_stinger->SetKickUpDisable();
+                            break;
                     }
                 }
                 break;
@@ -415,6 +427,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                         case GameMode::CargoPeriodic:
                             m_elevator->SetPosition(Elevator::CARGO_SHIP_CARGO);
+                            break;
+                        case GameMode::ThirdLevelEndGamePeriodic:
+                            m_stinger->RetractSwitchBlade();
                             break;
                     }
                 }
@@ -464,6 +479,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             m_cargoIntake->RunIntake(1.0);
                             m_elevator->SetPosition(
                                 Elevator::LOADING_STATION_CARGO);
+                            break;
+                        case GameMode::ThirdLevelEndGamePeriodic:
+                            m_stinger->DeploySwitchBlade();
                             break;
                     }
                 }

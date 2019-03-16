@@ -18,7 +18,7 @@ LimelightDriveController::LimelightDriveController(
         , m_goalAngleComp(0.0)
         , m_limelight(limelight)
         , m_turnPid(new PID(0.015, 0.0, 0.002))
-        , m_throttlePid(new PID(0.02, 0.0, 0.003)) {
+        , m_throttlePid(new PID(0.023, 0.0, 0.003)) {
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -102,9 +102,9 @@ void LimelightDriveController::CalcDriveOutput(
                 -0.4, 0.4) *
             CalcTurnComp();
         double throttlePidOut =
-            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.7,
-                        0.7);  //(pow(cos((offset * Constants::PI / 180.0) *
-                               // PERIOD), 5))),
+            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.72,
+                        0.72);  //(pow(cos((offset * Constants::PI / 180.0) *
+                                // PERIOD), 5))),
         m_goalAngleComp = CalcScaleGoalAngleComp();
         double driverComp = 0.1 * m_driverJoystick->GetRawAxisWithDeadband(
                                       PoofsJoysticks::LeftYAxis);
