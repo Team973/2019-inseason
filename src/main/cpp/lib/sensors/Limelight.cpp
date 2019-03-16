@@ -139,8 +139,8 @@ void Limelight::SetCameraVisionCenter() {
 
 void Limelight::SetCameraVisionRight() {
     SetPipeline(PipelineMode::vision_right);
-    SetCameraMode(CameraMode::onDriver);
-    SetLightOff();
+    SetCameraMode(CameraMode::onVision);
+    SetLightOn();
 }
 
 void Limelight::SetCameraVisionLeft() {

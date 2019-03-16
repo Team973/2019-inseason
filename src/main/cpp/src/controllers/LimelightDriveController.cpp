@@ -79,12 +79,12 @@ double LimelightDriveController::CalcThrottleCap() {
 
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
-    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) <
-        -0.5) {
+    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) >
+        0.5) {
         m_limelight->SetCameraVisionLeft();
     }
     else if (m_driverJoystick->GetRawAxisWithDeadband(
-                 PoofsJoysticks::RightXAxis) > 0.5) {
+                 PoofsJoysticks::RightXAxis) < -0.5) {
         m_limelight->SetCameraVisionRight();
     }
     m_limelight->SetLightOn();
