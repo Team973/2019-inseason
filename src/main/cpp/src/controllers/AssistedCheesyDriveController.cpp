@@ -35,7 +35,7 @@ AssistedCheesyDriveController::~AssistedCheesyDriveController() {
 }
 
 void AssistedCheesyDriveController::Start(DriveControlSignalReceiver *out) {
-    m_limelight->SetCameraVision();
+    m_limelight->SetCameraVisionCenter();
     m_limelight->SetLightOn();
 }
 

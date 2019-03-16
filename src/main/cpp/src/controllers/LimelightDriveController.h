@@ -11,7 +11,8 @@
 #include "lib/util/Util.h"
 #include "lib/sensors/Limelight.h"
 #include "src/info/RobotInfo.h"
-
+#include "lib/helpers/PoofsJoystickHelper.h"
+#include "src/subsystems/HatchIntake.h"
 namespace frc973 {
 
 class PID;
@@ -22,7 +23,9 @@ public:
      * Construct a Limelight Drive controller.
      * @param limelight The limelight.
      */
-    LimelightDriveController(Limelight *limelight, bool isCompSkew);
+    LimelightDriveController(Limelight *limelight, bool isCompSkew,
+                             ObservablePoofsJoystick *driverJoystick,
+                             HatchIntake *hatchIntake);
     virtual ~LimelightDriveController();
 
     /**
@@ -61,8 +64,9 @@ public:
 
     static constexpr double DRIVE_OUTPUT_MULTIPLIER =
         1.0;  // in native units per degree
-    static constexpr double DISTANCE_SETPOINT =
-        -7.0;  // in inches from target to robot bumper
+    static constexpr double DISTANCE_SETPOINT_ROCKET =
+        -7.0 + 6.0;  // in inches from target to robot bumper
+    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -8.0;
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
         -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
@@ -73,15 +77,18 @@ public:
     static constexpr double TURN_COMP_DISTANCE_MAX = 24.0;
     static constexpr double THROTTLE_CAP_DISTANCE_MIN = 24.0;
     static constexpr double THROTTLE_CAP_DISTANCE_MAX = 60.0;
+    static constexpr double THROTTLE_FEED_FORWARD = 0.05;
     static constexpr double THROTTLE_MIN = 0.2;
     static constexpr double THROTTLE_MAX = 0.5;
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.04;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.027;
 
 private:
     bool m_onTarget;
     double m_leftSetpoint;
     double m_rightSetpoint;
     bool m_isCompensatingSkew;
+    HatchIntake *m_hatchIntake;
+    ObservablePoofsJoystick *m_driverJoystick;
 
     double m_throttle;
     double m_turn;

@@ -30,10 +30,14 @@ Robot::Robot()
               LEFT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
         , m_leftDriveSparkB(new GreySparkMax(
               LEFT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
+        , m_leftDriveSparkC(new GreySparkMax(
+              LEFT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
         , m_rightDriveSparkA(new GreySparkMax(
               RIGHT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
         , m_rightDriveSparkB(new GreySparkMax(
               RIGHT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkC(new GreySparkMax(
+              RIGHT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
         , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
         , m_stingerElevatorMotor(new GreyTalonSRX(STINGER_ELEVATOR_CAN_ID))
         , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
@@ -55,18 +59,19 @@ Robot::Robot()
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
         , m_matchTime(new LogCell("MatchTime", 32, true))
+        , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
+                                        m_hatchPuncher, m_limelightHatch))
         , m_drive(new Drive(this, m_logger, m_leftDriveSparkA,
-                            m_leftDriveSparkB, m_rightDriveSparkA,
-                            m_rightDriveSparkB, m_stingerDriveMotor, m_gyro,
-                            m_limelightHatch))
+                            m_leftDriveSparkB, m_leftDriveSparkC,
+                            m_rightDriveSparkA, m_rightDriveSparkB,
+                            m_rightDriveSparkC, m_stingerDriveMotor, m_gyro,
+                            m_limelightHatch, m_hatchIntake, m_driverJoystick))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick,
                                   m_elevatorHall))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoPlatformLock, m_cargoWrist,
                                         m_limelightHatch))
-        , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
-                                        m_hatchPuncher, m_limelightHatch))
         , m_stinger(new Stinger(this, m_logger, m_stingerElevatorMotor,
                                 m_stingerDriveMotor, m_stingerLowerHall,
                                 m_stingerUpperHall))
@@ -76,7 +81,8 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
-                                  m_elevator, m_cargoIntake, m_limelightHatch))
+                                  m_elevator, m_cargoIntake, m_limelightHatch,
+                                  m_autonomous))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
                               m_testJoystick, m_drive, m_elevator,
                               m_hatchIntake, m_cargoIntake, m_stinger,
@@ -84,8 +90,9 @@ Robot::Robot()
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
                           m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
                           m_stinger, m_limelightHatch))
-        , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
-                                      m_testJoystick, m_teleop)) {
+        , m_autonomous(new Autonomous(
+              m_driverJoystick, m_operatorJoystick, m_testJoystick, m_teleop,
+              m_gyro, m_drive, m_cargoIntake, m_hatchIntake, m_elevator)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -162,13 +169,6 @@ void Robot::AllStateContinuous() {
         DriverStation::GetInstance().GetReplayNumber());
     m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
     m_matchTime->LogDouble(Timer::GetMatchTime());
-    /*m_limelightHatch->SetCameraVision();
-    m_limelightHatch->SetLightOn();
-    DBStringPrintf(DBStringPos::DB_LINE5, "camd: %2.2lf yo %2.2lf",
-                   m_limelightHatch->GetHorizontalDistance(),
-                   m_limelightHatch->GetYOffset());*/
-    /*DBStringPrintf(DB_LINE5, "pdpea:%2.2lf b:%2.2lf", m_pdp->GetCurrent(13),
-                   m_pdp->GetCurrent(2));*/
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

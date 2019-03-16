@@ -127,6 +127,8 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     m_controlModeCell->LogInt(m_elevatorState);
     m_powerInputCell->LogDouble(m_power);
     DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
+    DBStringPrintf(DBStringPos::DB_LINE5, "ep: %2.2lf",
+                   m_elevatorMotorA->GetMotorOutputPercent());
     HallZero();
 
     switch (m_elevatorState) {

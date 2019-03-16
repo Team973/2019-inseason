@@ -87,8 +87,6 @@ public:
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
     static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
 
-    friend class PresetHandlerDispatcher;
-
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
@@ -126,7 +124,9 @@ private:
         HatchPeriodic,
         ThirdLevelEndGameInit,
         SecondLevelEndGameInit,
-        EndGamePeriodic,
+        ThirdLevelEndGamePeriodic,
+        SecondLevelEndGamePeriodic,
+        SecondLevelStabilize,
         RaiseIntake,
         ResetIntake
     };

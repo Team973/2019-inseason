@@ -25,7 +25,9 @@ public:
      */
     Autonomous(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver,
-               ObservableDualActionJoystick *testJoystick, Teleop *teleop);
+               ObservableDualActionJoystick *testJoystick, Teleop *teleop,
+               ADXRS450_Gyro *gyro, Drive *drive, CargoIntake *cargoIntake,
+               HatchIntake *hatchIntake, Elevator *elevator);
     virtual ~Autonomous();
 
     /**
@@ -68,13 +70,46 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    friend class PresetHandlerDispatcher;
+    enum class AutoState
+    {
+        TwoRocket,
+        TwoCargoShip,
+        CargoShipThenRocket,
+        Manual
+    };
+
+    AutoState GetAutoState() const;
+    void SetAutoState(AutoState autoState);
+
+    enum class AutoStateStartPosition
+    {
+        LeftHabLevel2,
+        CenterHab,
+        RightHabLevel2
+    };
 
 private:
+    void TwoRocketAuto();
+    void TwoRocketAutoFront();
+    void TwoRocketAutoBack();
+    void TwoCargoShipAuto();
+    void CargoShipThenRocketAuto(const bool doCargoOnly = false);
+
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
     ObservableDualActionJoystick *m_testJoystick;
 
     Teleop *m_teleop;
+    AutoState m_autoState;
+    AutoStateStartPosition m_autoStateStartPosition;
+    double m_autoTimer;
+    double m_direction;
+    int m_autoStep;
+    ADXRS450_Gyro *m_gyro;
+
+    Drive *m_drive;
+    CargoIntake *m_cargoIntake;
+    HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
 };
 }

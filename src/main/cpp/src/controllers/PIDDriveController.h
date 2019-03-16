@@ -115,6 +115,14 @@ public:
     }
 
     /**
+     * Return the angle error.
+     * @return The distance error.
+     */
+    double GetAngleError() {
+        return m_targetAngle - m_prevAngle;
+    }
+
+    /**
      * Start the drive controller.
      * @param out The signal receiver for handling outgoing messages.
      */

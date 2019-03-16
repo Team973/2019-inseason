@@ -6,12 +6,14 @@ using namespace frc;
 namespace frc973 {
 Disabled::Disabled(ObservablePoofsJoystick *driver,
                    ObservableXboxJoystick *codriver, Elevator *elevator,
-                   CargoIntake *cargoIntake, Limelight *limelightHatch)
+                   CargoIntake *cargoIntake, Limelight *limelightHatch,
+                   Autonomous *autonomous)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_elevator(elevator)
         , m_cargoIntake(cargoIntake)
-        , m_limelightHatch(limelightHatch) {
+        , m_limelightHatch(limelightHatch)
+        , m_autonomous(autonomous) {
 }
 
 Disabled::~Disabled() {
@@ -39,18 +41,22 @@ void Disabled::HandleXboxJoystick(uint32_t port, uint32_t button,
             break;
         case Xbox::BtnA:
             if (pressedP) {
+                m_autonomous->SetAutoState(Autonomous::AutoState::TwoCargoShip);
             }
             else {
             }
             break;
         case Xbox::BtnX:
             if (pressedP) {
+                m_autonomous->SetAutoState(
+                    Autonomous::AutoState::CargoShipThenRocket);
             }
             else {
             }
             break;
         case Xbox::BtnB:
             if (pressedP) {
+                m_autonomous->SetAutoState(Autonomous::AutoState::TwoRocket);
             }
             else {
             }

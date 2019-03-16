@@ -95,8 +95,10 @@ private:
 
     GreySparkMax *m_leftDriveSparkA;
     GreySparkMax *m_leftDriveSparkB;
+    GreySparkMax *m_leftDriveSparkC;
     GreySparkMax *m_rightDriveSparkA;
     GreySparkMax *m_rightDriveSparkB;
+    GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
     GreyTalonSRX *m_stingerElevatorMotor;
@@ -126,9 +128,9 @@ private:
     LogCell *m_matchTime;
 
     CargoIntake *m_cargoIntake;
+    HatchIntake *m_hatchIntake;
     Drive *m_drive;
     Elevator *m_elevator;
-    HatchIntake *m_hatchIntake;
     PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 

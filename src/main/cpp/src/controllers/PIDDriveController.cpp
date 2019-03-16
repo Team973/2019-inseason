@@ -17,12 +17,12 @@ using namespace frc;
 namespace frc973 {
 
 // Drive pid takes in error in inches and outputs velocity in inches/sec
-static constexpr double DRIVE_PID_KP = 2.6;
+static constexpr double DRIVE_PID_KP = 0.2;
 static constexpr double DRIVE_PID_KI = 0.0;
-static constexpr double DRIVE_PID_KD = 0.05;
+static constexpr double DRIVE_PID_KD = 0.0;
 
 // Turn pid takes in error in degrees and outputs velocity in degrees/sec
-static constexpr double TURN_PID_KP = 10.0;
+static constexpr double TURN_PID_KP = 0.0;
 static constexpr double TURN_PID_KI = 0.0;
 static constexpr double TURN_PID_KD = 0.0;
 
@@ -88,8 +88,11 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
                    m_prevDist);
     DBStringPrintf(DBStringPos::DB_LINE6, "err d %.3lf a %.3lf",
                    m_targetDist - m_prevDist, m_targetAngle - m_prevAngle);
+    DBStringPrintf(DB_LINE7, "Drive N: %f, S: %f, E: %f", m_prevDist,
+                   m_targetDist, GetDistError());
+    DBStringPrintf(DB_LINE8, "Turn N: %f, S: %f, E: %f", m_prevAngle,
+                   m_targetAngle, GetAngleError());
 }
-
 /*
  * dist and angle are relative to current position
  */

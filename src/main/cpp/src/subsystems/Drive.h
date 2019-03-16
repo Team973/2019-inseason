@@ -11,9 +11,11 @@
 #include "lib/helpers/GreyTalon.h"
 #include "lib/helpers/GreySparkMax.h"
 #include "src/info/RobotInfo.h"
+#include "src/subsystems/HatchIntake.h"
 #include "lib/bases/DriveBase.h"
 #include "networktables/NetworkTableInstance.h"
 #include "lib/logging/LogSpreadsheet.h"
+#include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/trajectories/structs.h"
 
 using namespace frc;
@@ -64,9 +66,11 @@ public:
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
           GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
-          GreySparkMax *rightDriveSparkA, GreySparkMax *rightDriveSparkB,
+          GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
+          GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
-          Limelight *limelightHatch);
+          Limelight *limelightHatch, HatchIntake *hatchIntake,
+          ObservablePoofsJoystick *driverJoystick);
     virtual ~Drive();
 
     /**
@@ -230,6 +234,12 @@ public:
     double GetAngularRate() const override;
 
     /**
+     * Return the left maximum side temperature in celcius.
+     * @return The left side temperature in celcius.
+     */
+    // double GetLeftTemperature();
+
+    /**
      * Used by the DriveController to set motor values in inches/second.
      * @param left Velocity to send to left motors.
      * @param right Velocity to send to right motors.
@@ -272,8 +282,10 @@ private:
 
     GreySparkMax *m_leftDriveSparkA;
     GreySparkMax *m_leftDriveSparkB;
+    GreySparkMax *m_leftDriveSparkC;
     GreySparkMax *m_rightDriveSparkA;
     GreySparkMax *m_rightDriveSparkB;
+    GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
 
@@ -295,6 +307,8 @@ private:
     ADXRS450_Gyro *m_gyro;
     double m_gyroZero;
     Limelight *m_limelightHatch;
+    HatchIntake *m_hatchIntake;
+    ObservablePoofsJoystick *m_driverJoystick;
 
     CheesyDriveController *m_cheesyDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;

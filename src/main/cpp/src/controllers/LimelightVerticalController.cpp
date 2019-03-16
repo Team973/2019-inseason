@@ -15,7 +15,7 @@ LimelightVerticalController::~LimelightVerticalController() {
 }
 
 void LimelightVerticalController::Start() {
-    m_limelight->SetCameraVision();
+    m_limelight->SetCameraVisionCenter();
 }
 
 void LimelightVerticalController::CalcOutput() {
