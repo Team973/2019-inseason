@@ -101,9 +101,7 @@ private:
     GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
-    GreyTalonSRX *m_stingerElevatorMotor;
-    DigitalInput *m_stingerLowerHall;
-    DigitalInput *m_stingerUpperHall;
+
     GreyTalonSRX *m_elevatorMotorA;
     VictorSPX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;

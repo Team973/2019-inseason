@@ -22,6 +22,9 @@ public:
     /**
      * Construct a Limelight Drive controller.
      * @param limelight The limelight.
+     * @param isCompSkew Boolean on if using skew compensation.
+     * @param driverJoystick The driver's controller.
+     * @param HatchIntake The hatch intake subsystem.
      */
     LimelightDriveController(LogSpreadsheet *logger, Limelight *limelight,
                              bool isCompSkew,

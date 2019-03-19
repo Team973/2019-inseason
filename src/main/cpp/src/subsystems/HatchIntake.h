@@ -20,8 +20,9 @@ public:
      * Hatch intake constructor.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
-     * @param hatchRoller The hatch intake's roller.
+     * @param hatchRollers The hatch intake's roller.
      * @param hatchPuncher The hatch intake's puncher.
+     * @param limelightHatch The hatch limelight.
      */
     HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher,
@@ -85,6 +86,10 @@ public:
      */
     void LaunchHatch();
 
+    /**
+     * Checks if a hatch is in the intake.
+     * @return True or False for hatch in intake.
+     */
     bool IsHatchInIntake();
 
     /**
@@ -97,6 +102,10 @@ public:
      */
     void ManualPuncherRetract();
 
+    /**
+     * Gets the hatch puncher state.
+     * @return The hatch puncher state.
+     */
     HatchSolenoidState GetHatchPuncherState();
 
     /**

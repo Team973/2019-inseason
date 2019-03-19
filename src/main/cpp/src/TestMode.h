@@ -33,10 +33,13 @@ public:
      * Constuct a test mode.
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
-     * @param cargoIntake The cargo intake subsystem.
+     * @param testStick The test joystick.
      * @param drive The drive subsystem.
      * @param elevator The elevator subsystem.
+     * @param hatchIntake The hatch intake subsystem.
+     * @param cargoIntake The cargo intake subsystem
      * @param stinger The stinger subsystem.
+     * @param limelightHatch The hatch limelight.
      */
     Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
          ObservableDualActionJoystick *testStick, Drive *drive,

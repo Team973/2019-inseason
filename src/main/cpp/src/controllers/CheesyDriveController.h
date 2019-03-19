@@ -22,6 +22,7 @@ class CheesyDriveController : public DriveController {
 public:
     /**
      * Construct a Cheesy Drive controller.
+     * @param LimelightHatch The hatch limelight.
      */
     CheesyDriveController(Limelight *LimelightHatch);
     virtual ~CheesyDriveController();
@@ -67,10 +68,18 @@ public:
         printf("Turning off Cheesy Mode\n");
     }
 
+    /**
+     * Gets the left drive output
+     * @return The left output
+     */
     double GetLeftOutput() {
         return m_leftOutput;
     }
 
+    /**
+     * Gets the right drive output
+     * @return The right output
+     */
     double GetRightOutput() {
         return m_rightOutput;
     }

@@ -35,7 +35,10 @@ public:
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
      * @param drive The drive subsystem.
-     * @param limelightCargo The Limelight for the cargo.
+     * @param elevator The elevator subsystem.
+     * @param hatchintake The hatch intake subsystem.
+     * @param cargointake The cargo intake subsystem.
+     * @param stinger The stinger subsystem.
      * @param limelightHatch The Limelight for the hatch.
      */
     Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
@@ -102,13 +105,14 @@ private:
         Cheesy
     };
     DriveMode m_driveMode;
-    CargoIntake *m_cargoIntake;
 
+    CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
     Stinger *m_stinger;
 
     Limelight *m_limelightHatch;
+
     enum class Rumble
     {
         on,

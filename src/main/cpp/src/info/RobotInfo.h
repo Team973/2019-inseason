@@ -23,6 +23,7 @@ static constexpr double DRIVE_DIST_PER_REVOLUTION =
     DRIVE_WHEEL_REVOLUTION_PER_MOTOR_REVOLUTON;  // aka 2.12270
 static constexpr double DRIVE_IPS_FROM_RPM =
     DRIVE_DIST_PER_REVOLUTION / 60.0;  // aka 0.035378
+
 /**
  * Pneumatics Hardware
  */
@@ -31,7 +32,7 @@ static const int COMPRESSOR_RELAY = 0;
 
 /**
  * Drive Subsystem
- **/
+ */
 static const int RIGHT_DRIVE_A_ID = 1;
 static const int RIGHT_DRIVE_B_ID = 2;
 static const int RIGHT_DRIVE_C_ID = 3;
@@ -47,7 +48,7 @@ static const int ELEVATOR_B_CAN_ID = 4;
 
 /**
  * Intake Subsystem
- **/
+ */
 static const int CARGO_INTAKE_CAN_ID = 5;
 static const int CARGO_INTAKE_WRIST_PCM_ID = 1;
 static const int CARGO_PLATFORM_LOCK_PCM_ID = 0;
@@ -72,13 +73,9 @@ static const int SNEAKY_CLIMB_REVERSE = 6;
 
 /**
  * Digital Sensors
- **/
+ */
 static const int PRESSURE_DIN_ID = 1;
 static const int ELEVATOR_HALL_ID = 7;
-
-/**
- * Analog Sensors
- **/
 
 /**
  * Joysticks
