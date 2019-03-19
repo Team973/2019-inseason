@@ -59,11 +59,6 @@ void Teleop::TeleopPeriodic() {
     bool softwareLowGear =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
-    if (m_stinger->GetLowerHall() &&
-        m_gameMode == GameMode::ThirdLevelEndGamePeriodic) {
-        softwareLowGear = true;
-    }
-
     switch (m_driveMode) {
         case DriveMode::Cheesy:
             DBStringPrintf(DB_LINE2, "Drive Mode: Cheesy Drive");
@@ -113,8 +108,6 @@ void Teleop::TeleopPeriodic() {
             if (GetMsecTime() - m_wristResetTimer > 500) {
                 m_cargoIntake->RetractWrist();
             }
-            SmartDashboard::PutString("misc/limelight/currentLimelight",
-                                      "cargo");
             break;
         case GameMode::HatchInit:
             m_cargoIntake->RetractPlatformWheel();
@@ -227,7 +220,6 @@ void Teleop::TeleopPeriodic() {
                 m_hatchIntake->ManualPuncherRetract();
                 break;
             case GameMode::ThirdLevelEndGamePeriodic:
-                // Task
                 break;
         }
     }

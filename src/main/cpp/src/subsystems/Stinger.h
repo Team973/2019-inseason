@@ -23,86 +23,30 @@ public:
      * Construct a stinger.
      * @param scheduler The task manager.
      * @param logger The logger.
-     * @param stingerElevatorMotor The stinger elevator motor.
-     * @param stingerLowerHall The stinger lower hall.
-     * @param stingerUpperHall The stinger upper hall.
+     * @param stingerDriveMotor The stingers drive motor.
      */
     Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
-            GreyTalonSRX *stingerElevatorMotor, GreyTalonSRX *stingerDriveMotor,
-            DigitalInput *stingerLowerHall, DigitalInput *stingerUpperHall);
+            GreyTalonSRX *stingerDriveMotor);
     virtual ~Stinger();
 
     /**
-     * Defines the elevator control states for Talon.
+     * Deploys the stinger's kick stands
      */
-    enum class StingerState
-    {
-        manualVoltage, /**< Control the motors with manual voltage. */
-        motionMagic, /**< Control the motors using position w/ Motion Magic. */
-        idle         /**< Stays in the position that was assigned. */
-    };
-
-    static constexpr double STOW = 0.0;     /**< Stow preset. */
-    static constexpr double MIDDLE = -5.0;  /**< Middle preset. */
-    static constexpr double BOTTOM = -10.0; /**< Bottom preset. */
-
-    static constexpr double STINGER_SOFT_HEIGHT_LIMIT =
-        20.0; /**< Soft stinger height. */
-    static constexpr double STINGER_INCHES_PER_CLICK =
-        (1.0 / 4096.0) * (18.0 / 50.0) * 22.0 * 0.25; /**< Encoder in/click */
-    static constexpr double STINGER_FEED_FORWARD =
-        0.1; /**< The stinger's feed forward. */
-
-    /**
-     * Stinger elevator hall states.
-     */
-    enum class StingerElevatorHallState
-    {
-        top,    /**< Stinger elevator triggering top hall. */
-        middle, /**< Stinger elevator triggering no halls. */
-        bottom, /**< Stinger elevator triggering bottom hall. */
-        error   /**< Stinger elevator triggering both halls. */
-    };
-
-    /**
-     * Set the manual percent output of the stinger elevator.
-     * @param power The power to output.
-     */
-    void SetPower(double power);
-
-    /**
-     * Set the postion of the stinger elevator.
-     * @param position The position preset in inches.
-     */
-    void SetPositionInches(double position);
-
-    void Stow();      /**< Set the stinger elevator to the stowed preset. */
-    void SetMiddle(); /**< Set the stinger elevator to the middle preset. */
-    void Deploy();    /**< Set the stinger elevator to the bottom preset. */
-
-    /**
-     * Get the status of the lower hall.
-     * @return The state of the lower hall (true/false).
-     */
-    bool GetLowerHall();
-
-    /**
-     * Get the status of the upper hall.
-     * @return The state of the upper hall (true/false).
-     */
-    bool GetUpperHall();
-
-    /**
-     * Get the status of the stinger elevator halls.
-     * @return The state of the stinger elevator halls
-     * (top/middle/bottom/error).
-     */
-    StingerElevatorHallState GetStingerElevatorHallState();
-
     void SetKickUpEnable();
+
+    /**
+     * Retracts the stinger's kick stands
+     */
     void SetKickUpDisable();
 
+    /**
+     * Deploys the stingers switch blade
+     */
     void DeploySwitchBlade();
+
+    /**
+     * Retracts the stinger's switch blade
+     */
     void RetractSwitchBlade();
 
     /**
@@ -112,22 +56,13 @@ public:
     void TaskPeriodic(RobotMode mode) override;
 
 private:
-    void GoToStingerState(StingerState newState);
-
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
-    GreyTalonSRX *m_stingerElevatorMotor;
     GreyTalonSRX *m_stingerDriveMotor;
-    DigitalInput *m_stingerLowerHall;
-    DigitalInput *m_stingerUpperHall;
 
     DoubleSolenoid *m_kickOffPneumatic;
     DoubleSolenoid *m_sneakyClimb;
 
-    double m_power;
-
     LogCell *m_current;
-
-    StingerState m_stingerState;
 };
 }

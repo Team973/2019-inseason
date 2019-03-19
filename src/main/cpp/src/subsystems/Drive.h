@@ -58,11 +58,17 @@ public:
      * Construct a drive.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
-     * @param leftDriveTalonA The first left drive motor controller.
-     * @param leftDriveVictorB The second left drive motor controller.
-     * @param rightDriveTalonA The first right drive motor controller.
-     * @param rightDriveVictorB The second right drive motor controller.
+     * @param leftDriveSparkA The first left drive motor controller.
+     * @param leftDriveSparkB The second left drive motor controller.
+     * @param leftDriveSparkC The third left drive motor contoller.
+     * @param rightDriveSparkA The first right drive motor controller.
+     * @param rightDriveSparkB The second right drive motor controller.
+     * @param rightDriverSparkC The third right drive motor controller.
+     * @param stingerDriveMotor The stinger's drive motor controller.
      * @param gyro The gyro object.
+     * @param limelightHatch The hatch limelight.
+     * @param hatchIntake The hatch intake subsystem.
+     * @param driverJoystick The driver's controller.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
           GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
@@ -136,6 +142,12 @@ public:
     SplineDriveController *SplineDrive(
         trajectories::TrajectoryDescription *trajectory, RelativeTo relativity);
 
+    /**
+     * Set drive to Constant Arc Spline Controller.
+     * @param relativity Point relative to new setpoint
+     * @param distance The distance error.
+     * @param angle The angle error.
+     */
     ConstantArcSplineDriveController *ConstantArcSplineDrive(
         RelativeTo relativity, double distance, double angle);
 

@@ -25,9 +25,9 @@ public:
      * @param scheduler The task manager.
      * @param logger The logger.
      * @param cargoIntakeMotor The cargo intake motor.
-     * @param cargoWristLock The cargo wrist lock solenoid.
+     * @param cargoPlatformLock The cargo platform lock solenoid.
      * @param cargoWrist The cargo wrist solenoid.
-     * @param cargoWheelPiston The cargo platform wheel solenoid.
+     * @param limelightHatch The hatch limelight.
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoPlatformLock,
@@ -39,12 +39,13 @@ public:
      */
     enum class CargoIntakeState
     {
-        running, /**< Intaking state. */
-        manualRunning,
-        holding,    /**< Holding state. */
-        notRunning, /**< Stopped state. */
-        reverse     /**< Outtaking state. */
+        running,       /**< Intaking state. */
+        manualRunning, /**< Manual state. */
+        holding,       /**< Holding state. */
+        notRunning,    /**< Stopped state. */
+        reverse        /**< Outtaking state. */
     };
+
     /**
      * Cargo Wrist states.
      */
@@ -63,19 +64,51 @@ public:
         deployed = false  /**< Deployed wheel state. */
     };
 
-    void RunIntake(double power); /**< Run the intake with variable power.*/
-    void RunIntake();             /**< Set the CargoIntakeState to running. */
-    void HoldCargo();             /**< Set the CargoIntakeState to holding. */
-    void StopIntake(); /**< Set the CargoIntakeState to notRunning. */
-    void Exhaust();    /**< Set the CargoIntakeState to reverse. */
+    /**
+     * Run the intake with variable power.
+     * @param power The power to set.
+     */
+    void RunIntake(double power);
 
-    void ExtendWrist();  /**< Set the CargoWristState to extended. */
-    void RetractWrist(); /**< Set the CargoWristState to retracted. */
+    /**
+     * Sets CargoIntakeState to running.
+     */
+    void RunIntake();
 
-    void DeployPlatformWheel();  /**< Set the CargoPlatformLockState
-                                    to deployed */
-    void RetractPlatformWheel(); /**< Set the CargoPlatformLockState to
-                                    retracted */
+    /**
+     * Sets CargoIntakeState to holding.
+     */
+    void HoldCargo();
+
+    /**
+     * Sets CargoIntakeState to notRunning.
+     */
+    void StopIntake();
+
+    /**
+     * Sets CargoIntakeState to reverse.
+     */
+    void Exhaust();
+
+    /**
+     * Sets CargoWristState to extended.
+     */
+    void ExtendWrist();
+
+    /**
+     * Sets CargoWristState to retracted.
+     */
+    void RetractWrist();
+
+    /**
+     * Sets CargoPlatformLockState to deployed.
+     */
+    void DeployPlatformWheel();
+
+    /**
+     * Sets CargoPlatformLockState to retracted.
+     */
+    void RetractPlatformWheel();
 
     /**
      * Get the intake current.
@@ -101,7 +134,14 @@ public:
      */
     CargoPlatformLockState GetPlatformLockState();
 
+    /**
+     * Sets the cargo intake motor to coast mode.
+     */
     void EnableCoastMode();
+
+    /**
+     * Sets the cargo intake motor to brake mode.
+     */
     void EnableBrakeMode();
 
     /**
@@ -143,6 +183,7 @@ private:
     CargoPlatformLockState m_cargoPlatformLockState;
 
     Limelight *m_limelightHatch;
+
     double m_cargoTimer;
 
     LogCell *m_currentCell;

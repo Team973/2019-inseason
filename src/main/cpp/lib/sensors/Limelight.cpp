@@ -79,17 +79,12 @@ void Limelight::SetStreamMode(StreamMode mode) {
     switch (mode) {
         case StreamMode::standard:
             m_limelight->PutNumber("stream", 0);
-            SmartDashboard::PutString("misc/limelight/currentCamera",
-                                      "limelight");
             break;
         case StreamMode::pipMain:
             m_limelight->PutNumber("stream", 1);
-            SmartDashboard::PutString("misc/limelight/currentCamera",
-                                      "limelight");
             break;
         case StreamMode::pipSecondary:
             m_limelight->PutNumber("stream", 2);
-            SmartDashboard::PutString("misc/limelight/currentCamera", "usb");
             break;
     }
 }

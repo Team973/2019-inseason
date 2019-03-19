@@ -39,9 +39,6 @@ Robot::Robot()
         , m_rightDriveSparkC(new GreySparkMax(
               RIGHT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
         , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
-        , m_stingerElevatorMotor(new GreyTalonSRX(STINGER_ELEVATOR_CAN_ID))
-        , m_stingerLowerHall(new DigitalInput(STINGER_LOWER_HALL_DIN_ID))
-        , m_stingerUpperHall(new DigitalInput(STINGER_UPPER_HALL_DIN_ID))
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
         , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
         , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
@@ -72,9 +69,7 @@ Robot::Robot()
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoPlatformLock, m_cargoWrist,
                                         m_limelightHatch))
-        , m_stinger(new Stinger(this, m_logger, m_stingerElevatorMotor,
-                                m_stingerDriveMotor, m_stingerLowerHall,
-                                m_stingerUpperHall))
+        , m_stinger(new Stinger(this, m_logger, m_stingerDriveMotor))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
@@ -109,8 +104,6 @@ void Robot::Initialize() {
     m_cameraServer->AddCamera(m_hatchCamera);
     m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
     m_greyCam.SetSource(m_hatchCamera);
-
-    m_limelightHatch->SetLightOff();
 }
 
 void Robot::DisabledStart() {

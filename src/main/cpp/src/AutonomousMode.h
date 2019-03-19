@@ -18,10 +18,15 @@ class Autonomous {
 public:
     /**
      * Constuct an autonomous mode.
-     * @param disabled The disabled mode.
-     * @param drive The drive subsystem.
-     * @param elevator The elevator subsystem
+     * @param driver The driver controller.
+     * @param codriver The codriver controller.
+     * @param testJoystick The test controller.
+     * @param teleop The teleop mode.
      * @param gyro The gyro.
+     * @param drive The drive subsystem.
+     * @param cargoIntake The cargo intake subsystem.
+     * @param hatchIntake The hatch intake subsystem.
+     * @param elevator The elevator subsystem.
      */
     Autonomous(ObservablePoofsJoystick *driver,
                ObservableXboxJoystick *codriver,
