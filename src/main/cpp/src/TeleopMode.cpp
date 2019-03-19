@@ -68,10 +68,10 @@ void Teleop::TeleopPeriodic() {
         case DriveMode::Cheesy:
             DBStringPrintf(DB_LINE2, "Drive Mode: Cheesy Drive");
             if (softwareLowGear) {
-                m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, false);
+                m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, true);
             }
             else {
-                m_drive->CheesyDrive(y, x, quickturn, false);
+                m_drive->CheesyDrive(y, x, quickturn, true);
             }
             break;
         case DriveMode::Openloop:
@@ -249,7 +249,11 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
+                            break;
                         case GameMode::SecondLevelEndGamePeriodic:
+                            m_elevator->SetPosition(23.0);
+                            m_cargoIntake->DeployPlatformWheel();
+                            m_gameMode = GameMode::SecondLevelStabilize;
                             break;
                     }
                 }
@@ -331,9 +335,6 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::SecondLevelEndGamePeriodic:
-                            m_elevator->SetPosition(23.0);
-                            m_cargoIntake->DeployPlatformWheel();
-                            m_gameMode = GameMode::SecondLevelStabilize;
                             break;
                     }
                 }

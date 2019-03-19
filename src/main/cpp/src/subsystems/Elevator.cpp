@@ -32,7 +32,7 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_elevatorMotorA->Config_PID(0, 1.5, 0.0, 0.0, 0.0, 10);
     m_elevatorMotorA->ConfigMotionCruiseVelocity(3750.0, 10);
-    m_elevatorMotorA->ConfigMotionAcceleration(3000.0, 10);
+    m_elevatorMotorA->ConfigMotionAcceleration(5000.0, 10);
     m_elevatorMotorA->SelectProfileSlot(0, 0);
 
     m_elevatorMotorA->EnableCurrentLimit(true);
@@ -126,9 +126,11 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     m_voltageMasterCell->LogDouble(m_elevatorMotorA->GetMotorOutputVoltage());
     m_controlModeCell->LogInt(m_elevatorState);
     m_powerInputCell->LogDouble(m_power);
-    DBStringPrintf(DBStringPos::DB_LINE0, "e: %2.2lf", GetPosition());
-    DBStringPrintf(DBStringPos::DB_LINE5, "ep: %2.2lf",
-                   m_elevatorMotorA->GetMotorOutputPercent());
+    DBStringPrintf(DBStringPos::DB_LINE0, "ep:%2.2lf ev:%2.2lf", GetPosition(),
+                   (float)m_elevatorMotorA->GetSelectedSensorVelocity(0));
+    DBStringPrintf(DBStringPos::DB_LINE5, "eout:%2.2lf ec:%2.2lf",
+                   m_elevatorMotorA->GetMotorOutputPercent(),
+                   m_elevatorMotorA->GetOutputCurrent());
     HallZero();
 
     switch (m_elevatorState) {

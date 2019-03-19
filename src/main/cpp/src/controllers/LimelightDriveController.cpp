@@ -46,11 +46,6 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
     double angle_comp = Util::bound(
         GOAL_ANGLE_COMP_KP * skew * dist_multiplier * skew_multiplier, -0.2,
         0.2);
-    DBStringPrintf(DB_LINE3, "s:%2.1lf m:%2.1lf ac:%2.1lf", skew,
-                   dist_multiplier, angle_comp);
-    DBStringPrintf(DB_LINE7, "t_dist: %2.2lf xo:%2.2lf",
-                   m_limelight->GetHorizontalDistance(),
-                   m_limelight->GetXOffset());
     return angle_comp;  // y = mx + b
                         // y = degree of compensation
                         // m = (1 - 0) / (max - min)
@@ -121,15 +116,10 @@ void LimelightDriveController::CalcDriveOutput(
                 throttlePidOut + turnPidOut + m_goalAngleComp;  // - driverComp;
             m_rightSetpoint =
                 throttlePidOut - turnPidOut - m_goalAngleComp;  // - driverComp;
-            DBStringPrintf(DBStringPos::DB_LINE1,
-                           "th:%2.2lf tu:%2.2lf gc:%2.2lf", throttlePidOut,
-                           turnPidOut, m_goalAngleComp);
         }
         else {
             m_leftSetpoint = throttlePidOut + turnPidOut;
             m_rightSetpoint = throttlePidOut - turnPidOut;
-            DBStringPrintf(DBStringPos::DB_LINE1, "th:%2.2lf tu:%2.2lf",
-                           throttlePidOut, turnPidOut);
         }
     }
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
