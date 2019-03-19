@@ -29,6 +29,10 @@ public:
      * Constuct a disabled mode.
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
+     * @param elevator The elevator subsystem.
+     * @param cargoIntake The cargo Intake subsystem.
+     * @param limelightHatch The hatch limelight.
+     * @param autonomous The autonomous mode.
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
              Elevator *elevator, CargoIntake *cargoIntake,
@@ -83,6 +87,7 @@ private:
     CargoIntake *m_cargoIntake;
 
     Limelight *m_limelightHatch;
+
     Autonomous *m_autonomous;
 };
 }

@@ -23,7 +23,8 @@ class Limelight {
 public:
     /**
      * Constuct a Limelight Camera.
-     * @param name The name of the limelight being constructed
+     * @param name The name of the limelight being constructed.
+     * @param inverted Boolean on if the limelight is inverted or not.
      */
     Limelight(const char *name, bool inverted);
     virtual ~Limelight();
@@ -39,7 +40,7 @@ public:
     };
 
     /**
-     * Limelight camera modes
+     * Limelight camera modes.
      */
     enum class CameraMode
     {
@@ -79,20 +80,26 @@ public:
         vision_left,   /**< The limelight off pipeline */
     };
 
+    /**
+     * Sets picture and picture to main
+     */
     void SetPiPMain();
 
+    /**
+     * Sets picture and picture to secondary.
+     */
     void SetPiPSecondary();
 
     /**
-     * Sets the limelight's LEDs to on, off, or blink
-     * @param mode the LED mode
+     * Sets the limelight's LEDs to on, off, or blink.
+     * @param mode the LED mode.
      */
     void SetLightMode(LightMode mode);
 
     /**
      * Sets the limelight's camera mode to use vision or driver version where
-     * camera feedback changes
-     * @param mode the camera mode
+     * camera feedback changes.
+     * @param mode the camera mode.
      */
     void SetCameraMode(CameraMode mode);
 
@@ -121,106 +128,106 @@ public:
     void SetSnapshotMode(SnapshotMode mode);
 
     /**
-     * Sets the limelight's LEDs to on
+     * Sets the limelight's LEDs to on.
      */
     void SetLightOn();
 
     /**
-     * Sets the limelight's LEDs to off
+     * Sets the limelight's LEDs to off.
      */
     void SetLightOff();
 
     /**
-     * Sets the limelight's LEDs to blinking
+     * Sets the limelight's LEDs to blinking.
      */
     void SetLightBlink();
 
     /**
-     * Sets the limelight's cameras to use driver settings (just raw feedback)
+     * Sets the limelight's cameras to use driver settings (just raw feedback).
      */
     void SetCameraDriver();
 
     /**
-     * Sets the limelight's camera to use target vision settings
+     * Sets the limelight's camera to use target vision settings.
      */
     void SetCameraVisionCenter();
 
     /**
-     * Sets the limelight's camera to use default vision settings
+     * Sets the limelight's camera to use default vision settings.
      */
     void SetCameraVisionRight();
 
     /**
      * Sets the limelight's camera to use off settings (disables as much
-     * feedback as possible)
+     * feedback as possible).
      */
     void SetCameraVisionLeft();
 
     /**
-     * Checks if target is present or not
-     * @return target is seen or not
+     * Checks if target is present or not.
+     * @return target is seen or not.
      */
     bool isTargetValid();
 
     /**
-     * Gets the target x-offset
-     * @return target x-offset
+     * Gets the target x-offset.
+     * @return target x-offset.
      */
     double GetXOffset();
 
     /**
-     * Gets the target y-offset
-     * @return target y-offset
+     * Gets the target y-offset.
+     * @return target y-offset.
      */
     double GetYOffset();
 
     /**
-     * Gets the target area
-     * @return target area
+     * Gets the target area.
+     * @return target area.
      */
     double GetTargetArea();
 
     /**
-     * Gets the target skew
+     * Gets the target skew.
      * Returns negative values when target is more distant on the right
-     * side of the robot and vice versa
-     * @return target skew
+     * side of the robot and vice versa.
+     * @return target skew.
      */
     double GetTargetSkew();
 
     /**
-     * Gets the camera's latency
-     * @return camera latency
+     * Gets the camera's latency.
+     * @return camera latency.
      */
     double GetLatency();
 
     /**
-     * Gets the camera's pipeline index
-     * @return camera pipeline index
+     * Gets the camera's pipeline index.
+     * @return camera pipeline index.
      */
     double GetPipeline();
 
     /**
-     * Gets the target's horizontal length
-     * @return target's horizontal length
+     * Gets the target's horizontal length.
+     * @return target's horizontal length.
      */
     double GetHorizontalLength();
 
     /**
-     * Gets the target's vertical length
-     * @return target's vertical length
+     * Gets the target's vertical length.
+     * @return target's vertical length.
      */
     double GetVerticalLength();
 
     /**
-     * Finds the angle skew of the robot in reference to the target
-     * @return targets skew
+     * Finds the angle skew of the robot in reference to the target.
+     * @return targets skew.
      */
     double FindTargetSkew();
 
     /**
-     * Finds the horizontal distance of the robot in reference to the target
-     * @return The targest distance in inches
+     * Finds the horizontal distance of the robot in reference to the target.
+     * @return The targest distance in inches.
      */
     double GetHorizontalDistance();
 

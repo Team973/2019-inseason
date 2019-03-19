@@ -53,7 +53,7 @@ public:
         0.5; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
         15.0; /**< Cargo ship cargo preset. */
-    static constexpr double THIRD_PLATFORM = 26.0;  /**< Platform preset. */
+    static constexpr double THIRD_PLATFORM = 27.0;  /**< Platform preset. */
     static constexpr double SECOND_PLATFORM = 10.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
@@ -69,7 +69,10 @@ public:
      * Contruct an elevator.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
-     * @param elevatorMotor The elevator Talon.
+     * @param elevatorMotorA The elevator Talon.
+     * @param elevatorMotorB The elevator victor.
+     * @param operatorJoystick The codriver controller.
+     * @param elevatorHall The elevators hall.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
@@ -121,6 +124,10 @@ public:
      */
     bool GetElevatorHall();
 
+    /**
+     * Sets the elevators soft limit
+     * @param limit The soft limit to set
+     */
     void SetSoftLimit(double limit);
 
     /**
@@ -147,7 +154,9 @@ private:
     double m_joystickControl;
     bool m_prevHall;
     uint32_t m_zeroingTime;
+
     ElevatorState m_elevatorState;
+
     LogCell *m_positionCell;
     LogCell *m_currentMasterCell;
     LogCell *m_voltageMasterCell;
@@ -155,6 +164,7 @@ private:
     LogCell *m_voltageFollowerCell;
     LogCell *m_controlModeCell;
     LogCell *m_powerInputCell;
+
     DigitalInput *m_elevatorHall;
 };
 }

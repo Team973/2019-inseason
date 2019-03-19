@@ -202,11 +202,9 @@ void Test::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case Xbox::DPadUpVirtBtn:  // Changes game mode to Endgame
                 if (pressedP) {
-                    m_stinger->SetPower(-1.0);
                     m_elevator->SetPower(-0.5);
                 }
                 else {
-                    m_stinger->SetPower(0.0);
                     m_elevator->SetPower(0.0);
                 }
                 break;

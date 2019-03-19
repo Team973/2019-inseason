@@ -29,6 +29,8 @@ public:
 
     /**
      * Construct a Cheesy Drive controller.
+     * @param limelight The limelight to use.
+     * @param offset The vision offset.
      */
     AssistedCheesyDriveController(Limelight *limelight, VisionOffset offset);
     virtual ~AssistedCheesyDriveController();
@@ -74,10 +76,18 @@ public:
         printf("Turning off Cheesy Mode\n");
     }
 
+    /**
+     * Gets the left drive output
+     * @return The left output
+     */
     double GetLeftOutput() {
         return m_leftOutput;
     }
 
+    /**
+     * Gets the right drive output
+     * @return The right output
+     */
     double GetRightOutput() {
         return m_rightOutput;
     }

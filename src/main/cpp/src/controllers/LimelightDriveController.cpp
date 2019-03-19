@@ -5,7 +5,7 @@
 
 namespace frc973 {
 LimelightDriveController::LimelightDriveController(
-    Limelight *limelight, bool isCompSkew,
+    LogSpreadsheet *logger, Limelight *limelight, bool isCompSkew,
     ObservablePoofsJoystick *driverJoystick, HatchIntake *hatchIntake)
         : m_onTarget(false)
         , m_leftSetpoint(0.0)
@@ -17,8 +17,36 @@ LimelightDriveController::LimelightDriveController(
         , m_turn(0.0)
         , m_goalAngleComp(0.0)
         , m_limelight(limelight)
+        , m_targetLog(new LogCell("LL Target Valid?"))
+        , m_xOffsetLog(new LogCell("LL X Offset"))
+        , m_yOffsetLog(new LogCell("LL Y Offset"))
+        , m_targetAreaLog(new LogCell("LL Target Area"))
+        , m_targetSkewLog(new LogCell("LL Target Skew"))
+        , m_latencyLog(new LogCell("LL Latency"))
+        , m_pipelineLog(new LogCell("LL Pipeline"))
+        , m_horizontalLengthLog(new LogCell("LL Horizontal Length"))
+        , m_verticalLengthLog(new LogCell("LL Vertical Length"))
+        , m_horizontalDistanceLog(new LogCell("LL Horizontal Distance"))
+        , m_turnPidErrorLog(new LogCell("LL Turn Pid Error"))
+        , m_throttlePidErrorLog(new LogCell("LL Throttle Pid Error"))
+        , m_leftPidSetpointLog(new LogCell("LL Left Pid Setpoint"))
+        , m_rightPidSetpointLog(new LogCell("LL Right Turn Pid Setpoint"))
         , m_turnPid(new PID(0.015, 0.0, 0.002))
-        , m_throttlePid(new PID(0.023, 0.0, 0.003)) {
+        , m_throttlePid(new PID(0.022, 0.0, 0.003)) {
+    logger->RegisterCell(m_targetLog);
+    logger->RegisterCell(m_xOffsetLog);
+    logger->RegisterCell(m_yOffsetLog);
+    logger->RegisterCell(m_targetAreaLog);
+    logger->RegisterCell(m_targetSkewLog);
+    logger->RegisterCell(m_latencyLog);
+    logger->RegisterCell(m_pipelineLog);
+    logger->RegisterCell(m_horizontalLengthLog);
+    logger->RegisterCell(m_verticalLengthLog);
+    logger->RegisterCell(m_horizontalDistanceLog);
+    logger->RegisterCell(m_turnPidErrorLog);
+    logger->RegisterCell(m_throttlePidErrorLog);
+    logger->RegisterCell(m_leftPidSetpointLog);
+    logger->RegisterCell(m_rightPidSetpointLog);
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -46,11 +74,6 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
     double angle_comp = Util::bound(
         GOAL_ANGLE_COMP_KP * skew * dist_multiplier * skew_multiplier, -0.2,
         0.2);
-    DBStringPrintf(DB_LINE3, "s:%2.1lf m:%2.1lf ac:%2.1lf", skew,
-                   dist_multiplier, angle_comp);
-    DBStringPrintf(DB_LINE7, "t_dist: %2.2lf xo:%2.2lf",
-                   m_limelight->GetHorizontalDistance(),
-                   m_limelight->GetXOffset());
     return angle_comp;  // y = mx + b
                         // y = degree of compensation
                         // m = (1 - 0) / (max - min)
@@ -110,9 +133,9 @@ void LimelightDriveController::CalcDriveOutput(
                 -0.4, 0.4) *
             CalcTurnComp();
         double throttlePidOut =
-            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.72,
-                        0.72);  //(pow(cos((offset * Constants::PI / 180.0) *
-                                // PERIOD), 5))),
+            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.7,
+                        0.7);  //(pow(cos((offset * Constants::PI / 180.0) *
+                               // PERIOD), 5))),
         m_goalAngleComp = CalcScaleGoalAngleComp();
         double driverComp = 0.1 * m_driverJoystick->GetRawAxisWithDeadband(
                                       PoofsJoysticks::LeftYAxis);
@@ -121,19 +144,30 @@ void LimelightDriveController::CalcDriveOutput(
                 throttlePidOut + turnPidOut + m_goalAngleComp;  // - driverComp;
             m_rightSetpoint =
                 throttlePidOut - turnPidOut - m_goalAngleComp;  // - driverComp;
-            DBStringPrintf(DBStringPos::DB_LINE1,
-                           "th:%2.2lf tu:%2.2lf gc:%2.2lf", throttlePidOut,
-                           turnPidOut, m_goalAngleComp);
         }
         else {
             m_leftSetpoint = throttlePidOut + turnPidOut;
             m_rightSetpoint = throttlePidOut - turnPidOut;
-            DBStringPrintf(DBStringPos::DB_LINE1, "th:%2.2lf tu:%2.2lf",
-                           throttlePidOut, turnPidOut);
         }
     }
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
                    m_leftSetpoint, m_rightSetpoint);
+
+    m_targetLog->LogDouble(m_limelight->isTargetValid());
+    m_xOffsetLog->LogDouble(m_limelight->GetXOffset());
+    m_yOffsetLog->LogDouble(m_limelight->GetYOffset());
+    m_targetAreaLog->LogDouble(m_limelight->GetTargetArea());
+    m_targetSkewLog->LogDouble(m_limelight->GetTargetSkew());
+    m_latencyLog->LogDouble(m_limelight->GetLatency());
+    m_pipelineLog->LogDouble(m_limelight->GetPipeline());
+    m_horizontalLengthLog->LogDouble(m_limelight->GetHorizontalLength());
+    m_verticalLengthLog->LogDouble(m_limelight->GetVerticalLength());
+    m_horizontalDistanceLog->LogDouble(m_limelight->GetHorizontalDistance());
+    m_turnPidErrorLog->LogDouble(offset - HATCH_VISION_OFFSET);
+    m_throttlePidErrorLog->LogDouble(-distError);
+    m_leftPidSetpointLog->LogDouble(m_leftSetpoint);
+    m_rightPidSetpointLog->LogDouble(m_rightSetpoint);
+
     out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
                             m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
 
