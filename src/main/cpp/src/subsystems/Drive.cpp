@@ -71,9 +71,9 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               new ConstantArcSplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
         , m_limelightDriveWithoutSkew(new LimelightDriveController(
-              limelightHatch, false, m_driverJoystick, m_hatchIntake))
+              logger, limelightHatch, false, m_driverJoystick, m_hatchIntake))
         , m_limelightDriveWithSkew(new LimelightDriveController(
-              limelightHatch, true, m_driverJoystick, m_hatchIntake))
+              logger, limelightHatch, true, m_driverJoystick, m_hatchIntake))
         , m_assistedCheesyDriveHatchController(
               new AssistedCheesyDriveController(
                   m_limelightHatch,
