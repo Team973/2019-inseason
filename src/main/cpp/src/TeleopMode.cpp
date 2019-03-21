@@ -149,16 +149,6 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 3endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
-            if (m_driverJoystick->GetRawButton(PoofsJoysticks::LeftBumper)) {
-                m_elevator->SetPower(-Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
-            }
-            else if (m_driverJoystick->GetRawButton(
-                         PoofsJoysticks::LeftTrigger)) {
-                m_elevator->SetPower(-0.08);
-            }
-            else {
-                m_elevator->SetPower(0.0);
-            }
             break;
         case GameMode::SecondLevelEndGamePeriodic:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 2endgameperiodic");
@@ -243,9 +233,6 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::ThirdLevelEndGamePeriodic:
                             break;
                         case GameMode::SecondLevelEndGamePeriodic:
-                            m_elevator->SetPosition(23.0);
-                            m_cargoIntake->DeployPlatformWheel();
-                            m_gameMode = GameMode::SecondLevelStabilize;
                             break;
                     }
                 }
@@ -302,7 +289,6 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
-                            break;
                         case GameMode::SecondLevelEndGamePeriodic:
                             m_elevator->SetPower(
                                 -Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
@@ -327,6 +313,9 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::SecondLevelEndGamePeriodic:
+                            m_elevator->SetPosition(23.0);
+                            m_cargoIntake->DeployPlatformWheel();
+                            m_gameMode = GameMode::SecondLevelStabilize;
                             break;
                     }
                 }

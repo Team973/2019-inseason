@@ -95,7 +95,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
     m_leftDriveSparkB->SetInverted(false);
-    m_leftDriveSparkC->Follow(*m_leftDriveSparkA);
+    m_leftDriveSparkC->Follow(*m_leftDriveSparkB);
     m_leftDriveSparkC->SetInverted(false);
 
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
@@ -105,7 +105,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
     m_rightDriveSparkB->SetInverted(false);
-    m_rightDriveSparkC->Follow(*m_rightDriveSparkA);
+    m_rightDriveSparkC->Follow(*m_rightDriveSparkB);
     m_rightDriveSparkC->SetInverted(false);
 
     m_stingerDriveMotor->SetNeutralMode(Coast);
