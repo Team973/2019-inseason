@@ -31,8 +31,8 @@ LimelightDriveController::LimelightDriveController(
         , m_throttlePidErrorLog(new LogCell("LL Throttle Pid Error"))
         , m_leftPidSetpointLog(new LogCell("LL Left Pid Setpoint"))
         , m_rightPidSetpointLog(new LogCell("LL Right Turn Pid Setpoint"))
-        , m_turnPid(new PID(0.015, 0.0, 0.002))
-        , m_throttlePid(new PID(0.022, 0.0, 0.003)) {
+        , m_turnPid(new PID(0.015 / 1.5, 0.0, 0.002))
+        , m_throttlePid(new PID(0.02, 0.0, 0.003)) {
     logger->RegisterCell(m_targetLog);
     logger->RegisterCell(m_xOffsetLog);
     logger->RegisterCell(m_yOffsetLog);
@@ -127,14 +127,13 @@ void LimelightDriveController::CalcDriveOutput(
         m_rightSetpoint = 0.0;
     }
     else {
-        double turnPidOut =
-            Util::bound(
-                -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET),
-                -0.4, 0.4) *
-            CalcTurnComp();
+        double turnPidOut = Util::bound(
+            -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET), -0.4,
+            0.4);
+        //*CalcTurnComp();
         double throttlePidOut =
-            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.7,
-                        0.7);  //(pow(cos((offset * Constants::PI / 180.0) *
+            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.5,
+                        0.5);  //(pow(cos((offset * Constants::PI / 180.0) *
                                // PERIOD), 5))),
         m_goalAngleComp = CalcScaleGoalAngleComp();
         double driverComp = 0.1 * m_driverJoystick->GetRawAxisWithDeadband(

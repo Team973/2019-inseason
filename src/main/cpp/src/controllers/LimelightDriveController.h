@@ -70,10 +70,10 @@ public:
         1.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT_ROCKET =
         -7.0 + 6.0;  // in inches from target to robot bumper
-    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -8.0;
+    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -10.0;
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
-        -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
+        0.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 60.0;
@@ -84,7 +84,7 @@ public:
     static constexpr double THROTTLE_FEED_FORWARD = 0.05;
     static constexpr double THROTTLE_MIN = 0.2;
     static constexpr double THROTTLE_MAX = 0.5;
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.027;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.02;
 
 private:
     bool m_onTarget;

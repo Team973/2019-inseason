@@ -35,6 +35,14 @@ void Test::TestPeriodic() {
     /**
      * Driver Joystick
      */
+    m_limelightHatch->SetLightOn();
+    m_limelightHatch->SetCameraVisionCenter();
+    // m_limelightHatch->SetCameraVisionLeft();
+    // m_limelightHatch->SetCameraVisionRight();
+    DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
+                   m_limelightHatch->GetHorizontalDistance(),
+                   m_limelightHatch->GetXOffset(),
+                   m_limelightHatch->GetTargetSkew());
     double y =
         -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
     double x =

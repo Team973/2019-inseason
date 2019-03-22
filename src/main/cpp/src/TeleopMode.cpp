@@ -59,6 +59,11 @@ void Teleop::TeleopPeriodic() {
     bool softwareLowGear =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
 
+    DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
+                   m_limelightHatch->GetHorizontalDistance(),
+                   m_limelightHatch->GetXOffset(),
+                   m_limelightHatch->GetTargetSkew());
+
     switch (m_driveMode) {
         case DriveMode::Cheesy:
             DBStringPrintf(DB_LINE2, "Drive Mode: Cheesy Drive");

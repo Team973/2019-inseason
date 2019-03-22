@@ -164,12 +164,12 @@ void Robot::AllStateContinuous() {
     m_matchTime->LogDouble(Timer::GetMatchTime());
 
     /*m_limelightHatch->SetLightOn();
-    m_limelightatch->SetCameraVisionCenter();
+    m_limelightHatch->SetCameraVisionCenter();
     // m_limelightHatch->SetCameraVisionLeft();
     // m_limelightHatch->SetCameraVisionRight();
     DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf",
-                   m_limelight->GetHorizontalDistance(),
-                   m_limelight->GetXOffset());*/
+                   m_limelightHatch->GetHorizontalDistance(),
+                   m_limelightHatch->GetXOffset());*/
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
