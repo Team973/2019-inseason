@@ -901,6 +901,10 @@
               context.lineTo(x,y);
               break;
             }
+            case "scatter": {
+              context.moveTo(x,y);
+              break;
+            }
             case "bezier":
             default: {
               // Great explanation of Bezier curves: http://en.wikipedia.org/wiki/Bezier_curve#Quadratic_curves
