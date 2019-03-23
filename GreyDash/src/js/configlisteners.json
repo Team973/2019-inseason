@@ -102,74 +102,6 @@
             "keys": [
                 "/SmartDashboard/misc/pdp/batteryvoltage"
             ]
-        }
-    ],
-    "indicators": [
-        {
-            "settings": {
-                "fixedDecimals": true,
-                "show": true,
-                "default": false,
-                "debug": true
-            },
-            "title": "Left Drive Encoder",
-            "unit": "in",
-            "key": "/SmartDashboard/drive/encoders/leftencoder"
-        },
-        {
-            "settings": {
-                "fixedDecimals": true,
-                "show": true,
-                "default": false,
-                "debug": true
-            },
-            "title": "Right Drive Encoder",
-            "unit": "in",
-            "key": "/SmartDashboard/drive/encoders/rightencoder"
-        },
-        {
-            "settings": {
-                "fixedDecimals": true,
-                "show": true,
-                "default": false,
-                "debug": true
-            },
-            "title": "Elevator Encoder",
-            "unit": "in",
-            "key": "/SmartDashboard/elevator/encoders/encoder"
-        },
-        {
-            "settings": {
-                "fixedDecimals": true,
-                "show": true,
-                "default": false,
-                "debug": true
-            },
-            "title": "Left Drive Percentage",
-            "unit": "%",
-            "key": "/SmartDashboard/drive/percentages/leftpercent"
-        },
-        {
-            "settings": {
-                "fixedDecimals": true,
-                "show": true,
-                "default": false,
-                "debug": true
-            },
-            "title": "Right Drive Percentage",
-            "unit": "%",
-            "key": "/SmartDashboard/drive/percentages/rightpercent"
-        },
-        {
-            "settings": {
-                "fixedDecimals": true,
-                "show": true,
-                "default": true,
-                "debug": false
-            },
-            "title": "Battery Voltage",
-            "unit": "v",
-            "key": "/SmartDashboard/misc/pdp/batteryvoltage"
         },
         {
             "settings": {
@@ -248,6 +180,74 @@
             "keys": [
                 "/SmartDashboard/limelight/skewcont"
             ]
+        }
+    ],
+    "indicators": [
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Left Drive Encoder",
+            "unit": "in",
+            "key": "/SmartDashboard/drive/encoders/leftencoder"
         },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Right Drive Encoder",
+            "unit": "in",
+            "key": "/SmartDashboard/drive/encoders/rightencoder"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Elevator Encoder",
+            "unit": "in",
+            "key": "/SmartDashboard/elevator/encoders/encoder"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Left Drive Percentage",
+            "unit": "%",
+            "key": "/SmartDashboard/drive/percentages/leftpercent"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": false,
+                "debug": true
+            },
+            "title": "Right Drive Percentage",
+            "unit": "%",
+            "key": "/SmartDashboard/drive/percentages/rightpercent"
+        },
+        {
+            "settings": {
+                "fixedDecimals": true,
+                "show": true,
+                "default": true,
+                "debug": false
+            },
+            "title": "Battery Voltage",
+            "unit": "v",
+            "key": "/SmartDashboard/misc/pdp/batteryvoltage"
+        }
     ]
 }
