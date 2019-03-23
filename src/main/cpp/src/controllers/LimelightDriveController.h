@@ -99,20 +99,6 @@ private:
     double m_goalAngleComp;
 
     Limelight *m_limelight;
-    LogCell *m_targetLog;
-    LogCell *m_xOffsetLog;
-    LogCell *m_yOffsetLog;
-    LogCell *m_targetAreaLog;
-    LogCell *m_targetSkewLog;
-    LogCell *m_latencyLog;
-    LogCell *m_pipelineLog;
-    LogCell *m_horizontalLengthLog;
-    LogCell *m_verticalLengthLog;
-    LogCell *m_horizontalDistanceLog;
-    LogCell *m_turnPidErrorLog;
-    LogCell *m_throttlePidErrorLog;
-    LogCell *m_leftPidSetpointLog;
-    LogCell *m_rightPidSetpointLog;
 
     PID *m_turnPid;
     PID *m_throttlePid;

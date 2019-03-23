@@ -17,36 +17,8 @@ LimelightDriveController::LimelightDriveController(
         , m_turn(0.0)
         , m_goalAngleComp(0.0)
         , m_limelight(limelight)
-        , m_targetLog(new LogCell("LL Target Valid?"))
-        , m_xOffsetLog(new LogCell("LL X Offset"))
-        , m_yOffsetLog(new LogCell("LL Y Offset"))
-        , m_targetAreaLog(new LogCell("LL Target Area"))
-        , m_targetSkewLog(new LogCell("LL Target Skew"))
-        , m_latencyLog(new LogCell("LL Latency"))
-        , m_pipelineLog(new LogCell("LL Pipeline"))
-        , m_horizontalLengthLog(new LogCell("LL Horizontal Length"))
-        , m_verticalLengthLog(new LogCell("LL Vertical Length"))
-        , m_horizontalDistanceLog(new LogCell("LL Horizontal Distance"))
-        , m_turnPidErrorLog(new LogCell("LL Turn Pid Error"))
-        , m_throttlePidErrorLog(new LogCell("LL Throttle Pid Error"))
-        , m_leftPidSetpointLog(new LogCell("LL Left Pid Setpoint"))
-        , m_rightPidSetpointLog(new LogCell("LL Right Turn Pid Setpoint"))
         , m_turnPid(new PID(0.015 / 1.5, 0.0, 0.002))
         , m_throttlePid(new PID(0.02, 0.0, 0.003)) {
-    logger->RegisterCell(m_targetLog);
-    logger->RegisterCell(m_xOffsetLog);
-    logger->RegisterCell(m_yOffsetLog);
-    logger->RegisterCell(m_targetAreaLog);
-    logger->RegisterCell(m_targetSkewLog);
-    logger->RegisterCell(m_latencyLog);
-    logger->RegisterCell(m_pipelineLog);
-    logger->RegisterCell(m_horizontalLengthLog);
-    logger->RegisterCell(m_verticalLengthLog);
-    logger->RegisterCell(m_horizontalDistanceLog);
-    logger->RegisterCell(m_turnPidErrorLog);
-    logger->RegisterCell(m_throttlePidErrorLog);
-    logger->RegisterCell(m_leftPidSetpointLog);
-    logger->RegisterCell(m_rightPidSetpointLog);
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -138,10 +110,13 @@ void LimelightDriveController::CalcDriveOutput(
         m_goalAngleComp = CalcScaleGoalAngleComp();
         double driverComp = 0.1 * m_driverJoystick->GetRawAxisWithDeadband(
                                       PoofsJoysticks::LeftYAxis);
+        /*SmartDashboard::PutNumber("limelight/throttle", throttlePidOut);
+        SmartDashboard::PutNumber("limelight/turn", turnPidOut);
+        SmartDashboard::PutNumber("limelight/skewcont", m_goalAngleComp);*/
         if (m_isCompensatingSkew) {
-            m_leftSetpoint =
+            m_leftSetpoint =  // turnPidOut + m_goalAngleComp;
                 throttlePidOut + turnPidOut + m_goalAngleComp;  // - driverComp;
-            m_rightSetpoint =
+            m_rightSetpoint =  //-turnPidOut - m_goalAngleComp;
                 throttlePidOut - turnPidOut - m_goalAngleComp;  // - driverComp;
         }
         else {
@@ -152,20 +127,9 @@ void LimelightDriveController::CalcDriveOutput(
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
                    m_leftSetpoint, m_rightSetpoint);
 
-    m_targetLog->LogDouble(m_limelight->isTargetValid());
-    m_xOffsetLog->LogDouble(m_limelight->GetXOffset());
-    m_yOffsetLog->LogDouble(m_limelight->GetYOffset());
-    m_targetAreaLog->LogDouble(m_limelight->GetTargetArea());
-    m_targetSkewLog->LogDouble(m_limelight->GetTargetSkew());
-    m_latencyLog->LogDouble(m_limelight->GetLatency());
-    m_pipelineLog->LogDouble(m_limelight->GetPipeline());
-    m_horizontalLengthLog->LogDouble(m_limelight->GetHorizontalLength());
-    m_verticalLengthLog->LogDouble(m_limelight->GetVerticalLength());
-    m_horizontalDistanceLog->LogDouble(m_limelight->GetHorizontalDistance());
-    m_turnPidErrorLog->LogDouble(offset - HATCH_VISION_OFFSET);
-    m_throttlePidErrorLog->LogDouble(-distError);
-    m_leftPidSetpointLog->LogDouble(m_leftSetpoint);
-    m_rightPidSetpointLog->LogDouble(m_rightSetpoint);
+    /*SmartDashboard::PutNumber("limelight/xoff", offset);
+    SmartDashboard::PutNumber("limelight/distance", distance);
+    SmartDashboard::PutNumber("limelight/skew", m_limelight->GetTargetSkew());*/
 
     out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
                             m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);

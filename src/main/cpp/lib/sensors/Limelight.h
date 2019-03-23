@@ -14,6 +14,7 @@
 #include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableEntry.h"
 #include "src/info/RobotInfo.h"
+#include "lib/filters/MovingAverageFilter.h"
 
 using namespace frc;
 
@@ -248,6 +249,8 @@ private:
     StreamMode m_streamMode;      // enum for stream state
     SnapshotMode m_snapshotMode;  // enum for snapshot state
     PipelineMode m_pipelineMode;  // enum for pipeline state
+
+    MovingAverageFilter *m_lowPassSkewFilter;
 
     bool m_targetStatus;  // target is seen or not [0,1]
 

@@ -312,6 +312,18 @@ private:
     LogCell *m_leftVoltageLog;
     LogCell *m_rightVoltageLog;
     LogCell *m_stingerVoltageLog;
+    LogCell *m_driveControllerLog;
+
+    LogCell *m_targetLog;
+    LogCell *m_xOffsetLog;
+    LogCell *m_yOffsetLog;
+    LogCell *m_targetAreaLog;
+    LogCell *m_targetSkewLog;
+    LogCell *m_latencyLog;
+    LogCell *m_pipelineLog;
+    LogCell *m_horizontalLengthLog;
+    LogCell *m_verticalLengthLog;
+    LogCell *m_horizontalDistanceLog;
 
     double m_leftPosZero;
     double m_rightPosZero;

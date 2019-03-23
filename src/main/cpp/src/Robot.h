@@ -124,6 +124,7 @@ private:
     LogCell *m_matchIdentifier;
     LogCell *m_batteryVoltage;
     LogCell *m_matchTime;
+    LogCell *m_dateTime;
 
     CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;

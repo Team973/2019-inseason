@@ -1,5 +1,6 @@
 #include "frc/WPILib.h"
 #include <iostream>
+#include <time.h>
 #include "src/info/RobotInfo.h"
 #include "src/DisabledMode.h"
 #include "src/AutonomousMode.h"
@@ -56,6 +57,7 @@ Robot::Robot()
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
         , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
         , m_matchTime(new LogCell("MatchTime", 32, true))
+        , m_dateTime(new LogCell("Date and Time", 32, true))
         , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
                                         m_hatchPuncher, m_limelightHatch))
         , m_drive(new Drive(this, m_logger, m_leftDriveSparkA,
@@ -100,6 +102,7 @@ void Robot::Initialize() {
     m_logger->RegisterCell(m_matchIdentifier);
     m_logger->RegisterCell(m_batteryVoltage);
     m_logger->RegisterCell(m_matchTime);
+    m_logger->RegisterCell(m_dateTime);
 
     m_cameraServer->AddCamera(m_hatchCamera);
     m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
@@ -155,6 +158,13 @@ void Robot::TestStop() {
 }
 
 void Robot::AllStateContinuous() {
+    time_t t;
+    struct tm *tmp;
+    char TIME_BUFFER[50];
+    time(&t);
+    tmp = localtime(&t);
+    strftime(TIME_BUFFER, sizeof(TIME_BUFFER), "%g%m%d %H:%M", tmp);
+
     m_matchIdentifier->LogPrintf(
         "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
         MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
@@ -162,6 +172,7 @@ void Robot::AllStateContinuous() {
         DriverStation::GetInstance().GetReplayNumber());
     m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
     m_matchTime->LogDouble(Timer::GetMatchTime());
+    m_dateTime->LogPrintf("%s", TIME_BUFFER);
 
     /*m_limelightHatch->SetLightOn();
     m_limelightHatch->SetCameraVisionCenter();

@@ -44,6 +44,7 @@ void Teleop::TeleopInit() {
     m_cargoIntake->EnableCoastMode();
     m_stinger->RetractSwitchBlade();
     m_stinger->SetKickUpDisable();
+    m_driveMode = DriveMode::Cheesy;
 }
 
 void Teleop::TeleopPeriodic() {
@@ -168,13 +169,13 @@ void Teleop::TeleopPeriodic() {
             break;
         case GameMode::RaiseIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
-            m_elevator->SetPosition(Elevator::THIRD_PLATFORM);
+            m_elevator->SetPosition(Elevator::THIRD_PLATFORM - 5.0);
             m_cargoIntake->RetractPlatformWheel();
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
-            if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 2.0) {
+            if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 7.0) {
                 m_cargoIntake->RetractWrist();
                 m_elevator->SetPosition(0.4);
                 m_gameMode = GameMode::ThirdLevelEndGamePeriodic;
@@ -236,6 +237,8 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
+                            m_elevator->SetPosition(12.0);
+                            m_cargoIntake->RetractPlatformWheel();
                             break;
                         case GameMode::SecondLevelEndGamePeriodic:
                             break;
@@ -417,6 +420,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
                             m_stinger->RetractSwitchBlade();
+                            m_stinger->RetractGateLatch();
                             break;
                     }
                 }
@@ -469,13 +473,14 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
                             m_stinger->DeploySwitchBlade();
+                            m_stinger->EngageGateLatch();
                             break;
                     }
                 }
                 else {
                     switch (m_gameMode) {
                         case GameMode::CargoPeriodic:
-                            m_cargoIntake->StopIntake();
+                            m_cargoIntake->HoldCargo();
                             break;
                     }
                 }

@@ -49,6 +49,9 @@ public:
      */
     void RetractSwitchBlade();
 
+    void EngageGateLatch();
+    void RetractGateLatch();
+
     /**
      * The periodic loooping task for the stinger elevator.
      * @param mode The current robot mode.
@@ -62,6 +65,7 @@ private:
 
     DoubleSolenoid *m_kickOffPneumatic;
     DoubleSolenoid *m_sneakyClimb;
+    Solenoid *m_gateLatch;
 
     LogCell *m_current;
 };
