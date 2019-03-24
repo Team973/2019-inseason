@@ -110,9 +110,9 @@ void LimelightDriveController::CalcDriveOutput(
         m_goalAngleComp = CalcScaleGoalAngleComp();
         double driverComp = 0.1 * m_driverJoystick->GetRawAxisWithDeadband(
                                       PoofsJoysticks::LeftYAxis);
-        /*SmartDashboard::PutNumber("limelight/throttle", throttlePidOut);
-        SmartDashboard::PutNumber("limelight/turn", turnPidOut);
-        SmartDashboard::PutNumber("limelight/skewcont", m_goalAngleComp);*/
+        // SmartDashboard::PutNumber("limelight/throttle", throttlePidOut);
+        // SmartDashboard::PutNumber("limelight/turn", turnPidOut);
+        // SmartDashboard::PutNumber("limelight/skewcont", m_goalAngleComp);
         if (m_isCompensatingSkew) {
             m_leftSetpoint =  // turnPidOut + m_goalAngleComp;
                 throttlePidOut + turnPidOut + m_goalAngleComp;  // - driverComp;
@@ -127,19 +127,23 @@ void LimelightDriveController::CalcDriveOutput(
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
                    m_leftSetpoint, m_rightSetpoint);
 
-    /*SmartDashboard::PutNumber("limelight/xoff", offset);
-    SmartDashboard::PutNumber("limelight/distance", distance);
-    SmartDashboard::PutNumber("limelight/skew", m_limelight->GetTargetSkew());*/
+    // SmartDashboard::PutNumber("/SmartDashboard/limelight/xoff", offset);
+    // SmartDashboard::PutNumber("/SmartDashboard/limelight/distance",
+    // distance); SmartDashboard::PutNumber("/SmartDashboard/limelight/skew",
+                             // m_limelight->GetTargetSkew());
 
-    out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
-                            m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
+                              out->SetDriveOutputVBus(
+                                  m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
+                                  m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
 
-    if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 5.0) &&
-        (fabs(distError) < 3.0 && fabs(state->GetRate() < 3.0))) {
-        m_onTarget = true;
-    }
-    else {
-        m_onTarget = false;
-    }
+                              if ((fabs(offset) < 5.0 &&
+                                   fabs(state->GetAngularRate()) < 5.0) &&
+                                  (fabs(distError) < 3.0 &&
+                                   fabs(state->GetRate() < 3.0))) {
+                                  m_onTarget = true;
+                              }
+                              else {
+                                  m_onTarget = false;
+                              }
 }
 }
