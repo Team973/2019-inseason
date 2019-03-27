@@ -44,6 +44,7 @@ void Teleop::TeleopInit() {
     m_cargoIntake->EnableCoastMode();
     m_stinger->RetractSwitchBlade();
     m_stinger->SetKickUpDisable();
+    m_driveMode = DriveMode::Cheesy;
 }
 
 void Teleop::TeleopPeriodic() {
@@ -58,6 +59,11 @@ void Teleop::TeleopPeriodic() {
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
     bool softwareLowGear =
         m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+
+    DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
+                   m_limelightHatch->GetHorizontalDistance(),
+                   m_limelightHatch->GetXOffset(),
+                   m_limelightHatch->GetTargetSkew());
 
     switch (m_driveMode) {
         case DriveMode::Cheesy:
@@ -149,16 +155,6 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 3endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
-            if (m_driverJoystick->GetRawButton(PoofsJoysticks::LeftBumper)) {
-                m_elevator->SetPower(-Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
-            }
-            else if (m_driverJoystick->GetRawButton(
-                         PoofsJoysticks::LeftTrigger)) {
-                m_elevator->SetPower(-0.08);
-            }
-            else {
-                m_elevator->SetPower(0.0);
-            }
             break;
         case GameMode::SecondLevelEndGamePeriodic:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 2endgameperiodic");
@@ -173,13 +169,14 @@ void Teleop::TeleopPeriodic() {
             break;
         case GameMode::RaiseIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
-            m_elevator->SetPosition(Elevator::THIRD_PLATFORM);
+            m_elevator->SetPosition(Elevator::THIRD_PLATFORM_RESET);
             m_cargoIntake->RetractPlatformWheel();
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
-            if (m_elevator->GetPosition() > Elevator::THIRD_PLATFORM - 2.0) {
+            if (m_elevator->GetPosition() >
+                Elevator::THIRD_PLATFORM_RESET - 2.0) {
                 m_cargoIntake->RetractWrist();
                 m_elevator->SetPosition(0.4);
                 m_gameMode = GameMode::ThirdLevelEndGamePeriodic;
@@ -241,11 +238,10 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
+                            m_elevator->SetPosition(12.0);
+                            m_cargoIntake->RetractPlatformWheel();
                             break;
                         case GameMode::SecondLevelEndGamePeriodic:
-                            m_elevator->SetPosition(23.0);
-                            m_cargoIntake->DeployPlatformWheel();
-                            m_gameMode = GameMode::SecondLevelStabilize;
                             break;
                     }
                 }
@@ -257,10 +253,8 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
+                            break;
                         case GameMode::SecondLevelEndGamePeriodic:
-                            if (m_cargoIntake->GetWristState() ==
-                                CargoIntake::CargoWristState::extended) {
-                            }
                             break;
                     }
                 }
@@ -274,7 +268,10 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             m_cargoIntake->Exhaust();
                             break;
-                        case GameMode::ThirdLevelEndGamePeriodic:
+                        case GameMode::
+                            ThirdLevelEndGamePeriodic:  // we want the same
+                                                        // action for both
+                                                        // buttons
                         case GameMode::SecondLevelEndGamePeriodic:
                             m_gameMode = GameMode::RaiseIntake;
                             break;
@@ -289,6 +286,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                             m_cargoIntake->StopIntake();
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
+                        case GameMode::SecondLevelEndGamePeriodic:
                             break;
                     }
                 }
@@ -301,8 +299,9 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                             break;
                         case GameMode::CargoPeriodic:
                             break;
-                        case GameMode::ThirdLevelEndGamePeriodic:
-                            break;
+                        case GameMode::
+                            ThirdLevelEndGamePeriodic:  // we want the same for
+                                                        // both buttons
                         case GameMode::SecondLevelEndGamePeriodic:
                             m_elevator->SetPower(
                                 -Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
@@ -327,6 +326,9 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::SecondLevelEndGamePeriodic:
+                            m_elevator->SetPosition(23.0);
+                            m_cargoIntake->DeployPlatformWheel();
+                            m_gameMode = GameMode::SecondLevelStabilize;
                             break;
                     }
                 }
@@ -423,6 +425,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
                             m_stinger->RetractSwitchBlade();
+                            m_stinger->RetractGateLatch();
                             break;
                     }
                 }
@@ -475,13 +478,14 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
                             m_stinger->DeploySwitchBlade();
+                            m_stinger->EngageGateLatch();
                             break;
                     }
                 }
                 else {
                     switch (m_gameMode) {
                         case GameMode::CargoPeriodic:
-                            m_cargoIntake->StopIntake();
+                            m_cargoIntake->HoldCargo();
                             break;
                     }
                 }

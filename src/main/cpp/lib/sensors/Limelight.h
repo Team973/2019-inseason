@@ -14,6 +14,7 @@
 #include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableEntry.h"
 #include "src/info/RobotInfo.h"
+#include "lib/filters/MovingAverageFilter.h"
 
 using namespace frc;
 
@@ -235,6 +236,7 @@ public:
     static constexpr double CAMERA_HEIGHT = 47.0;  // in inches from ground
     static constexpr double CAMERA_ANGLE =
         -27.3 * (Constants::PI / 180.0);  // in degrees wrt ground
+    //-29.25 for comp; -27.3 for pbot
     static constexpr double CAMERA_BUMPER_OFFSET = 19.25;
     static constexpr double DISTANCE_MULTIPLIER = 0.83;
 
@@ -248,6 +250,8 @@ private:
     StreamMode m_streamMode;      // enum for stream state
     SnapshotMode m_snapshotMode;  // enum for snapshot state
     PipelineMode m_pipelineMode;  // enum for pipeline state
+
+    MovingAverageFilter *m_lowPassSkewFilter;
 
     bool m_targetStatus;  // target is seen or not [0,1]
 

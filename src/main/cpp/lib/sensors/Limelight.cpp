@@ -12,6 +12,7 @@ Limelight::Limelight(const char *name, bool inverted)
         , m_streamMode(StreamMode::standard)
         , m_snapshotMode(SnapshotMode::stop)
         , m_pipelineMode(PipelineMode::drive)
+        , m_lowPassSkewFilter(new MovingAverageFilter(0.75))
         , m_targetStatus(false)
         , m_horizontalOffset(0.0)
         , m_verticalOffset(0.0)
@@ -173,10 +174,10 @@ double Limelight::GetTargetArea() {
 double Limelight::GetTargetSkew() {
     double skew = m_limelight->GetNumber("ts", 0.0);
     if (skew < -45.0) {
-        return skew + 90.0;
+        return m_lowPassSkewFilter->Update(skew + 90.0);
     }
     else {
-        return skew;
+        return m_lowPassSkewFilter->Update(skew);
     }
 }
 

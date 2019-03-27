@@ -53,9 +53,20 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_rightDriveOutputLog(new LogCell("Right motor signal (pow or vel)"))
         , m_stingerDriveOutputLog(
               new LogCell("Stinger motor signal (pow or vel)"))
+        , m_driveControllerLog(new LogCell("Drive Controller Active"))
         , m_leftVoltageLog(new LogCell("Left motor voltage"))
         , m_rightVoltageLog(new LogCell("Right motor voltage"))
         , m_stingerVoltageLog(new LogCell("Stinger motor voltage"))
+        , m_targetLog(new LogCell("LL Target Valid?"))
+        , m_xOffsetLog(new LogCell("LL X Offset"))
+        , m_yOffsetLog(new LogCell("LL Y Offset"))
+        , m_targetAreaLog(new LogCell("LL Target Area"))
+        , m_targetSkewLog(new LogCell("LL Target Skew"))
+        , m_latencyLog(new LogCell("LL Latency"))
+        , m_pipelineLog(new LogCell("LL Pipeline"))
+        , m_horizontalLengthLog(new LogCell("LL Horizontal Length"))
+        , m_verticalLengthLog(new LogCell("LL Vertical Length"))
+        , m_horizontalDistanceLog(new LogCell("LL Horizontal Distance"))
         , m_leftPosZero(0.0)
         , m_rightPosZero(0.0)
         , m_gyro(gyro)
@@ -95,7 +106,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
     m_leftDriveSparkB->SetInverted(false);
-    m_leftDriveSparkC->Follow(*m_leftDriveSparkA);
+    m_leftDriveSparkC->Follow(*m_leftDriveSparkB);
     m_leftDriveSparkC->SetInverted(false);
 
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
@@ -105,7 +116,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
     m_rightDriveSparkB->SetInverted(false);
-    m_rightDriveSparkC->Follow(*m_rightDriveSparkA);
+    m_rightDriveSparkC->Follow(*m_rightDriveSparkB);
     m_rightDriveSparkC->SetInverted(false);
 
     m_stingerDriveMotor->SetNeutralMode(Coast);
@@ -123,6 +134,18 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     logger->RegisterCell(m_rightDistLog);
     logger->RegisterCell(m_rightDistRateLog);
     logger->RegisterCell(m_currentLog);
+    logger->RegisterCell(m_driveControllerLog);
+
+    logger->RegisterCell(m_targetLog);
+    logger->RegisterCell(m_xOffsetLog);
+    logger->RegisterCell(m_yOffsetLog);
+    logger->RegisterCell(m_targetAreaLog);
+    logger->RegisterCell(m_targetSkewLog);
+    logger->RegisterCell(m_latencyLog);
+    logger->RegisterCell(m_pipelineLog);
+    logger->RegisterCell(m_horizontalLengthLog);
+    logger->RegisterCell(m_verticalLengthLog);
+    logger->RegisterCell(m_horizontalDistanceLog);
 }
 
 Drive::~Drive() {
@@ -133,11 +156,13 @@ void Drive::CheesyDrive(double throttle, double turn, bool isQuickTurn,
     this->SetDriveController(m_cheesyDriveController);
     m_cheesyDriveController->SetJoysticks(throttle, turn, isQuickTurn,
                                           isHighGear);
+    m_driveControllerLog->LogPrintf("Cheesy Drive");
 }
 
 void Drive::OpenloopArcadeDrive(double throttle, double turn) {
     this->SetDriveController(m_openloopArcadeDriveController);
     m_openloopArcadeDriveController->SetJoysticks(throttle, turn);
+    m_driveControllerLog->LogPrintf("OpenLoopArcade Drive");
 }
 
 PIDDriveController *Drive::PIDDrive(double dist, double turn,
@@ -145,6 +170,8 @@ PIDDriveController *Drive::PIDDrive(double dist, double turn,
     this->SetDriveController(m_pidDriveController);
     m_pidDriveController->SetCap(powerCap);
     m_pidDriveController->SetTarget(dist, turn, relativity, this);
+    m_driveControllerLog->LogPrintf("PID Drive");
+
     return m_pidDriveController;
 }
 
@@ -153,6 +180,8 @@ PIDDriveController *Drive::PIDTurn(double turn, RelativeTo relativity,
     this->SetDriveController(m_pidDriveController);
     m_pidDriveController->SetCap(powerCap);
     m_pidDriveController->SetTarget(0.0, turn, relativity, this);
+    m_driveControllerLog->LogPrintf("PID Turn Drive");
+
     return m_pidDriveController;
 }
 
@@ -164,6 +193,8 @@ SplineDriveController *Drive::SplineDrive(
     trajectories::TrajectoryDescription *trajectory, RelativeTo relativity) {
     this->SetDriveController(m_splineDriveController);
     m_splineDriveController->SetTarget(trajectory, relativity);
+    m_driveControllerLog->LogPrintf("Spline Drive");
+
     return m_splineDriveController;
 }
 
@@ -171,6 +202,8 @@ ConstantArcSplineDriveController *Drive::ConstantArcSplineDrive(
     RelativeTo relativity, double distance, double angle) {
     this->SetDriveController(m_constantArcSplineDriveController);
     m_constantArcSplineDriveController->SetTarget(relativity, distance, angle);
+    m_driveControllerLog->LogPrintf("Constant Arc Spline Drive");
+
     return m_constantArcSplineDriveController;
 }
 
@@ -185,16 +218,19 @@ void Drive::SetStingerOutput(double power) {
 void Drive::VelocityArcadeDrive(double throttle, double turn) {
     this->SetDriveController(m_velocityArcadeDriveController);
     m_velocityArcadeDriveController->SetJoysticks(throttle, turn);
+    m_driveControllerLog->LogPrintf("Velocity Drive");
 }
 
 LimelightDriveController *Drive::LimelightDriveWithoutSkew() {
     this->SetDriveController(m_limelightDriveWithoutSkew);
+    m_driveControllerLog->LogPrintf("Limelight No Skew Drive");
 
     return m_limelightDriveWithoutSkew;
 }
 
 LimelightDriveController *Drive::LimelightDriveWithSkew() {
     this->SetDriveController(m_limelightDriveWithSkew);
+    m_driveControllerLog->LogPrintf("Limelight With Skew Drive");
 
     return m_limelightDriveWithSkew;
 }
@@ -204,6 +240,8 @@ AssistedCheesyDriveController *Drive::AssistedCheesyHatchDrive(
     this->SetDriveController(m_assistedCheesyDriveHatchController);
     m_assistedCheesyDriveHatchController->SetJoysticks(throttle, turn,
                                                        isQuickTurn, isHighGear);
+    m_driveControllerLog->LogPrintf("Assisted Cheesy Drive");
+
     return m_assistedCheesyDriveHatchController;
 }
 
@@ -319,6 +357,18 @@ void Drive::DisableDriveCurrentLimit() {
 
 void Drive::TaskPeriodic(RobotMode mode) {
     m_angle = m_gyro->GetAngle();
+
+    m_targetLog->LogDouble(m_limelightHatch->isTargetValid());
+    m_xOffsetLog->LogDouble(m_limelightHatch->GetXOffset());
+    m_yOffsetLog->LogDouble(m_limelightHatch->GetYOffset());
+    m_targetAreaLog->LogDouble(m_limelightHatch->GetTargetArea());
+    m_targetSkewLog->LogDouble(m_limelightHatch->GetTargetSkew());
+    m_latencyLog->LogDouble(m_limelightHatch->GetLatency());
+    m_pipelineLog->LogDouble(m_limelightHatch->GetPipeline());
+    m_horizontalLengthLog->LogDouble(m_limelightHatch->GetHorizontalLength());
+    m_verticalLengthLog->LogDouble(m_limelightHatch->GetVerticalLength());
+    m_horizontalDistanceLog->LogDouble(
+        m_limelightHatch->GetHorizontalDistance());
 
     // Austin ADXRS450_Gyro config
     m_angleRate = -1.0 * ((GetRightRate() - GetLeftRate()) / 2.0) /

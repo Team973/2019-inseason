@@ -61,11 +61,9 @@ static const int RIGHT_HATCH_SENSOR_ID = 3;
 /**
  * Stinger Subsystem
  */
-static const int STINGER_ELEVATOR_CAN_ID = 12;
 static const int STINGER_DRIVE_CAN_ID = 13;
 // note: stinger drive motor is in drive subsystem
-static const int STINGER_LOWER_HALL_DIN_ID = 8;
-static const int STINGER_UPPER_HALL_DIN_ID = 9;
+static const int STINGER_GATE_LATCH_PCM_ID = 3;
 static const int KICKOFF_FORWARD = 7;
 static const int KICKOFF_REVERSE = 4;
 static const int SNEAKY_CLIMB_FORWARD = 5;
