@@ -109,7 +109,8 @@
                 "minValue": -30,
                 "maxValue": 30,
                 "show": true,
-                "interpolation": "scatter"
+                "interpolation": "scatter",
+                "millisPerPixel": 20
             },
             "title": "X-Offset",
             "keys": [

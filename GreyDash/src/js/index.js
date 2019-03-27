@@ -101,6 +101,11 @@ function render () {
             console.warn(`Setting show for '${config.charts[i].title}' to true`)
             config.charts[i].settings.show = true
         }
+
+        if (config.charts[i].settings.millisPerPixel === undefined) {
+            console.warn(`Setting millisPerPixel for ${config.charts[i].title} to 20`)
+            config.charts[i].settings.millisPerPixel = 20
+        }
     }
 
     // Set Indicator Defaults
@@ -148,7 +153,8 @@ function render () {
                 interpolation: config.charts[i].settings.interpolation,
                 tooltip: config.charts[i].settings.tooltip,
                 minValue: config.charts[i].settings.minValue,
-                maxValue: config.charts[i].settings.maxValue
+                maxValue: config.charts[i].settings.maxValue,
+                millisPerPixel: config.charts[i].settings.millisPerPixel
             })
 
             config.charts[i].lines = {}

@@ -18,5 +18,6 @@
   "files.trimFinalNewlines": true,
   "editor.formatOnSave": true,
   "C_Cpp.configurationWarnings": "Disabled",
-  "C_Cpp.errorSquiggles": "Disabled"
+  "C_Cpp.errorSquiggles": "Disabled",
+  "python.linting.pylintEnabled": true
 }
