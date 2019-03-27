@@ -77,6 +77,8 @@ public:
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 60.0;
+    static constexpr double SKEW_COMP_MULTIPLIER_MIN = 17.0;
+    static constexpr double SKEW_COMP_MULTIPLIER_MAX = 24.0;
     static constexpr double TURN_COMP_DISTANCE_MIN = 6.0;
     static constexpr double TURN_COMP_DISTANCE_MAX = 24.0;
     static constexpr double THROTTLE_CAP_DISTANCE_MIN = 24.0;
@@ -85,6 +87,12 @@ public:
     static constexpr double THROTTLE_MIN = 0.2;
     static constexpr double THROTTLE_MAX = 0.5;
     static constexpr double GOAL_ANGLE_COMP_KP = 0.02;
+    static constexpr double TURN_PID_KP = 0.015 / 1.5;
+    static constexpr double TURN_PID_KI = 0.0;
+    static constexpr double TURN_PID_KD = 0.002;
+    static constexpr double THROTTLE_PID_KP = 0.02;
+    static constexpr double THROTTLE_PID_KP = 0.0;
+    static constexpr double THROTTLE_PID_KP = 0.003;
 
 private:
     bool m_onTarget;

@@ -17,8 +17,9 @@ LimelightDriveController::LimelightDriveController(
         , m_turn(0.0)
         , m_goalAngleComp(0.0)
         , m_limelight(limelight)
-        , m_turnPid(new PID(0.015 / 1.5, 0.0, 0.002))
-        , m_throttlePid(new PID(0.02, 0.0, 0.003)) {
+        , m_turnPid(new PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD))
+        , m_throttlePid(
+              new PID(THROTTLE_PID_KP, THROTTLE_PID_KI, THROTTLE_PID_KD)) {
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -39,10 +40,11 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                           m_limelight->GetHorizontalDistance()),
         0.0, 1.0);
     double skew = m_limelight->GetTargetSkew();
-    double skew_multiplier =
-        Util::bound(Util::interpolate(Util::Point(17, 1), Util::Point(24, 0),
-                                      fabs(m_limelight->GetXOffset())),
-                    0.0, 1.0);
+    double skew_multiplier = Util::bound(
+        Util::interpolate(Util::Point(SKEW_COMP_MULTIPLIER_DISTANCE_MIN, 1),
+                          Util::Point(SKEW_COMP_MULTIPLIER_DISTANCE_MAX, 0),
+                          fabs(m_limelight->GetXOffset())),
+        0.0, 1.0);
     double angle_comp = Util::bound(
         GOAL_ANGLE_COMP_KP * skew * dist_multiplier * skew_multiplier, -0.2,
         0.2);
@@ -103,10 +105,8 @@ void LimelightDriveController::CalcDriveOutput(
             -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET), -0.4,
             0.4);
         //*CalcTurnComp();
-        double throttlePidOut =
-            Util::bound(m_throttlePid->CalcOutputWithError(-distError), -0.5,
-                        0.5);  //(pow(cos((offset * Constants::PI / 180.0) *
-                               // PERIOD), 5))),
+        double throttlePidOut = Util::bound(
+            m_throttlePid->CalcOutputWithError(-distError), -0.5, 0.5);
         m_goalAngleComp = CalcScaleGoalAngleComp();
         double driverComp = 0.1 * m_driverJoystick->GetRawAxisWithDeadband(
                                       PoofsJoysticks::LeftYAxis);
