@@ -130,20 +130,17 @@ void LimelightDriveController::CalcDriveOutput(
     // SmartDashboard::PutNumber("/SmartDashboard/limelight/xoff", offset);
     // SmartDashboard::PutNumber("/SmartDashboard/limelight/distance",
     // distance); SmartDashboard::PutNumber("/SmartDashboard/limelight/skew",
-                             // m_limelight->GetTargetSkew());
+    // m_limelight->GetTargetSkew());
 
-                              out->SetDriveOutputVBus(
-                                  m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
-                                  m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
+    out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
+                            m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
 
-                              if ((fabs(offset) < 5.0 &&
-                                   fabs(state->GetAngularRate()) < 5.0) &&
-                                  (fabs(distError) < 3.0 &&
-                                   fabs(state->GetRate() < 3.0))) {
-                                  m_onTarget = true;
-                              }
-                              else {
-                                  m_onTarget = false;
-                              }
+    if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 5.0) &&
+        (fabs(distError) < 3.0 && fabs(state->GetRate() < 3.0))) {
+        m_onTarget = true;
+    }
+    else {
+        m_onTarget = false;
+    }
 }
 }
