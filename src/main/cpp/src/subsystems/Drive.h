@@ -289,6 +289,9 @@ public:
      */
     void TaskPeriodic(RobotMode mode) override;
 
+
+    LimelightDriveController *GetLimelightDriveWithSkew() const;
+
 private:
     LogSpreadsheet *m_logger;
 

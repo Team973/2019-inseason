@@ -151,6 +151,10 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
 Drive::~Drive() {
 }
 
+LimelightDriveController *Drive::GetLimelightDriveWithSkew() const {
+    return m_limelightDriveWithSkew;
+}
+
 void Drive::CheesyDrive(double throttle, double turn, bool isQuickTurn,
                         bool isHighGear) {
     this->SetDriveController(m_cheesyDriveController);
