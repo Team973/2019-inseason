@@ -181,6 +181,17 @@ void Robot::AllStateContinuous() {
     DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset());*/
+
+    SmartDashboard::PutNumber("limelight/throttle", m_drive->GetLimelightDriveWithSkew()->GetThrottlePidOut());
+    SmartDashboard::PutNumber("limelight/turn", m_drive->GetLimelightDriveWithSkew()->GetTurnPidOut());
+    SmartDashboard::PutNumber("limelight/skewcont", m_drive->GetLimelightDriveWithSkew()->GetGoalAngleComp());
+
+    SmartDashboard::PutNumber("limelight/xoff", m_limelightHatch->GetXOffset());
+    SmartDashboard::PutNumber("limelight/distance",
+                              m_limelightHatch->GetHorizontalDistance());
+    SmartDashboard::PutNumber("limelight/skew", m_limelightHatch->GetTargetSkew());
+    SmartDashboard::PutNumber("limelight/target",
+                              m_limelightHatch->isTargetValid());
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

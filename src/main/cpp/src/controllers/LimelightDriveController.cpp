@@ -15,8 +15,10 @@ LimelightDriveController::LimelightDriveController(
         , m_hatchIntake(hatchIntake)
         , m_throttle(0.0)
         , m_turn(0.0)
-        , m_goalAngleComp(0.0)
         , m_limelight(limelight)
+        , m_throttlePidOut(0.0)
+        , m_turnPidOut(0.0)
+        , m_goalAngleComp(0.0)
         , m_turnPid(new PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD))
         , m_throttlePid(
               new PID(THROTTLE_PID_KP, THROTTLE_PID_KI, THROTTLE_PID_KD)) {
@@ -24,6 +26,18 @@ LimelightDriveController::LimelightDriveController(
 
 LimelightDriveController::~LimelightDriveController() {
     delete m_turnPid, m_throttlePid;
+}
+
+double LimelightDriveController::GetThrottlePidOut() const {
+    return m_throttlePidOut;
+}
+
+double LimelightDriveController::GetTurnPidOut() const {
+    return m_turnPidOut;
+}
+
+double LimelightDriveController::GetGoalAngleComp() const {
+    return m_goalAngleComp;
 }
 
 void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
@@ -97,40 +111,35 @@ void LimelightDriveController::CalcDriveOutput(
     }
 
     if (!m_limelight->isTargetValid() || m_onTarget) {
-        m_leftSetpoint = 0.0;
-        m_rightSetpoint = 0.0;
+        // Proof on concept: Allow driver to turn to get a target, should only be when !isTargetValid(), so break away from the || above
+        //double driverComp =
+        //    0.1 * -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+        m_leftSetpoint = 0.0; //- driverComp;
+        m_rightSetpoint = 0.0; //+ driverComp;
     }
     else {
-        double turnPidOut = Util::bound(
+        m_turnPidOut = Util::bound(
             -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET), -0.4,
             0.4);
         //*CalcTurnComp();
-        double throttlePidOut = Util::bound(
-            m_throttlePid->CalcOutputWithError(-distError), -0.5, 0.5);
+        m_throttlePidOut = Util::bound(
+            m_throttlePid->CalcOutputWithError(-distError), -0.7, 0.7);
         m_goalAngleComp = CalcScaleGoalAngleComp();
-        double driverComp = 0.1 * m_driverJoystick->GetRawAxisWithDeadband(
+        double driverComp = 0.1 * -m_driverJoystick->GetRawAxisWithDeadband(
                                       PoofsJoysticks::LeftYAxis);
-        // SmartDashboard::PutNumber("limelight/throttle", throttlePidOut);
-        // SmartDashboard::PutNumber("limelight/turn", turnPidOut);
-        // SmartDashboard::PutNumber("limelight/skewcont", m_goalAngleComp);
         if (m_isCompensatingSkew) {
             m_leftSetpoint =  // turnPidOut + m_goalAngleComp;
-                throttlePidOut + turnPidOut + m_goalAngleComp;  // - driverComp;
+                m_throttlePidOut + m_turnPidOut + m_goalAngleComp;  // - driverComp;
             m_rightSetpoint =  //-turnPidOut - m_goalAngleComp;
-                throttlePidOut - turnPidOut - m_goalAngleComp;  // - driverComp;
+                m_throttlePidOut - m_turnPidOut - m_goalAngleComp;  // - driverComp;
         }
         else {
-            m_leftSetpoint = throttlePidOut + turnPidOut;
-            m_rightSetpoint = throttlePidOut - turnPidOut;
+            m_leftSetpoint = m_throttlePidOut + m_turnPidOut;
+            m_rightSetpoint = m_throttlePidOut - m_turnPidOut;
         }
     }
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
                    m_leftSetpoint, m_rightSetpoint);
-
-    // SmartDashboard::PutNumber("/SmartDashboard/limelight/xoff", offset);
-    // SmartDashboard::PutNumber("/SmartDashboard/limelight/distance",
-    // distance); SmartDashboard::PutNumber("/SmartDashboard/limelight/skew",
-    // m_limelight->GetTargetSkew());
 
     out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
                             m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
