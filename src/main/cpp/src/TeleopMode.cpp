@@ -276,7 +276,14 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                                         // action for both
                                                         // buttons
                         case GameMode::SecondLevelEndGamePeriodic:
-                            m_gameMode = GameMode::RaiseIntake;
+                            if (m_stinger->GetSwitchBladeState() ==
+                                Stinger::SwitchBladeState::retracted) {
+                                m_gameMode = GameMode::RaiseIntake;
+                            }
+                            else if (m_stinger->GetSwitchBladeState() ==
+                                     Stinger::SwitchBladeState::engaged) {
+                                m_stinger->SetKickUpEnable();
+                            }
                             break;
                     }
                 }

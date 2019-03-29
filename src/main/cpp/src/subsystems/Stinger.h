@@ -39,6 +39,14 @@ public:
      */
     void SetKickUpDisable();
 
+    enum class SwitchBladeState
+    {
+        engaged,
+        retracted
+    };
+
+    SwitchBladeState GetSwitchBladeState();
+
     /**
      * Deploys the stingers switch blade
      */
@@ -62,6 +70,8 @@ private:
     TaskMgr *m_scheduler;
     LogSpreadsheet *m_logger;
     GreyTalonSRX *m_stingerDriveMotor;
+
+    SwitchBladeState m_switchBladeState;
 
     DoubleSolenoid *m_kickOffPneumatic;
     DoubleSolenoid *m_sneakyClimb;
