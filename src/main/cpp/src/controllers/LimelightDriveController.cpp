@@ -111,27 +111,33 @@ void LimelightDriveController::CalcDriveOutput(
     }
 
     if (!m_limelight->isTargetValid() || m_onTarget) {
-        // Proof on concept: Allow driver to turn to get a target, should only be when !isTargetValid(), so break away from the || above
-        //double driverComp =
-        //    0.1 * -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
-        m_leftSetpoint = 0.0; //- driverComp;
-        m_rightSetpoint = 0.0; //+ driverComp;
+        // Proof on concept: Allow driver to turn to get a target, should only
+        // be when !isTargetValid(), so break away from the || above
+        // double driverComp =
+        //    0.1 *
+        //    -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+        m_leftSetpoint = 0.0;   //- driverComp;
+        m_rightSetpoint = 0.0;  //+ driverComp;
     }
     else {
-        m_turnPidOut = Util::bound(
-            -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET), -0.4,
-            0.4);
-        //*CalcTurnComp();
-        m_throttlePidOut = Util::bound(
-            m_throttlePid->CalcOutputWithError(-distError), -0.7, 0.7);
+        m_turnPidOut =
+            Util::bound(
+                -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET),
+                -0.4, 0.4) *
+            CalcTurnComp();
+        m_throttlePidOut =
+            Util::bound(m_throttlePid->CalcOutputWithError(-distError),
+                        THROTTLE_MIN, THROTTLE_MAX);
         m_goalAngleComp = CalcScaleGoalAngleComp();
         double driverComp = 0.1 * -m_driverJoystick->GetRawAxisWithDeadband(
                                       PoofsJoysticks::LeftYAxis);
         if (m_isCompensatingSkew) {
             m_leftSetpoint =  // turnPidOut + m_goalAngleComp;
-                m_throttlePidOut + m_turnPidOut + m_goalAngleComp;  // - driverComp;
-            m_rightSetpoint =  //-turnPidOut - m_goalAngleComp;
-                m_throttlePidOut - m_turnPidOut - m_goalAngleComp;  // - driverComp;
+                m_throttlePidOut + m_turnPidOut +
+                m_goalAngleComp;  // - driverComp;
+            m_rightSetpoint =     //-turnPidOut - m_goalAngleComp;
+                m_throttlePidOut - m_turnPidOut -
+                m_goalAngleComp;  // - driverComp;
         }
         else {
             m_leftSetpoint = m_throttlePidOut + m_turnPidOut;
