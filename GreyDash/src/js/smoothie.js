@@ -903,7 +903,7 @@
             }
             case "scatter": {
               context.moveTo(x, y);
-              context.lineTo(x + 5, y);
+              context.lineTo(x + context.lineWidth, y);
               break;
             }
             case "bezier":
