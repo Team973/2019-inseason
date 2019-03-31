@@ -102,6 +102,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_leftDriveSparkA->SetInverted(false);
     m_leftDriveSparkA->SetOpenLoopRampRate(0.3);
+    m_leftDriveSparkA->EnableVoltageCompensation(12.0);
     m_leftDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
@@ -112,6 +113,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_rightDriveSparkA->SetInverted(false);
     m_rightDriveSparkA->SetOpenLoopRampRate(0.3);
+    m_rightDriveSparkA->EnableVoltageCompensation(12.0);
     m_rightDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
@@ -373,6 +375,15 @@ void Drive::TaskPeriodic(RobotMode mode) {
     m_verticalLengthLog->LogDouble(m_limelightHatch->GetVerticalLength());
     m_horizontalDistanceLog->LogDouble(
         m_limelightHatch->GetHorizontalDistance());
+
+    SmartDashboard::PutNumber("drive/percentages/leftpercent",
+                              m_leftDriveOutput);
+    SmartDashboard::PutNumber("drive/percentages/rightpercent",
+                              m_rightDriveOutput);
+    SmartDashboard::PutNumber("drive/currents/leftcurrent",
+                              m_leftDriveSparkA->GetOutputCurrent());
+    SmartDashboard::PutNumber("drive/currents/rightcurrent",
+                              m_rightDriveSparkA->GetOutputCurrent());
 
     // Austin ADXRS450_Gyro config
     m_angleRate = -1.0 * ((GetRightRate() - GetLeftRate()) / 2.0) /

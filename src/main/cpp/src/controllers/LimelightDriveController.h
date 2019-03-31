@@ -74,10 +74,10 @@ public:
         1.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT_ROCKET =
         -7.0 + 6.0;  // in inches from target to robot bumper
-    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -8.0;  // prac-sac
+    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = 12.0;  // prac-sac
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
-        -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
+        -0.5;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 60.0;
@@ -88,13 +88,17 @@ public:
     static constexpr double THROTTLE_FEED_FORWARD = 0.05;
     static constexpr double THROTTLE_MIN = -0.7;  // prac-sac
     static constexpr double THROTTLE_MAX = 0.7;   // prac-sac
+    static constexpr double SKEW_MIN = -0.2;
+    static constexpr double SKEW_MAX = 0.2;
+    static constexpr double TURN_MIN = -0.4;
+    static constexpr double TURN_MAX = 0.4;
     static constexpr double GOAL_ANGLE_COMP_KP = 0.02;
-    static constexpr double TURN_PID_KP = 0.015 / 1.5;  // prac-sac
+    static constexpr double TURN_PID_KP = 0.012;  // prac-sac
     static constexpr double TURN_PID_KI = 0.0;
     static constexpr double TURN_PID_KD = 0.002;
-    static constexpr double THROTTLE_PID_KP = 0.02;  // prac-sac
+    static constexpr double THROTTLE_PID_KP = 0.022;  // prac-sac
     static constexpr double THROTTLE_PID_KI = 0.0;
-    static constexpr double THROTTLE_PID_KD = 0.003;
+    static constexpr double THROTTLE_PID_KD = 0.0;
 
 private:
     bool m_onTarget;

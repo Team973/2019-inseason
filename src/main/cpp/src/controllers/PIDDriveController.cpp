@@ -63,12 +63,12 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
     m_prevDist = state->GetDist();
     m_prevAngle = state->GetAngle();
 
-    double throttle =
-        Util::bound(m_drivePID->CalcOutput(m_prevDist), -m_vmax, m_vmax) *
-        m_speedCap;
-    double turn =
-        Util::bound(m_turnPID->CalcOutput(m_prevAngle), -m_avmax, m_avmax) *
-        m_speedCap * DRIVE_ARC_IN_PER_DEG;
+    double throttle =m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist);
+        /*Util::bound(m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist), -m_vmax, m_vmax) *
+        m_speedCap;*/
+    double turn = m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle);
+        /*Util::bound(m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle), -m_avmax, m_avmax) *
+        m_speedCap * DRIVE_ARC_IN_PER_DEG;*/
 
     out->SetDriveOutputIPS(throttle - turn, throttle + turn);
 
@@ -82,8 +82,7 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
         m_onTarget = false;
     }
 
-    DBStringPrintf(DBStringPos::DB_LINE3, "p %2.2lf t %2.2lf", throttle, turn);
-
+    DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf", throttle, turn);
     DBStringPrintf(DBStringPos::DB_LINE5, "dt %5.0lf, dc %5.0lf", m_targetDist,
                    m_prevDist);
     DBStringPrintf(DBStringPos::DB_LINE6, "err d %.3lf a %.3lf",

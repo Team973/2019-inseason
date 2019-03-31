@@ -32,8 +32,10 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_currentCell = new LogCell("Cargo Current", 32, true);
     m_voltageCell = new LogCell("Cargo Voltage", 32, true);
+    m_time = new LogCell("Time", 32, true);
     logger->RegisterCell(m_currentCell);
     logger->RegisterCell(m_voltageCell);
+    logger->RegisterCell(m_time);
 }
 
 CargoIntake::~CargoIntake() {
@@ -117,6 +119,7 @@ void CargoIntake::EnableCoastMode() {
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_currentCell->LogDouble(m_cargoIntakeMotor->GetOutputCurrent());
     m_voltageCell->LogDouble(m_cargoIntakeMotor->GetMotorOutputVoltage());
+    m_time->LogDouble(GetMsecTime());
     double filteredCurrent =
         m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {
