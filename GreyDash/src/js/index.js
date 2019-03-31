@@ -164,7 +164,7 @@ function render () {
                 config.charts[i].lines[line] = new TimeSeries()
                 config.charts[i].chart.addTimeSeries(config.charts[i].lines[line], {
                     strokeStyle: colors[line],
-                    lineWidth: 3
+                    lineWidth: 4
                 })
                 NetworkTables.addKeyListener(config.charts[i].keys[line], (function bindIndicator (idx) {
                     return (key, value) => {
