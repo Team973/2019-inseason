@@ -85,8 +85,6 @@ public:
     static constexpr double SKEW_COMP_MULTIPLIER_DISTANCE_MAX = 24.0;
     static constexpr double TURN_COMP_DISTANCE_MIN = 6.0;
     static constexpr double TURN_COMP_DISTANCE_MAX = 24.0;
-    static constexpr double THROTTLE_CAP_DISTANCE_MIN = 24.0;
-    static constexpr double THROTTLE_CAP_DISTANCE_MAX = 60.0;
     static constexpr double THROTTLE_FEED_FORWARD = 0.05;
     static constexpr double THROTTLE_MIN = -0.7;  // prac-sac
     static constexpr double THROTTLE_MAX = 0.7;   // prac-sac
