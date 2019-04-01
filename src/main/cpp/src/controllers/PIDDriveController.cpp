@@ -17,7 +17,7 @@ using namespace frc;
 namespace frc973 {
 
 // Drive pid takes in error in inches and outputs velocity in inches/sec
-static constexpr double DRIVE_PID_KP = 0.2;
+static constexpr double DRIVE_PID_KP = 0.0;
 static constexpr double DRIVE_PID_KI = 0.0;
 static constexpr double DRIVE_PID_KD = 0.0;
 

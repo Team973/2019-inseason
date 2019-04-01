@@ -59,9 +59,9 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                           Util::Point(SKEW_COMP_MULTIPLIER_DISTANCE_MAX, 0),
                           fabs(m_limelight->GetXOffset())),
         0.0, 1.0);
-    double angle_comp =
-        Util::bound(GOAL_ANGLE_COMP_KP * skew * frame_multiplier, 0.0, 0.0);
-    return angle_comp;  // y = mx + b
+    double skew_comp =
+        Util::bound(GOAL_ANGLE_COMP_KP * skew * frame_multiplier, SKEW_MIN, SKEW_MAX);
+    return -skew_comp;  // y = mx + b
                         // y = degree of compensation
                         // m = (1 - 0) / (max - min)
                         // x = distance to target
@@ -112,9 +112,6 @@ void LimelightDriveController::CalcDriveOutput(
     if (!m_limelight->isTargetValid() || m_onTarget) {
         // Proof on concept: Allow driver to turn to get a target, should only
         // be when !isTargetValid(), so break away from the || above
-        // double driverComp =
-        //    0.1 *
-        //    -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
         m_leftSetpoint = 0.0;   //- driverComp;
         m_rightSetpoint = 0.0;  //+ driverComp;
     }
@@ -130,26 +127,25 @@ void LimelightDriveController::CalcDriveOutput(
                                       PoofsJoysticks::LeftYAxis);
         if (m_isCompensatingSkew) {
             m_leftSetpoint =
-                m_throttlePidOut +
-                m_throttlePidOut / 0.5 *
-                    (m_turnPidOut + m_goalAngleComp);
+                m_throttlePidOut - m_turnPidOut +
+                m_throttlePidOut *
+                    (m_goalAngleComp);
             m_rightSetpoint =
-                m_throttlePidOut
-                -m_throttlePidOut / 0.5 *
-                    (m_turnPidOut + m_goalAngleComp);
+                m_throttlePidOut + m_turnPidOut
+                -m_throttlePidOut *
+                    (m_goalAngleComp);
         }
         else {
             m_leftSetpoint = m_throttlePidOut + m_turnPidOut;
             m_rightSetpoint = m_throttlePidOut - m_turnPidOut;
         }
     }
-    DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf", m_throttlePidOut, m_throttlePidOut /0.7 *
-                    (m_turnPidOut + m_goalAngleComp));
+    DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf", m_throttlePidOut, m_throttlePidOut, m_goalAngleComp);
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
                    m_leftSetpoint, m_rightSetpoint);
 
-    out->SetDriveOutputVBus(m_leftSetpoint * DRIVE_OUTPUT_MULTIPLIER,
-                            m_rightSetpoint * DRIVE_OUTPUT_MULTIPLIER);
+    out->SetDriveOutputVBus(m_leftSetpoint,
+                            m_rightSetpoint);
 
     if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 5.0) &&
         (fabs(distError) < 3.0 && fabs(state->GetRate() < 3.0))) {
