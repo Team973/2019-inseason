@@ -31,8 +31,8 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->SetInverted(false);
 
     m_elevatorMotorA->Config_PID(0, 1.5, 0.0, 0.0, 0.0, 10);
-    m_elevatorMotorA->ConfigMotionCruiseVelocity(3750.0, 10);
-    m_elevatorMotorA->ConfigMotionAcceleration(5000.0, 10);
+    m_elevatorMotorA->ConfigMotionCruiseVelocity(3750.0 * 2.0, 10);
+    m_elevatorMotorA->ConfigMotionAcceleration(5000.0 * 2.0, 10);
     m_elevatorMotorA->SelectProfileSlot(0, 0);
 
     m_elevatorMotorA->EnableCurrentLimit(true);
@@ -147,7 +147,7 @@ void Elevator::TaskPeriodic(RobotMode mode) {
                 m_elevatorMotorA->Set(ControlMode::PercentOutput,
                                       Util::bound(pow(m_joystickControl, 3.0) +
                                                       ELEVATOR_FEED_FORWARD,
-                                                  -0.3, 0.3));
+                                                  -0.5, 0.5));
             }
             break;
         case manualVoltage:

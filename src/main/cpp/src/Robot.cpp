@@ -98,11 +98,11 @@ Robot::~Robot() {
 
 void Robot::Initialize() {
     m_compressor->Enable();
-    m_logger->Start();
     m_logger->RegisterCell(m_matchIdentifier);
     m_logger->RegisterCell(m_batteryVoltage);
     m_logger->RegisterCell(m_matchTime);
     m_logger->RegisterCell(m_dateTime);
+    m_logger->Start();
 
     m_cameraServer->AddCamera(m_hatchCamera);
     m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
