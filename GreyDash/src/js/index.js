@@ -73,6 +73,8 @@ function openPage (pageName) {
     document.getElementById(pageName).style.display = 'block'
 }
 
+let graphIntervals = [];
+
 function render () {
     console.log('rendering')
     // Set Chart Defaults
@@ -168,9 +170,16 @@ function render () {
                 })
                 NetworkTables.addKeyListener(config.charts[i].keys[line], (function bindIndicator (idx) {
                     return (key, value) => {
-                        config.charts[idx].lines[line].append(new Date().getTime(), value)
+                        const intervalKey = `${idx}${line}`
+                        if (graphIntervals[intervalKey] != null) {
+                            clearInterval(graphIntervals[intervalKey])
+                        }
+
+                        graphIntervals[intervalKey] = setInterval(() => {
+                            config.charts[idx].lines[line].append(new Date().getTime(), value)
+                        }, 20)
                     }
-                }(i)))
+                }(i)), true)
             }
 
             config.charts[i].chart.streamTo(config.charts[i].displayChart, 0)
