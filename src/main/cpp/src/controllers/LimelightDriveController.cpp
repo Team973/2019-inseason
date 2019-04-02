@@ -60,7 +60,7 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                           fabs(m_limelight->GetXOffset())),
         0.0, 1.0);
     double skew_comp =
-        Util::bound(GOAL_ANGLE_COMP_KP * skew * frame_multiplier, SKEW_MIN, SKEW_MAX);
+        Util::bound(GOAL_ANGLE_COMP_KP * skew * frame_multiplier * dist_multiplier, SKEW_MIN, SKEW_MAX);
     return -skew_comp;  // y = mx + b
                         // y = degree of compensation
                         // m = (1 - 0) / (max - min)
@@ -118,29 +118,23 @@ void LimelightDriveController::CalcDriveOutput(
     else {
         m_turnPidOut = Util::bound(
             m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET), TURN_MIN,
-            TURN_MAX);
+            TURN_MAX) * CalcTurnComp();
         m_throttlePidOut =
             Util::bound(m_throttlePid->CalcOutputWithError(-distError),
                         THROTTLE_MIN, THROTTLE_MAX);
         m_goalAngleComp = CalcScaleGoalAngleComp();
-        double driverComp = 0.1 * -m_driverJoystick->GetRawAxisWithDeadband(
-                                      PoofsJoysticks::LeftYAxis);
         if (m_isCompensatingSkew) {
             m_leftSetpoint =
-                m_throttlePidOut - m_turnPidOut +
-                m_throttlePidOut *
-                    (m_goalAngleComp);
+               m_throttlePidOut - m_turnPidOut - m_goalAngleComp;
             m_rightSetpoint =
-                m_throttlePidOut + m_turnPidOut
-                -m_throttlePidOut *
-                    (m_goalAngleComp);
+                m_throttlePidOut + m_turnPidOut + m_goalAngleComp;
         }
         else {
             m_leftSetpoint = m_throttlePidOut + m_turnPidOut;
             m_rightSetpoint = m_throttlePidOut - m_turnPidOut;
         }
     }
-    DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf", m_throttlePidOut, m_throttlePidOut, m_goalAngleComp);
+    DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf", m_throttlePidOut, m_turnPidOut, m_goalAngleComp);
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
                    m_leftSetpoint, m_rightSetpoint);
 
