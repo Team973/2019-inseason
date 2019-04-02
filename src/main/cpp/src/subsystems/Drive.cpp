@@ -10,6 +10,7 @@
 #include "ctre/Phoenix.h"
 #include "src/controllers/CheesyDriveController.h"
 #include "src/controllers/LimelightDriveController.h"
+#include "src/controllers/LimelightTrigController.h"
 #include "src/controllers/OpenloopArcadeDriveController.h"
 #include "src/controllers/PIDDriveController.h"
 #include "src/controllers/SplineDriveController.h"
@@ -103,7 +104,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_leftDriveSparkA->SetInverted(false);
     m_leftDriveSparkA->SetOpenLoopRampRate(0.3);
     m_leftDriveSparkA->EnableVoltageCompensation(12.0);
-    m_leftDriveSparkA->Config_PID(0, 0.2, 0.0, 0.0, 0.0);
+    m_leftDriveSparkA->Config_PID(0, 1.0, 0.0, 0.0, 0.0);
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
     m_leftDriveSparkB->SetInverted(false);
@@ -114,7 +115,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_rightDriveSparkA->SetInverted(false);
     m_rightDriveSparkA->SetOpenLoopRampRate(0.3);
     m_rightDriveSparkA->EnableVoltageCompensation(12.0);
-    m_rightDriveSparkA->Config_PID(0, 0.2, 0.0, 0.0, 0.0);
+    m_rightDriveSparkA->Config_PID(0, 0.01, 0.0, 0.0, 0.0);
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
     m_rightDriveSparkB->SetInverted(false);
@@ -241,6 +242,13 @@ LimelightDriveController *Drive::LimelightDriveWithSkew() {
     return m_limelightDriveWithSkew;
 }
 
+LimelightTrigController *Drive::LimelightTrigDrive() {
+    this->SetDriveController(m_limelightTrigDrive);
+    m_driveControllerLog->LogPrintf("Limelight Trig Drive");
+
+    return m_limelightTrigDrive;
+}
+
 AssistedCheesyDriveController *Drive::AssistedCheesyHatchDrive(
     double throttle, double turn, bool isQuickTurn, bool isHighGear) {
     this->SetDriveController(m_assistedCheesyDriveHatchController);
@@ -311,7 +319,8 @@ void Drive::SetDriveOutputIPS(double left, double right) {
             -m_leftDriveOutput, ControlType::kVelocity);
         m_rightDriveSparkA->GetPIDController().SetReference(
             m_rightDriveOutput, ControlType::kVelocity);
-        DBStringPrintf(DBStringPos::DB_LINE1, "lo:%2.2lf ro:%2.2lf", m_leftDriveOutput, m_rightDriveOutput);
+        DBStringPrintf(DBStringPos::DB_LINE1, "lo:%2.2lf ro:%2.2lf",
+                       m_leftDriveOutput, m_rightDriveOutput);
     }
 }
 

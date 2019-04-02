@@ -25,6 +25,7 @@ using namespace trajectories;
 namespace frc973 {
 class CheesyDriveController;
 class LimelightDriveController;
+class LimelightTrigController;
 class Limelight;
 class OpenloopArcadeDriveController;
 class PIDDriveController;
@@ -98,6 +99,11 @@ public:
      * Set drive controller to use limelight in following a target
      */
     LimelightDriveController *LimelightDrive();
+
+    /**
+     * Set drive controller to use limelight in following a target
+     */
+    LimelightTrigController *LimelightTrigDrive();
 
     /**
      * Set a drive to use the openloop arcade drive controller.
@@ -289,7 +295,6 @@ public:
      */
     void TaskPeriodic(RobotMode mode) override;
 
-
     LimelightDriveController *GetLimelightDriveWithSkew() const;
 
 private:
@@ -345,6 +350,7 @@ private:
     VelocityArcadeDriveController *m_velocityArcadeDriveController;
     LimelightDriveController *m_limelightDriveWithSkew;
     LimelightDriveController *m_limelightDriveWithoutSkew;
+    LimelightTrigController *m_limelightTrigDrive;
     AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 
     double m_angle;
