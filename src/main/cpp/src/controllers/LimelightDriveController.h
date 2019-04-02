@@ -84,13 +84,13 @@ public:
     static constexpr double TURN_COMP_DISTANCE_MIN = 6.0;
     static constexpr double TURN_COMP_DISTANCE_MAX = 24.0;
     static constexpr double THROTTLE_FEED_FORWARD = 0.05;
-    static constexpr double THROTTLE_MIN = -0.7;  // prac-sac
-    static constexpr double THROTTLE_MAX = 0.7;   // prac-sac
+    static constexpr double THROTTLE_MIN = -0.6;  // prac-sac
+    static constexpr double THROTTLE_MAX = 0.6;   // prac-sac
     static constexpr double SKEW_MIN = -0.2;
     static constexpr double SKEW_MAX = 0.2;
     static constexpr double TURN_MIN = -0.4;
     static constexpr double TURN_MAX = 0.4;
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.025;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.023;
     static constexpr double TURN_PID_KP = 0.012;  // prac-sac
     static constexpr double TURN_PID_KI = 0.0;
     static constexpr double TURN_PID_KD = 0.002;
