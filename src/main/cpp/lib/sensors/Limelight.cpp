@@ -205,8 +205,34 @@ double Limelight::FindTargetSkew() {
 }
 
 double Limelight::GetHorizontalDistance() {
-    return ((TARGET_HEIGHT - CAMERA_HEIGHT) /
-            tan(CAMERA_ANGLE + this->GetYOffset() * (Constants::PI / 180.0))) -
-           CAMERA_BUMPER_OFFSET;
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        return ((m_DBTargetHeight - m_DBCameraHeight) /
+                tan(m_DBCameraAngle +
+                    this->GetYOffset() * (Constants::PI / 180.0))) -
+               m_DBCameraBumperOffset;
+    }
+    else {
+        return ((TARGET_HEIGHT - CAMERA_HEIGHT) /
+                tan(CAMERA_ANGLE +
+                    this->GetYOffset() * (Constants::PI / 180.0))) -
+               CAMERA_BUMPER_OFFSET;
+    }
+}
+
+void Limelight::UpdateLimelightDB() {
+    m_DBTargetHeight =
+        stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(4, 8));
+    m_DBCameraAngle =
+        stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(4, 9)) *
+        (Constants::PI / 180.0);
+    m_DBCameraBumperOffset =
+        stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(16, 20));
+    m_DBCameraHeight =
+        stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(14, 18));
+}
+
+void Limelight::CreateLimelightDB() {
+    DBStringPrintf(DB_LINE6, "TH: 00.00 CH: 00.00");
+    DBStringPrintf(DB_LINE7, "CA: +00.00 CBO: 00.00");
 }
 }

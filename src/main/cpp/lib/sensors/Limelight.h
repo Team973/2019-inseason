@@ -232,13 +232,18 @@ public:
      */
     double GetHorizontalDistance();
 
+    /**
+     * Updates all DBString variables
+     */
+    void UpdateLimelightDB();
+    void CreateLimelightDB();
+
     static constexpr double TARGET_HEIGHT = 29.0;  // in inches from ground
     static constexpr double CAMERA_HEIGHT = 47.0;  // in inches from ground
     static constexpr double CAMERA_ANGLE =
         -27.3 * (Constants::PI / 180.0);  // in degrees wrt ground
     //-29.25 for comp; -27.3 for pbot
     static constexpr double CAMERA_BUMPER_OFFSET = 19.25;
-    static constexpr double DISTANCE_MULTIPLIER = 0.83;
 
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight
@@ -264,5 +269,10 @@ private:
 
     static constexpr double TARGET_ASPECT_RATIO =
         6.0 / 15.0;  // Constant for the targets aspect ratio
+
+    double m_DBTargetHeight = 0.0;
+    double m_DBCameraHeight = 0.0;
+    double m_DBCameraAngle = 0.0;
+    double m_DBCameraBumperOffset = 0.0;
 };
 }

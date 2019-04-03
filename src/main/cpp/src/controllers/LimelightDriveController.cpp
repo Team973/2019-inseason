@@ -29,15 +29,30 @@ LimelightDriveController::~LimelightDriveController() {
 }
 
 double LimelightDriveController::GetThrottlePidOut() const {
-    return m_throttlePidOut;
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        return m_DBThrottlePIDOut;
+    }
+    else {
+        return m_throttlePidOut;
+    }
 }
 
 double LimelightDriveController::GetTurnPidOut() const {
-    return m_turnPidOut;
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        return m_DBTurnPIDOut;
+    }
+    else {
+        return m_turnPidOut;
+    }
 }
 
 double LimelightDriveController::GetGoalAngleComp() const {
-    return m_goalAngleComp;
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        return m_DBGoalAngleComp;
+    }
+    else {
+        return m_goalAngleComp;
+    }
 }
 
 void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
@@ -59,9 +74,16 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                           Util::Point(SKEW_COMP_MULTIPLIER_DISTANCE_MAX, 0),
                           fabs(m_limelight->GetXOffset())),
         0.0, 1.0);
-    double angle_comp = Util::bound(
-        GOAL_ANGLE_COMP_KP * skew * dist_multiplier * skew_multiplier, -0.2,
-        0.2);
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        angle_comp = Util::bound(
+            m_DBGoalAngleCompkP * skew * dist_multiplier * skew_multiplier,
+            -0.2, 0.2);
+    }
+    else {
+        angle_comp = Util::bound(
+            GOAL_ANGLE_COMP_KP * skew * dist_multiplier * skew_multiplier, -0.2,
+            0.2);
+    }
     return angle_comp;  // y = mx + b
                         // y = degree of compensation
                         // m = (1 - 0) / (max - min)
@@ -104,38 +126,98 @@ void LimelightDriveController::CalcDriveOutput(
     double distError;
     if (m_hatchIntake->GetHatchPuncherState() ==
         HatchIntake::HatchSolenoidState::manualPunch) {
-        distError = distance - DISTANCE_SETPOINT_ROCKET;
+        if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+            distError = distance - m_DBDistanceSetpointRocket;
+        }
+        else {
+            distError = distance - DISTANCE_SETPOINT_ROCKET;
+        }
     }
     else {
-        distError = distance - DISTANCE_SETPOINT_CARGO_BAY;
+        if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+            distError = distance - m_DBDistanceSetpointCargoBay;
+        }
+        else {
+            distError = distance - DISTANCE_SETPOINT_CARGO_BAY;
+        }
     }
 
     if (!m_limelight->isTargetValid() || m_onTarget) {
-        // Proof on concept: Allow driver to turn to get a target, should only be when !isTargetValid(), so break away from the || above
-        //double driverComp =
-        //    0.1 * -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
-        m_leftSetpoint = 0.0; //- driverComp;
-        m_rightSetpoint = 0.0; //+ driverComp;
+        // Proof on concept: Allow driver to turn to get a target, should only
+        // be when !isTargetValid(), so break away from the || above
+        // double driverComp =
+        //    0.1 *
+        //    -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
+        m_leftSetpoint = 0.0;   //- driverComp;
+        m_rightSetpoint = 0.0;  //+ driverComp;
     }
     else {
-        m_turnPidOut = Util::bound(
-            -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET), -0.4,
-            0.4);
-        //*CalcTurnComp();
-        m_throttlePidOut = Util::bound(
-            m_throttlePid->CalcOutputWithError(-distError), -0.7, 0.7);
-        m_goalAngleComp = CalcScaleGoalAngleComp();
-        double driverComp = 0.1 * -m_driverJoystick->GetRawAxisWithDeadband(
-                                      PoofsJoysticks::LeftYAxis);
-        if (m_isCompensatingSkew) {
-            m_leftSetpoint =  // turnPidOut + m_goalAngleComp;
-                m_throttlePidOut + m_turnPidOut + m_goalAngleComp;  // - driverComp;
-            m_rightSetpoint =  //-turnPidOut - m_goalAngleComp;
-                m_throttlePidOut - m_turnPidOut - m_goalAngleComp;  // - driverComp;
+        if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+            m_DBThrottlePID = new PID(m_DBThrottlePIDkP, m_DBThrottlePIDkI,
+                                      m_DBThrottlePIDkD);
+            m_DBTurnPID = new PID(m_DBTurnPIDkP, m_DBTurnPIDkI, m_DBTurnPIDkD);
+
+            m_DBTurnPIDOut = Util::bound(-m_DBTurnPID->CalcOutputWithError(
+                                             offset - m_DBHatchVisionOffset),
+                                         -0.4, 0.4);
+            //*CalcTurnComp();
+
+            m_DBThrottlePIDOut = Util::bound(
+                m_DBThrottlePID->CalcOutputWithError(-distError), -0.7, 0.7);
+
+            m_DBGoalAngleComp = CalcScaleGoalAngleComp();
+            double driverComp = 0.1 * -m_driverJoystick->GetRawAxisWithDeadband(
+                                          PoofsJoysticks::LeftYAxis);
+            if (m_isCompensatingSkew) {
+                if (SmartDashboard::GetBoolean("DB/Button 1", false) == true) {
+                    m_DBThrottlePIDOut = 0.0;
+                }
+                if (SmartDashboard::GetBoolean("DB/Button 2", false) == true) {
+                    m_DBTurnPIDOut = 0.0;
+                }
+                if (SmartDashboard::GetBoolean("DB/Button 3", false) == true) {
+                    m_DBGoalAngleComp = 0.0;
+                }
+                m_leftSetpoint =  // turnPidOut + m_goalAngleComp;
+                    m_DBThrottlePIDOut + m_DBTurnPIDOut +
+                    m_DBGoalAngleComp;  // - driverComp;
+                m_rightSetpoint =       //-turnPidOut - m_goalAngleComp;
+                    m_DBThrottlePIDOut - m_DBTurnPIDOut -
+                    m_DBGoalAngleComp;  // - driverComp;
+            }
+            else {
+                if (SmartDashboard::GetBoolean("DB/Button 1", false) == true) {
+                    m_DBThrottlePIDOut = 0.0;
+                }
+                if (SmartDashboard::GetBoolean("DB/Button 2", false) == true) {
+                    m_DBTurnPIDOut = 0.0;
+                }
+                m_leftSetpoint = m_DBThrottlePIDOut + m_DBTurnPIDOut;
+                m_rightSetpoint = m_DBThrottlePIDOut - m_DBTurnPIDOut;
+            }
         }
         else {
-            m_leftSetpoint = m_throttlePidOut + m_turnPidOut;
-            m_rightSetpoint = m_throttlePidOut - m_turnPidOut;
+            m_turnPidOut = Util::bound(
+                -m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET),
+                -0.4, 0.4);
+            //*CalcTurnComp();
+            m_throttlePidOut = Util::bound(
+                m_throttlePid->CalcOutputWithError(-distError), -0.7, 0.7);
+            m_goalAngleComp = CalcScaleGoalAngleComp();
+            double driverComp = 0.1 * -m_driverJoystick->GetRawAxisWithDeadband(
+                                          PoofsJoysticks::LeftYAxis);
+            if (m_isCompensatingSkew) {
+                m_leftSetpoint =  // turnPidOut + m_goalAngleComp;
+                    m_throttlePidOut + m_turnPidOut +
+                    m_goalAngleComp;  // - driverComp;
+                m_rightSetpoint =     //-turnPidOut - m_goalAngleComp;
+                    m_throttlePidOut - m_turnPidOut -
+                    m_goalAngleComp;  // - driverComp;
+            }
+            else {
+                m_leftSetpoint = m_throttlePidOut + m_turnPidOut;
+                m_rightSetpoint = m_throttlePidOut - m_turnPidOut;
+            }
         }
     }
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
@@ -151,5 +233,46 @@ void LimelightDriveController::CalcDriveOutput(
     else {
         m_onTarget = false;
     }
+    delete m_DBThrottlePID, m_DBTurnPID;
+}
+
+void LimelightDriveController::UpdateLimelightDriveDB() {
+    m_DBThrottlePIDkP =
+        stod(SmartDashboard::GetString("DB/String 0", "0.0").substr(3, 8));
+    m_DBThrottlePIDkI =
+        stod(SmartDashboard::GetString("DB/String 0", "0.0").substr(10, 13));
+    m_DBThrottlePIDkD =
+        stod(SmartDashboard::GetString("DB/String 0", "0.0").substr(15, 20));
+    m_DBTurnPIDkP =
+        stod(SmartDashboard::GetString("DB/String 1", "0.0").substr(3, 8));
+    m_DBTurnPIDkI =
+        stod(SmartDashboard::GetString("DB/String 1", "0.0").substr(10, 13));
+    m_DBTurnPIDkD =
+        stod(SmartDashboard::GetString("DB/String 1", "0.0").substr(15, 20));
+    m_DBGoalAngleCompkP =
+        stod(SmartDashboard::GetString("DB/String 2", "0.0").substr(4, 8));
+    m_DBThrottleFeedForward =
+        stod(SmartDashboard::GetString("DB/String 2", "0.0").substr(15, 20));
+    m_DBHatchVisionOffset =
+        stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(4, 8));
+    m_DBCargoVisionOffset =
+        stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(14, 18));
+    m_DBDistanceSetpointRocket =
+        stod(SmartDashboard::GetString("DB/String 4", "0.0").substr(7, 11));
+    m_DBDistanceSetpointCargoBay =
+        stod(SmartDashboard::GetString("DB/String 4", "0.0").substr(16, 20));
+    m_DBThrottleMin =
+        stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(5, 9));
+    m_DBThrottleMax =
+        stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(16, 20));
+}
+
+void LimelightDriveController::CreateLimelightDriveDB() {
+    DBStringPrintf(DB_LINE0, "Th 0.0000 0.00 0.0000");
+    DBStringPrintf(DB_LINE1, "Tu 0.0000 0.00 0.0000");
+    DBStringPrintf(DB_LINE2, "AnC:0.000 Feed:+0.000");
+    DBStringPrintf(DB_LINE3, "HO: +0.00 CO: +0.00");
+    DBStringPrintf(DB_LINE4, "D-S Ro:+0.00 Ca:+0.00");
+    DBStringPrintf(DB_LINE5, "Min: -0.00 Max: +0.00");
 }
 }
