@@ -70,11 +70,9 @@ public:
     double GetTurnPidOut() const;
     double GetGoalAngleComp() const;
 
-    static constexpr double DRIVE_OUTPUT_MULTIPLIER =
-        1.0;  // in native units per degree
     static constexpr double DISTANCE_SETPOINT_ROCKET =
-        -7.0 + 6.0;  // in inches from target to robot bumper
-    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -8.0;  // prac-sac
+        0.0;  // in inches from target to robot bumper
+    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -5.0;  // prac-sac
     static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
         -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
@@ -85,16 +83,18 @@ public:
     static constexpr double SKEW_COMP_MULTIPLIER_DISTANCE_MAX = 24.0;
     static constexpr double TURN_COMP_DISTANCE_MIN = 6.0;
     static constexpr double TURN_COMP_DISTANCE_MAX = 24.0;
-    static constexpr double THROTTLE_CAP_DISTANCE_MIN = 24.0;
-    static constexpr double THROTTLE_CAP_DISTANCE_MAX = 60.0;
     static constexpr double THROTTLE_FEED_FORWARD = 0.05;
-    static constexpr double THROTTLE_MIN = -0.7;  // prac-sac
-    static constexpr double THROTTLE_MAX = 0.7;   // prac-sac
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.02;
-    static constexpr double TURN_PID_KP = 0.015;  // prac-sac
+    static constexpr double THROTTLE_MIN = -0.6;  // prac-sac
+    static constexpr double THROTTLE_MAX = 0.6;   // prac-sac
+    static constexpr double SKEW_MIN = -0.2;
+    static constexpr double SKEW_MAX = 0.2;
+    static constexpr double TURN_MIN = -0.4;
+    static constexpr double TURN_MAX = 0.4;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.023;
+    static constexpr double TURN_PID_KP = 0.012;  // prac-sac
     static constexpr double TURN_PID_KI = 0.0;
     static constexpr double TURN_PID_KD = 0.002;
-    static constexpr double THROTTLE_PID_KP = 0.023;  // prac-sac
+    static constexpr double THROTTLE_PID_KP = 0.022;  // prac-sac
     static constexpr double THROTTLE_PID_KI = 0.0;
     static constexpr double THROTTLE_PID_KD = 0.003;
 
@@ -144,6 +144,6 @@ private:
     double m_DBThrottleMin = 0.0;
     double m_DBThrottleMax = 0.0;
 
-    double angle_comp = 0.0;
+    double skew_comp = 0.0;
 };
 }

@@ -232,7 +232,7 @@ void Limelight::UpdateLimelightDB() {
 }
 
 void Limelight::CreateLimelightDB() {
-    DBStringPrintf(DB_LINE6, "TH: 00.00 CH: 00.00");
-    DBStringPrintf(DB_LINE7, "CA: +00.00 CBO: 00.00");
+    DBStringPrintf(DB_LINE6, "TH: 29.00 CH: 47.00");
+    DBStringPrintf(DB_LINE7, "CA: -27.30 CBO: 19.25");
 }
 }

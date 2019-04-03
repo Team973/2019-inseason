@@ -155,6 +155,10 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 3endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
+            if (m_driverJoystick->GetRawButton(PoofsJoysticks::LeftTrigger)) {
+                m_elevator->SetPosition(12.0);
+                m_cargoIntake->RetractPlatformWheel();
+            }
             break;
         case GameMode::SecondLevelEndGamePeriodic:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 2endgameperiodic");
@@ -238,8 +242,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
-                            m_elevator->SetPosition(12.0);
-                            m_cargoIntake->RetractPlatformWheel();
+
                             break;
                         case GameMode::SecondLevelEndGamePeriodic:
                             break;
@@ -273,7 +276,14 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                                         // action for both
                                                         // buttons
                         case GameMode::SecondLevelEndGamePeriodic:
-                            m_gameMode = GameMode::RaiseIntake;
+                            if (m_stinger->GetSwitchBladeState() ==
+                                Stinger::SwitchBladeState::retracted) {
+                                m_gameMode = GameMode::RaiseIntake;
+                            }
+                            else if (m_stinger->GetSwitchBladeState() ==
+                                     Stinger::SwitchBladeState::engaged) {
+                                m_stinger->SetKickUpEnable();
+                            }
                             break;
                     }
                 }

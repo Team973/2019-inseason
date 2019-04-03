@@ -102,7 +102,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_leftDriveSparkA->SetInverted(false);
     m_leftDriveSparkA->SetOpenLoopRampRate(0.3);
-    m_leftDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
+    m_leftDriveSparkA->EnableVoltageCompensation(12.0);
+    m_leftDriveSparkA->Config_PID(0, 0.2, 0.0, 0.0, 0.0);
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
     m_leftDriveSparkB->SetInverted(false);
@@ -112,7 +113,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_rightDriveSparkA->SetInverted(false);
     m_rightDriveSparkA->SetOpenLoopRampRate(0.3);
-    m_rightDriveSparkA->Config_PID(0, 0.0, 0.0, 0.0, 0.0);
+    m_rightDriveSparkA->EnableVoltageCompensation(12.0);
+    m_rightDriveSparkA->Config_PID(0, 0.2, 0.0, 0.0, 0.0);
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
     m_rightDriveSparkB->SetInverted(false);
@@ -295,8 +297,8 @@ void Drive::SetDriveOutputIPS(double left, double right) {
     m_leftDriveOutput = left;
     m_rightDriveOutput = right;
 
-    m_leftDriveOutput /= DRIVE_IPS_FROM_RPM;
-    m_rightDriveOutput /= DRIVE_IPS_FROM_RPM;
+    /*m_leftDriveOutput /= DRIVE_IPS_FROM_RPM;
+    m_rightDriveOutput /= DRIVE_IPS_FROM_RPM;*/
 
     if (std::isnan(m_leftDriveOutput) || std::isnan(m_rightDriveOutput)) {
         m_leftDriveSparkA->GetPIDController().SetReference(
@@ -309,6 +311,7 @@ void Drive::SetDriveOutputIPS(double left, double right) {
             -m_leftDriveOutput, ControlType::kVelocity);
         m_rightDriveSparkA->GetPIDController().SetReference(
             m_rightDriveOutput, ControlType::kVelocity);
+        DBStringPrintf(DBStringPos::DB_LINE1, "lo:%2.2lf ro:%2.2lf", m_leftDriveOutput, m_rightDriveOutput);
     }
 }
 
@@ -373,6 +376,15 @@ void Drive::TaskPeriodic(RobotMode mode) {
     m_verticalLengthLog->LogDouble(m_limelightHatch->GetVerticalLength());
     m_horizontalDistanceLog->LogDouble(
         m_limelightHatch->GetHorizontalDistance());
+
+    SmartDashboard::PutNumber("drive/percentages/leftpercent",
+                              m_leftDriveOutput);
+    SmartDashboard::PutNumber("drive/percentages/rightpercent",
+                              m_rightDriveOutput);
+    SmartDashboard::PutNumber("drive/currents/leftcurrent",
+                              m_leftDriveSparkA->GetOutputCurrent());
+    SmartDashboard::PutNumber("drive/currents/rightcurrent",
+                              m_rightDriveSparkA->GetOutputCurrent());
 
     // Austin ADXRS450_Gyro config
     m_angleRate = -1.0 * ((GetRightRate() - GetLeftRate()) / 2.0) /

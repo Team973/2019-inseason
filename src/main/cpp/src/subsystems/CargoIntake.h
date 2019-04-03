@@ -188,6 +188,7 @@ private:
 
     LogCell *m_currentCell;
     LogCell *m_voltageCell;
+    LogCell *m_time;
 
     MovingAverageFilter *m_intakeCurentFilter;
 };

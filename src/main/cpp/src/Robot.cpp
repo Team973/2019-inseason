@@ -98,11 +98,11 @@ Robot::~Robot() {
 
 void Robot::Initialize() {
     m_compressor->Enable();
-    m_logger->Start();
     m_logger->RegisterCell(m_matchIdentifier);
     m_logger->RegisterCell(m_batteryVoltage);
     m_logger->RegisterCell(m_matchTime);
     m_logger->RegisterCell(m_dateTime);
+    m_logger->Start();
 
     m_cameraServer->AddCamera(m_hatchCamera);
     m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
@@ -171,7 +171,7 @@ void Robot::AllStateContinuous() {
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
     m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
-    m_matchTime->LogDouble(Timer::GetMatchTime());
+    m_matchTime->LogDouble(GetMsecTime());
     m_dateTime->LogPrintf("%s", TIME_BUFFER);
 
     /*m_limelightHatch->SetLightOn();
@@ -182,16 +182,24 @@ void Robot::AllStateContinuous() {
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset());*/
 
-    SmartDashboard::PutNumber("limelight/throttle", m_drive->GetLimelightDriveWithSkew()->GetThrottlePidOut());
-    SmartDashboard::PutNumber("limelight/turn", m_drive->GetLimelightDriveWithSkew()->GetTurnPidOut());
-    SmartDashboard::PutNumber("limelight/skewcont", m_drive->GetLimelightDriveWithSkew()->GetGoalAngleComp());
+    SmartDashboard::PutNumber("misc/pdp/voltage", m_pdp->GetVoltage());
+    SmartDashboard::PutNumber(
+        "limelight/throttle",
+        m_drive->GetLimelightDriveWithSkew()->GetThrottlePidOut());
+    SmartDashboard::PutNumber(
+        "limelight/turn",
+        m_drive->GetLimelightDriveWithSkew()->GetTurnPidOut());
+    SmartDashboard::PutNumber(
+        "limelight/skewcont",
+        m_drive->GetLimelightDriveWithSkew()->GetGoalAngleComp());
 
     SmartDashboard::PutNumber("limelight/xoff", m_limelightHatch->GetXOffset());
     SmartDashboard::PutNumber("limelight/distance",
                               m_limelightHatch->GetHorizontalDistance());
-    SmartDashboard::PutNumber("limelight/skew", m_limelightHatch->GetTargetSkew());
-    SmartDashboard::PutNumber("limelight/target",
-                              m_limelightHatch->isTargetValid());
+    SmartDashboard::PutNumber("limelight/skew",
+                              m_limelightHatch->GetTargetSkew());
+    SmartDashboard::PutBoolean("limelight/target",
+                               m_limelightHatch->isTargetValid());
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

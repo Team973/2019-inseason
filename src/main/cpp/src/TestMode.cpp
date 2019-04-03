@@ -85,8 +85,10 @@ void Test::TestPeriodic() {
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
         case DriveMode::PIDDrive:
+            m_drive->PIDDrive(60.0, 0.0, Drive::RelativeTo::Now, 1.0);
             break;
         case DriveMode::PIDTurn:
+            m_drive->PIDTurn(90.0, Drive::RelativeTo::Now, 0.0);
             break;
     }
 
@@ -129,17 +131,17 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
             case PoofsJoysticks::LeftTrigger:
                 if (pressedP) {
                     m_driveMode = DriveMode::PIDDrive;
-                    m_drive->PIDDrive(60.0, 0.0, Drive::RelativeTo::Now, 1.0);
                 }
                 else {
+                    m_driveMode = DriveMode::Openloop;
                 }
                 break;
             case PoofsJoysticks::RightTrigger:
                 if (pressedP) {
                     m_driveMode = DriveMode::PIDTurn;
-                    m_drive->PIDTurn(90.0, Drive::RelativeTo::Now, 0.0);
                 }
                 else {
+                    m_driveMode = DriveMode::Openloop;
                 }
                 break;
             case PoofsJoysticks::LeftBumper:
