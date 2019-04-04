@@ -17,7 +17,7 @@ using namespace frc;
 namespace frc973 {
 
 // Drive pid takes in error in inches and outputs velocity in inches/sec
-static constexpr double DRIVE_PID_KP = 0.0;
+static constexpr double DRIVE_PID_KP = 0.2;
 static constexpr double DRIVE_PID_KI = 0.0;
 static constexpr double DRIVE_PID_KD = 0.0;
 
@@ -63,14 +63,15 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
     m_prevDist = state->GetDist();
     m_prevAngle = state->GetAngle();
 
-    double throttle =m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist);
-        /*Util::bound(m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist), -m_vmax, m_vmax) *
-        m_speedCap;*/
+    double throttle =
+        m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist);
+    /*Util::bound(m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist),
+    -m_vmax, m_vmax) * m_speedCap;*/
     double turn = m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle);
-        /*Util::bound(m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle), -m_avmax, m_avmax) *
-        m_speedCap * DRIVE_ARC_IN_PER_DEG;*/
+    /*Util::bound(m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle),
+    -m_avmax, m_avmax) * m_speedCap * DRIVE_ARC_IN_PER_DEG;*/
 
-    out->SetDriveOutputIPS(throttle - turn, throttle + turn);
+    out->SetDriveOutputVBus(throttle - turn, throttle + turn);
 
     if (fabs(m_targetDist - m_prevDist) < m_distTolerance &&
         fabs(state->GetRate()) < m_distRateTolerance &&
@@ -82,15 +83,14 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
         m_onTarget = false;
     }
 
-    DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf", throttle, turn);
-    DBStringPrintf(DBStringPos::DB_LINE5, "dt %5.0lf, dc %5.0lf", m_targetDist,
-                   m_prevDist);
-    DBStringPrintf(DBStringPos::DB_LINE6, "err d %.3lf a %.3lf",
-                   m_targetDist - m_prevDist, m_targetAngle - m_prevAngle);
+    /*DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf", throttle,
+    turn); DBStringPrintf(DBStringPos::DB_LINE5, "dt %5.0lf, dc %5.0lf",
+    m_targetDist, m_prevDist); DBStringPrintf(DBStringPos::DB_LINE6, "err d
+    %.3lf a %.3lf", m_targetDist - m_prevDist, m_targetAngle - m_prevAngle);
     DBStringPrintf(DB_LINE7, "Drive N: %f, S: %f, E: %f", m_prevDist,
                    m_targetDist, GetDistError());
     DBStringPrintf(DB_LINE8, "Turn N: %f, S: %f, E: %f", m_prevAngle,
-                   m_targetAngle, GetAngleError());
+                   m_targetAngle, GetAngleError());*/
 }
 /*
  * dist and angle are relative to current position

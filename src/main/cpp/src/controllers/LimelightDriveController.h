@@ -124,26 +124,26 @@ private:
     PID *m_turnPid;
     PID *m_throttlePid;
 
-    double m_DBThrottlePIDkP = 0.0;
-    double m_DBThrottlePIDkI = 0.0;
-    double m_DBThrottlePIDkD = 0.0;
+    double m_DBThrottlePIDkP;
+    double m_DBThrottlePIDkI;
+    double m_DBThrottlePIDkD;
     PID *m_DBThrottlePID;
-    double m_DBThrottlePIDOut = 0.0;
-    double m_DBTurnPIDkP = 0.0;
-    double m_DBTurnPIDkI = 0.0;
-    double m_DBTurnPIDkD = 0.0;
+    double m_DBThrottlePIDOut;
+    double m_DBTurnPIDkP;
+    double m_DBTurnPIDkI;
+    double m_DBTurnPIDkD;
     PID *m_DBTurnPID;
-    double m_DBTurnPIDOut = 0.0;
-    double m_DBGoalAngleCompkP = 0.0;
-    double m_DBGoalAngleComp = 0.0;
-    double m_DBThrottleFeedForward = 0.0;
-    double m_DBHatchVisionOffset = 0.0;
-    double m_DBCargoVisionOffset = 0.0;
-    double m_DBDistanceSetpointRocket = 0.0;
-    double m_DBDistanceSetpointCargoBay = 0.0;
-    double m_DBThrottleMin = 0.0;
-    double m_DBThrottleMax = 0.0;
+    double m_DBTurnPIDOut;
+    double m_DBGoalAngleCompkP;
+    double m_DBGoalAngleComp;
+    double m_DBThrottleFeedForward;
+    double m_DBHatchVisionOffset;
+    double m_DBCargoVisionOffset;
+    double m_DBDistanceSetpointRocket;
+    double m_DBDistanceSetpointCargoBay;
+    double m_DBThrottleMin;
+    double m_DBThrottleMax;
 
-    double skew_comp = 0.0;
+    double m_skew_comp;
 };
 }

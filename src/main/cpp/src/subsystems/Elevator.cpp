@@ -31,8 +31,8 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_elevatorMotorA->SetInverted(false);
 
     m_elevatorMotorA->Config_PID(0, 1.5, 0.0, 0.0, 0.0, 10);
-    m_elevatorMotorA->ConfigMotionCruiseVelocity(3750.0 * 2.0, 10);
-    m_elevatorMotorA->ConfigMotionAcceleration(5000.0 * 2.0, 10);
+    m_elevatorMotorA->ConfigMotionCruiseVelocity(3750.0 * 1.5, 10);
+    m_elevatorMotorA->ConfigMotionAcceleration(5000.0 * 1.5, 10);
     m_elevatorMotorA->SelectProfileSlot(0, 0);
 
     m_elevatorMotorA->EnableCurrentLimit(true);
@@ -126,11 +126,11 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     m_voltageMasterCell->LogDouble(m_elevatorMotorA->GetMotorOutputVoltage());
     m_controlModeCell->LogInt(m_elevatorState);
     m_powerInputCell->LogDouble(m_power);
-    DBStringPrintf(DBStringPos::DB_LINE0, "ep:%2.2lf ev:%2.2lf", GetPosition(),
-                   (float)m_elevatorMotorA->GetSelectedSensorVelocity(0));
+    /*DBStringPrintf(DBStringPos::DB_LINE0, "ep:%2.2lf ev:%2.2lf",
+    GetPosition(), (float)m_elevatorMotorA->GetSelectedSensorVelocity(0));
     DBStringPrintf(DBStringPos::DB_LINE5, "eout:%2.2lf ec:%2.2lf",
                    m_elevatorMotorA->GetMotorOutputPercent(),
-                   m_elevatorMotorA->GetOutputCurrent());
+                   m_elevatorMotorA->GetOutputCurrent());*/
     HallZero();
 
     switch (m_elevatorState) {
@@ -141,13 +141,13 @@ void Elevator::TaskPeriodic(RobotMode mode) {
             if (GetElevatorHall()) {
                 m_elevatorMotorA->Set(
                     ControlMode::PercentOutput,
-                    Util::bound(pow(m_joystickControl, 3.0), 0.0, 0.3));
+                    Util::bound(pow(m_joystickControl, 3.0), 0.0, 0.5));
             }
             else {
                 m_elevatorMotorA->Set(ControlMode::PercentOutput,
                                       Util::bound(pow(m_joystickControl, 3.0) +
                                                       ELEVATOR_FEED_FORWARD,
-                                                  -0.3, 0.3));
+                                                  -0.5, 0.5));
             }
             break;
         case manualVoltage:

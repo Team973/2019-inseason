@@ -1,4 +1,6 @@
 #include "lib/sensors/Limelight.h"
+#include "lib/util/WrapDash.h"
+#include "stdio.h"
 
 using namespace frc;
 
@@ -18,7 +20,12 @@ Limelight::Limelight(const char *name, bool inverted)
         , m_verticalOffset(0.0)
         , m_targetArea(0.0)
         , m_targetSkew(0.0)
-        , m_latency(0.0) {
+        , m_latency(0.0)
+        , m_DBTargetHeight(0.0)
+        , m_DBCameraHeight(0.0)
+        , m_DBCameraAngle(0.0)
+        , m_DBCameraBumperOffset(0.0)
+        , m_DBDistance(0.0) {
 }
 
 Limelight::~Limelight() {
@@ -219,7 +226,14 @@ double Limelight::GetHorizontalDistance() {
     }
 }
 
+double Limelight::FindCameraAngle() {
+    return atan((m_DBTargetHeight - m_DBCameraHeight) /
+                    (m_DBDistance + m_DBCameraBumperOffset) -
+                (this->GetYOffset() * (Constants::PI / 180.0)));
+}
+
 void Limelight::UpdateLimelightDB() {
+    FindCameraAngle();
     m_DBTargetHeight =
         stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(4, 8));
     m_DBCameraAngle =
@@ -229,10 +243,14 @@ void Limelight::UpdateLimelightDB() {
         stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(16, 20));
     m_DBCameraHeight =
         stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(14, 18));
+    m_DBDistance =
+        stod(SmartDashboard::GetString("DB/String 8", "0.0").substr(6, 10));
+    DBStringPrintf(DB_LINE8, "Eq: D:%2.2lf A:%2.2lf", m_DBDistance, FindCameraAngle());
 }
 
 void Limelight::CreateLimelightDB() {
     DBStringPrintf(DB_LINE6, "TH: 29.00 CH: 47.00");
     DBStringPrintf(DB_LINE7, "CA: -27.30 CBO: 19.25");
+    DBStringPrintf(DB_LINE8, "Eq: D:00.00");
 }
 }

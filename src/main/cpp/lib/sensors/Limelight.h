@@ -7,8 +7,10 @@
 
 #include "frc/WPILib.h"
 #include <iostream>
+#include "stdio.h"
 #include "math.h"
 #include "lib/util/WrapDash.h"
+#include "lib/util/Util.h"
 #include "lib/filters/BullshitFilter.h"
 #include "networktables/NetworkTable.h"
 #include "networktables/NetworkTableInstance.h"
@@ -232,6 +234,8 @@ public:
      */
     double GetHorizontalDistance();
 
+    double FindCameraAngle();
+
     /**
      * Updates all DBString variables
      */
@@ -270,9 +274,10 @@ private:
     static constexpr double TARGET_ASPECT_RATIO =
         6.0 / 15.0;  // Constant for the targets aspect ratio
 
-    double m_DBTargetHeight = 0.0;
-    double m_DBCameraHeight = 0.0;
-    double m_DBCameraAngle = 0.0;
-    double m_DBCameraBumperOffset = 0.0;
+    double m_DBTargetHeight;
+    double m_DBCameraHeight;
+    double m_DBCameraAngle;
+    double m_DBCameraBumperOffset;
+    double m_DBDistance;
 };
 }

@@ -21,7 +21,24 @@ LimelightDriveController::LimelightDriveController(
         , m_goalAngleComp(0.0)
         , m_turnPid(new PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD))
         , m_throttlePid(
-              new PID(THROTTLE_PID_KP, THROTTLE_PID_KI, THROTTLE_PID_KD)) {
+              new PID(THROTTLE_PID_KP, THROTTLE_PID_KI, THROTTLE_PID_KD))
+        , m_DBThrottlePIDkP(0.0)
+        , m_DBThrottlePIDkI(0.0)
+        , m_DBThrottlePIDkD(0.0)
+        , m_DBThrottlePIDOut(0.0)
+        , m_DBTurnPIDkP(0.0)
+        , m_DBTurnPIDkI(0.0)
+        , m_DBTurnPIDkD(0.0)
+        , m_DBTurnPIDOut(0.0)
+        , m_DBGoalAngleCompkP(0.0)
+        , m_DBGoalAngleComp(0.0)
+        , m_DBThrottleFeedForward(0.0)
+        , m_DBHatchVisionOffset(0.0)
+        , m_DBCargoVisionOffset(0.0)
+        , m_DBDistanceSetpointRocket(0.0)
+        , m_DBDistanceSetpointCargoBay(0.0)
+        , m_DBThrottleMin(0.0)
+        , m_DBThrottleMax(0.0) {
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -75,20 +92,20 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                           fabs(m_limelight->GetXOffset())),
         0.0, 1.0);
     if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
-        skew_comp = Util::bound(m_DBGoalAngleCompkP * skew * frame_multiplier *
-                                    dist_multiplier,
-                                SKEW_MIN, SKEW_MAX);
+        m_skew_comp = Util::bound(
+            m_DBGoalAngleCompkP * skew * frame_multiplier * dist_multiplier,
+            SKEW_MIN, SKEW_MAX);
     }
     else {
-        skew_comp = Util::bound(GOAL_ANGLE_COMP_KP * skew * frame_multiplier *
-                                    dist_multiplier,
-                                SKEW_MIN, SKEW_MAX);
+        m_skew_comp = Util::bound(
+            GOAL_ANGLE_COMP_KP * skew * frame_multiplier * dist_multiplier,
+            SKEW_MIN, SKEW_MAX);
     }
-    return -skew_comp;  // y = mx + b
-                        // y = degree of compensation
-                        // m = (1 - 0) / (max - min)
-                        // x = distance to target
-                        // b = y-int as plugged in to slope intercept equation
+    return -m_skew_comp;  // y = mx + b
+                          // y = degree of compensation
+                          // m = (1 - 0) / (max - min)
+                          // x = distance to target
+                          // b = y-int as plugged in to slope intercept equation
 }
 
 double LimelightDriveController::CalcTurnComp() {
@@ -160,10 +177,12 @@ void LimelightDriveController::CalcDriveOutput(
 
             m_DBTurnPIDOut = Util::bound(m_DBTurnPID->CalcOutputWithError(
                                              offset - m_DBHatchVisionOffset),
-                                         TURN_MIN, TURN_MAX) * CalcTurnComp();
+                                         TURN_MIN, TURN_MAX) *
+                             CalcTurnComp();
 
-            m_DBThrottlePIDOut = Util::bound(
-                m_DBThrottlePID->CalcOutputWithError(-distError), THROTTLE_MIN, THROTTLE_MAX);
+            m_DBThrottlePIDOut =
+                Util::bound(m_DBThrottlePID->CalcOutputWithError(-distError),
+                            THROTTLE_MIN, THROTTLE_MAX);
 
             m_DBGoalAngleComp = CalcScaleGoalAngleComp();
 
@@ -218,10 +237,10 @@ void LimelightDriveController::CalcDriveOutput(
             }
         }
     }
-    DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf",
+    /*DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf",
                    m_throttlePidOut, m_turnPidOut, m_goalAngleComp);
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
-                   m_leftSetpoint, m_rightSetpoint);
+                   m_leftSetpoint, m_rightSetpoint);*/
 
     out->SetDriveOutputVBus(m_leftSetpoint, m_rightSetpoint);
 
@@ -232,7 +251,6 @@ void LimelightDriveController::CalcDriveOutput(
     else {
         m_onTarget = false;
     }
-    delete m_DBThrottlePID, m_DBTurnPID;
 }
 
 void LimelightDriveController::UpdateLimelightDriveDB() {

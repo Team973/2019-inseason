@@ -33,9 +33,9 @@ void Test::TestInit() {
 
     if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
         m_drive->GetLimelightDriveWithSkew()->CreateLimelightDriveDB();
-        m_drive->GetLimelightDriveWithSkew()->UpdateLimelightDriveDB();
+        // m_drive->GetLimelightDriveWithSkew()->UpdateLimelightDriveDB();
         m_limelightHatch->CreateLimelightDB();
-        m_limelightHatch->UpdateLimelightDB();
+        // m_limelightHatch->UpdateLimelightDB();
     }
 }
 
@@ -47,7 +47,7 @@ void Test::TestPeriodic() {
     m_limelightHatch->SetCameraVisionCenter();
     // m_limelightHatch->SetCameraVisionLeft();
     // m_limelightHatch->SetCameraVisionRight();
-    DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
+    DBStringPrintf(DB_LINE9, "td:%2.2lf xo:%2.2lf s:%2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset(),
                    m_limelightHatch->GetTargetSkew());
@@ -130,7 +130,7 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
         switch (button) {
             case PoofsJoysticks::LeftTrigger:
                 if (pressedP) {
-                    m_driveMode = DriveMode::PIDDrive;
+                    m_driveMode = DriveMode::LimelightHatch;
                 }
                 else {
                     m_driveMode = DriveMode::Openloop;
@@ -138,14 +138,16 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case PoofsJoysticks::RightTrigger:
                 if (pressedP) {
-                    m_driveMode = DriveMode::PIDTurn;
+                    m_drive->GetLimelightDriveWithSkew()
+                        ->UpdateLimelightDriveDB();
+                    m_limelightHatch->UpdateLimelightDB();
                 }
                 else {
-                    m_driveMode = DriveMode::Openloop;
                 }
                 break;
             case PoofsJoysticks::LeftBumper:
                 if (pressedP) {
+                    m_drive->PIDDrive(60.0, 0.0, Drive::RelativeTo::Now, 1.0);
                 }
                 else {
                 }
