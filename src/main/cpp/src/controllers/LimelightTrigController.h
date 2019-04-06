@@ -14,6 +14,7 @@
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "src/subsystems/HatchIntake.h"
+#include "src/subsystems/Elevator.h"
 namespace frc973 {
 
 class PID;
@@ -30,7 +31,7 @@ public:
     LimelightTrigController(LogSpreadsheet *logger, Limelight *limelight,
                             ObservablePoofsJoystick *driverJoystick,
                             ObservableXboxJoystick *m_operatorJoystick,
-                            HatchIntake *hatchIntake);
+                            HatchIntake *hatchIntake, Elevator *elevator);
     virtual ~LimelightTrigController();
 
     /**
@@ -109,6 +110,7 @@ private:
     double m_leftSetpoint;
     double m_rightSetpoint;
     HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 

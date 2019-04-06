@@ -37,7 +37,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
              GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
              Limelight *limelightHatch, HatchIntake *hatchIntake,
-             ObservablePoofsJoystick *driverJoystick,
+             Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
              ObservableXboxJoystick *operatorJoystick)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
@@ -75,6 +75,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_gyroZero(0.0)
         , m_limelightHatch(limelightHatch)
         , m_hatchIntake(hatchIntake)
+        , m_elevator(elevator)
         , m_driverJoystick(driverJoystick)
         , m_operatorJoystick(operatorJoystick)
         , m_cheesyDriveController(new CheesyDriveController(limelightHatch))
@@ -90,7 +91,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               logger, limelightHatch, true, m_driverJoystick, m_hatchIntake))
         , m_limelightTrigDrive(new LimelightTrigController(
               logger, limelightHatch, m_driverJoystick, m_operatorJoystick,
-              m_hatchIntake))
+              m_hatchIntake, m_elevator))
         , m_assistedCheesyDriveHatchController(
               new AssistedCheesyDriveController(
                   m_limelightHatch,

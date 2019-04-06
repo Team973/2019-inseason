@@ -20,7 +20,8 @@ Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_joystickControl(0.0)
         , m_prevHall(true)
         , m_zeroingTime(0)
-        , m_elevatorState(ElevatorState::idle) {
+        , m_elevatorState(ElevatorState::idle)
+        , m_rocketScoreMode(RocketScoreMode::low) {
     this->m_scheduler->RegisterTask("Elevator", this, TASK_PERIODIC);
 
     m_elevatorMotorA->ConfigSelectedFeedbackSensor(
@@ -120,6 +121,13 @@ void Elevator::HallZero() {
     }
 }
 
+void Elevator::SetRocketScoreMode(Elevator::RocketScoreMode mode) {
+    m_rocketScoreMode = mode;
+}
+
+Elevator::RocketScoreMode Elevator::GetRocketScoreMode() {
+    return m_rocketScoreMode;
+}
 void Elevator::TaskPeriodic(RobotMode mode) {
     m_positionCell->LogDouble(GetPosition());
     m_currentMasterCell->LogDouble(m_elevatorMotorA->GetOutputCurrent());

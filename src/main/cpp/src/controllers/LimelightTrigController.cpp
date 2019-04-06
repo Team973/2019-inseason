@@ -8,13 +8,15 @@ namespace frc973 {
 LimelightTrigController::LimelightTrigController(
     LogSpreadsheet *logger, Limelight *limelight,
     ObservablePoofsJoystick *driverJoystick,
-    ObservableXboxJoystick *operatorJoystick, HatchIntake *hatchIntake)
+    ObservableXboxJoystick *operatorJoystick, HatchIntake *hatchIntake,
+    Elevator *elevator)
         : m_onTarget(false)
         , m_leftSetpoint(0.0)
         , m_rightSetpoint(0.0)
         , m_driverJoystick(driverJoystick)
         , m_operatorJoystick(operatorJoystick)
         , m_hatchIntake(hatchIntake)
+        , m_elevator(elevator)
         , m_throttle(0.0)
         , m_turn(0.0)
         , m_gyroAngle(0.0)
@@ -62,7 +64,7 @@ double LimelightTrigController::CalcTurnComp() {
 double LimelightTrigController::GetTargetDirectionConstant() {
     if (m_hatchIntake->GetHatchPuncherState() ==
             HatchIntake::HatchSolenoidState::manualPunch ||
-        m_operatorJoystick->GetRawButton(Xbox::BtnY)) {
+        m_elevator->GetRocketScoreMode() == Elevator::RocketScoreMode::middle) {
         if (m_driverJoystick->GetRawAxisWithDeadband(
                 PoofsJoysticks::RightXAxis) > 0.5) {
             if (fabs(m_gyroAngle) > 90.0) {
@@ -120,7 +122,8 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
     double skewAngle =
         180.0 - GetTargetDirectionConstant() - limelight_offset + m_gyroAngle;
     if (m_hatchIntake->GetHatchPuncherState() ==
-        HatchIntake::HatchSolenoidState::manualPunch) {
+            HatchIntake::HatchSolenoidState::manualPunch ||
+        m_elevator->GetRocketScoreMode() == Elevator::RocketScoreMode::middle) {
         distError = distance - DISTANCE_SETPOINT_ROCKET;
     }
     else {

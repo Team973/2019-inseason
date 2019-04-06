@@ -1,6 +1,7 @@
 #include "src/TestMode.h"
 #include "src/controllers/ConstantArcSplineDriveController.h"
 #include "lib/profiles/MotionProfile.h"
+#include <math.h>
 
 using namespace frc;
 
@@ -39,6 +40,12 @@ void Test::TestPeriodic() {
     m_limelightHatch->SetCameraVisionCenter();
     // m_limelightHatch->SetCameraVisionLeft();
     // m_limelightHatch->SetCameraVisionRight();
+    double camera_angle =
+        (atan((Limelight::TARGET_HEIGHT - Limelight::CAMERA_HEIGHT) /
+              (60.0 + Limelight::CAMERA_BUMPER_OFFSET)) -
+         m_limelightHatch->GetYOffset() * Constants::RAD_PER_DEG) *
+        Constants::DEG_PER_RAD;
+    DBStringPrintf(DB_LINE1, "ang:%2.2lf", camera_angle);
     DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset(),

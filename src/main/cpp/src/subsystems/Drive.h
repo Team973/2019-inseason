@@ -12,6 +12,7 @@
 #include "lib/helpers/GreySparkMax.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/HatchIntake.h"
+#include "src/subsystems/Elevator.h"
 #include "lib/bases/DriveBase.h"
 #include "networktables/NetworkTableInstance.h"
 #include "lib/logging/LogSpreadsheet.h"
@@ -78,7 +79,7 @@ public:
           GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
           Limelight *limelightHatch, HatchIntake *hatchIntake,
-          ObservablePoofsJoystick *driverJoystick,
+          Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
           ObservableXboxJoystick *operatorJoystick);
     virtual ~Drive();
 
@@ -342,6 +343,7 @@ private:
     double m_gyroZero;
     Limelight *m_limelightHatch;
     HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 

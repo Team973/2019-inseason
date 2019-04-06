@@ -41,6 +41,12 @@ public:
         joystickControl /**< Controlling with the joystick. */
     };
 
+    enum RocketScoreMode
+    {
+        low,
+        middle
+    };
+
     static constexpr double GROUND = 0.2; /**< Ground preset. */
     static constexpr double LOW_ROCKET_HATCH =
         0.5; /**< Low rocket hatch preset. */
@@ -136,6 +142,9 @@ public:
      */
     void HallZero();
 
+    void SetRocketScoreMode(RocketScoreMode mode);
+    RocketScoreMode GetRocketScoreMode();
+
     /**
      * Update function synonymous to TeleopContinuous that gets called
      * continuously.
@@ -157,6 +166,7 @@ private:
     uint32_t m_zeroingTime;
 
     ElevatorState m_elevatorState;
+    RocketScoreMode m_rocketScoreMode;
 
     LogCell *m_positionCell;
     LogCell *m_currentMasterCell;
