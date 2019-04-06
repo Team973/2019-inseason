@@ -60,11 +60,11 @@ Robot::Robot()
         , m_dateTime(new LogCell("Date and Time", 32, true))
         , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
                                         m_hatchPuncher, m_limelightHatch))
-        , m_drive(new Drive(this, m_logger, m_leftDriveSparkA,
-                            m_leftDriveSparkB, m_leftDriveSparkC,
-                            m_rightDriveSparkA, m_rightDriveSparkB,
-                            m_rightDriveSparkC, m_stingerDriveMotor, m_gyro,
-                            m_limelightHatch, m_hatchIntake, m_driverJoystick))
+        , m_drive(new Drive(
+              this, m_logger, m_leftDriveSparkA, m_leftDriveSparkB,
+              m_leftDriveSparkC, m_rightDriveSparkA, m_rightDriveSparkB,
+              m_rightDriveSparkC, m_stingerDriveMotor, m_gyro, m_limelightHatch,
+              m_hatchIntake, m_driverJoystick, m_operatorJoystick))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick,
                                   m_elevatorHall))

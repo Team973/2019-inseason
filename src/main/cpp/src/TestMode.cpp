@@ -73,6 +73,9 @@ void Test::TestPeriodic() {
         case DriveMode::LimelightHatch:
             m_drive->LimelightDriveWithSkew();
             break;
+        case DriveMode::LimelightTrig:
+            m_drive->LimelightTrigDrive();
+            break;
         case DriveMode::AssistedCheesy:
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
@@ -138,8 +141,10 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case PoofsJoysticks::LeftBumper:
                 if (pressedP) {
+                    m_driveMode = DriveMode::LimelightTrig;
                 }
                 else {
+                    m_driveMode = DriveMode::Openloop;
                 }
                 break;
             case PoofsJoysticks::RightBumper:  // Quickturn

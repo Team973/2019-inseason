@@ -16,6 +16,7 @@
 #include "networktables/NetworkTableInstance.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
+#include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/trajectories/structs.h"
 
 using namespace frc;
@@ -77,7 +78,8 @@ public:
           GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
           Limelight *limelightHatch, HatchIntake *hatchIntake,
-          ObservablePoofsJoystick *driverJoystick);
+          ObservablePoofsJoystick *driverJoystick,
+          ObservableXboxJoystick *operatorJoystick);
     virtual ~Drive();
 
     /**
@@ -341,6 +343,7 @@ private:
     Limelight *m_limelightHatch;
     HatchIntake *m_hatchIntake;
     ObservablePoofsJoystick *m_driverJoystick;
+    ObservableXboxJoystick *m_operatorJoystick;
 
     CheesyDriveController *m_cheesyDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;
