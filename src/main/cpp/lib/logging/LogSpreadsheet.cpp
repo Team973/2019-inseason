@@ -118,7 +118,7 @@ void LogSpreadsheet::Start() {
 
     char buffer[81];
 
-    snprintf(buffer, sizeof(buffer) - 1, "/home/lvuser/log-%llu.txt",
+    snprintf(buffer, sizeof(buffer) - 1, "/home/lvuser/log-%llu.csv",
              RobotController::GetFPGATime());
 
     m_oFile = new std::ofstream(buffer);
