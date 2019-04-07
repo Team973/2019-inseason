@@ -15,6 +15,7 @@
 #include <cerrno>
 #include <cstring>
 #include <time.h>
+#include <sys/statvfs.h>
 
 namespace frc973 {
 
@@ -114,6 +115,21 @@ void LogSpreadsheet::Start() {
     if (m_initialized) {
         printf("You can only initialize a table once\n");
         return;
+    }
+
+    struct statvfs statvfsBuffer;
+
+    int ret = statvfs("/", &statvfsBuffer);
+
+    if (!ret) {
+        const double available =
+            (double)(statvfsBuffer.f_bfree * statvfsBuffer.f_frsize) /
+            (1024 * 1024);
+
+        if (available < 50.0) {
+            fprintf(stderr, "Not enough available space for logging!\n");
+            return;
+        }
     }
 
     char buffer[81];
