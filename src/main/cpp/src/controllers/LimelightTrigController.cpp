@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "lib/helpers/PID.h"
 #include <math.h>
+#include <cmath>
 
 namespace frc973 {
 LimelightTrigController::LimelightTrigController(
@@ -84,23 +85,23 @@ double LimelightTrigController::GetTargetDirectionConstant() {
         }
     }
     else {
-        int gyroRounded = round(m_gyroAngle / 90) * 90;
+        int gyroRounded = roundl(m_gyroAngle / 90.0) * 90.0;
         switch (gyroRounded) {
-            case 0:
-                return FRONT_CARGO;
-                break;
-            case 90:
-                return RIGHT_CARGO_BAY;
-                break;
-            case -90:
-                return LEFT_CARGO_BAY;
-                break;
-            case 180:
-            case -180:
-            default:
-                return HUMAN_LOADING_STATION;
-                break;
-        }
+             case 0:
+                 return FRONT_CARGO;
+                 break;
+             case 90:
+                 return RIGHT_CARGO_BAY;
+                 break;
+             case -90:
+             return LEFT_CARGO_BAY;
+                 break;
+             case 180:
+             case -180:
+             default:
+                 return HUMAN_LOADING_STATION;
+             break;
+         }
     }
 }
 
@@ -118,9 +119,21 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
     double limelight_offset = m_limelight->GetXOffset();
     double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError;
+
     m_gyroAngle = state->GetAngle();
-    double skewAngle =
-        180.0 - GetTargetDirectionConstant() - limelight_offset + m_gyroAngle;
+
+    if (fabs(m_gyroAngle) >= 180.0) {
+        double rev = floor((m_gyroAngle + 180.0) / 360.0);
+        m_gyroAngle -= rev * 360.0;
+    }
+    double target_const = GetTargetDirectionConstant();
+    double skewAngle = 180.0 - target_const - limelight_offset + m_gyroAngle;
+
+    if (fabs(skewAngle >= 90.0)){
+        double rev = floor((skewAngle + 90.0) / 360.0);
+        skewAngle -= rev * 360.0;
+    }
+
     if (m_hatchIntake->GetHatchPuncherState() ==
             HatchIntake::HatchSolenoidState::manualPunch ||
         m_elevator->GetRocketScoreMode() == Elevator::RocketScoreMode::middle) {
@@ -147,13 +160,15 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
         m_skewPidOut = Util::bound(m_skewPid->CalcOutputWithError(skewAngle),
                                    SKEW_MIN, SKEW_MAX);
 
-        m_leftSetpoint = m_throttlePidOut - m_turnPidOut - m_skewPidOut;
-        m_rightSetpoint = m_throttlePidOut + m_turnPidOut + m_skewPidOut;
+        m_leftSetpoint = m_skewPidOut;//m_throttlePidOut - m_turnPidOut - m_skewPidOut;
+        m_rightSetpoint = -m_skewPidOut;//m_throttlePidOut + m_turnPidOut + m_skewPidOut;
     }
     DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf",
                    m_throttlePidOut, m_turnPidOut, m_skewPidOut);
-    DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
-                   m_leftSetpoint, m_rightSetpoint);
+    DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf g:%3.1lf",
+                   m_leftSetpoint, m_rightSetpoint, m_gyroAngle);
+    DBStringPrintf(DBStringPos::DB_LINE6, "tc:%3.1lf g:%3.1lf sk:%3.1lf",
+                   target_const, m_gyroAngle, skewAngle);
 
     out->SetDriveOutputVBus(m_leftSetpoint, m_rightSetpoint);
 

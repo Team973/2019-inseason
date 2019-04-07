@@ -56,7 +56,5 @@ void Stinger::RetractGateLatch() {
 }
 
 void Stinger::TaskPeriodic(RobotMode mode) {
-    DBStringPrintf(DBStringPos::DB_LINE6, "pldrivec:%2.2lf",
-                   m_stingerDriveMotor->GetOutputCurrent());
 }
 }

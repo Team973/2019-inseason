@@ -45,7 +45,6 @@ void Test::TestPeriodic() {
               (60.0 + Limelight::CAMERA_BUMPER_OFFSET)) -
          m_limelightHatch->GetYOffset() * Constants::RAD_PER_DEG) *
         Constants::DEG_PER_RAD;
-    DBStringPrintf(DB_LINE1, "ang:%2.2lf", camera_angle);
     DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset(),

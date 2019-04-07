@@ -86,7 +86,7 @@ public:
     static constexpr double SKEW_MAX = 0.2;
     static constexpr double TURN_MIN = -0.4;
     static constexpr double TURN_MAX = 0.4;
-    static constexpr double SKEW_PID_KP = 0.025;
+    static constexpr double SKEW_PID_KP = 0.012;
     static constexpr double SKEW_PID_KI = 0.0;
     static constexpr double SKEW_PID_KD = 0.0;
     static constexpr double TURN_PID_KP = 0.012;  // prac-sac
@@ -97,8 +97,8 @@ public:
     static constexpr double THROTTLE_PID_KD = 0.003;
 
     static constexpr double FRONT_CARGO = 180.0;
-    static constexpr double LEFT_CARGO_BAY = -90.0;
-    static constexpr double RIGHT_CARGO_BAY = 90.0;
+    static constexpr double LEFT_CARGO_BAY = 90.0;
+    static constexpr double RIGHT_CARGO_BAY = -90.0;
     static constexpr double LEFT_FRONT_ROCKET = -150.0;
     static constexpr double RIGHT_FRONT_ROCKET = 150.0;
     static constexpr double LEFT_BACK_ROCKET = -30.0;
