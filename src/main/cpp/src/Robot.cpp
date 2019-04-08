@@ -52,6 +52,7 @@ Robot::Robot()
         , m_cargoPlatformLock(
               new Solenoid(PCM_CAN_ID, CARGO_PLATFORM_LOCK_PCM_ID))
         , m_hatchRollers(new GreyTalonSRX(HATCH_ROLLER_CAN_ID))
+        , m_pigeonGyro(new PigeonIMU(m_hatchRollers))
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
         , m_limelightHatch(new Limelight("limelight-hatch", false))
         , m_matchIdentifier(new LogCell("Match Identifier", 64))
@@ -66,7 +67,7 @@ Robot::Robot()
         , m_drive(new Drive(
               this, m_logger, m_leftDriveSparkA, m_leftDriveSparkB,
               m_leftDriveSparkC, m_rightDriveSparkA, m_rightDriveSparkB,
-              m_rightDriveSparkC, m_stingerDriveMotor, m_gyro, m_limelightHatch,
+              m_rightDriveSparkC, m_stingerDriveMotor, m_gyro, m_pigeonGyro, m_limelightHatch,
               m_hatchIntake, m_elevator, m_driverJoystick, m_operatorJoystick))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoPlatformLock, m_cargoWrist,
@@ -107,6 +108,8 @@ void Robot::Initialize() {
     m_cameraServer->AddCamera(m_hatchCamera);
     m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
     m_greyCam.SetSource(m_hatchCamera);
+
+    m_pigeonGyro->SetFusedHeading(0,10);
 }
 
 void Robot::DisabledStart() {

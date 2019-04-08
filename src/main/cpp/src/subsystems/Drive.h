@@ -77,7 +77,7 @@ public:
           GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
           GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
           GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
-          GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+          GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro, PigeonIMU *pigeon,
           Limelight *limelightHatch, HatchIntake *hatchIntake,
           Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
           ObservableXboxJoystick *operatorJoystick);
@@ -86,7 +86,7 @@ public:
     /**
      * Zero encoders and gyroscope.
      */
-    void Zero();
+    void ZeroGyro();
 
     /**
      * Set a drive to use the Cheesy drive controller.
@@ -340,6 +340,7 @@ private:
     double m_rightPosZero;
 
     ADXRS450_Gyro *m_gyro;
+    PigeonIMU *m_pigeonGyro;
     double m_gyroZero;
     Limelight *m_limelightHatch;
     HatchIntake *m_hatchIntake;

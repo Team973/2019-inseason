@@ -101,6 +101,7 @@ private:
         Openloop,
         LimelightDriveWithSkew,
         LimelightDriveWithoutSkew,
+        LimelightDriveTrueSkew,
         AssistedCheesyHatch,
         Cheesy
     };

@@ -35,7 +35,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
              GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
              GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
-             GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+             GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro, PigeonIMU *pigeon,
              Limelight *limelightHatch, HatchIntake *hatchIntake,
              Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
              ObservableXboxJoystick *operatorJoystick)
@@ -72,6 +72,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_leftPosZero(0.0)
         , m_rightPosZero(0.0)
         , m_gyro(gyro)
+        , m_pigeonGyro(pigeon)
         , m_gyroZero(0.0)
         , m_limelightHatch(limelightHatch)
         , m_hatchIntake(hatchIntake)
@@ -249,6 +250,12 @@ LimelightDriveController *Drive::LimelightDriveWithSkew() {
 }
 
 LimelightTrigController *Drive::LimelightTrigDrive() {
+    double gyro = GetAngle();
+    if (fabs(gyro) >= 180.0) {
+        double rev = floor((gyro + 180.0) / 360.0);
+        gyro -= rev * 360.0;
+    }
+    m_limelightTrigDrive->SetAngle(gyro);
     this->SetDriveController(m_limelightTrigDrive);
     m_driveControllerLog->LogPrintf("Limelight Trig Drive");
 
@@ -275,6 +282,10 @@ double Drive::GetRightDist() const {
     return m_rightDriveSparkA->GetEncoder().GetPosition() *
                DRIVE_DIST_PER_REVOLUTION -
            m_rightPosZero;
+}
+
+void Drive::ZeroGyro() {
+    m_pigeonGyro->SetFusedHeading(0, 10);
 }
 
 double Drive::GetLeftRate() const {
@@ -378,7 +389,7 @@ void Drive::DisableDriveCurrentLimit() {
 }
 
 void Drive::TaskPeriodic(RobotMode mode) {
-    m_angle = m_gyro->GetAngle();
+    m_angle = -m_pigeonGyro->GetFusedHeading();
 
     m_targetLog->LogDouble(m_limelightHatch->isTargetValid());
     m_xOffsetLog->LogDouble(m_limelightHatch->GetXOffset());

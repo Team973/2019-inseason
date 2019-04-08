@@ -21,10 +21,13 @@ LimelightTrigController::LimelightTrigController(
         , m_throttle(0.0)
         , m_turn(0.0)
         , m_gyroAngle(0.0)
+        , m_targetConst(0.0)
         , m_limelight(limelight)
         , m_throttlePidOut(0.0)
         , m_turnPidOut(0.0)
         , m_skewPidOut(0.0)
+        , m_scoreMode(Elevator::RocketScoreMode::low)
+        , m_puncherState(HatchIntake::HatchSolenoidState::manualRetract)
         , m_turnPid(new PID(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD))
         , m_throttlePid(
               new PID(THROTTLE_PID_KP, THROTTLE_PID_KI, THROTTLE_PID_KD))
@@ -52,6 +55,9 @@ void LimelightTrigController::Start(DriveControlSignalReceiver *out) {
     m_limelight->SetCameraVisionCenter();
     m_limelight->SetLightOn();
     m_onTarget = false;
+    m_targetConst = GetTargetDirectionConstant();
+    m_puncherState = m_hatchIntake->GetHatchPuncherState();
+    m_scoreMode = m_elevator->GetRocketScoreMode();
 }
 
 double LimelightTrigController::CalcTurnComp() {
@@ -62,10 +68,13 @@ double LimelightTrigController::CalcTurnComp() {
         0.5, 1.0);
 }
 
+void LimelightTrigController::SetAngle(double angle) {
+    m_gyroAngle = angle;
+}
+
 double LimelightTrigController::GetTargetDirectionConstant() {
-    if (m_hatchIntake->GetHatchPuncherState() ==
-            HatchIntake::HatchSolenoidState::manualPunch ||
-        m_elevator->GetRocketScoreMode() == Elevator::RocketScoreMode::middle) {
+    if (m_puncherState == HatchIntake::HatchSolenoidState::manualPunch ||
+        m_scoreMode == Elevator::RocketScoreMode::middle) {
         if (m_driverJoystick->GetRawAxisWithDeadband(
                 PoofsJoysticks::RightXAxis) > 0.5) {
             if (fabs(m_gyroAngle) > 90.0) {
@@ -120,23 +129,24 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
     double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError;
 
-    m_gyroAngle = state->GetAngle();
-
-    if (fabs(m_gyroAngle) >= 180.0) {
-        double rev = floor((m_gyroAngle + 180.0) / 360.0);
-        m_gyroAngle -= rev * 360.0;
+    Elevator::RocketScoreMode scoreMode = m_elevator->GetRocketScoreMode();
+    HatchIntake::HatchSolenoidState puncherState = m_hatchIntake->GetHatchPuncherState();
+    if (m_scoreMode != scoreMode || m_puncherState != puncherState) {
+        m_targetConst = GetTargetDirectionConstant();
+        m_scoreMode = scoreMode;
+        m_puncherState = puncherState;
     }
-    double target_const = GetTargetDirectionConstant();
-    double skewAngle = 180.0 - target_const - limelight_offset + m_gyroAngle;
+
+    double skewAngle = 180.0 - m_targetConst - limelight_offset + m_gyroAngle;
 
     if (fabs(skewAngle >= 90.0)){
         double rev = floor((skewAngle + 90.0) / 360.0);
         skewAngle -= rev * 360.0;
     }
 
-    if (m_hatchIntake->GetHatchPuncherState() ==
+    if (m_puncherState ==
             HatchIntake::HatchSolenoidState::manualPunch ||
-        m_elevator->GetRocketScoreMode() == Elevator::RocketScoreMode::middle) {
+        m_scoreMode == Elevator::RocketScoreMode::middle) {
         distError = distance - DISTANCE_SETPOINT_ROCKET;
     }
     else {
@@ -160,15 +170,15 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
         m_skewPidOut = Util::bound(m_skewPid->CalcOutputWithError(skewAngle),
                                    SKEW_MIN, SKEW_MAX);
 
-        m_leftSetpoint = m_skewPidOut;//m_throttlePidOut - m_turnPidOut - m_skewPidOut;
-        m_rightSetpoint = -m_skewPidOut;//m_throttlePidOut + m_turnPidOut + m_skewPidOut;
+        m_leftSetpoint = m_throttlePidOut - m_turnPidOut;// + m_skewPidOut;
+        m_rightSetpoint = m_throttlePidOut + m_turnPidOut;// - m_skewPidOut;
     }
     DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf",
                    m_throttlePidOut, m_turnPidOut, m_skewPidOut);
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf g:%3.1lf",
                    m_leftSetpoint, m_rightSetpoint, m_gyroAngle);
     DBStringPrintf(DBStringPos::DB_LINE6, "tc:%3.1lf g:%3.1lf sk:%3.1lf",
-                   target_const, m_gyroAngle, skewAngle);
+                   m_targetConst, m_gyroAngle, skewAngle);
 
     out->SetDriveOutputVBus(m_leftSetpoint, m_rightSetpoint);
 

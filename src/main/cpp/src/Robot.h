@@ -113,6 +113,7 @@ private:
     VideoSink m_greyCam;
 
     GreyTalonSRX *m_hatchRollers;
+    PigeonIMU *m_pigeonGyro;
     Solenoid *m_hatchPuncher;
 
     Limelight *m_limelightHatch;

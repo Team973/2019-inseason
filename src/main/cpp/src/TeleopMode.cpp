@@ -92,6 +92,9 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DB_LINE2, "Drive lime no skew");
             m_drive->LimelightDriveWithoutSkew();
             break;
+        case DriveMode::LimelightDriveTrueSkew:
+            m_drive->LimelightTrigDrive();
+            break;
         case DriveMode::AssistedCheesyHatch:
             DBStringPrintf(DB_LINE2, "Drive Assisted Cheesy");
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
@@ -305,7 +308,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::LimelightDriveWithoutSkew;
+                            m_driveMode = DriveMode::LimelightDriveTrueSkew;
                             break;
                         case GameMode::CargoPeriodic:
                             break;
@@ -510,6 +513,9 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                     }
                 }
+                break;
+            case Xbox::LJoystickBtn:
+                m_drive->ZeroGyro();
                 break;
         }
     }

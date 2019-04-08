@@ -50,6 +50,8 @@ public:
 
     double CalcTurnComp();
 
+    void SetAngle(double angle);
+
     /**
      * Checks with the controller to see if we are on target.
      * @return Whether the controller is at/near setpoint.
@@ -86,7 +88,7 @@ public:
     static constexpr double SKEW_MAX = 0.2;
     static constexpr double TURN_MIN = -0.4;
     static constexpr double TURN_MAX = 0.4;
-    static constexpr double SKEW_PID_KP = 0.012;
+    static constexpr double SKEW_PID_KP = 0.01;
     static constexpr double SKEW_PID_KI = 0.0;
     static constexpr double SKEW_PID_KD = 0.0;
     static constexpr double TURN_PID_KP = 0.012;  // prac-sac
@@ -117,12 +119,16 @@ private:
     double m_throttle;
     double m_turn;
     double m_gyroAngle;
+    double m_targetConst;
 
     Limelight *m_limelight;
 
     double m_throttlePidOut;
     double m_turnPidOut;
     double m_skewPidOut;
+
+    Elevator::RocketScoreMode m_scoreMode;
+    HatchIntake::HatchSolenoidState m_puncherState;
 
     PID *m_turnPid;
     PID *m_throttlePid;
