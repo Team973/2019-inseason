@@ -139,9 +139,9 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
 
     double skewAngle = 180.0 - m_targetConst - limelight_offset + m_gyroAngle;
 
-    if (fabs(skewAngle >= 90.0)){
-        double rev = floor((skewAngle + 90.0) / 360.0);
-        skewAngle -= rev * 360.0;
+    if (fabs(skewAngle >= 90.0)) {
+        double rev = floor((skewAngle + 90.0) / 180.0); // skew 90 to -90 == 180 or 1 rev, nothing behind the face of the hatch target
+        skewAngle -= rev * 180.0;
     }
 
     if (m_puncherState ==
@@ -154,7 +154,7 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
     }
 
     if (!m_limelight->isTargetValid() || m_onTarget) {
-        // Proof on concept: Allow driver to turn to get a target, should only
+        // Proof of concept: Allow driver to turn to get a target, should only
         // be when !isTargetValid(), so break away from the || above
         m_leftSetpoint = 0.0;   //- driverComp;
         m_rightSetpoint = 0.0;  //+ driverComp;
