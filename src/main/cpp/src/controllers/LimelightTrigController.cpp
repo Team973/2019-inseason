@@ -170,8 +170,8 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
         m_skewPidOut = Util::bound(m_skewPid->CalcOutputWithError(skewAngle),
                                    SKEW_MIN, SKEW_MAX);
 
-        m_leftSetpoint = m_throttlePidOut - m_turnPidOut;// + m_skewPidOut;
-        m_rightSetpoint = m_throttlePidOut + m_turnPidOut;// - m_skewPidOut;
+        m_leftSetpoint = m_throttlePidOut - m_turnPidOut + m_skewPidOut;
+        m_rightSetpoint = m_throttlePidOut + m_turnPidOut - m_skewPidOut;
     }
     DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf",
                    m_throttlePidOut, m_turnPidOut, m_skewPidOut);
