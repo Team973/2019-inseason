@@ -285,11 +285,11 @@ void LimelightDriveController::UpdateLimelightDriveDB() {
 }
 
 void LimelightDriveController::CreateLimelightDriveDB() {
-    DBStringPrintf(DB_LINE0, "Th 0.0220 0.00 0.0030");
-    DBStringPrintf(DB_LINE1, "Tu 0.0120 0.00 0.0020");
+    DBStringPrintf(DB_LINE0, "Th 0.0180 0.00 0.0040");
+    DBStringPrintf(DB_LINE1, "Tu 0.0180 0.00 0.0020");
     DBStringPrintf(DB_LINE2, "AC:0.0120 Feed:+0.000");
     DBStringPrintf(DB_LINE3, "HO: -1.00 CO: +0.00");
-    DBStringPrintf(DB_LINE4, "D-S Ro:+0.00 Ca:-5.00");
+    DBStringPrintf(DB_LINE4, "D-S Ro:+4.00 Ca:-4.00");
     DBStringPrintf(DB_LINE5, "Min: -0.70 Max: +0.70");
 }
 }
