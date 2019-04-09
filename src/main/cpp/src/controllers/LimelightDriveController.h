@@ -73,7 +73,6 @@ public:
     static constexpr double DISTANCE_SETPOINT_ROCKET =
         0.0;  // in inches from target to robot bumper
     static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -5.0;  // prac-sac
-    static constexpr double PERIOD = 3.0;
     static constexpr double HATCH_VISION_OFFSET =
         -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
