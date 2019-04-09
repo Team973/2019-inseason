@@ -227,9 +227,9 @@ double Limelight::GetHorizontalDistance() {
 }
 
 double Limelight::FindCameraAngle() {
-    return atan((m_DBTargetHeight - m_DBCameraHeight) /
-                    (m_DBDistance + m_DBCameraBumperOffset) -
-                (this->GetYOffset() * (Constants::PI / 180.0)));
+    return (atan((m_DBTargetHeight - m_DBCameraHeight) /
+                    (m_DBDistance + m_DBCameraBumperOffset)) -
+                (this->GetYOffset() * Constants::RAD_PER_DEG)) * Constants::DEG_PER_RAD;
 }
 
 void Limelight::UpdateLimelightDB() {
@@ -251,6 +251,6 @@ void Limelight::UpdateLimelightDB() {
 void Limelight::CreateLimelightDB() {
     DBStringPrintf(DB_LINE6, "TH: 29.00 CH: 47.00");
     DBStringPrintf(DB_LINE7, "CA: -27.30 CBO: 19.25");
-    DBStringPrintf(DB_LINE8, "Eq: D:00.00");
+    DBStringPrintf(DB_LINE8, "Eq: D:60.0");
 }
 }

@@ -108,11 +108,11 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
                           // b = y-int as plugged in to slope intercept equation
 }
 
-double LimelightDriveController::CalcTurnComp() {
+double LimelightDriveController::CalcTurnComp(double horizontalDistance) {
     return Util::bound(
         Util::interpolate(Util::Point(TURN_COMP_DISTANCE_MIN, 0.5),
                           Util::Point(TURN_COMP_DISTANCE_MAX, 1.0),
-                          m_limelight->GetHorizontalDistance()),
+                          horizontalDistance),
         0.5, 1.0);
 }
 
@@ -178,7 +178,7 @@ void LimelightDriveController::CalcDriveOutput(
             m_DBTurnPIDOut = Util::bound(m_DBTurnPID->CalcOutputWithError(
                                              offset - m_DBHatchVisionOffset),
                                          TURN_MIN, TURN_MAX) *
-                             CalcTurnComp();
+                             CalcTurnComp(distance);
 
             m_DBThrottlePIDOut =
                 Util::bound(m_DBThrottlePID->CalcOutputWithError(-distError),
@@ -218,7 +218,7 @@ void LimelightDriveController::CalcDriveOutput(
             m_turnPidOut = Util::bound(m_turnPid->CalcOutputWithError(
                                            offset - HATCH_VISION_OFFSET),
                                        TURN_MIN, TURN_MAX) *
-                           CalcTurnComp();
+                           CalcTurnComp(distance);
             m_throttlePidOut =
                 Util::bound(m_throttlePid->CalcOutputWithError(-distError),
                             THROTTLE_MIN, THROTTLE_MAX);
@@ -287,9 +287,9 @@ void LimelightDriveController::UpdateLimelightDriveDB() {
 void LimelightDriveController::CreateLimelightDriveDB() {
     DBStringPrintf(DB_LINE0, "Th 0.0220 0.00 0.0030");
     DBStringPrintf(DB_LINE1, "Tu 0.0120 0.00 0.0020");
-    DBStringPrintf(DB_LINE2, "AC:0.0230 Feed:+0.050");
+    DBStringPrintf(DB_LINE2, "AC:0.0120 Feed:+0.000");
     DBStringPrintf(DB_LINE3, "HO: -1.00 CO: +0.00");
     DBStringPrintf(DB_LINE4, "D-S Ro:+0.00 Ca:-5.00");
-    DBStringPrintf(DB_LINE5, "Min: -0.60 Max: +0.60");
+    DBStringPrintf(DB_LINE5, "Min: -0.70 Max: +0.70");
 }
 }
