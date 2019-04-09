@@ -102,6 +102,7 @@ private:
     double m_leftSetpoint;
     double m_rightSetpoint;
     bool m_isCompensatingSkew;
+    double m_distance;
     HatchIntake *m_hatchIntake;
     ObservablePoofsJoystick *m_driverJoystick;
 

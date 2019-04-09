@@ -70,7 +70,7 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
         /*Util::bound(m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle), -m_avmax, m_avmax) *
         m_speedCap * DRIVE_ARC_IN_PER_DEG;*/
 
-    out->SetDriveOutputIPS(throttle - turn, throttle + turn);
+    out->SetDriveOutputVBus(throttle - turn, throttle + turn);
 
     if (fabs(m_targetDist - m_prevDist) < m_distTolerance &&
         fabs(state->GetRate()) < m_distRateTolerance &&
