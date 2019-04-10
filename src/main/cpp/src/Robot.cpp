@@ -60,14 +60,14 @@ Robot::Robot()
         , m_dateTime(new LogCell("Date and Time", 32, true))
         , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
                                         m_hatchPuncher, m_limelightHatch))
-        , m_drive(new Drive(this, m_logger, m_leftDriveSparkA,
-                            m_leftDriveSparkB, m_leftDriveSparkC,
-                            m_rightDriveSparkA, m_rightDriveSparkB,
-                            m_rightDriveSparkC, m_stingerDriveMotor, m_gyro,
-                            m_limelightHatch, m_hatchIntake, m_driverJoystick))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
                                   m_elevatorMotorB, m_operatorJoystick,
                                   m_elevatorHall))
+        , m_drive(new Drive(
+              this, m_logger, m_leftDriveSparkA, m_leftDriveSparkB,
+              m_leftDriveSparkC, m_rightDriveSparkA, m_rightDriveSparkB,
+              m_rightDriveSparkC, m_stingerDriveMotor, m_gyro, m_limelightHatch,
+              m_hatchIntake, m_elevator, m_driverJoystick, m_operatorJoystick))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoPlatformLock, m_cargoWrist,
                                         m_limelightHatch))
@@ -171,7 +171,7 @@ void Robot::AllStateContinuous() {
         DriverStation::GetInstance().GetMatchNumber(),
         DriverStation::GetInstance().GetReplayNumber());
     m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
-    m_matchTime->LogDouble(Timer::GetMatchTime());
+    m_matchTime->LogDouble(GetMsecTime());
     m_dateTime->LogPrintf("%s", TIME_BUFFER);
 
     /*m_limelightHatch->SetLightOn();
@@ -182,16 +182,24 @@ void Robot::AllStateContinuous() {
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset());*/
 
-    SmartDashboard::PutNumber("limelight/throttle", m_drive->GetLimelightDriveWithSkew()->GetThrottlePidOut());
-    SmartDashboard::PutNumber("limelight/turn", m_drive->GetLimelightDriveWithSkew()->GetTurnPidOut());
-    SmartDashboard::PutNumber("limelight/skewcont", m_drive->GetLimelightDriveWithSkew()->GetGoalAngleComp());
+    SmartDashboard::PutNumber("misc/pdp/voltage", m_pdp->GetVoltage());
+    SmartDashboard::PutNumber(
+        "limelight/throttle",
+        m_drive->GetLimelightDriveWithSkew()->GetThrottlePidOut());
+    SmartDashboard::PutNumber(
+        "limelight/turn",
+        m_drive->GetLimelightDriveWithSkew()->GetTurnPidOut());
+    SmartDashboard::PutNumber(
+        "limelight/skewcont",
+        m_drive->GetLimelightDriveWithSkew()->GetGoalAngleComp());
 
     SmartDashboard::PutNumber("limelight/xoff", m_limelightHatch->GetXOffset());
     SmartDashboard::PutNumber("limelight/distance",
                               m_limelightHatch->GetHorizontalDistance());
-    SmartDashboard::PutNumber("limelight/skew", m_limelightHatch->GetTargetSkew());
-    SmartDashboard::PutNumber("limelight/target",
-                              m_limelightHatch->isTargetValid());
+    SmartDashboard::PutNumber("limelight/skew",
+                              m_limelightHatch->GetTargetSkew());
+    SmartDashboard::PutBoolean("limelight/target",
+                               m_limelightHatch->isTargetValid());
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,

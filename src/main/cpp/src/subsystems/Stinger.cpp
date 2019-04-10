@@ -6,6 +6,7 @@ Stinger::Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
         : m_scheduler(scheduler)
         , m_logger(logger)
         , m_stingerDriveMotor(stingerDriveMotor)
+        , m_switchBladeState(SwitchBladeState::retracted)
         , m_kickOffPneumatic(
               new DoubleSolenoid(PCM_CAN_ID, KICKOFF_FORWARD, KICKOFF_REVERSE))
         , m_sneakyClimb(new DoubleSolenoid(PCM_CAN_ID, SNEAKY_CLIMB_FORWARD,
@@ -32,11 +33,17 @@ void Stinger::SetKickUpDisable() {
     m_kickOffPneumatic->Set(DoubleSolenoid::Value::kReverse);
 }
 
+Stinger::SwitchBladeState Stinger::GetSwitchBladeState() {
+    return m_switchBladeState;
+}
+
 void Stinger::DeploySwitchBlade() {
+    m_switchBladeState = SwitchBladeState::engaged;
     m_sneakyClimb->Set(DoubleSolenoid::Value::kForward);
 }
 
 void Stinger::RetractSwitchBlade() {
+    m_switchBladeState = SwitchBladeState::retracted;
     m_sneakyClimb->Set(DoubleSolenoid::Value::kReverse);
 }
 
@@ -49,7 +56,5 @@ void Stinger::RetractGateLatch() {
 }
 
 void Stinger::TaskPeriodic(RobotMode mode) {
-    DBStringPrintf(DBStringPos::DB_LINE6, "pldrivec:%2.2lf",
-                   m_stingerDriveMotor->GetOutputCurrent());
 }
 }
