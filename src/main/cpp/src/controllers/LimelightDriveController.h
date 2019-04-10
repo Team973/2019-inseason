@@ -90,9 +90,9 @@ public:
     static constexpr double TURN_MIN = -0.4;
     static constexpr double TURN_MAX = 0.4;
     static constexpr double GOAL_ANGLE_COMP_KP = 0.012;
-    static constexpr double TURN_PID_KP = 0.018;
+    static constexpr double TURN_PID_KP = 0.012;
     static constexpr double TURN_PID_KI = 0.0;
-    static constexpr double TURN_PID_KD = 0.002;
+    static constexpr double TURN_PID_KD = 0.0045;
     static constexpr double THROTTLE_PID_KP = 0.018;
     static constexpr double THROTTLE_PID_KI = 0.0;
     static constexpr double THROTTLE_PID_KD = 0.004;
@@ -137,12 +137,15 @@ private:
     double m_DBGoalAngleComp;
     double m_DBThrottleFeedForward;
     double m_DBHatchVisionOffset;
-    double m_DBCargoVisionOffset;
+    double m_DBHatchVisionXOffset;
     double m_DBDistanceSetpointRocket;
     double m_DBDistanceSetpointCargoBay;
     double m_DBThrottleMin;
     double m_DBThrottleMax;
-
+    double m_DBTurnMin;
+    double m_DBTurnMax;
+    double m_DBSkewMin;
+    double m_DBSkewMax;
     double m_skew_comp;
 };
 }

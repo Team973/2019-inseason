@@ -34,11 +34,15 @@ LimelightDriveController::LimelightDriveController(
         , m_DBGoalAngleComp(0.0)
         , m_DBThrottleFeedForward(0.0)
         , m_DBHatchVisionOffset(0.0)
-        , m_DBCargoVisionOffset(0.0)
+        , m_DBHatchVisionXOffset(0.0)
         , m_DBDistanceSetpointRocket(0.0)
         , m_DBDistanceSetpointCargoBay(0.0)
         , m_DBThrottleMin(0.0)
-        , m_DBThrottleMax(0.0) {
+        , m_DBThrottleMax(0.0)
+        , m_DBTurnMin(0.0)
+        , m_DBTurnMax(0.0)
+        , m_DBSkewMin(0.0)
+        , m_DBSkewMax(0.0) {
 }
 
 LimelightDriveController::~LimelightDriveController() {
@@ -94,7 +98,7 @@ double LimelightDriveController::CalcScaleGoalAngleComp() {
     if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
         m_skew_comp = Util::bound(
             m_DBGoalAngleCompkP * skew * frame_multiplier * dist_multiplier,
-            SKEW_MIN, SKEW_MAX);
+            m_DBSkewMin, m_DBSkewMax);
     }
     else {
         m_skew_comp = Util::bound(
@@ -139,6 +143,7 @@ void LimelightDriveController::CalcDriveOutput(
     }
     m_limelight->SetLightOn();
     double offset = m_limelight->GetXOffset();
+    DBStringPrintf(DB_LINE3, "HO: %3.1lf XO: %3.1lf", m_DBHatchVisionXOffset, offset);
     double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError;
     if (m_hatchIntake->GetHatchPuncherState() ==
@@ -177,12 +182,12 @@ void LimelightDriveController::CalcDriveOutput(
 
             m_DBTurnPIDOut = Util::bound(m_DBTurnPID->CalcOutputWithError(
                                              offset - m_DBHatchVisionOffset),
-                                         TURN_MIN, TURN_MAX) *
+                                         m_DBTurnMin, m_DBTurnMax) *
                              CalcTurnComp(distance);
 
             m_DBThrottlePIDOut =
                 Util::bound(m_DBThrottlePID->CalcOutputWithError(-distError),
-                            THROTTLE_MIN, THROTTLE_MAX);
+                            m_DBThrottleMin, m_DBThrottleMax);
 
             m_DBGoalAngleComp = CalcScaleGoalAngleComp();
 
@@ -272,24 +277,35 @@ void LimelightDriveController::UpdateLimelightDriveDB() {
         stod(SmartDashboard::GetString("DB/String 2", "0.0").substr(15, 20));
     m_DBHatchVisionOffset =
         stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(4, 8));
-    m_DBCargoVisionOffset =
-        stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(14, 18));
+    m_DBHatchVisionXOffset =
+        stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(13, 17));
     m_DBDistanceSetpointRocket =
         stod(SmartDashboard::GetString("DB/String 4", "0.0").substr(7, 11));
     m_DBDistanceSetpointCargoBay =
         stod(SmartDashboard::GetString("DB/String 4", "0.0").substr(16, 20));
+//    m_DBThrottleMin =
+//        stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(5, 9));
+//    m_DBThrottleMax =
+//        stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(16, 20));
     m_DBThrottleMin =
-        stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(5, 9));
-    m_DBThrottleMax =
-        stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(16, 20));
+        -stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(4, 8));
+    m_DBThrottleMax = -m_DBThrottleMin;
+
+    m_DBTurnMin =
+        -stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(12, 16));
+    m_DBTurnMax = -m_DBTurnMin;
+    m_DBSkewMin =
+        -stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(19, 23));
+    m_DBSkewMax = -m_DBSkewMin;
 }
 
 void LimelightDriveController::CreateLimelightDriveDB() {
     DBStringPrintf(DB_LINE0, "Th 0.0180 0.00 0.0040");
-    DBStringPrintf(DB_LINE1, "Tu 0.0180 0.00 0.0020");
+    DBStringPrintf(DB_LINE1, "Tu 0.0120 0.00 0.0045");
     DBStringPrintf(DB_LINE2, "AC:0.0120 Feed:+0.000");
-    DBStringPrintf(DB_LINE3, "HO: -1.00 CO: +0.00");
+    DBStringPrintf(DB_LINE3, "HO: -1.00 XO: 0.00");
     DBStringPrintf(DB_LINE4, "D-S Ro:+4.00 Ca:-4.00");
-    DBStringPrintf(DB_LINE5, "Min: -0.70 Max: +0.70");
+    //DBStringPrintf(DB_LINE5, "Min: -0.70 Max: +0.70");
+    DBStringPrintf(DB_LINE5, "B th 0.70 tr 0.40 s 0.20");
 }
 }
