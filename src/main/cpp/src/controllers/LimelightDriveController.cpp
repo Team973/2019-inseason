@@ -6,7 +6,8 @@
 namespace frc973 {
 LimelightDriveController::LimelightDriveController(
     LogSpreadsheet *logger, Limelight *limelight, bool isCompSkew,
-    ObservablePoofsJoystick *driverJoystick, HatchIntake *hatchIntake)
+    ObservablePoofsJoystick *driverJoystick, HatchIntake *hatchIntake,
+    Elevator *elevator)
         : m_onTarget(false)
         , m_leftSetpoint(0.0)
         , m_rightSetpoint(0.0)
@@ -14,9 +15,11 @@ LimelightDriveController::LimelightDriveController(
         , m_distance(0.0)
         , m_driverJoystick(driverJoystick)
         , m_hatchIntake(hatchIntake)
+        , m_elevator(elevator)
         , m_throttle(0.0)
         , m_turn(0.0)
         , m_limelight(limelight)
+        , m_scoreMode(Elevator::RocketScoreMode::low)
         , m_throttlePidOut(0.0)
         , m_turnPidOut(0.0)
         , m_goalAngleComp(0.0)
@@ -103,7 +106,8 @@ void LimelightDriveController::CalcDriveOutput(
     m_distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError;
     if (m_hatchIntake->GetHatchPuncherState() ==
-        HatchIntake::HatchSolenoidState::manualPunch) {
+            HatchIntake::HatchSolenoidState::manualPunch ||
+        m_elevator->GetRocketScoreMode() == Elevator::RocketScoreMode::middle) {
         distError = m_distance - DISTANCE_SETPOINT_ROCKET;
     }
     else {

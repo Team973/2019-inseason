@@ -35,9 +35,10 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
              GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
              GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
-             GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro, PigeonIMU *pigeon,
-             Limelight *limelightHatch, HatchIntake *hatchIntake,
-             Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
+             GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+             PigeonIMU *pigeon, Limelight *limelightHatch,
+             HatchIntake *hatchIntake, Elevator *elevator,
+             ObservablePoofsJoystick *driverJoystick,
              ObservableXboxJoystick *operatorJoystick)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
@@ -87,9 +88,11 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               new ConstantArcSplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
         , m_limelightDriveWithoutSkew(new LimelightDriveController(
-              logger, limelightHatch, false, m_driverJoystick, m_hatchIntake))
+              logger, limelightHatch, false, m_driverJoystick, m_hatchIntake,
+              m_elevator))
         , m_limelightDriveWithSkew(new LimelightDriveController(
-              logger, limelightHatch, true, m_driverJoystick, m_hatchIntake))
+              logger, limelightHatch, true, m_driverJoystick, m_hatchIntake,
+              m_elevator))
         , m_limelightTrigDrive(new LimelightTrigController(
               logger, limelightHatch, m_driverJoystick, m_operatorJoystick,
               m_hatchIntake, m_elevator))

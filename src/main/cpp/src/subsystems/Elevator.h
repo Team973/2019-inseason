@@ -52,8 +52,8 @@ public:
         0.5; /**< Low rocket hatch preset. */
     static constexpr double LOW_ROCKET_CARGO =
         4.0; /**< Low rocket cargo preset. */
-    static constexpr double MID_ROCKET_HATCH = 27.2;
-    static constexpr double MID_ROCKET_CARGO = 27.2;
+    static constexpr double MID_ROCKET_HATCH = 26.7;
+    static constexpr double MID_ROCKET_CARGO = 26.7;
     static constexpr double LOADING_STATION_CARGO = 20.0;
     static constexpr double CARGO_SHIP_HATCH =
         0.5; /**< Cargo ship hatch preset. */
