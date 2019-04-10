@@ -1,6 +1,7 @@
 #include "src/TestMode.h"
 #include "src/controllers/ConstantArcSplineDriveController.h"
 #include "lib/profiles/MotionProfile.h"
+#include <math.h>
 
 using namespace frc;
 
@@ -39,10 +40,14 @@ void Test::TestPeriodic() {
     m_limelightHatch->SetCameraVisionCenter();
     // m_limelightHatch->SetCameraVisionLeft();
     // m_limelightHatch->SetCameraVisionRight();
-    DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
+    double camera_angle =
+        (atan((Limelight::TARGET_HEIGHT - Limelight::CAMERA_HEIGHT) /
+              (60.0)) -  // + Limelight::CAMERA_BUMPER_OFFSET)) -
+         m_limelightHatch->GetYOffset() * Constants::RAD_PER_DEG) *
+        Constants::DEG_PER_RAD;
+    DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf ca:%2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
-                   m_limelightHatch->GetXOffset(),
-                   m_limelightHatch->GetTargetSkew());
+                   m_limelightHatch->GetXOffset(), camera_angle);
     double y =
         -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
     double x =
@@ -72,6 +77,9 @@ void Test::TestPeriodic() {
             break;
         case DriveMode::LimelightHatch:
             m_drive->LimelightDriveWithSkew();
+            break;
+        case DriveMode::LimelightTrig:
+            //m_drive->LimelightTrigDrive();
             break;
         case DriveMode::AssistedCheesy:
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
@@ -138,8 +146,10 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
                 break;
             case PoofsJoysticks::LeftBumper:
                 if (pressedP) {
+                    m_driveMode = DriveMode::LimelightTrig;
                 }
                 else {
+                    m_driveMode = DriveMode::Openloop;
                 }
                 break;
             case PoofsJoysticks::RightBumper:  // Quickturn

@@ -399,6 +399,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
                             m_elevator->SetPosition(Elevator::MID_ROCKET_HATCH);
+                            m_elevator->SetRocketScoreMode(
+                                Elevator::RocketScoreMode::middle);
                             break;
                         case GameMode::CargoPeriodic:
                             m_elevator->SetPosition(Elevator::MID_ROCKET_CARGO);
@@ -414,6 +416,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
                             m_elevator->SetPosition(Elevator::LOW_ROCKET_HATCH);
+                            m_elevator->SetRocketScoreMode(
+                                Elevator::RocketScoreMode::low);
                             break;
                         case GameMode::CargoPeriodic:
                             m_elevator->SetPosition(Elevator::LOW_ROCKET_CARGO);
@@ -458,6 +462,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                         case GameMode::HatchPeriodic:
                             m_hatchIntake->RunIntake();
                             m_elevator->SetPosition(Elevator::GROUND);
+                            m_elevator->SetRocketScoreMode(
+                                Elevator::RocketScoreMode::low);
                             break;
                         case GameMode::CargoPeriodic:
                             m_cargoIntake->RunIntake();
@@ -490,6 +496,11 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             m_stinger->DeploySwitchBlade();
                             m_stinger->EngageGateLatch();
                             break;
+                        case GameMode::HatchPeriodic:
+                            m_elevator->SetPosition(Elevator::GROUND);
+                            m_elevator->SetRocketScoreMode(
+                                Elevator::RocketScoreMode::middle);
+                            break;
                     }
                 }
                 else {
@@ -499,6 +510,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                     }
                 }
+                break;
+            case Xbox::LJoystickBtn:
                 break;
         }
     }

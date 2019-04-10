@@ -128,8 +128,8 @@ private:
 
     CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;
-    Drive *m_drive;
     Elevator *m_elevator;
+    Drive *m_drive;
     PresetHandlerDispatcher *m_presetDispatcher;
     Stinger *m_stinger;
 

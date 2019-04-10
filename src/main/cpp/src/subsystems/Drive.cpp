@@ -10,6 +10,7 @@
 #include "ctre/Phoenix.h"
 #include "src/controllers/CheesyDriveController.h"
 #include "src/controllers/LimelightDriveController.h"
+#include "src/controllers/LimelightTrigController.h"
 #include "src/controllers/OpenloopArcadeDriveController.h"
 #include "src/controllers/PIDDriveController.h"
 #include "src/controllers/SplineDriveController.h"
@@ -35,8 +36,10 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
              GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
              GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
-             Limelight *limelightHatch, HatchIntake *hatchIntake,
-             ObservablePoofsJoystick *driverJoystick)
+             Limelight *limelightHatch,
+             HatchIntake *hatchIntake, Elevator *elevator,
+             ObservablePoofsJoystick *driverJoystick,
+             ObservableXboxJoystick *operatorJoystick)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveSparkA(leftDriveSparkA)
@@ -70,10 +73,11 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_leftPosZero(0.0)
         , m_rightPosZero(0.0)
         , m_gyro(gyro)
-        , m_gyroZero(0.0)
         , m_limelightHatch(limelightHatch)
         , m_hatchIntake(hatchIntake)
+        , m_elevator(elevator)
         , m_driverJoystick(driverJoystick)
+        , m_operatorJoystick(operatorJoystick)
         , m_cheesyDriveController(new CheesyDriveController(limelightHatch))
         , m_openloopArcadeDriveController(new OpenloopArcadeDriveController())
         , m_pidDriveController(new PIDDriveController())
@@ -82,9 +86,11 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               new ConstantArcSplineDriveController(this, logger))
         , m_velocityArcadeDriveController(new VelocityArcadeDriveController())
         , m_limelightDriveWithoutSkew(new LimelightDriveController(
-              logger, limelightHatch, false, m_driverJoystick, m_hatchIntake))
+              logger, limelightHatch, false, m_driverJoystick, m_hatchIntake,
+              m_elevator))
         , m_limelightDriveWithSkew(new LimelightDriveController(
-              logger, limelightHatch, true, m_driverJoystick, m_hatchIntake))
+              logger, limelightHatch, true, m_driverJoystick, m_hatchIntake,
+              m_elevator))
         , m_assistedCheesyDriveHatchController(
               new AssistedCheesyDriveController(
                   m_limelightHatch,
@@ -103,7 +109,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_leftDriveSparkA->SetInverted(false);
     m_leftDriveSparkA->SetOpenLoopRampRate(0.3);
     m_leftDriveSparkA->EnableVoltageCompensation(12.0);
-    m_leftDriveSparkA->Config_PID(0, 0.2, 0.0, 0.0, 0.0);
+    m_leftDriveSparkA->Config_PID(0, 1.0, 0.0, 0.0, 0.0);
 
     m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
     m_leftDriveSparkB->SetInverted(false);
@@ -114,7 +120,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_rightDriveSparkA->SetInverted(false);
     m_rightDriveSparkA->SetOpenLoopRampRate(0.3);
     m_rightDriveSparkA->EnableVoltageCompensation(12.0);
-    m_rightDriveSparkA->Config_PID(0, 0.2, 0.0, 0.0, 0.0);
+    m_rightDriveSparkA->Config_PID(0, 0.01, 0.0, 0.0, 0.0);
 
     m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
     m_rightDriveSparkB->SetInverted(false);
@@ -286,7 +292,7 @@ double Drive::GetDriveCurrent() const {
 }
 
 double Drive::GetAngle() const {
-    return -(m_angle - m_gyroZero);
+    return m_gyro->GetAngle();
 }
 
 double Drive::GetAngularRate() const {
@@ -311,7 +317,8 @@ void Drive::SetDriveOutputIPS(double left, double right) {
             -m_leftDriveOutput, ControlType::kVelocity);
         m_rightDriveSparkA->GetPIDController().SetReference(
             m_rightDriveOutput, ControlType::kVelocity);
-        DBStringPrintf(DBStringPos::DB_LINE1, "lo:%2.2lf ro:%2.2lf", m_leftDriveOutput, m_rightDriveOutput);
+        DBStringPrintf(DBStringPos::DB_LINE1, "lo:%2.2lf ro:%2.2lf",
+                       m_leftDriveOutput, m_rightDriveOutput);
     }
 }
 
@@ -363,8 +370,6 @@ void Drive::DisableDriveCurrentLimit() {
 }
 
 void Drive::TaskPeriodic(RobotMode mode) {
-    m_angle = m_gyro->GetAngle();
-
     m_targetLog->LogDouble(m_limelightHatch->isTargetValid());
     m_xOffsetLog->LogDouble(m_limelightHatch->GetXOffset());
     m_yOffsetLog->LogDouble(m_limelightHatch->GetYOffset());

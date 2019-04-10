@@ -95,6 +95,7 @@ private:
     {
         Openloop,
         LimelightHatch,
+        LimelightTrig,
         AssistedCheesy,
         Cheesy,
         PIDDrive,
