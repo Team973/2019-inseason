@@ -245,7 +245,7 @@ public:
     static constexpr double TARGET_HEIGHT = 29.0;  // in inches from ground
     static constexpr double CAMERA_HEIGHT = 47.0;  // in inches from ground
     static constexpr double CAMERA_ANGLE =
-        -27.3 * (Constants::PI / 180.0);  // in degrees wrt ground
+        -30.2 * (Constants::PI / 180.0);  // in degrees wrt ground
     //-29.25 for comp; -27.3 for pbot
     static constexpr double CAMERA_BUMPER_OFFSET = 19.25;
 

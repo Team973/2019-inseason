@@ -250,7 +250,7 @@ void Limelight::UpdateLimelightDB() {
 
 void Limelight::CreateLimelightDB() {
     DBStringPrintf(DB_LINE6, "TH: 29.00 CH: 47.00");
-    DBStringPrintf(DB_LINE7, "CA: -27.30 CBO: 19.25");
+    DBStringPrintf(DB_LINE7, "CA: -30.20 CBO: 19.25");
     DBStringPrintf(DB_LINE8, "Eq: D:60.0");
 }
 }
