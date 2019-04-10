@@ -143,7 +143,11 @@ void LimelightDriveController::CalcDriveOutput(
     }
     m_limelight->SetLightOn();
     double offset = m_limelight->GetXOffset();
-    DBStringPrintf(DB_LINE3, "HO: %3.1lf XO: %3.1lf", m_DBHatchVisionXOffset, offset);
+
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        DBStringPrintf(DB_LINE3, "HO: %3.1lf XO: %3.1lf", m_DBHatchVisionOffset, offset);
+    }
+
     double distance = m_limelight->GetHorizontalDistance();  // in inches
     double distError;
     if (m_hatchIntake->GetHatchPuncherState() ==
