@@ -318,7 +318,7 @@ void LimelightDriveController::CreateLimelightDriveDB() {
     //DBStringPrintf(DB_LINE3, "HO: -0.70 XO: 0.00");
     DBStringPrintf(DB_LINE4, "D-S Ro: %2.2lf Ca:%2.2lf", m_DBDistanceSetpointRocket, m_DBDistanceSetpointCargoBay);
     //DBStringPrintf(DB_LINE4, "D-S Ro:+4.00 Ca:-4.00");
-    DBStringPrintf(DB_LINE5, "B th $1.2lf tr %1.2lf s %1.2lf", m_DBThrottleMax, m_DBTurnMax, m_DBSkewMax);
+    DBStringPrintf(DB_LINE5, "B th %1.2lf tr %1.2lf s %1.2lf", m_DBThrottleMax, m_DBTurnMax, m_DBSkewMax);
     //DBStringPrintf(DB_LINE5, "B th 0.60 tr 0.40 s 0.20");
 }
 }
