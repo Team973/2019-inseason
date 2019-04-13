@@ -89,11 +89,9 @@ void LimelightDriveController::Start(DriveControlSignalReceiver *out) {
     m_throttlePid->Reset(NAN);
     m_turnPid->Reset(NAN);
 
-    double newThrottleGains[ 3 ] = { m_DBThrottlePIDkP, m_DBThrottlePIDkI, m_DBThrottlePIDkD };
-    double newTurnGains[ 3 ] = { m_DBTurnPIDkP, m_DBTurnPIDkI, m_DBTurnPIDkD };
-
-    m_DBThrottlePID->SetGains(newThrottleGains);
-    m_DBTurnPID->SetGains(newTurnGains);
+    m_DBThrottlePID->SetGains(m_DBThrottlePIDkP, m_DBThrottlePIDkI,
+                              m_DBThrottlePIDkD);
+    m_DBTurnPID->SetGains(m_DBTurnPIDkP, m_DBTurnPIDkI, m_DBTurnPIDkD);
     m_DBThrottlePID->Reset(NAN);
     m_DBTurnPID->Reset(NAN);
 }
@@ -160,7 +158,7 @@ void LimelightDriveController::CalcDriveOutput(
     double offset = m_limelight->GetXOffset();
 
     if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
-        DBStringPrintf(DB_LINE3, "HO: %3.1lf XO: %3.1lf", m_DBHatchVisionOffset, offset);
+        DBStringPrintf(DB_LINE3, "HO: %2.2lf XO: %2.2lf", m_DBHatchVisionOffset, offset);
     }
 
     double distance = m_limelight->GetHorizontalDistance();  // in inches
@@ -215,12 +213,12 @@ void LimelightDriveController::CalcDriveOutput(
             if (SmartDashboard::GetBoolean("DB/Button 3", false) == true) {
                 m_DBGoalAngleComp = 0.0;
             }
-            m_leftSetpoint =  // turnPidOut + m_goalAngleComp;
+            m_leftSetpoint = 
                 m_DBThrottlePIDOut - m_DBTurnPIDOut -
-                m_DBGoalAngleComp;  // - driverComp;
-            m_rightSetpoint =       //-turnPidOut - m_goalAngleComp;
+                m_DBGoalAngleComp;
+            m_rightSetpoint =
                 m_DBThrottlePIDOut + m_DBTurnPIDOut +
-                m_DBGoalAngleComp;  // - driverComp;
+                m_DBGoalAngleComp;
         }
         else {
             if (SmartDashboard::GetBoolean("DB/Button 1", false) == true) {
@@ -290,13 +288,13 @@ void LimelightDriveController::UpdateLimelightDriveDB() {
     m_DBThrottleFeedForward =
         stod(SmartDashboard::GetString("DB/String 2", "0.0").substr(15, 20));
     m_DBHatchVisionOffset =
-        stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(4, 8));
-    m_DBHatchVisionXOffset =
-        stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(13, 17));
+        stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(3, 8));
+    //m_DBHatchVisionXOffset =
+    //    stod(SmartDashboard::GetString("DB/String 3", "0.0").substr(13, 17));
     m_DBDistanceSetpointRocket =
-        stod(SmartDashboard::GetString("DB/String 4", "0.0").substr(7, 11));
+        stod(SmartDashboard::GetString("DB/String 4", "0.0").substr(6, 11));
     m_DBDistanceSetpointCargoBay =
-        stod(SmartDashboard::GetString("DB/String 4", "0.0").substr(16, 20));
+        stod(SmartDashboard::GetString("DB/String 4", "0.0").substr(15, 20));
     m_DBThrottleMin =
         -stod(SmartDashboard::GetString("DB/String 5", "0.0").substr(4, 8));
     m_DBThrottleMax = -m_DBThrottleMin;
@@ -310,13 +308,17 @@ void LimelightDriveController::UpdateLimelightDriveDB() {
 }
 
 void LimelightDriveController::CreateLimelightDriveDB() {
-    DBStringPrintf(DB_LINE0, "Th %5.4lf %3.2lf %4.3lf", m_DBThrottlePIDkP, m_DBThrottlePIDkI, m_DBThrottlePIDkD);
+    DBStringPrintf(DB_LINE0, "Th %1.4lf %1.2lf %1.3lf", m_DBThrottlePIDkP, m_DBThrottlePIDkI, m_DBThrottlePIDkD);
     //DBStringPrintf(DB_LINE0, "Th 0.0180 0.00 0.002");
-    DBStringPrintf(DB_LINE1, "Tu %5.4lf %3.2lf %4.3lf3", m_DBTurnPIDkP, m_DBTurnPIDkI, m_DBTurnPIDkD);
+    DBStringPrintf(DB_LINE1, "Tu %1.4lf %1.2lf %1.3lf", m_DBTurnPIDkP, m_DBTurnPIDkI, m_DBTurnPIDkD);
     //DBStringPrintf(DB_LINE1, "Tu 0.0120 0.00 0.003");
-    DBStringPrintf(DB_LINE2, "AC:0.0120 Feed:+0.000");
-    DBStringPrintf(DB_LINE3, "HO: -0.70 XO: 0.00");
-    DBStringPrintf(DB_LINE4, "D-S Ro:+4.00 Ca:-4.00");
-    DBStringPrintf(DB_LINE5, "B th 0.60 tr 0.40 s 0.20");
+    DBStringPrintf(DB_LINE2, "AC:%1.4lf Feed: %2.3lf", m_DBGoalAngleCompkP, m_DBThrottleFeedForward);
+    //DBStringPrintf(DB_LINE2, "AC:0.0120 Feed:+0.000");
+    DBStringPrintf(DB_LINE3, "HO: %2.2lf XO: 0.00", m_DBHatchVisionOffset);
+    //DBStringPrintf(DB_LINE3, "HO: -0.70 XO: 0.00");
+    DBStringPrintf(DB_LINE4, "D-S Ro: %2.2lf Ca:%2.2lf", m_DBDistanceSetpointRocket, m_DBDistanceSetpointCargoBay);
+    //DBStringPrintf(DB_LINE4, "D-S Ro:+4.00 Ca:-4.00");
+    DBStringPrintf(DB_LINE5, "B th $1.2lf tr %1.2lf s %1.2lf", m_DBThrottleMax, m_DBTurnMax, m_DBSkewMax);
+    //DBStringPrintf(DB_LINE5, "B th 0.60 tr 0.40 s 0.20");
 }
 }
