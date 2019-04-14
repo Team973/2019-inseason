@@ -21,10 +21,10 @@ Limelight::Limelight(const char *name, bool inverted)
         , m_targetArea(0.0)
         , m_targetSkew(0.0)
         , m_latency(0.0)
-        , m_DBTargetHeight(0.0)
-        , m_DBCameraHeight(0.0)
-        , m_DBCameraAngle(0.0)
-        , m_DBCameraBumperOffset(0.0)
+        , m_DBTargetHeight(TARGET_HEIGHT)
+        , m_DBCameraHeight(CAMERA_HEIGHT)
+        , m_DBCameraAngle(CAMERA_ANGLE)
+        , m_DBCameraBumperOffset(19.25)
         , m_DBDistance(0.0) {
 }
 
@@ -212,18 +212,10 @@ double Limelight::FindTargetSkew() {
 }
 
 double Limelight::GetHorizontalDistance() {
-    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
-        return ((m_DBTargetHeight - m_DBCameraHeight) /
-                tan(m_DBCameraAngle +
-                    this->GetYOffset() * (Constants::PI / 180.0))) -
-               m_DBCameraBumperOffset;
-    }
-    else {
-        return ((TARGET_HEIGHT - CAMERA_HEIGHT) /
-                tan(CAMERA_ANGLE +
-                    this->GetYOffset() * (Constants::PI / 180.0))) -
-               CAMERA_BUMPER_OFFSET;
-    }
+    return ((m_DBTargetHeight - m_DBCameraHeight) /
+            tan(m_DBCameraAngle +
+                this->GetYOffset() * (Constants::PI / 180.0))) -
+            m_DBCameraBumperOffset;
 }
 
 double Limelight::FindCameraAngle() {
@@ -233,24 +225,28 @@ double Limelight::FindCameraAngle() {
 }
 
 void Limelight::UpdateLimelightDB() {
-    FindCameraAngle();
-    m_DBTargetHeight =
-        stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(4, 8));
-    m_DBCameraAngle =
-        stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(4, 9)) *
-        (Constants::PI / 180.0);
-    m_DBCameraBumperOffset =
-        stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(16, 20));
-    m_DBCameraHeight =
-        stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(14, 18));
-    m_DBDistance =
-        stod(SmartDashboard::GetString("DB/String 8", "0.0").substr(6, 10));
-    DBStringPrintf(DB_LINE8, "Eq: D:%2.2lf A:%2.2lf", m_DBDistance, FindCameraAngle());
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        FindCameraAngle();
+        m_DBTargetHeight =
+            stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(3, 5));
+        m_DBCameraHeight =
+            stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(12, 5));
+        m_DBCameraAngle =
+            stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(3, 5)) *
+            (Constants::PI / 180.0);
+        m_DBCameraBumperOffset =
+            stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(14, 5));
+        m_DBDistance =
+            stod(SmartDashboard::GetString("DB/String 8", "0.0").substr(5, 4));
+        DBStringPrintf(DB_LINE8, "Eq D:%2.2lf A:%2.2lf", m_DBDistance, FindCameraAngle());
+    }
 }
 
 void Limelight::CreateLimelightDB() {
-    DBStringPrintf(DB_LINE6, "TH: 29.00 CH: 47.00");
-    DBStringPrintf(DB_LINE7, "CA: -30.20 CBO: 19.25");
-    DBStringPrintf(DB_LINE8, "Eq: D:60.0");
+    DBStringPrintf(DB_LINE6, "TH 29.00 CH 47.00");
+    DBStringPrintf(DB_LINE7, "CA -30.20 CBO 19.25");
+    // "Eq D:60.0"
+    DBStringPrintf(DB_LINE8, "Eq D:%2.2lf A:%2.2lf", 60.0,
+                   FindCameraAngle());
 }
 }

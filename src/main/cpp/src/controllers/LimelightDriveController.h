@@ -147,5 +147,9 @@ private:
     double m_DBSkewMin;
     double m_DBSkewMax;
     double m_skew_comp;
+
+    bool m_disableThrottlePidOut;
+    bool m_disableTurnPidOut;
+    bool m_disableSkewComp;
 };
 }
