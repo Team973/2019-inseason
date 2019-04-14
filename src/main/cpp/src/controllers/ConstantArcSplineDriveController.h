@@ -113,20 +113,6 @@ private:
     bool m_needSetControlMode;
 
     static constexpr double MAX_VELOCITY = 130;       // in/sec
-    static constexpr double MAX_ACCELERATION = 70.0;  // in/sec^2
-
-    LogCell *m_l_pos_setpt_log;
-    LogCell *m_l_pos_real_log;
-    LogCell *m_l_vel_setpt_log;
-    LogCell *m_l_vel_real_log;
-    LogCell *m_a_pos_setpt_log;
-    LogCell *m_a_pos_real_log;
-    LogCell *m_a_vel_setpt_log;
-    LogCell *m_max_vel_log;
-    LogCell *m_max_acc_log;
-    LogCell *m_dist_endgoal_log;
-    LogCell *m_angle_endgoal_log;
-    LogCell *m_left_output;
-    LogCell *m_right_output;
+    static constexpr double MAX_ACCELERATION = 70.0;  // in/sec^
 };
 }

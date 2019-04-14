@@ -54,10 +54,6 @@ Robot::Robot()
         , m_hatchRollers(new GreyTalonSRX(HATCH_ROLLER_CAN_ID))
         , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
         , m_limelightHatch(new Limelight("limelight-hatch", false))
-        , m_matchIdentifier(new LogCell("Match Identifier", 64))
-        , m_batteryVoltage(new LogCell("Battery Voltage", 32, true))
-        , m_matchTime(new LogCell("MatchTime", 32, true))
-        , m_dateTime(new LogCell("Date and Time", 32, true))
         , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
                                         m_hatchPuncher, m_limelightHatch))
         , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
@@ -70,7 +66,7 @@ Robot::Robot()
               m_hatchIntake, m_elevator, m_driverJoystick, m_operatorJoystick))
         , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
                                         m_cargoPlatformLock, m_cargoWrist,
-                                        m_limelightHatch))
+                                        m_limelightHatch, m_pdp))
         , m_stinger(new Stinger(this, m_logger, m_stingerDriveMotor))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
@@ -98,10 +94,6 @@ Robot::~Robot() {
 
 void Robot::Initialize() {
     m_compressor->Enable();
-    m_logger->RegisterCell(m_matchIdentifier);
-    m_logger->RegisterCell(m_batteryVoltage);
-    m_logger->RegisterCell(m_matchTime);
-    m_logger->RegisterCell(m_dateTime);
     m_logger->Start();
 
     m_cameraServer->AddCamera(m_hatchCamera);
@@ -158,22 +150,6 @@ void Robot::TestStop() {
 }
 
 void Robot::AllStateContinuous() {
-    time_t t;
-    struct tm *tmp;
-    char TIME_BUFFER[50];
-    time(&t);
-    tmp = localtime(&t);
-    strftime(TIME_BUFFER, sizeof(TIME_BUFFER), "%g%m%d %H:%M", tmp);
-
-    m_matchIdentifier->LogPrintf(
-        "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
-        MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
-        DriverStation::GetInstance().GetMatchNumber(),
-        DriverStation::GetInstance().GetReplayNumber());
-    m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
-    m_matchTime->LogDouble(GetMsecTime());
-    m_dateTime->LogPrintf("%s", TIME_BUFFER);
-
     /*m_limelightHatch->SetLightOn();
     m_limelightHatch->SetCameraVisionCenter();
     // m_limelightHatch->SetCameraVisionLeft();

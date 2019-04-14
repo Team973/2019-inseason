@@ -31,7 +31,8 @@ public:
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoPlatformLock,
-                Solenoid *cargoWrist, Limelight *limelightHatch);
+                Solenoid *cargoWrist, Limelight *limelightHatch,
+                PowerDistributionPanel *pdp);
     virtual ~CargoIntake();
 
     /**
@@ -188,7 +189,13 @@ private:
 
     LogCell *m_currentCell;
     LogCell *m_voltageCell;
-    LogCell *m_time;
+
+    LogCell *m_matchIdentifier;
+    LogCell *m_batteryVoltage;
+    LogCell *m_matchTime;
+    LogCell *m_dateTime;
+
+    PowerDistributionPanel *m_pdp;
 
     MovingAverageFilter *m_intakeCurentFilter;
 };
