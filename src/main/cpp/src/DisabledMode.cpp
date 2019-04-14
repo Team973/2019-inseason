@@ -7,14 +7,16 @@ namespace frc973 {
 Disabled::Disabled(ObservablePoofsJoystick *driver,
                    ObservableXboxJoystick *codriver, Elevator *elevator,
                    CargoIntake *cargoIntake, Drive *drive,
-                   Limelight *limelightHatch, Autonomous *autonomous)
+                   Limelight *limelightHatch, Autonomous *autonomous,
+                   Teleop *teleop)
         : m_driverJoystick(driver)
         , m_operatorJoystick(codriver)
         , m_elevator(elevator)
         , m_cargoIntake(cargoIntake)
         , m_drive(drive)
         , m_limelightHatch(limelightHatch)
-        , m_autonomous(autonomous) {
+        , m_autonomous(autonomous)
+        , m_teleop(teleop) {
 }
 
 Disabled::~Disabled() {
@@ -23,7 +25,12 @@ void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
     m_elevator->EnableBrakeMode();
     m_cargoIntake->EnableBrakeMode();
-    m_drive->EnableBrakeMode();
+    if (m_teleop->GetGameMode() ==
+            Teleop::GameMode::ThirdLevelEndGamePeriodic ||
+        m_teleop->GetGameMode() ==
+            Teleop::GameMode::SecondLevelEndGamePeriodic) {
+        m_drive->EnableBrakeMode();
+    }
 }
 
 void Disabled::DisabledPeriodic() {

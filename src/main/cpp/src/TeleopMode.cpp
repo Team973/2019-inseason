@@ -577,4 +577,8 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
         }
     }
 }
+
+Teleop::GameMode Teleop::GetGameMode() {
+    return m_gameMode;
+}
 }

@@ -136,9 +136,9 @@ private:
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;
     GreyCompressor *m_compressor;
-    Disabled *m_disabled;
     Teleop *m_teleop;
     Test *m_test;
     Autonomous *m_autonomous;
+    Disabled *m_disabled;
 };
 }

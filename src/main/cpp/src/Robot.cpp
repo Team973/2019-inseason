@@ -77,9 +77,6 @@ Robot::Robot()
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
-        , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
-                                  m_elevator, m_cargoIntake, m_drive, m_limelightHatch,
-                                  m_autonomous))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
                               m_testJoystick, m_drive, m_elevator,
                               m_hatchIntake, m_cargoIntake, m_stinger,
@@ -87,9 +84,12 @@ Robot::Robot()
         , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
                           m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
                           m_stinger, m_limelightHatch))
-        , m_autonomous(new Autonomous(
-              m_driverJoystick, m_operatorJoystick, m_testJoystick, m_teleop,
-              m_gyro, m_drive, m_cargoIntake, m_hatchIntake, m_elevator)) {
+        , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
+                                      m_testJoystick, m_teleop, m_gyro, m_drive,
+                                      m_cargoIntake, m_hatchIntake, m_elevator))
+        , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
+                                  m_elevator, m_cargoIntake, m_drive,
+                                  m_limelightHatch, m_autonomous, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 

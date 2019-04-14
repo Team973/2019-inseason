@@ -11,6 +11,7 @@
 #include "lib/sensors/Limelight.h"
 #include "lib/util/WrapDash.h"
 #include "src/AutonomousMode.h"
+#include "src/TeleopMode.h"
 #include "src/Robot.h"
 #include "lib/bases/AutoRoutineBase.h"
 #include "src/info/RobotInfo.h"
@@ -37,7 +38,7 @@ public:
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
              Elevator *elevator, CargoIntake *cargoIntake, Drive *drive,
-             Limelight *limelightHatch, Autonomous *autonomous);
+             Limelight *limelightHatch, Autonomous *autonomous, Teleop *teleop);
     virtual ~Disabled();
 
     /**
@@ -91,5 +92,6 @@ private:
     Limelight *m_limelightHatch;
 
     Autonomous *m_autonomous;
+    Teleop *m_teleop;
 };
 }

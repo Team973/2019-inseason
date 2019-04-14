@@ -30,6 +30,21 @@ class PresetHandlerDispatcher;
  */
 class Teleop {
 public:
+    enum class GameMode
+    {
+        CargoInit,
+        CargoPeriodic,
+        HatchInit,
+        HatchPeriodic,
+        ThirdLevelEndGameInit,
+        SecondLevelEndGameInit,
+        ThirdLevelEndGamePeriodic,
+        SecondLevelEndGamePeriodic,
+        SecondLevelStabilize,
+        RaiseIntake,
+        ResetIntake
+    };
+
     /**
      * Constuct a teleop mode.
      * @param driver The driver's joystick.
@@ -88,6 +103,9 @@ public:
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
+
+    GameMode GetGameMode();
+
     static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
 
 private:
@@ -119,21 +137,6 @@ private:
         off
     };
     Rumble m_rumble;
-
-    enum class GameMode
-    {
-        CargoInit,
-        CargoPeriodic,
-        HatchInit,
-        HatchPeriodic,
-        ThirdLevelEndGameInit,
-        SecondLevelEndGameInit,
-        ThirdLevelEndGamePeriodic,
-        SecondLevelEndGamePeriodic,
-        SecondLevelStabilize,
-        RaiseIntake,
-        ResetIntake
-    };
     GameMode m_gameMode;
 
     uint32_t m_rumbleTimer;
