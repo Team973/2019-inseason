@@ -78,7 +78,7 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
-                                  m_elevator, m_cargoIntake, m_limelightHatch,
+                                  m_elevator, m_cargoIntake, m_drive, m_limelightHatch,
                                   m_autonomous))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
                               m_testJoystick, m_drive, m_elevator,

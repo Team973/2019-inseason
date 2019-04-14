@@ -42,6 +42,7 @@ void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
     m_elevator->EnableCoastMode();
     m_cargoIntake->EnableCoastMode();
+    m_drive->EnableCoastMode();
     m_stinger->RetractSwitchBlade();
     m_stinger->SetKickUpDisable();
     m_driveMode = DriveMode::Cheesy;

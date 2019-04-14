@@ -4,6 +4,7 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyLight.h"
 #include "src/subsystems/Elevator.h"
+#include "src/subsystems/Drive.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/SolidColor.h"
@@ -35,7 +36,7 @@ public:
      * @param autonomous The autonomous mode.
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             Elevator *elevator, CargoIntake *cargoIntake,
+             Elevator *elevator, CargoIntake *cargoIntake, Drive *drive,
              Limelight *limelightHatch, Autonomous *autonomous);
     virtual ~Disabled();
 
@@ -85,6 +86,7 @@ private:
 
     Elevator *m_elevator;
     CargoIntake *m_cargoIntake;
+    Drive *m_drive;
 
     Limelight *m_limelightHatch;
 
