@@ -229,8 +229,8 @@ void Limelight::UpdateLimelightDB() {
         FindCameraAngle();
         m_DBTargetHeight =
             stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(3, 5));
-        m_DBCameraHeight =
-            stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(12, 5));
+        //m_DBCameraHeight =
+        //    stod(SmartDashboard::GetString("DB/String 6", "0.0").substr(12, 5));
         m_DBCameraAngle =
             stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(3, 5)) *
             (Constants::PI / 180.0);
@@ -238,6 +238,8 @@ void Limelight::UpdateLimelightDB() {
             stod(SmartDashboard::GetString("DB/String 7", "0.0").substr(14, 5));
         m_DBDistance =
             stod(SmartDashboard::GetString("DB/String 8", "0.0").substr(5, 4));
+
+        DBStringPrintf(DB_LINE6, "TH 29.00 HD %2.2lf", GetHorizontalDistance());
         DBStringPrintf(DB_LINE8, "Eq D:%2.2lf A:%2.2lf", m_DBDistance, FindCameraAngle());
     }
 }
