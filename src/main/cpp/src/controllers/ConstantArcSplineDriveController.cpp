@@ -25,40 +25,11 @@ ConstantArcSplineDriveController::ConstantArcSplineDriveController(
         , m_a_pos_pid(1.9, 0.0, 0.0)
         , m_a_vel_pid(0.2, 0.0, 0.0)
         , m_done(false)
-        , m_needSetControlMode(false)
-        , m_l_pos_setpt_log(new LogCell("s_linear pos incr goal"))
-        , m_l_pos_real_log(new LogCell("s_linear pos incr actual"))
-        , m_l_vel_setpt_log(new LogCell("s_linear vel incr goal"))
-        , m_l_vel_real_log(new LogCell("s_linear vel incr actual"))
-        , m_a_pos_setpt_log(new LogCell("s_angular pos incr goal"))
-        , m_a_pos_real_log(new LogCell("s_angular pos incr actual"))
-        , m_a_vel_setpt_log(new LogCell("s_angular vel incr goal"))
-        , m_max_vel_log(new LogCell("ConstantArcSpline max velocity"))
-        , m_max_acc_log(new LogCell("ConstantArcSpline max accel"))
-        , m_dist_endgoal_log(new LogCell("s_linear pos end goal"))
-        , m_angle_endgoal_log(new LogCell("s_angle pos end goal"))
-        , m_left_output(new LogCell("s_left output"))
-        , m_right_output(new LogCell("s_right output")) {
+        , m_needSetControlMode(false) {
     m_l_pos_pid.SetBounds(-100, 100);
     m_l_vel_pid.SetBounds(-100, 100);
     m_a_pos_pid.SetBounds(-100, 100);
     m_a_vel_pid.SetBounds(-100, 100);
-
-    if (logger) {
-        logger->RegisterCell(m_l_pos_setpt_log);
-        logger->RegisterCell(m_l_pos_real_log);
-        logger->RegisterCell(m_l_vel_setpt_log);
-        logger->RegisterCell(m_l_vel_real_log);
-        logger->RegisterCell(m_a_pos_setpt_log);
-        logger->RegisterCell(m_a_pos_real_log);
-        logger->RegisterCell(m_a_vel_setpt_log);
-        logger->RegisterCell(m_max_vel_log);
-        logger->RegisterCell(m_max_acc_log);
-        logger->RegisterCell(m_dist_endgoal_log);
-        logger->RegisterCell(m_angle_endgoal_log);
-        logger->RegisterCell(m_left_output);
-        logger->RegisterCell(m_right_output);
-    }
 }
 
 ConstantArcSplineDriveController::~ConstantArcSplineDriveController() {
@@ -130,8 +101,6 @@ void ConstantArcSplineDriveController::CalcDriveOutput(
         "ConstantArcSpline drive d %lf a %lf vel %lf acc %lf start %lf end "
         "%lf\n",
         m_dist, m_angle, m_max_vel, m_max_acc, m_start_vel, m_end_vel);
-    DBStringPrintf(DB_LINE3, "lo%0.3lf ro%0.3lf", m_left_output,
-                   m_right_output);
 
     if (goal.error) {
         printf("trap drive error\n");
@@ -171,20 +140,6 @@ void ConstantArcSplineDriveController::CalcDriveOutput(
     out->SetDriveOutputIPS(left_output, right_output);
 
     m_done = goal.done;
-
-    m_l_pos_setpt_log->LogDouble(goal.linear_dist);
-    m_l_pos_real_log->LogDouble(DistFromStart());
-    m_l_vel_setpt_log->LogDouble(goal.linear_vel);
-    m_l_vel_real_log->LogDouble(state->GetRate());
-    m_a_pos_setpt_log->LogDouble(goal.angular_dist);
-    m_a_pos_real_log->LogDouble(AngleFromStart());
-    m_a_vel_setpt_log->LogDouble(goal.angular_vel);
-    m_max_vel_log->LogDouble(m_max_vel);
-    m_max_acc_log->LogDouble(m_max_acc);
-    m_dist_endgoal_log->LogDouble(m_dist);
-    m_angle_endgoal_log->LogDouble(m_angle);
-    m_left_output->LogDouble(left_output);
-    m_right_output->LogDouble(right_output);
 
     // printf("ConstantArcSplineDriveController active time %lf pos %lf\n",
     // time,

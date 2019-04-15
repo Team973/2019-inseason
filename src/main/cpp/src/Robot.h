@@ -121,11 +121,6 @@ private:
     Solenoid *m_cargoWrist;
     Solenoid *m_cargoPlatformLock;
 
-    LogCell *m_matchIdentifier;
-    LogCell *m_batteryVoltage;
-    LogCell *m_matchTime;
-    LogCell *m_dateTime;
-
     CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
@@ -136,9 +131,9 @@ private:
     DigitalInput *m_airPressureSwitch;
     Relay *m_compressorRelay;
     GreyCompressor *m_compressor;
-    Disabled *m_disabled;
     Teleop *m_teleop;
     Test *m_test;
     Autonomous *m_autonomous;
+    Disabled *m_disabled;
 };
 }

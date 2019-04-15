@@ -36,9 +36,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
              GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
              GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
-             Limelight *limelightHatch,
-             HatchIntake *hatchIntake, Elevator *elevator,
-             ObservablePoofsJoystick *driverJoystick,
+             Limelight *limelightHatch, HatchIntake *hatchIntake,
+             Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
              ObservableXboxJoystick *operatorJoystick)
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
@@ -367,6 +366,26 @@ void Drive::ConfigDriveCurrentLimit(double limit) {
 void Drive::DisableDriveCurrentLimit() {
     // spark can't disable?
     m_stingerDriveMotor->EnableCurrentLimit(false);
+}
+
+void Drive::EnableBrakeMode() {
+    m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kBrake);
+    m_leftDriveSparkB->SetIdleMode(CANSparkMax::IdleMode::kBrake);
+    m_leftDriveSparkC->SetIdleMode(CANSparkMax::IdleMode::kBrake);
+
+    m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kBrake);
+    m_rightDriveSparkB->SetIdleMode(CANSparkMax::IdleMode::kBrake);
+    m_rightDriveSparkC->SetIdleMode(CANSparkMax::IdleMode::kBrake);
+}
+
+void Drive::EnableCoastMode() {
+    m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
+    m_leftDriveSparkB->SetIdleMode(CANSparkMax::IdleMode::kCoast);
+    m_leftDriveSparkC->SetIdleMode(CANSparkMax::IdleMode::kCoast);
+
+    m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
+    m_rightDriveSparkB->SetIdleMode(CANSparkMax::IdleMode::kCoast);
+    m_rightDriveSparkC->SetIdleMode(CANSparkMax::IdleMode::kCoast);
 }
 
 void Drive::TaskPeriodic(RobotMode mode) {

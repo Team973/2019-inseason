@@ -5,7 +5,7 @@ namespace frc973 {
 CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                          GreyTalonSRX *cargoIntakeMotor,
                          Solenoid *cargoPlatformLock, Solenoid *cargoWrist,
-                         Limelight *limelightHatch)
+                         Limelight *limelightHatch, PowerDistributionPanel *pdp)
         : m_scheduler(scheduler)
         , m_logger(logger)
         , m_cargoIntakeMotor(cargoIntakeMotor)
@@ -17,6 +17,7 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_limelightHatch(limelightHatch)
         , m_cargoTimer(0.0)
         , m_cargoPlatformLockState(CargoPlatformLockState::retracted)
+        , m_pdp(pdp)
         , m_intakeCurentFilter(new MovingAverageFilter(0.9)) {
     this->m_scheduler->RegisterTask("CargoIntake", this, TASK_PERIODIC);
     m_cargoIntakeMotor->Set(ControlMode::PercentOutput, 0.0);
@@ -32,10 +33,19 @@ CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
 
     m_currentCell = new LogCell("Cargo Current", 32, true);
     m_voltageCell = new LogCell("Cargo Voltage", 32, true);
-    m_time = new LogCell("Time", 32, true);
+
+    m_matchIdentifier = new LogCell("Match Identifier", 32, true);
+    m_batteryVoltage = new LogCell("Battery Voltage", 32, true);
+    m_matchTime = new LogCell("Match Time", 32, true);
+    m_dateTime = new LogCell("Date and Time", 32, true);
+
     logger->RegisterCell(m_currentCell);
     logger->RegisterCell(m_voltageCell);
-    logger->RegisterCell(m_time);
+
+    logger->RegisterCell(m_matchIdentifier);
+    logger->RegisterCell(m_batteryVoltage);
+    logger->RegisterCell(m_matchTime);
+    logger->RegisterCell(m_dateTime);
 }
 
 CargoIntake::~CargoIntake() {
@@ -119,7 +129,23 @@ void CargoIntake::EnableCoastMode() {
 void CargoIntake::TaskPeriodic(RobotMode mode) {
     m_currentCell->LogDouble(m_cargoIntakeMotor->GetOutputCurrent());
     m_voltageCell->LogDouble(m_cargoIntakeMotor->GetMotorOutputVoltage());
-    m_time->LogDouble(GetMsecTime());
+
+    time_t t;
+    struct tm *tmp;
+    char TIME_BUFFER[50];
+    time(&t);
+    tmp = localtime(&t);
+    strftime(TIME_BUFFER, sizeof(TIME_BUFFER), "%g%m%d %H:%M", tmp);
+
+    m_matchIdentifier->LogPrintf(
+        "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
+        MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
+        DriverStation::GetInstance().GetMatchNumber(),
+        DriverStation::GetInstance().GetReplayNumber());
+    m_batteryVoltage->LogDouble(m_pdp->GetVoltage());
+    m_matchTime->LogDouble(GetMsecTime());
+    m_dateTime->LogPrintf("%s", TIME_BUFFER);
+
     double filteredCurrent =
         m_intakeCurentFilter->Update(m_cargoIntakeMotor->GetOutputCurrent());
     switch (m_cargoIntakeState) {

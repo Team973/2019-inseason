@@ -4,12 +4,14 @@
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyLight.h"
 #include "src/subsystems/Elevator.h"
+#include "src/subsystems/Drive.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/pixelprocessors/SolidColor.h"
 #include "lib/sensors/Limelight.h"
 #include "lib/util/WrapDash.h"
 #include "src/AutonomousMode.h"
+#include "src/TeleopMode.h"
 #include "src/Robot.h"
 #include "lib/bases/AutoRoutineBase.h"
 #include "src/info/RobotInfo.h"
@@ -35,8 +37,8 @@ public:
      * @param autonomous The autonomous mode.
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             Elevator *elevator, CargoIntake *cargoIntake,
-             Limelight *limelightHatch, Autonomous *autonomous);
+             Elevator *elevator, CargoIntake *cargoIntake, Drive *drive,
+             Limelight *limelightHatch, Autonomous *autonomous, Teleop *teleop);
     virtual ~Disabled();
 
     /**
@@ -85,9 +87,11 @@ private:
 
     Elevator *m_elevator;
     CargoIntake *m_cargoIntake;
+    Drive *m_drive;
 
     Limelight *m_limelightHatch;
 
     Autonomous *m_autonomous;
+    Teleop *m_teleop;
 };
 }

@@ -281,6 +281,9 @@ public:
      */
     void DisableDriveCurrentLimit();
 
+    void EnableBrakeMode();
+    void EnableCoastMode();
+
     /**
      * Periodically update information about the drive.
      * @param mode The current robot mode.
