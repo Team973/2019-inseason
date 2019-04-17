@@ -12,10 +12,12 @@
 #include "lib/helpers/GreySparkMax.h"
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/HatchIntake.h"
+#include "src/subsystems/Elevator.h"
 #include "lib/bases/DriveBase.h"
 #include "networktables/NetworkTableInstance.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
+#include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/trajectories/structs.h"
 
 using namespace frc;
@@ -76,13 +78,9 @@ public:
           GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
           Limelight *limelightHatch, HatchIntake *hatchIntake,
-          ObservablePoofsJoystick *driverJoystick);
+          Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
+          ObservableXboxJoystick *operatorJoystick);
     virtual ~Drive();
-
-    /**
-     * Zero encoders and gyroscope.
-     */
-    void Zero();
 
     /**
      * Set a drive to use the Cheesy drive controller.
@@ -283,12 +281,14 @@ public:
      */
     void DisableDriveCurrentLimit();
 
+    void EnableBrakeMode();
+    void EnableCoastMode();
+
     /**
      * Periodically update information about the drive.
      * @param mode The current robot mode.
      */
     void TaskPeriodic(RobotMode mode) override;
-
 
     LimelightDriveController *GetLimelightDriveWithSkew() const;
 
@@ -332,10 +332,11 @@ private:
     double m_rightPosZero;
 
     ADXRS450_Gyro *m_gyro;
-    double m_gyroZero;
     Limelight *m_limelightHatch;
     HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
     ObservablePoofsJoystick *m_driverJoystick;
+    ObservableXboxJoystick *m_operatorJoystick;
 
     CheesyDriveController *m_cheesyDriveController;
     OpenloopArcadeDriveController *m_openloopArcadeDriveController;

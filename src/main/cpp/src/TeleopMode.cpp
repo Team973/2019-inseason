@@ -42,6 +42,7 @@ void Teleop::TeleopInit() {
     std::cout << "Teleop Start" << std::endl;
     m_elevator->EnableCoastMode();
     m_cargoIntake->EnableCoastMode();
+    m_drive->EnableCoastMode();
     m_stinger->RetractSwitchBlade();
     m_stinger->SetKickUpDisable();
     m_driveMode = DriveMode::Cheesy;
@@ -155,6 +156,10 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 3endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
+            if (m_driverJoystick->GetRawButton(PoofsJoysticks::LeftTrigger)) {
+                m_elevator->SetPosition(12.0);
+                m_cargoIntake->RetractPlatformWheel();
+            }
             break;
         case GameMode::SecondLevelEndGamePeriodic:
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 2endgameperiodic");
@@ -238,8 +243,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                         case GameMode::CargoPeriodic:
                             break;
                         case GameMode::ThirdLevelEndGamePeriodic:
-                            m_elevator->SetPosition(12.0);
-                            m_cargoIntake->RetractPlatformWheel();
+
                             break;
                         case GameMode::SecondLevelEndGamePeriodic:
                             break;
@@ -273,7 +277,14 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                                         // action for both
                                                         // buttons
                         case GameMode::SecondLevelEndGamePeriodic:
-                            m_gameMode = GameMode::RaiseIntake;
+                            if (m_stinger->GetSwitchBladeState() ==
+                                Stinger::SwitchBladeState::retracted) {
+                                m_gameMode = GameMode::RaiseIntake;
+                            }
+                            else if (m_stinger->GetSwitchBladeState() ==
+                                     Stinger::SwitchBladeState::engaged) {
+                                m_stinger->SetKickUpEnable();
+                            }
                             break;
                     }
                 }
@@ -389,6 +400,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
                             m_elevator->SetPosition(Elevator::MID_ROCKET_HATCH);
+                            m_elevator->SetRocketScoreMode(
+                                Elevator::RocketScoreMode::middle);
                             break;
                         case GameMode::CargoPeriodic:
                             m_elevator->SetPosition(Elevator::MID_ROCKET_CARGO);
@@ -404,6 +417,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
                             m_elevator->SetPosition(Elevator::LOW_ROCKET_HATCH);
+                            m_elevator->SetRocketScoreMode(
+                                Elevator::RocketScoreMode::low);
                             break;
                         case GameMode::CargoPeriodic:
                             m_elevator->SetPosition(Elevator::LOW_ROCKET_CARGO);
@@ -448,6 +463,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                         case GameMode::HatchPeriodic:
                             m_hatchIntake->RunIntake();
                             m_elevator->SetPosition(Elevator::GROUND);
+                            m_elevator->SetRocketScoreMode(
+                                Elevator::RocketScoreMode::low);
                             break;
                         case GameMode::CargoPeriodic:
                             m_cargoIntake->RunIntake();
@@ -480,6 +497,11 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             m_stinger->DeploySwitchBlade();
                             m_stinger->EngageGateLatch();
                             break;
+                        case GameMode::HatchPeriodic:
+                            m_elevator->SetPosition(Elevator::GROUND);
+                            m_elevator->SetRocketScoreMode(
+                                Elevator::RocketScoreMode::middle);
+                            break;
                     }
                 }
                 else {
@@ -489,6 +511,8 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
                             break;
                     }
                 }
+                break;
+            case Xbox::LJoystickBtn:
                 break;
         }
     }
@@ -552,5 +576,9 @@ void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
                 break;
         }
     }
+}
+
+Teleop::GameMode Teleop::GetGameMode() {
+    return m_gameMode;
 }
 }
