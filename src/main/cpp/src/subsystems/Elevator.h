@@ -61,7 +61,7 @@ public:
         15.0; /**< Cargo ship cargo preset. */
     static constexpr double THIRD_PLATFORM = 27.0; /**< Platform preset. */
     static constexpr double THIRD_PLATFORM_RESET = 22.0;
-    static constexpr double SECOND_PLATFORM = 10.0; /**< Platform preset. */
+    static constexpr double SECOND_PLATFORM = 13.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
         27.5; /**< Soft elevator height. */
