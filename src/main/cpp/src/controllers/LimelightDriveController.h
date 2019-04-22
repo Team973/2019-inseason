@@ -73,10 +73,10 @@ public:
     double GetGoalAngleComp() const;
 
     static constexpr double DISTANCE_SETPOINT_ROCKET =
-        0.0;  // in inches from target to robot bumper
-    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -8.0;  // prac-sac
+        -2.0;  // in inches from target to robot bumper
+    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -9.0;  // prac-sac
     static constexpr double HATCH_VISION_OFFSET =
-        -1.0;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
+        0.32;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
     static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 60.0;
@@ -90,13 +90,13 @@ public:
     static constexpr double SKEW_MAX = 0.2;
     static constexpr double TURN_MIN = -0.4;
     static constexpr double TURN_MAX = 0.4;
-    static constexpr double GOAL_ANGLE_COMP_KP = 0.012;
-    static constexpr double TURN_PID_KP = 0.012;
+    static constexpr double GOAL_ANGLE_COMP_KP = 0.008;
+    static constexpr double TURN_PID_KP = 0.01;
     static constexpr double TURN_PID_KI = 0.0;
     static constexpr double TURN_PID_KD = 0.001;
     static constexpr double THROTTLE_PID_KP = 0.018;
     static constexpr double THROTTLE_PID_KI = 0.0;
-    static constexpr double THROTTLE_PID_KD = 0.0015;
+    static constexpr double THROTTLE_PID_KD = 0.002;
 
 private:
     bool m_onTarget;
