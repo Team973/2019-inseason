@@ -48,9 +48,16 @@ public:
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out) override;
 
+    /**
+     * Calculate skew PID output by multiplying limelight skew value with a
+     * distance and "frame" factor based on target x-offset
+     */
     double CalcScaleGoalAngleComp();
+
+    /**
+     * Calculate turn PID factor based off distance of target
+     */
     double CalcTurnComp();
-    double CalcThrottleCap();
 
     /**
      * Checks with the controller to see if we are on target.
@@ -68,28 +75,45 @@ public:
         printf("Turning off Limelight Drive Mode\n");
     }
 
+    /**
+     * Return throttle PID output for logging
+     */
     double GetThrottlePidOut() const;
+
+    /**
+     * Return turn PID output for logging
+     */
     double GetTurnPidOut() const;
+
+    /**
+     * Return skew PID output for logging
+     */
     double GetGoalAngleComp() const;
 
     static constexpr double DISTANCE_SETPOINT_ROCKET =
         -2.0;  // in inches from target to robot bumper
-    static constexpr double DISTANCE_SETPOINT_CARGO_BAY = -9.0;  // prac-sac
+    static constexpr double DISTANCE_SETPOINT_CARGO_BAY =
+        -9.0;  // in inches from target to robot bumper
     static constexpr double HATCH_VISION_OFFSET =
-        0.32;  // in degrees -1.0, was -2.0 at p-field 0.96 on real field
-    static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
+        0.32;  // physical offset of the limelight to center of target
+
+    // Range of distances where the compensation factor is applied
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN = 24.0;
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MAX = 60.0;
     static constexpr double SKEW_COMP_MULTIPLIER_DISTANCE_MIN = 17.0;
     static constexpr double SKEW_COMP_MULTIPLIER_DISTANCE_MAX = 24.0;
     static constexpr double TURN_COMP_DISTANCE_MIN = 6.0;
     static constexpr double TURN_COMP_DISTANCE_MAX = 24.0;
+
+    // Max and min bounds for PID loop outputs
     static constexpr double THROTTLE_MIN = -0.6;
     static constexpr double THROTTLE_MAX = 0.6;
     static constexpr double SKEW_MIN = -0.2;
     static constexpr double SKEW_MAX = 0.2;
     static constexpr double TURN_MIN = -0.4;
     static constexpr double TURN_MAX = 0.4;
+
+    // PID Gains
     static constexpr double GOAL_ANGLE_COMP_KP = 0.008;
     static constexpr double TURN_PID_KP = 0.01;
     static constexpr double TURN_PID_KI = 0.0;

@@ -80,17 +80,6 @@ double LimelightDriveController::CalcTurnComp() {
         0.5, 1.0);
 }
 
-double LimelightDriveController::CalcThrottleCap() {
-    /*
-    return THROTTLE_MIN +
-           (1.0 / (THROTTLE_CAP_DISTANCE_MAX - THROTTLE_CAP_DISTANCE_MIN) *
-                m_limelight->GetHorizontalDistance() -
-            (THROTTLE_CAP_DISTANCE_MIN * 1 /
-             (THROTTLE_CAP_DISTANCE_MAX - THROTTLE_CAP_DISTANCE_MIN))) *
-               (THROTTLE_MAX - THROTTLE_MIN);
-               */
-}
-
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
     if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) >
