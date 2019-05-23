@@ -7,7 +7,8 @@
  * - Dylan F
  * - Allen B
  * - Andrew N
- **/
+ * - John P
+ */
 
 #pragma once
 

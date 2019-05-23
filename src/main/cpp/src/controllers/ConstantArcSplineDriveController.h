@@ -2,8 +2,7 @@
  * ConstantArcSplineDriveController.h
  * Created On: Summer of 2017
  * Author: Kyle
- *
- **/
+ */
 
 #pragma once
 

@@ -2,8 +2,7 @@
  * SplineDriveController.h
  * Created On: Feb 12, 2018
  * Author: Kyle
- *
- **/
+ */
 
 #pragma once
 
