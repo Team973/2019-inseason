@@ -42,38 +42,34 @@ const unsigned int LeftTriggerAxis = 2;
 const unsigned int RightTriggerAxis = 3;
 }  // namespace Xbox
 
-class ObservableXboxJoystick;
-
+/**
+ * An observer for a Xbox Joystick.
+ */
 class XboxJoystickObserver {
 public:
     XboxJoystickObserver() {
     }
     virtual ~XboxJoystickObserver() {
     }
+
+    /**
+     * This function is overriden by the subclass to handle a joystick button
+     * event notification.
+     * @param port The joystick port.
+     * @param button The joystick button.
+     * @param newState If true, specifies the button has been pressed, if false,
+     * specifies the button has been released.
+     */
     virtual void ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
                                                 bool newState) = 0;
 };
 
+/**
+ * An observerable Xbox Joystick.
+ */
 class ObservableXboxJoystick
         : public CoopTask
         , public XboxController {
-public:
-    static constexpr double DEADBAND_INPUT_THRESHOLD =
-        0.05; /**< The deadband threshold on the joysticks. */
-    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
-        0.5; /**< The virtual joystick threshold. */
-
-protected:
-    uint32_t m_port; /**< The port the joystick is plugged into. */
-
-    /* For observer notification */
-    XboxJoystickObserver *m_observer; /**< The class to notify whenever a change
-                         in the joystick occurs. */
-    DriverStation *m_ds;              /**< The DriverStation operating on.*/
-    uint32_t m_prevBtn;               /**< The previous button.*/
-    TaskMgr *m_scheduler;             /**< The task manager object.*/
-    LogCell *m_logCell;               /**< The logger.*/
-
 public:
     /**
      * Create an instance of the ObservableXboxJoystickJoystick object. Requires
@@ -137,5 +133,20 @@ public:
      * @param mode The current operating mode of the robot.
      */
     void TaskPrePeriodic(RobotMode mode) override;
+
+    static constexpr double DEADBAND_INPUT_THRESHOLD =
+        0.05; /**< The deadband threshold on the joysticks. */
+    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
+        0.5; /**< The virtual joystick threshold. */
+protected:
+    uint32_t m_port; /**< The port the joystick is plugged into. */
+
+    /* For observer notification */
+    XboxJoystickObserver *m_observer; /**< The class to notify whenever a change
+                         in the joystick occurs. */
+    DriverStation *m_ds;              /**< The DriverStation operating on.*/
+    uint32_t m_prevBtn;               /**< The previous button.*/
+    TaskMgr *m_scheduler;             /**< The task manager object.*/
+    LogCell *m_logCell;               /**< The logger.*/
 };
 }

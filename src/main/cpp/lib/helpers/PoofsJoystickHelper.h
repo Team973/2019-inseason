@@ -28,38 +28,37 @@ const unsigned int RightTrigger = 3;
 const unsigned int RightBumper = 4;
 }  // namespace PoofsJoysticks
 
-class ObservablePoofsJoystick;
-
+/**
+ * An observer for a Poofs Joystick.
+ */
 class PoofsJoystickObserver {
 public:
+    /**
+     * Construct a Poofs Joystick observer.
+     */
     PoofsJoystickObserver() {
     }
     virtual ~PoofsJoystickObserver() {
     }
+
+    /**
+     * This function is overriden by the subclass to handle a joystick button
+     * event notification.
+     * @param port The joystick port.
+     * @param button The joystick button.
+     * @param newState If true, specifies the button has been pressed, if false,
+     * specifies the button has been released.
+     */
     virtual void ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
                                                  bool newState) = 0;
 };
 
+/**
+ * An observable Poofs Joystick.
+ */
 class ObservablePoofsJoystick
         : public CoopTask
         , public Joystick {
-public:
-    static constexpr double DEADBAND_INPUT_THRESHOLD =
-        0.05; /**< The deadband threshold on the joysticks. */
-    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
-        0.5; /**< The virtual joystick threshold. */
-
-protected:
-    uint32_t m_port; /**< The port the joystick is plugged into. */
-
-    /* For observer notification */
-    PoofsJoystickObserver *m_observer; /**< The class to notify whenever a
-                         change in the joystick occurs. */
-    DriverStation *m_ds;               /**< The DriverStation operating on.*/
-    uint32_t m_prevBtn;                /**< The previous button.*/
-    TaskMgr *m_scheduler;              /**< The task manager object.*/
-    LogCell *m_logCell;                /**< The logger.*/
-
 public:
     /**
      * Create an instance of the ObservablePoofsJoystick object. Requires the
@@ -147,5 +146,20 @@ public:
      * @param mode The current operating mode of the robot.
      */
     void TaskPrePeriodic(RobotMode mode) override;
+
+    static constexpr double DEADBAND_INPUT_THRESHOLD =
+        0.05; /**< The deadband threshold on the joysticks. */
+    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
+        0.5; /**< The virtual joystick threshold. */
+protected:
+    uint32_t m_port; /**< The port the joystick is plugged into. */
+
+    /* For observer notification */
+    PoofsJoystickObserver *m_observer; /**< The class to notify whenever a
+                         change in the joystick occurs. */
+    DriverStation *m_ds;               /**< The DriverStation operating on.*/
+    uint32_t m_prevBtn;                /**< The previous button.*/
+    TaskMgr *m_scheduler;              /**< The task manager object.*/
+    LogCell *m_logCell;                /**< The logger.*/
 };
 }

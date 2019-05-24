@@ -78,10 +78,14 @@ const unsigned int DPadXAxis = 4;  /**< DPad X Axis */
 const unsigned int DPadYAxis = 5;  /**< DPad Y Axis */
 }  // namespace DualAction
 
-class ObservableDualActionJoystick;
-
+/**
+ * An observer for a Dual Action Joystick.
+ */
 class DualActionJoystickObserver {
 public:
+    /**
+     * Construct a Dual Action Joystick observer.
+     */
     DualActionJoystickObserver() {
     }
     virtual ~DualActionJoystickObserver() {
@@ -109,31 +113,6 @@ public:
 class ObservableDualActionJoystick
         : public CoopTask
         , public Joystick {
-public:
-    static constexpr double DEADBAND_INPUT_THRESHOLD =
-        0.05; /**< The deadband threshold on the joysticks. */
-    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
-        0.5; /**< The virtual joystick threshold. */
-
-protected:
-    uint32_t m_port; /**< The port the joystick is plugged into. */
-
-    /* For observer notification */
-    DualActionJoystickObserver *m_observer; /**< The class to notify whenever a
-                         change in the joystick occurs. */
-    DriverStation *m_ds;  /**< The DriverStation operating on.*/
-    uint32_t m_prevBtn;   /**< The previous button.*/
-    TaskMgr *m_scheduler; /**< The task manager object.*/
-    LogCell *m_logCell;   /**< The logger.*/
-
-    /* For remembering states of sticky buttons */
-    bool m_lastLXVal; /**< The last left joystick's x axis value */
-    bool m_lastLYVal; /**< The last left joystick's y axis value */
-    bool m_lastRXVal; /**< The last right joystick's x axis value */
-    bool m_lastRYVal; /**< The last right joystick's y axis value */
-    bool m_lastDXVal; /**< The last d pad's x axis value */
-    bool m_lastDYVal; /**< The last d pad's y axis value */
-
 public:
     /**
      * Create an instance of the ObservableDualActionJoystick object. Requires
@@ -235,5 +214,28 @@ public:
      * @param mode The current operating mode of the robot.
      */
     void TaskPrePeriodic(RobotMode mode) override;
+
+    static constexpr double DEADBAND_INPUT_THRESHOLD =
+        0.05; /**< The deadband threshold on the joysticks. */
+    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
+        0.5; /**< The virtual joystick threshold. */
+protected:
+    uint32_t m_port; /**< The port the joystick is plugged into. */
+
+    /* For observer notification */
+    DualActionJoystickObserver *m_observer; /**< The class to notify whenever a
+                         change in the joystick occurs. */
+    DriverStation *m_ds;  /**< The DriverStation operating on.*/
+    uint32_t m_prevBtn;   /**< The previous button.*/
+    TaskMgr *m_scheduler; /**< The task manager object.*/
+    LogCell *m_logCell;   /**< The logger.*/
+
+    /* For remembering states of sticky buttons */
+    bool m_lastLXVal; /**< The last left joystick's x axis value */
+    bool m_lastLYVal; /**< The last left joystick's y axis value */
+    bool m_lastRXVal; /**< The last right joystick's x axis value */
+    bool m_lastRYVal; /**< The last right joystick's y axis value */
+    bool m_lastDXVal; /**< The last d pad's x axis value */
+    bool m_lastDYVal; /**< The last d pad's y axis value */
 };
 }
