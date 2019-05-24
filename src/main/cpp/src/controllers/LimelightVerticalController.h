@@ -15,6 +15,9 @@ namespace frc973 {
 
 class PID;
 
+/**
+ * Limelight Vertical Controller
+ */
 class LimelightVerticalController {
 public:
     /**
@@ -44,7 +47,7 @@ public:
     };
 
     static constexpr double VELOCITY_MULTIPLIER =
-        200.0;  // in native units per degree
+        200.0; /**< Velocity multiplier in native units per degree */
 
 private:
     bool m_onTarget;

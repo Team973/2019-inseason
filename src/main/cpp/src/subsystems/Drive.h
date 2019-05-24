@@ -70,7 +70,9 @@ public:
      * @param gyro The gyro object.
      * @param limelightHatch The hatch limelight.
      * @param hatchIntake The hatch intake subsystem.
+     * @param elevator The elevator subsystem.
      * @param driverJoystick The driver's controller.
+     * @param operatorJoystick The operator's controller.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
           GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
@@ -162,10 +164,13 @@ public:
      * @return Percent of trajectory done.
      */
     double GetSplinePercentComplete();
-    /*
+
+    /**
      * Sets stinger output
+     * @param power The motor power -1 to 1
      */
     void SetStingerOutput(double power);
+
     /**
      * Set drive to use the velocity arcade drive controller.
      * @param throttle Forward/backwards amount.
@@ -174,14 +179,18 @@ public:
     void VelocityArcadeDrive(double throttle, double turn);
 
     /**
-     * Set drive controller to use limelight in following a target
+     * Set drive controller to use limelight with skew in following a target
      */
     LimelightDriveController *LimelightDriveWithSkew();
+
+    /**
+     * Set drive controller to use limeight without skew
+     */
     LimelightDriveController *LimelightDriveWithoutSkew();
 
-    /*
+    /**
      * Set drive controller to use limelight and driver input to steer and drive
-     * @param trottle Joysticks left y-axis input
+     * @param throttle Joysticks left y-axis input
      * @param turn Joysticks right x-axis input
      * @param isQuickTurn 1 or 0 for if quickturn is enabled
      * @param isHighGear 1 or 0 for if high gear is enabled
@@ -283,11 +292,12 @@ public:
      */
     void DisableDriveCurrentLimit();
 
-    /*
+    /**
      * Enables brake mode
      */
     void EnableBrakeMode();
-    /*
+
+    /**
      * Enables coast mode
      */
     void EnableCoastMode();
@@ -298,6 +308,10 @@ public:
      */
     void TaskPeriodic(RobotMode mode) override;
 
+    /**
+     * Retrieving function for LimelightDriveWithSkew
+     * @return LimelightDriveWithSkew()
+     */
     LimelightDriveController *GetLimelightDriveWithSkew() const;
 
 private:

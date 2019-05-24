@@ -18,7 +18,7 @@ class TaskMgr;
 class LogSpreadsheet;
 class LogCell;
 
-/*
+/**
  * Cargo intake
  */
 class CargoIntake : public CoopTask {

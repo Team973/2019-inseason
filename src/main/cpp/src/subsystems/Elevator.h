@@ -41,13 +41,13 @@ public:
         joystickControl /**< Controlling with the joystick. */
     };
 
-    /*
+    /**
      * Defines the rocket score modes for talon.
      */
     enum RocketScoreMode
     {
-        low,
-        middle
+        low,   /**< Score mode for the bottom Rocket */
+        middle /**< Score mode for the middle Rocket */
     };
 
     static constexpr double GROUND = 0.2; /**< Ground preset. */
@@ -151,12 +151,12 @@ public:
      */
     void HallZero();
 
-    /*
+    /**
      * Sets the rocket score mode.
      */
     void SetRocketScoreMode(RocketScoreMode mode);
 
-    /*
+    /**
      * Gets the rocket score mode.
      */
     RocketScoreMode GetRocketScoreMode();

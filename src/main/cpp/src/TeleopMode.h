@@ -56,10 +56,11 @@ public:
      * Constuct a teleop mode.
      * @param driver The driver's joystick.
      * @param codriver The co-driver's joystick.
+     * @param testStick The testing joystick.
      * @param drive The drive subsystem.
      * @param elevator The elevator subsystem.
      * @param hatchintake The hatch intake subsystem.
-     * @param cargointake The cargo intake subsystem.
+     * @param cargoIntake The cargo intake subsystem.
      * @param stinger The stinger subsystem.
      * @param limelightHatch The Limelight for the hatch.
      */
