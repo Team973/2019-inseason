@@ -23,6 +23,10 @@
 
 using namespace frc;
 namespace frc973 {
+
+/**
+ * Handles preset selection.
+ */
 class PresetHandlerDispatcher;
 
 /**
@@ -30,19 +34,22 @@ class PresetHandlerDispatcher;
  */
 class Teleop {
 public:
+    /**
+     * Define game mode states.
+     */
     enum class GameMode
     {
-        CargoInit,
-        CargoPeriodic,
-        HatchInit,
-        HatchPeriodic,
-        ThirdLevelEndGameInit,
-        SecondLevelEndGameInit,
-        ThirdLevelEndGamePeriodic,
-        SecondLevelEndGamePeriodic,
-        SecondLevelStabilize,
-        RaiseIntake,
-        ResetIntake
+        CargoInit,                  /**< Cargo initialization.*/
+        CargoPeriodic,              /**< Cargo periodic.*/
+        HatchInit,                  /**< Hatch initialization.*/
+        HatchPeriodic,              /**< Hatch periodic.*/
+        ThirdLevelEndGameInit,      /**< Third level climb initialization.*/
+        SecondLevelEndGameInit,     /**< Second level climb initialization.*/
+        ThirdLevelEndGamePeriodic,  /**< Third level climb periodic.*/
+        SecondLevelEndGamePeriodic, /**< Second level climb periodic.*/
+        SecondLevelStabilize,       /**< Second level climb stabilize.*/
+        RaiseIntake,                /**< Raise intake state.*/
+        ResetIntake                 /**< Reset intake state.*/
     };
 
     /**
@@ -104,9 +111,11 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
+    /**
+     * Get the current game mode.
+     * @return The current game mode.
+     */
     GameMode GetGameMode();
-
-    static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
 
 private:
     ObservablePoofsJoystick *m_driverJoystick;
@@ -141,5 +150,7 @@ private:
 
     uint32_t m_rumbleTimer;
     uint32_t m_wristResetTimer;
+
+    static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
 };
 }

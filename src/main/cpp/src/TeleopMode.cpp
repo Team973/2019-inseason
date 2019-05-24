@@ -315,7 +315,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                                         // both buttons
                         case GameMode::SecondLevelEndGamePeriodic:
                             m_elevator->SetPower(
-                                -Teleop::ELEVATOR_STINGER_VOLTAGE_RATIO);
+                                -ELEVATOR_STINGER_VOLTAGE_RATIO);
                             break;
                     }
                 }

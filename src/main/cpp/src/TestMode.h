@@ -46,6 +46,10 @@ public:
          Elevator *elevator, HatchIntake *hatchIntake, CargoIntake *cargoIntake,
          Stinger *stinger, Limelight *limelightHatch);
     virtual ~Test();
+
+    /**
+     * Start of test.
+     */
     void TestInit();
 
     /**
