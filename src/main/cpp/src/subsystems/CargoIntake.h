@@ -18,6 +18,9 @@ class TaskMgr;
 class LogSpreadsheet;
 class LogCell;
 
+/*
+ * Cargo intake
+ */
 class CargoIntake : public CoopTask {
 public:
     /**
@@ -28,6 +31,7 @@ public:
      * @param cargoPlatformLock The cargo platform lock solenoid.
      * @param cargoWrist The cargo wrist solenoid.
      * @param limelightHatch The hatch limelight.
+     * @param pdp The power distribution panel.
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoPlatformLock,

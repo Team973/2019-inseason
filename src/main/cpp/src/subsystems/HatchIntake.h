@@ -14,6 +14,9 @@ class TaskMgr;
 class LogSpreadsheet;
 class LogCell;
 
+/*
+ * Hatch intake
+ */
 class HatchIntake : public CoopTask {
 public:
     /**

@@ -17,6 +17,9 @@ class TaskMgr;
 class LogSpreadsheet;
 class LogCell;
 
+/*
+ * Stinger
+ */
 class Stinger : public CoopTask {
 public:
     /**

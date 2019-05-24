@@ -75,6 +75,9 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
+    /*
+     * Defines AutoStates.
+     */
     enum class AutoState
     {
         TwoRocket,
@@ -83,8 +86,19 @@ public:
         Manual
     };
 
+    /*
+     * Gets AutoState
+     */
     AutoState GetAutoState() const;
+
+    /*
+     * Sets AutoState
+     */
     void SetAutoState(AutoState autoState);
+
+    /*
+     * Defines AutoStateStartPositions
+     */
 
     enum class AutoStateStartPosition
     {

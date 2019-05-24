@@ -41,6 +41,9 @@ public:
         joystickControl /**< Controlling with the joystick. */
     };
 
+    /*
+     * Defines the rocket score modes for talon.
+     */
     enum RocketScoreMode
     {
         low,
@@ -53,20 +56,26 @@ public:
     static constexpr double LOW_ROCKET_CARGO =
         4.0; /**< Low rocket cargo preset. */
     static constexpr double MID_ROCKET_HATCH = 26.7;
+    /**< Mid rocket hatch preset. */
     static constexpr double MID_ROCKET_CARGO = 26.7;
+    /**< Mid rocket hatch preset. */
     static constexpr double LOADING_STATION_CARGO = 20.0;
+    /**< Human player loading station preset.*/
     static constexpr double CARGO_SHIP_HATCH =
         0.5; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
         15.0; /**< Cargo ship cargo preset. */
     static constexpr double THIRD_PLATFORM = 27.0; /**< Platform preset. */
     static constexpr double THIRD_PLATFORM_RESET = 22.0;
+    /**< Platform preset. */
     static constexpr double SECOND_PLATFORM = 13.0; /**< Platform preset. */
 
     static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
         27.5; /**< Soft elevator height. */
     static constexpr double ENDGAME_HEIGHT_SOFT_LIMIT = 24.25;
+    /**< Endgame soft elevator height */
     static constexpr double ELEVATOR_HALL_HEIGHT_OFFSET = 0.6;
+    /**< Minimum elevator height */
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
         4.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
@@ -127,7 +136,7 @@ public:
 
     /**
      * Gets the state of the elevator hall
-     * @Return The state of the hall
+     * @return The state of the hall
      */
     bool GetElevatorHall();
 
@@ -142,7 +151,14 @@ public:
      */
     void HallZero();
 
+    /*
+     * Sets the rocket score mode.
+     */
     void SetRocketScoreMode(RocketScoreMode mode);
+
+    /*
+     * Gets the rocket score mode.
+     */
     RocketScoreMode GetRocketScoreMode();
 
     /**

@@ -65,7 +65,7 @@ public:
      * @param leftDriveSparkC The third left drive motor contoller.
      * @param rightDriveSparkA The first right drive motor controller.
      * @param rightDriveSparkB The second right drive motor controller.
-     * @param rightDriverSparkC The third right drive motor controller.
+     * @param rightDriveSparkC The third right drive motor controller.
      * @param stingerDriveMotor The stinger's drive motor controller.
      * @param gyro The gyro object.
      * @param limelightHatch The hatch limelight.
@@ -162,7 +162,9 @@ public:
      * @return Percent of trajectory done.
      */
     double GetSplinePercentComplete();
-
+    /*
+     * Sets stinger output
+     */
     void SetStingerOutput(double power);
     /**
      * Set drive to use the velocity arcade drive controller.
@@ -281,7 +283,13 @@ public:
      */
     void DisableDriveCurrentLimit();
 
+    /*
+     * Enables brake mode
+     */
     void EnableBrakeMode();
+    /*
+     * Enables coast mode
+     */
     void EnableCoastMode();
 
     /**

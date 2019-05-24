@@ -35,6 +35,8 @@ public:
      * @param cargoIntake The cargo Intake subsystem.
      * @param limelightHatch The hatch limelight.
      * @param autonomous The autonomous mode.
+     * @param drive The drive
+     * @param teleop The teleop mode
      */
     Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
              Elevator *elevator, CargoIntake *cargoIntake, Drive *drive,
