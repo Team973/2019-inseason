@@ -68,8 +68,7 @@ public:
     /*
      * Engages the gate latch.
      */
-    / home / dylan / Documents / GitHub / 2019 -
-        inseason / src / main / cpp / src / TeleopMode.h void EngageGateLatch();
+    void EngageGateLatch();
 
     /*
      * Retracts the gate latch.
