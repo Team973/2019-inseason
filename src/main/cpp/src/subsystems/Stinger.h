@@ -41,13 +41,18 @@ public:
      * Retracts the stinger's kick stands
      */
     void SetKickUpDisable();
-
+    /*
+     * Defines the switch blade states.
+     */
     enum class SwitchBladeState
     {
         engaged,
         retracted
     };
 
+    /*
+     * Get switch blade states.
+     */
     SwitchBladeState GetSwitchBladeState();
 
     /**
@@ -60,7 +65,15 @@ public:
      */
     void RetractSwitchBlade();
 
-    void EngageGateLatch();
+    /*
+     * Engages the gate latch.
+     */
+    / home / dylan / Documents / GitHub / 2019 -
+        inseason / src / main / cpp / src / TeleopMode.h void EngageGateLatch();
+
+    /*
+     * Retracts the gate latch.
+     */
     void RetractGateLatch();
 
     /**
