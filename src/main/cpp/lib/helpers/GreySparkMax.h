@@ -15,6 +15,7 @@ public:
     /**
      * Construct a GreySparkMax to wrap over a SPARK MAX.
      * @param canId The SPARK MAX's CAN id.
+     * @param motorType The type of motor connected.
      */
     GreySparkMax(int canId, CANSparkMax::MotorType motorType)
             : CANSparkMax(canId, motorType) {
@@ -25,22 +26,20 @@ public:
 
     /**
      * Configurate F, P, I, and D for a specifc SPARK MAX
-     * @param motor The SPARK MAX to configure
      * @param kSlotIdx Slot Id
      * @param kP Proportional value
      * @param kI Integral value
      * @param kD Derivative value
      * @param kF Feed-Forward value
-     * @param kTimeoutMs Timeout value in milliseconds
      * @return The configured motor
      */
 
     GreySparkMax* Config_PID(int kSlotIdx, double kP, double kI, double kD,
-                             double kFF) {
+                             double kF) {
         this->GetPIDController().SetP(kP, kSlotIdx);
         this->GetPIDController().SetI(kI, kSlotIdx);
         this->GetPIDController().SetD(kD, kSlotIdx);
-        this->GetPIDController().SetFF(kFF, kSlotIdx);
+        this->GetPIDController().SetFF(kF, kSlotIdx);
 
         return this;
     }

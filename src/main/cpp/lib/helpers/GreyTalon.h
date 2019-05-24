@@ -24,8 +24,7 @@ public:
     }
 
     /**
-     * Configurate F, P, I, and D for a specifc Talon SRX
-     * @param motor The Talon SRX to configure
+     * Configure P, I, D, and F for a specifc Talon SRX
      * @param kSlotIdx Slot Id
      * @param kP Proportional value
      * @param kI Integral value

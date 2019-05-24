@@ -275,14 +275,28 @@ constexpr inline double signum(double x) {
     return (x < 0) ? -1 : (x > 0) ? 1 : 0;
 }
 
+/**
+ * A point on a 2d plane.
+ */
 struct Point {
-    double x, y;
+    double x; /**< The x coordinate.*/
+    double y; /**< The y coordinate.*/
+
+    /**
+     * Construct a point.
+     * @param _X The x coordinate.
+     * @param _Y The y coordinate.
+     */
     Point(double _X, double _Y) : x(_X), y(_Y) {
     }
 };
 
 /**
- * Given two points on a line, return the y value on this point at the given x
+ * Given two points on a line, return the y value on this point at the given x.
+ * @param a The first point.
+ * @param b The second point.
+ * @param x The x coordinate.
+ * @return The y value on the line.
  */
 inline double interpolate(Point a, Point b, double x) {
     double slope = (b.y - a.y) / (b.x - a.x);
