@@ -1,4 +1,4 @@
-/*
+/**
  * Drive.h
  *
  *  Created on: January 7, 2019
@@ -162,7 +162,7 @@ public:
      * @return Percent of trajectory done.
      */
     double GetSplinePercentComplete();
-    /*
+    /**
      * Sets stinger output
      */
     void SetStingerOutput(double power);
@@ -179,7 +179,7 @@ public:
     LimelightDriveController *LimelightDriveWithSkew();
     LimelightDriveController *LimelightDriveWithoutSkew();
 
-    /*
+    /**
      * Set drive controller to use limelight and driver input to steer and drive
      * @param trottle Joysticks left y-axis input
      * @param turn Joysticks right x-axis input
@@ -283,11 +283,11 @@ public:
      */
     void DisableDriveCurrentLimit();
 
-    /*
+    /**
      * Enables brake mode
      */
     void EnableBrakeMode();
-    /*
+    /**
      * Enables coast mode
      */
     void EnableCoastMode();

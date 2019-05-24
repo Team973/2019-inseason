@@ -17,7 +17,7 @@ class TaskMgr;
 class LogSpreadsheet;
 class LogCell;
 
-/*
+/**
  * Stinger
  */
 class Stinger : public CoopTask {
@@ -50,7 +50,7 @@ public:
         retracted
     };
 
-    /*
+    /**
      * Get switch blade states.
      */
     SwitchBladeState GetSwitchBladeState();
@@ -65,12 +65,12 @@ public:
      */
     void RetractSwitchBlade();
 
-    /*
+    /**
      * Engages the gate latch.
      */
     void EngageGateLatch();
 
-    /*
+    /**
      * Retracts the gate latch.
      */
     void RetractGateLatch();

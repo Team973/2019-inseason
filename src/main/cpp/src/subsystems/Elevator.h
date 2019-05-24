@@ -41,7 +41,7 @@ public:
         joystickControl /**< Controlling with the joystick. */
     };
 
-    /*
+    /**
      * Defines the rocket score modes for talon.
      */
     enum RocketScoreMode
@@ -151,12 +151,12 @@ public:
      */
     void HallZero();
 
-    /*
+    /**
      * Sets the rocket score mode.
      */
     void SetRocketScoreMode(RocketScoreMode mode);
 
-    /*
+    /**
      * Gets the rocket score mode.
      */
     RocketScoreMode GetRocketScoreMode();
