@@ -152,14 +152,14 @@ public:
     double GetSplinePercentComplete();
     /**
      * Sets stinger output
-     * @param Power The motor power -1 to 1
+     * @param power The motor power -1 to 1
      */
     void SetStingerOutput(double power);
 
     /**
      * Set drive to use the velocity arcade drive controller.
-     * @param Throttle Forward/backwards amount.
-     * @param Turn Left/right amount.
+     * @param throttle Forward/backwards amount.
+     * @param turn Left/right amount.
      */
     void VelocityArcadeDrive(double throttle, double turn);
 
@@ -177,8 +177,8 @@ public:
 
     /**
      * Set drive controller to use limelight and driver input to steer and drive
-     * @param Throttle Joysticks left y-axis input
-     * @param Turn Joysticks right x-axis input
+     * @param throttle Joysticks left y-axis input
+     * @param turn Joysticks right x-axis input
      * @param isQuickTurn 1 or 0 for if quickturn is enabled
      * @param isHighGear 1 or 0 for if high gear is enabled
      */
