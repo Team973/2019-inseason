@@ -1,9 +1,4 @@
 #include "src/subsystems/Elevator.h"
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
-#include "lib/util/WrapDash.h"
-
-using namespace frc;
 
 namespace frc973 {
 Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,

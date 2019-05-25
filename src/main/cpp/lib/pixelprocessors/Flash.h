@@ -8,13 +8,13 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_FLASH_H_
 #define SRC_MODULES_PIXELPROCESSORS_FLASH_H_
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
+#include <chrono>
+
+#include "lib/pixelprocessors/PixelStateProcessor.h"
+
 #ifndef USING_LED_SIMULATOR
 #include "lib/util/Util.h"
 #endif
-#include <vector>
-#include <chrono>
 
 namespace LightPattern {
 

@@ -5,7 +5,7 @@
  *      Author: Cole Brinsfield
  */
 
-#include "PixelChase.h"
+#include "lib/pixelprocessors/PixelChase.h"
 
 namespace LightPattern {
 

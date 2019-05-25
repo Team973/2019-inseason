@@ -7,23 +7,13 @@
 
 #pragma once
 
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
 #include "lib/helpers/GreyTalon.h"
-#include "lib/managers/CoopTask.h"
-#include "lib/logging/LogSpreadsheet.h"
-#include "src/info/RobotInfo.h"
-#include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/util/Util.h"
-#include <math.h>
-
-using namespace frc;
+#include "lib/logging/LogSpreadsheet.h"
+#include "lib/managers/CoopTask.h"
+#include "lib/util/WrapDash.h"
 
 namespace frc973 {
-class TaskMgr;
-class LogSpreadsheet;
 
 /**
  * Elevator Subsystem.

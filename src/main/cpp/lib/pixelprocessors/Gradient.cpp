@@ -5,7 +5,7 @@
  *      Author: Cole Brinsfield
  */
 
-#include "Gradient.h"
+#include "lib/pixelprocessors/Gradient.h"
 
 namespace LightPattern {
 

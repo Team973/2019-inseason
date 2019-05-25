@@ -18,8 +18,10 @@
 
 #pragma once
 
-#include <cstdint>
+#include <math.h>
+
 #include "lib/filters/FilterBase.h"
+#include "lib/util/Util.h"
 
 namespace frc973 {
 

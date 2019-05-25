@@ -5,15 +5,12 @@
 
 #pragma once
 
-#include "stdio.h"
-#include "lib/util/Util.h"
-#include "lib/sensors/Limelight.h"
-#include "ctre/Phoenix.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/PID.h"
+#include "lib/sensors/Limelight.h"
+#include "lib/util/Util.h"
 
 namespace frc973 {
-
-class PID;
 
 /**
  * Limelight Vertical Controller

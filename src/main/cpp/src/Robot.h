@@ -12,51 +12,30 @@
 
 #pragma once
 
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
 #include "lib/bases/CoopMTRobot.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
 #include "lib/helpers/GreyTalon.h"
 #include "lib/helpers/GreySparkMax.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/sensors/Limelight.h"
-#include "src/AutonomousMode.h"
-#include "src/DisabledMode.h"
-#include "src/TeleopMode.h"
-#include "src/TestMode.h"
+
 #include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/Stinger.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
-#include <iostream>
+#include "src/AutonomousMode.h"
+#include "src/DisabledMode.h"
+#include "src/TeleopMode.h"
+#include "src/TestMode.h"
 
-using namespace frc;
-using namespace ctre;
 using namespace cs;
 
 namespace frc973 {
-/**
- * Disabled.
- */
-class Disabled;
-/**
- * Autonomous.
- */
-class Autonomous;
-/**
- * Drive.
- */
-class Drive;
-/**
- * Elevator.
- */
-class Elevator;
 
 /**
  * Defines the robot.

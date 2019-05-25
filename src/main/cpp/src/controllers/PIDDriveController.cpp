@@ -6,13 +6,6 @@
  */
 
 #include "src/controllers/PIDDriveController.h"
-#include "lib/helpers/PID.h"
-#include <stdio.h>
-#include "lib/util/WrapDash.h"
-#include <math.h>
-#include "src/info/RobotInfo.h"
-
-using namespace frc;
 
 namespace frc973 {
 
@@ -63,12 +56,13 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
     m_prevDist = state->GetDist();
     m_prevAngle = state->GetAngle();
 
-    double throttle =m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist);
-        /*Util::bound(m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist), -m_vmax, m_vmax) *
-        m_speedCap;*/
+    double throttle =
+        m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist);
+    /*Util::bound(m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist),
+    -m_vmax, m_vmax) * m_speedCap;*/
     double turn = m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle);
-        /*Util::bound(m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle), -m_avmax, m_avmax) *
-        m_speedCap * DRIVE_ARC_IN_PER_DEG;*/
+    /*Util::bound(m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle),
+    -m_avmax, m_avmax) * m_speedCap * DRIVE_ARC_IN_PER_DEG;*/
 
     out->SetDriveOutputVBus(throttle - turn, throttle + turn);
 

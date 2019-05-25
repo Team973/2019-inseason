@@ -1,12 +1,7 @@
 #ifndef GYRO_CPP
 #define GYRO_CPP
 
-#include <inttypes.h>
 #include "lib/sensors/SPIGyro.h"
-#include <unistd.h>
-
-#include "lib/util/Util.h"
-#include "frc/WPILib.h"
 
 namespace frc973 {
 

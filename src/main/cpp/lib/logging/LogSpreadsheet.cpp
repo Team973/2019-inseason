@@ -6,15 +6,6 @@
  */
 
 #include "lib/logging/LogSpreadsheet.h"
-#include "lib/managers/CoopTask.h"
-
-#include "frc/WPILib.h"
-
-#include <cstdio>
-#include <cstdarg>
-#include <cerrno>
-#include <cstring>
-#include <time.h>
 
 namespace frc973 {
 

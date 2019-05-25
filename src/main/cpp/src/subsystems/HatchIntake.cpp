@@ -1,9 +1,4 @@
 #include "src/subsystems/HatchIntake.h"
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
-#include "lib/util/WrapDash.h"
-#include "lib/sensors/Limelight.h"
-#include "src/TeleopMode.h"
 
 namespace frc973 {
 HatchIntake::HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,

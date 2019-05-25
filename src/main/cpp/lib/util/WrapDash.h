@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdarg>
+
 #include "frc/WPILib.h"
 
 using namespace frc;

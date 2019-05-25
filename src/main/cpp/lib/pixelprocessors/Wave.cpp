@@ -5,7 +5,7 @@
  *      Author: Cole Brinsfield
  */
 
-#include "Wave.h"
+#include "lib/pixelprocessors/Wave.h"
 
 namespace LightPattern {
 

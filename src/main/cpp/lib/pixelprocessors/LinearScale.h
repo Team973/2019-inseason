@@ -4,8 +4,8 @@
  *  Created on: Mar 30, 2017
  *      Author: Cole
  */
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
+
+#include "lib/pixelprocessors/PixelStateProcessor.h"
 
 #ifndef SRC_MODULES_PIXELPROCESSORS_LINEARSCALE_H_
 #define SRC_MODULES_PIXELPROCESSORS_LINEARSCALE_H_

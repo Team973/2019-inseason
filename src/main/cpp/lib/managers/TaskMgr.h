@@ -15,7 +15,9 @@
 
 #pragma once
 
-#include "stdint.h"
+#include <cstdint>
+
+#include "lib/managers/CoopTask.h"
 #include "lib/util/Util.h"
 
 #define MAX_NUM_TASKS 32
@@ -27,11 +29,7 @@
 #define TASK_PERIODIC 0x00000008
 #define TASK_POST_PERIODIC 0x00000010
 
-using namespace frc;
-
 namespace frc973 {
-
-class CoopTask;
 
 /**
  * Interface for a Task Manager.

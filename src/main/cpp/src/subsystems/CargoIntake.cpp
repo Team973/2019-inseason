@@ -1,5 +1,4 @@
 #include "src/subsystems/CargoIntake.h"
-#include "lib/util/WrapDash.h"
 
 namespace frc973 {
 CargoIntake::CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,

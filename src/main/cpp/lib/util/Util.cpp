@@ -1,6 +1,4 @@
 #include "lib/util/Util.h"
-#include "frc/WPILib.h"
-#include <stdio.h>
 
 namespace frc973 {
 

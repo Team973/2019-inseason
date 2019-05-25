@@ -1,6 +1,7 @@
 #pragma once
 
-#include <pthread.h>
+#include <unistd.h>
+
 #include "frc/WPILib.h"
 
 #ifndef M_PI

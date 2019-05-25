@@ -5,7 +5,7 @@
  *      Author: Cole Brinsfield
  */
 
-#include "CenterMirror.h"
+#include "lib/pixelprocessors/CenterMirror.h"
 
 namespace LightPattern {
 

@@ -17,17 +17,16 @@
 
 #pragma once
 
-#include "stdint.h"
+#include <unistd.h>
+
 #include "frc/WPILib.h"
 #include "lib/managers/TaskMgr.h"
+#include "lib/util/Ansi.h"
 #include "lib/util/Util.h"
-#include <pthread.h>
 
 #ifndef PROGRAM_NAME
 #define PROGRAM_NAME "(unspecified)"
 #endif
-
-using namespace frc;
 
 namespace frc973 {
 

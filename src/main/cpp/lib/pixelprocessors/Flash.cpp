@@ -8,7 +8,7 @@
 #include "Flash.h"
 
 using namespace std::chrono;
-#include <iostream>
+
 namespace LightPattern {
 
 Flash::Flash(Color first, Color second, int hz, int count)

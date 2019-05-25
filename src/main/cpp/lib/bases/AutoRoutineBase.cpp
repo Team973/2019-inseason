@@ -1,7 +1,5 @@
 #include "lib/bases/AutoRoutineBase.h"
 
-using namespace frc;
-
 namespace frc973 {
 AutoRoutineBase::AutoRoutineBase() : m_autoState(0) {
 }

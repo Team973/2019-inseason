@@ -1,7 +1,4 @@
 #include "src/DisabledMode.h"
-#include "src/Robot.h"
-
-using namespace frc;
 
 namespace frc973 {
 Disabled::Disabled(ObservablePoofsJoystick *driver,

@@ -1,24 +1,15 @@
 #pragma once
 
-#include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
-#include "src/subsystems/Elevator.h"
-#include "src/subsystems/Drive.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/pixelprocessors/SolidColor.h"
 #include "lib/sensors/Limelight.h"
 #include "lib/util/WrapDash.h"
+
+#include "src/subsystems/Drive.h"
+#include "src/subsystems/Elevator.h"
 #include "src/AutonomousMode.h"
 #include "src/TeleopMode.h"
-#include "src/Robot.h"
-#include "lib/bases/AutoRoutineBase.h"
-#include "src/info/RobotInfo.h"
-#include <iostream>
-
-using namespace frc;
-using namespace cs;
 
 namespace frc973 {
 

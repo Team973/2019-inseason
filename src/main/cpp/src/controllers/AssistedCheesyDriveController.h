@@ -8,11 +8,8 @@
 #pragma once
 
 #include "lib/bases/DriveBase.h"
-#include "lib/sensors/Limelight.h"
 #include "lib/helpers/PID.h"
-#include <stdio.h>
-
-using namespace frc;
+#include "lib/sensors/Limelight.h"
 
 namespace frc973 {
 

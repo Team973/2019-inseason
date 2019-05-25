@@ -10,10 +10,8 @@
 #include "lib/helpers/PID.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/profiles/MotionProfile.h"
-#include "ctre/Phoenix.h"
-#include <stdio.h>
 
-using namespace frc;
+#include "src/info/RobotInfo.h"
 
 namespace frc973 {
 

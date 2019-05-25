@@ -1,9 +1,4 @@
 #include "src/controllers/LimelightTrigController.h"
-#include "lib/util/WrapDash.h"
-#include "stdio.h"
-#include "lib/helpers/PID.h"
-#include <math.h>
-#include <cmath>
 
 namespace frc973 {
 LimelightTrigController::LimelightTrigController(
@@ -96,21 +91,21 @@ double LimelightTrigController::GetTargetDirectionConstant() {
     else {
         int gyroRounded = roundl(m_gyroAngle / 90.0) * 90.0;
         switch (gyroRounded) {
-             case 0:
-                 return FRONT_CARGO;
-                 break;
-             case 90:
-                 return RIGHT_CARGO_BAY;
-                 break;
-             case -90:
-             return LEFT_CARGO_BAY;
-                 break;
-             case 180:
-             case -180:
-             default:
-                 return HUMAN_LOADING_STATION;
-             break;
-         }
+            case 0:
+                return FRONT_CARGO;
+                break;
+            case 90:
+                return RIGHT_CARGO_BAY;
+                break;
+            case -90:
+                return LEFT_CARGO_BAY;
+                break;
+            case 180:
+            case -180:
+            default:
+                return HUMAN_LOADING_STATION;
+                break;
+        }
     }
 }
 
@@ -130,7 +125,8 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
     double distError;
 
     Elevator::RocketScoreMode scoreMode = m_elevator->GetRocketScoreMode();
-    HatchIntake::HatchSolenoidState puncherState = m_hatchIntake->GetHatchPuncherState();
+    HatchIntake::HatchSolenoidState puncherState =
+        m_hatchIntake->GetHatchPuncherState();
     if (m_scoreMode != scoreMode || m_puncherState != puncherState) {
         m_targetConst = GetTargetDirectionConstant();
         m_scoreMode = scoreMode;
@@ -140,12 +136,13 @@ void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
     double skewAngle = 180.0 - m_targetConst - limelight_offset + m_gyroAngle;
 
     if (fabs(skewAngle >= 90.0)) {
-        double rev = floor((skewAngle + 90.0) / 180.0); // skew 90 to -90 == 180 or 1 rev, nothing behind the face of the hatch target
+        double rev = floor((skewAngle + 90.0) /
+                           180.0);  // skew 90 to -90 == 180 or 1 rev, nothing
+                                    // behind the face of the hatch target
         skewAngle -= rev * 180.0;
     }
 
-    if (m_puncherState ==
-            HatchIntake::HatchSolenoidState::manualPunch ||
+    if (m_puncherState == HatchIntake::HatchSolenoidState::manualPunch ||
         m_scoreMode == Elevator::RocketScoreMode::middle) {
         distError = distance - DISTANCE_SETPOINT_ROCKET;
     }

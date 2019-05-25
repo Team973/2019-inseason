@@ -10,12 +10,7 @@
 #include "lib/helpers/PID.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/trajectories/SplineProfile.h"
-#include "ctre/Phoenix.h"
-#include "lib/trajectories/structs.h"
-#include "frc/WPILib.h"
-#include <stdio.h>
 
-using namespace frc;
 using namespace trajectories;
 
 namespace frc973 {

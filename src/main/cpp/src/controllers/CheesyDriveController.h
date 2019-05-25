@@ -9,9 +9,6 @@
 
 #include "lib/bases/DriveBase.h"
 #include "lib/sensors/Limelight.h"
-#include <stdio.h>
-
-using namespace frc;
 
 namespace frc973 {
 

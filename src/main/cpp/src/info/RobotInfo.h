@@ -7,8 +7,6 @@
 
 #include "lib/util/Util.h"
 
-using namespace frc;
-
 namespace frc973 {
 // Constants
 static constexpr double DRIVE_WIDTH = 24.0;

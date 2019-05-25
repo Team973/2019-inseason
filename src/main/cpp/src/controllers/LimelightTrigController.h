@@ -6,15 +6,15 @@
 #pragma once
 
 #include "lib/bases/DriveBase.h"
-#include "stdio.h"
-#include "math.h"
+#include "lib/helpers/PID.h"
+#include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/util/Util.h"
 #include "lib/sensors/Limelight.h"
+
 #include "src/info/RobotInfo.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/helpers/XboxJoystickHelper.h"
-#include "src/subsystems/HatchIntake.h"
 #include "src/subsystems/Elevator.h"
+#include "src/subsystems/HatchIntake.h"
+
 namespace frc973 {
 
 class PID;

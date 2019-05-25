@@ -13,13 +13,13 @@
 
 #pragma once
 
-#include <iostream>
+#include <cstdarg>
 #include <fstream>
+#include <iostream>
 #include <vector>
 
-#include "lib/managers/TaskMgr.h"
 #include "lib/managers/CoopTask.h"
-#include <pthread.h>
+#include "lib/managers/TaskMgr.h"
 
 namespace frc973 {
 

@@ -6,15 +6,11 @@
 #pragma once
 
 #include "frc/WPILib.h"
-#include <iostream>
-#include "math.h"
-#include "lib/util/WrapDash.h"
-#include "lib/filters/BullshitFilter.h"
-#include "networktables/NetworkTable.h"
 #include "networktables/NetworkTableInstance.h"
-#include "networktables/NetworkTableEntry.h"
-#include "src/info/RobotInfo.h"
+
 #include "lib/filters/MovingAverageFilter.h"
+#include "lib/util/Util.h"
+#include "lib/util/WrapDash.h"
 
 using namespace frc;
 

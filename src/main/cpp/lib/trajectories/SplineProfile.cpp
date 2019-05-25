@@ -1,6 +1,4 @@
 #include "lib/trajectories/SplineProfile.h"
-#include "lib/trajectories/structs.h"
-#include "lib/util/Util.h"
 
 using namespace frc973;
 

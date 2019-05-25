@@ -1,27 +1,18 @@
 #pragma once
 
-#include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/sensors/Limelight.h"
-#include "lib/pixelprocessors/Flash.h"
-#include "lib/util/WrapDash.h"
-#include "lib/util/Util.h"
-#include "lib/util/WrapDash.h"
-#include "lib/bases/DriveBase.h"
-#include "src/info/RobotInfo.h"
+
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Drive.h"
 #include "src/subsystems/CargoIntake.h"
 #include "src/subsystems/Elevator.h"
 #include "src/subsystems/HatchIntake.h"
 #include "src/subsystems/Stinger.h"
-#include <iostream>
-
-using namespace frc;
 
 namespace frc973 {
+/**
+ * Handles preset selection.
+ */
 class PresetHandlerDispatcher;
 
 /**

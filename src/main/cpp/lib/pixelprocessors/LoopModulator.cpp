@@ -5,7 +5,7 @@
  *      Author: Cole Brinsfield
  */
 
-#include "LoopModulator.h"
+#include "lib/pixelprocessors/LoopModulator.h"
 
 namespace LightPattern {
 LoopModulator::LoopModulator(PixelStateProcessor* processor) {

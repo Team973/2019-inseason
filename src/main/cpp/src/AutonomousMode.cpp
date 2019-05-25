@@ -1,8 +1,4 @@
 #include "src/AutonomousMode.h"
-#include "src/DisabledMode.h"
-#include "src/Robot.h"
-
-using namespace frc;
 
 namespace frc973 {
 Autonomous::Autonomous(ObservablePoofsJoystick *driver,

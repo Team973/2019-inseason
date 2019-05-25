@@ -1,9 +1,14 @@
 #pragma once
 
-// Heavily modified based on example code provided below:
-// http://cmucam.org/projects/cmucam5/wiki/Porting_Guide
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <unistd.h>
 
 #include "frc/WPILib.h"
+
+// Heavily modified based on example code provided below:
+// http://cmucam.org/projects/cmucam5/wiki/Porting_Guide
 
 using namespace frc;
 

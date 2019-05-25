@@ -6,9 +6,7 @@
  *      Author: Cole Brinsfield
  */
 
-#include "GreyLight.h"
-#include "lib/pixelprocessors/SolidColor.h"
-#include <iostream>
+#include "lib/helpers/GreyLight.h"
 
 using namespace GreyLightType;
 
