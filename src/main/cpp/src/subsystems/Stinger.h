@@ -41,17 +41,19 @@ public:
      * Retracts the stinger's kick stands
      */
     void SetKickUpDisable();
-    /*
-     * Defines the switch blade states.
+
+    /**
+     * Defines the Switch Blade States
      */
     enum class SwitchBladeState
     {
-        engaged,
-        retracted
+        engaged,  /**< Switch Blade Extended*/
+        retracted /**< Switch Blade Stowed*/
     };
 
     /**
-     * Get switch blade states.
+     * Returns the Switch Blade's State.
+     * @return The Switch Blade's State.
      */
     SwitchBladeState GetSwitchBladeState();
 
@@ -66,16 +68,13 @@ public:
     void RetractSwitchBlade();
 
     /**
-     * Engages the gate latch.
+     * Engages the stinger's gate latch
      */
     void EngageGateLatch();
 
     /**
      * Retracts the gate latch.
-     */
-    void RetractGateLatch();
-
-    /**
+     * Retracts the stinger's gate latch
      * The periodic loooping task for the stinger elevator.
      * @param mode The current robot mode.
      */

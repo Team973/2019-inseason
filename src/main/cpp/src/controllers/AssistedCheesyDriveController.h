@@ -21,10 +21,13 @@ namespace frc973 {
  */
 class AssistedCheesyDriveController : public DriveController {
 public:
+    /**
+     * Vision Offset Type
+     */
     enum class VisionOffset
     {
-        Cargo,
-        Hatch
+        Cargo, /**< Vision Offset for Cargo */
+        Hatch  /**< Vision Offset for Hatch */
     };
 
     /**
@@ -92,9 +95,10 @@ public:
         return m_rightOutput;
     }
 
-    static constexpr double VISION_MULTIPLIER = 1.0;
-    static constexpr double HATCH_VISION_OFFSET = 3.3;  // in degrees
-    static constexpr double CARGO_VISION_OFFSET = 0.0;  // in degrees
+    static constexpr double HATCH_VISION_OFFSET =
+        3.3; /**< Hatch Vision Offset in degrees */
+    static constexpr double CARGO_VISION_OFFSET =
+        0.0; /**< Cargo Vision Offset in degree */
 
 private:
     Limelight *m_limelight;

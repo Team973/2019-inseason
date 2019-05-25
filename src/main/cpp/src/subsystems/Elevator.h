@@ -46,8 +46,8 @@ public:
      */
     enum RocketScoreMode
     {
-        low,
-        middle
+        low,   /**< Score mode for the bottom Rocket */
+        middle /**< Score mode for the middle Rocket */
     };
 
     static constexpr double GROUND = 0.2; /**< Ground preset. */
@@ -158,6 +158,7 @@ public:
 
     /**
      * Gets the rocket score mode.
+     * @return GetRocketScoreMode()
      */
     RocketScoreMode GetRocketScoreMode();
 

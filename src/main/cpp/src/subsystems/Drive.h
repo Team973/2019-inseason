@@ -70,7 +70,9 @@ public:
      * @param gyro The gyro object.
      * @param limelightHatch The hatch limelight.
      * @param hatchIntake The hatch intake subsystem.
+     * @param elevator The elevator subsystem.
      * @param driverJoystick The driver's controller.
+     * @param operatorJoystick The operator's controller.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
           GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
@@ -93,7 +95,8 @@ public:
                      bool isHighGear);
 
     /**
-     * Set drive controller to use limelight in following a target
+     * Set drive controller to use limelight in following a target.
+     * @return Limelight drive with skew.
      */
     LimelightDriveController *LimelightDrive();
 
@@ -164,25 +167,33 @@ public:
     double GetSplinePercentComplete();
     /**
      * Sets stinger output
+     * @param Power The motor power -1 to 1
      */
     void SetStingerOutput(double power);
+
     /**
      * Set drive to use the velocity arcade drive controller.
-     * @param throttle Forward/backwards amount.
-     * @param turn Left/right amount.
+     * @param Throttle Forward/backwards amount.
+     * @param Turn Left/right amount.
      */
     void VelocityArcadeDrive(double throttle, double turn);
 
     /**
-     * Set drive controller to use limelight in following a target
+     * Set drive controller to use limelight with skew in following a target
+     * @return LimelightDriveWithSkew().
      */
     LimelightDriveController *LimelightDriveWithSkew();
+
+    /**
+     * Set Drive controller to use limeight without skew
+     * @return LimelightDriveWithoutSkew().
+     */
     LimelightDriveController *LimelightDriveWithoutSkew();
 
     /**
      * Set drive controller to use limelight and driver input to steer and drive
-     * @param trottle Joysticks left y-axis input
-     * @param turn Joysticks right x-axis input
+     * @param Throttle Joysticks left y-axis input
+     * @param Turn Joysticks right x-axis input
      * @param isQuickTurn 1 or 0 for if quickturn is enabled
      * @param isHighGear 1 or 0 for if high gear is enabled
      */
@@ -298,6 +309,10 @@ public:
      */
     void TaskPeriodic(RobotMode mode) override;
 
+    /**
+     * Retrieving function for LimelightDriveWithSkew
+     * @return LimelightDriveWithSkew()
+     */
     LimelightDriveController *GetLimelightDriveWithSkew() const;
 
 private:

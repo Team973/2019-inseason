@@ -43,6 +43,7 @@ public:
      * Sets the maximum velocity/acceleration.
      * @param max_vel Maximum velocity.
      * @param max_acc Maximum acceleration.
+     * @return SetMaxVelAccel()
      */
     ConstantArcSplineDriveController *SetMaxVelAccel(double max_vel,
                                                      double max_acc);
@@ -51,6 +52,7 @@ public:
      * Sets the start/end velocity.
      * @param start_vel Start velocity.
      * @param end_vel End velocity.
+     * @return SetStartEndVel()
      */
     ConstantArcSplineDriveController *SetStartEndVel(double start_vel,
                                                      double end_vel);

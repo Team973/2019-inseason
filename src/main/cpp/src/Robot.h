@@ -41,9 +41,21 @@ using namespace ctre;
 using namespace cs;
 
 namespace frc973 {
+/**
+ * Disabled.
+ */
 class Disabled;
+/**
+ * Autonomous.
+ */
 class Autonomous;
+/**
+ * Drive.
+ */
 class Drive;
+/**
+ * Elevator.
+ */
 class Elevator;
 
 /**
@@ -55,33 +67,87 @@ class Robot
         , public PoofsJoystickObserver
         , public XboxJoystickObserver {
 public:
+    /**
+     * Constructs Robot.
+     */
     Robot();
     virtual ~Robot();
 
+    /**
+     * Initializes robot.
+     */
     void Initialize() override;
 
+    /**
+     * Starts disabled mode.
+     */
     void DisabledStart() override;
+    /**
+     * Executes and repeats disabled mode procedutes.
+     */
     void DisabledContinuous() override;
+    /**
+     * Stops disabled mode.
+     */
     void DisabledStop() override;
 
+    /**
+     * Starts autonomous mode.
+     */
     void AutonomousStart() override;
+    /**
+     * Executes and repeats autonomous mode procedures.
+     */
     void AutonomousContinuous() override;
+    /**
+     * Stops autonomous mode.
+     */
     void AutonomousStop() override;
 
+    /**
+     * Starts teleop mode.
+     */
     void TeleopStart() override;
+    /**
+     * Executes and repeats teleop mode procedures.
+     */
     void TeleopContinuous() override;
+    /**
+     * Stops teleop mode.
+     */
     void TeleopStop() override;
 
+    /**
+     * Starts test mode
+     */
     void TestStart() override;
+    /**
+     * Executes and repeats test mode.
+     */
     void TestContinuous() override;
+    /**
+     * Stops test mode.
+     */
     void TestStop() override;
 
+    /**
+     * Executes and repeats all modes.
+     */
     void AllStateContinuous() override;
 
+    /**
+     * Observes dual action joysticks states.
+     */
     void ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
                                               bool pressedP) override;
+    /**
+     * Observes poofs joysticks states.
+     */
     void ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
                                          bool pressedP) override;
+    /**
+     * Observes Xbox joystick states.
+     */
     void ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
                                         bool pressedP) override;
 

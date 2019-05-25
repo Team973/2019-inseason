@@ -75,7 +75,7 @@ public:
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    /*
+    /**
      * Defines AutoStates.
      */
     enum class AutoState
@@ -86,25 +86,26 @@ public:
         Manual
     };
 
-    /*
+    /**
      * Gets AutoState
+     * @return Gets autostate.
      */
     AutoState GetAutoState() const;
 
-    /*
-     * Sets AutoState
+    /**
+     * Sets AutoState.
+     * @param autoState The auto state.
      */
     void SetAutoState(AutoState autoState);
 
-    /*
+    /**
      * Defines AutoStateStartPositions
      */
-
     enum class AutoStateStartPosition
     {
-        LeftHabLevel2,
-        CenterHab,
-        RightHabLevel2
+        LeftHabLevel2, /**< Left Level 2 Auto State */
+        CenterHab,     /**< Center Auto State */
+        RightHabLevel2 /**< Right Level 2 Auto State */
     };
 
 private:

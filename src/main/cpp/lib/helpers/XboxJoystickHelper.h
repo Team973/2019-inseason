@@ -17,29 +17,29 @@ using namespace frc;
 namespace frc973 {
 
 namespace Xbox {
-const unsigned int BtnX = 3;
-const unsigned int BtnA = 1;
-const unsigned int BtnB = 2;
-const unsigned int BtnY = 4;
-const unsigned int LeftBumper = 5;
-const unsigned int RightBumper = 6;
-const unsigned int Back = 7;
-const unsigned int Start = 8;
+const unsigned int BtnX = 3;        /**< X Button */
+const unsigned int BtnA = 1;        /**< A Button */
+const unsigned int BtnB = 2;        /**< B Button */
+const unsigned int BtnY = 4;        /**< Y Button */
+const unsigned int LeftBumper = 5;  /**< Left Bumper Button */
+const unsigned int RightBumper = 6; /**< Right Bumper Button */
+const unsigned int Back = 7;        /**< Back Button */
+const unsigned int Start = 8;       /**< Start Button */
 
-const unsigned int LJoystickBtn = 9;
-const unsigned int RJoystickBtn = 10;
+const unsigned int LJoystickBtn = 9;  /**< Left Joystick Button */
+const unsigned int RJoystickBtn = 10; /**< Right Joystick Button */
 
-const unsigned int DPadUpVirtBtn = 11;
-const unsigned int DPadDownVirtBtn = 12;
-const unsigned int DPadLeftVirtBtn = 13;
-const unsigned int DPadRightVirtBtn = 14;
+const unsigned int DPadUpVirtBtn = 11;    /**< DPad Up Button*/
+const unsigned int DPadDownVirtBtn = 12;  /**< DPad Down Button*/
+const unsigned int DPadLeftVirtBtn = 13;  /**< DPad Left Button*/
+const unsigned int DPadRightVirtBtn = 14; /**< DPad Right Button*/
 
-const unsigned int LeftXAxis = 0;
-const unsigned int LeftYAxis = 1;
-const unsigned int RightXAxis = 4;
-const unsigned int RightYAxis = 5;
-const unsigned int LeftTriggerAxis = 2;
-const unsigned int RightTriggerAxis = 3;
+const unsigned int LeftXAxis = 0;        /**< Left Joystick X Axis*/
+const unsigned int LeftYAxis = 1;        /**< Left Joystick Y Axis*/
+const unsigned int RightXAxis = 4;       /**< Right Joystick X Axis*/
+const unsigned int RightYAxis = 5;       /**< Right Joystick Y Axis*/
+const unsigned int LeftTriggerAxis = 2;  /**< Left Trigger Button Axis*/
+const unsigned int RightTriggerAxis = 3; /**< Right Trigger Button Axis*/
 }  // namespace Xbox
 
 /**
@@ -51,9 +51,8 @@ public:
     }
     virtual ~XboxJoystickObserver() {
     }
-
     /**
-     * This function is overriden by the subclass to handle a joystick button
+     * This function is overriden by the subclass to handle an Xbox button
      * event notification.
      * @param port The joystick port.
      * @param button The joystick button.
@@ -65,7 +64,10 @@ public:
 };
 
 /**
- * An observerable Xbox Joystick.
+ * This class observes a given joystick and notifies the given callback
+ * on any joystick event. This is particularly useful for catching the
+ * *edge* of a button press or release event. Also lets you use a joystick
+ * axis as a button in an easy way.
  */
 class ObservableXboxJoystick
         : public CoopTask
