@@ -67,7 +67,10 @@ public:
 
     /**
      * Retracts the gate latch.
-     * Retracts the stinger's gate latch
+     */
+    void RetractGateLatch();
+
+    /**
      * The periodic loooping task for the stinger elevator.
      * @param mode The current robot mode.
      */
