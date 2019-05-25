@@ -8,8 +8,7 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_TEAMNUMBER_H_
 #define SRC_MODULES_PIXELPROCESSORS_TEAMNUMBER_H_
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
+#include "lib/pixelprocessors/PixelStateProcessor.h"
 
 namespace LightPattern {
 /**

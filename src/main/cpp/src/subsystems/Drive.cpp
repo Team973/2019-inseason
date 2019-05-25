@@ -5,30 +5,7 @@
  *      Authors: Luis and Dylan
  */
 
-#include <stdio.h>
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
-#include "src/controllers/CheesyDriveController.h"
-#include "src/controllers/LimelightDriveController.h"
-#include "src/controllers/LimelightTrigController.h"
-#include "src/controllers/OpenloopArcadeDriveController.h"
-#include "src/controllers/PIDDriveController.h"
-#include "src/controllers/SplineDriveController.h"
-#include "src/controllers/ConstantArcSplineDriveController.h"
-#include "src/controllers/VelocityArcadeDriveController.h"
-#include "src/controllers/AssistedCheesyDriveController.h"
-#include "src/info/RobotInfo.h"
 #include "src/subsystems/Drive.h"
-#include "lib/util/Util.h"
-#include "lib/util/WrapDash.h"
-#include "lib/sensors/Limelight.h"
-#include "lib/logging/LogSpreadsheet.h"
-#include "lib/trajectories/structs.h"
-
-using namespace frc;
-using namespace ctre;
-using namespace rev;
-using namespace trajectories;
 
 namespace frc973 {
 Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,

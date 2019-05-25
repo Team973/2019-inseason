@@ -6,8 +6,6 @@
  */
 
 #include "lib/helpers/RampedOutput.h"
-#include "lib/util/Util.h"
-#include <math.h>
 
 namespace frc973 {
 

@@ -5,10 +5,7 @@
  *      Author: Andrew
  */
 
-#include "string.h"
 #include "lib/managers/TaskMgr.h"
-#include "lib/managers/CoopTask.h"
-#include "frc/WPILib.h"
 
 static constexpr bool ENABLE_PROFILING = false;
 

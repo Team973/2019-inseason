@@ -1,8 +1,7 @@
 #pragma once
 
 #include "lib/trajectories/structs.h"
-#include "stdio.h"
-#include <cmath>
+#include "lib/util/Util.h"
 
 namespace trajectories {
 

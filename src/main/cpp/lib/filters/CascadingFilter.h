@@ -10,8 +10,9 @@
 
 #pragma once
 
-#include "lib/filters/FilterBase.h"
 #include <vector>
+
+#include "lib/filters/FilterBase.h"
 
 namespace frc973 {
 

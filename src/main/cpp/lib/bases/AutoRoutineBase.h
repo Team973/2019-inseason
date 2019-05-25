@@ -1,9 +1,6 @@
 #pragma once
 
-#include "frc/WPILib.h"
 #include <iostream>
-
-using namespace frc;
 
 namespace frc973 {
 

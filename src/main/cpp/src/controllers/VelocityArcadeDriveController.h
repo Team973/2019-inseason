@@ -8,9 +8,7 @@
 #pragma once
 
 #include "lib/bases/DriveBase.h"
-#include <stdio.h>
-
-using namespace frc;
+#include "lib/util/WrapDash.h"
 
 namespace frc973 {
 

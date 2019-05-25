@@ -7,6 +7,7 @@
 
 #ifndef SRC_MODULES_GREYLIGHTTYPES_H_
 #define SRC_MODULES_GREYLIGHTTYPES_H_
+
 #include <cstdint>
 #include <cmath>
 #include <vector>

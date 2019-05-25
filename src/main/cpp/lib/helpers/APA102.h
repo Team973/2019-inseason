@@ -6,11 +6,12 @@
 #ifndef SRC_MODULES_APA102_H_
 #define SRC_MODULES_APA102_H_
 
-#include <stdint.h>
-#include "frc/WPILib.h"
 #include <algorithm>
-#include "lib/pixelprocessors/GreyLightTypes.h"
 #include <cmath>
+#include <vector>
+
+#include "frc/WPILib.h"
+#include "lib/pixelprocessors/GreyLightTypes.h"
 
 using namespace GreyLightType;
 

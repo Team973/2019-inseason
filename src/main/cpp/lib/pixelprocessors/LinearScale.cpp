@@ -5,7 +5,7 @@
  *      Author: Cole Brinsfield
  */
 
-#include "LinearScale.h"
+#include "lib/pixelprocessors/LinearScale.h"
 
 namespace LightPattern {
 

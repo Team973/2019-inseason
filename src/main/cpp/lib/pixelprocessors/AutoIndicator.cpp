@@ -6,7 +6,7 @@
  */
 
 #include "AutoIndicator.h"
-#include <iostream>
+
 namespace LightPattern {
 
 AutoIndicator::AutoIndicator() {

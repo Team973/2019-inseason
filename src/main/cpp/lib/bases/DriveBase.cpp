@@ -6,9 +6,6 @@
  */
 
 #include "lib/bases/DriveBase.h"
-#include "lib/util/Util.h"
-
-#include "frc/WPILib.h"
 
 namespace frc973 {
 

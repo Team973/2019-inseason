@@ -1,6 +1,5 @@
 #pragma once
 
-#include "frc/WPILib.h"
 #include "rev/CANSparkMax.h"
 
 using namespace rev;

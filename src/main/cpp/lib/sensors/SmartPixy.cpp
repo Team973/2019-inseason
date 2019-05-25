@@ -1,6 +1,4 @@
 #include "lib/sensors/SmartPixy.h"
-#include "unistd.h"
-#include "stdlib.h"
 
 namespace frc973 {
 

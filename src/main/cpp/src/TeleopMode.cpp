@@ -6,13 +6,6 @@
  *
  */
 #include "src/TeleopMode.h"
-#include "networktables/NetworkTable.h"
-#include "networktables/NetworkTableInstance.h"
-#include "networktables/NetworkTableEntry.h"
-#include <cmath>
-
-using namespace frc;
-using namespace nt;
 
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driver,

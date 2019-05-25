@@ -13,8 +13,7 @@
 
 #pragma once
 
-#include <math.h>
-#include <stdint.h>
+#include "lib/util/Util.h"
 
 namespace frc973 {
 

@@ -1,8 +1,4 @@
 #include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/managers/TaskMgr.h"
-#include "lib/util/Util.h"
-#include <stdlib.h>
-#include <string>
 
 namespace frc973 {
 

@@ -1,18 +1,5 @@
-#include "frc/WPILib.h"
-#include <iostream>
-#include <time.h>
-#include "src/info/RobotInfo.h"
-#include "src/DisabledMode.h"
-#include "src/AutonomousMode.h"
-#include "src/TeleopMode.h"
-#include "src/TestMode.h"
 #include "src/Robot.h"
-#include "ctre/Phoenix.h"
-#include "lib/util/WrapDash.h"
-#include "src/controllers/LimelightDriveController.h"
 
-using namespace frc;
-using namespace ctre;
 namespace frc973 {
 Robot::Robot()
         : CoopMTRobot()

@@ -8,10 +8,9 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_AUTOINDICATOR_H_
 #define SRC_MODULES_PIXELPROCESSORS_AUTOINDICATOR_H_
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
-#include <vector>
 #include <string>
+
+#include "PixelStateProcessor.h"
 
 namespace LightPattern {
 static constexpr Color LEFT_GREEN = {0, 255, 0};

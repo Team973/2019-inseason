@@ -5,8 +5,8 @@
  *      Author: Cole Brinsfield
  */
 
-#include "LengthModifier.h"
-#include <iostream>
+#include "lib/pixelprocessors/LengthModifier.h"
+
 namespace LightPattern {
 LengthModifier::LengthModifier(PixelStateProcessor* processor, int numLEDs) {
     this->processor = processor;

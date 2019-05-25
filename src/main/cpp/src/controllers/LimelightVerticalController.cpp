@@ -1,6 +1,4 @@
 #include "src/controllers/LimelightVerticalController.h"
-#include "lib/util/WrapDash.h"
-#include "stdio.h"
 
 namespace frc973 {
 LimelightVerticalController::LimelightVerticalController(Limelight *limelight,

@@ -8,7 +8,8 @@
 #define SRC_MODULES_PIXELSTATEPROCESSOR_H_
 
 #include <vector>
-#include "GreyLightTypes.h"
+
+#include "lib/pixelprocessors/GreyLightTypes.h"
 
 using namespace GreyLightType;
 namespace LightPattern {

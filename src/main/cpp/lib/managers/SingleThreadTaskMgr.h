@@ -7,11 +7,11 @@
 
 #pragma once
 
+#include <stdio.h>
+#include <unistd.h>
+
 #include "pthread.h"
 #include "lib/managers/TaskMgr.h"
-#include <stdio.h>
-#include "frc/WPILib.h"
-using namespace frc;
 
 namespace frc973 {
 

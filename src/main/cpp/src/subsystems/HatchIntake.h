@@ -1,18 +1,11 @@
 #pragma once
 
-#include "frc/WPILib.h"
-#include "lib/managers/CoopTask.h"
-#include "lib/logging/LogSpreadsheet.h"
-#include "src/info/RobotInfo.h"
 #include "lib/helpers/GreyTalon.h"
+#include "lib/logging/LogSpreadsheet.h"
+#include "lib/managers/CoopTask.h"
 #include "lib/sensors/Limelight.h"
 
-using namespace frc;
-
 namespace frc973 {
-class TaskMgr;
-class LogSpreadsheet;
-class LogCell;
 
 /**
  * Hatch intake

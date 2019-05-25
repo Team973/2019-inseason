@@ -6,36 +6,21 @@
  */
 #pragma once
 
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
-#include "lib/helpers/GreyTalon.h"
 #include "lib/helpers/GreySparkMax.h"
-#include "src/info/RobotInfo.h"
-#include "src/subsystems/HatchIntake.h"
-#include "src/subsystems/Elevator.h"
-#include "lib/bases/DriveBase.h"
-#include "networktables/NetworkTableInstance.h"
-#include "lib/logging/LogSpreadsheet.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/trajectories/structs.h"
 
-using namespace frc;
-using namespace ctre;
+#include "src/controllers/CheesyDriveController.h"
+#include "src/controllers/LimelightDriveController.h"
+#include "src/controllers/LimelightTrigController.h"
+#include "src/controllers/OpenloopArcadeDriveController.h"
+#include "src/controllers/PIDDriveController.h"
+#include "src/controllers/SplineDriveController.h"
+#include "src/controllers/ConstantArcSplineDriveController.h"
+#include "src/controllers/VelocityArcadeDriveController.h"
+#include "src/controllers/AssistedCheesyDriveController.h"
+
 using namespace trajectories;
 
 namespace frc973 {
-class CheesyDriveController;
-class LimelightDriveController;
-class Limelight;
-class OpenloopArcadeDriveController;
-class PIDDriveController;
-class SplineDriveController;
-class ConstantArcSplineDriveController;
-class VelocityArcadeDriveController;
-class AssistedCheesyDriveController;
-class Limelight;
-class LogSpreadsheet;
 
 /**
  * Drive provides an interface to control the drive-base (to do both

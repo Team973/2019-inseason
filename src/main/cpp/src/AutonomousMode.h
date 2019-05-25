@@ -1,13 +1,11 @@
 #pragma once
 
-#include "frc/WPILib.h"
-#include "src/info/RobotInfo.h"
-#include "src/TeleopMode.h"
+#include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/helpers/DualActionJoystickHelper.h"
 
-using namespace frc;
+#include "src/info/RobotInfo.h"
+#include "src/TeleopMode.h"
 
 namespace frc973 {
 

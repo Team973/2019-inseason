@@ -1,8 +1,7 @@
 #pragma once
 
-#include <stdint.h>
-#include <math.h>
 #include "frc/WPILib.h"
+
 using namespace frc;
 
 namespace frc973 {

@@ -5,7 +5,7 @@
  *      Author: Cole Brinsfield
  */
 
-#include "TeamNumber.h"
+#include "lib/pixelprocessors/TeamNumber.h"
 
 namespace LightPattern {
 

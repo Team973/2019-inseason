@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "math.h"
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 
 namespace frc973 {
 

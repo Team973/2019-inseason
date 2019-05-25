@@ -1,8 +1,4 @@
 #include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/managers/TaskMgr.h"
-#include "lib/util/Util.h"
-#include <stdlib.h>
-#include <string>
 
 namespace frc973 {
 

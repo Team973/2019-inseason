@@ -1,21 +1,14 @@
 #pragma once
 
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
 #include "lib/helpers/GreyTalon.h"
-#include "src/info/RobotInfo.h"
+#include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
-#include "lib/logging/LogSpreadsheet.h"
 #include "lib/util/WrapDash.h"
 
-using namespace frc;
-using namespace ctre;
+#include "src/info/RobotInfo.h"
 
 namespace frc973 {
-class TaskMgr;
-class LogSpreadsheet;
-class LogCell;
 
 /**
  * Stinger

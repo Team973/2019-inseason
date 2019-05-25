@@ -1,8 +1,6 @@
 #pragma once
 
 #include "lib/util/Util.h"
-#include "stdio.h"
-#include <math.h>
 
 namespace frc973 {
 

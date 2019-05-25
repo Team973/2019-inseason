@@ -1,8 +1,4 @@
 #include "src/controllers/SplineDriveController.h"
-#include "src/info/RobotInfo.h"
-#include "lib/util/Util.h"
-#include "lib/util/WrapDash.h"
-#include <cmath>
 
 namespace frc973 {
 

@@ -5,8 +5,8 @@
  *      Author: Cole Brinsfield
  */
 
-#include "SolidColor.h"
-#include <iostream>
+#include "lib/pixelprocessors/SolidColor.h"
+
 namespace LightPattern {
 SolidColor::SolidColor() {
     SolidColor(Color{0, 255, 0});

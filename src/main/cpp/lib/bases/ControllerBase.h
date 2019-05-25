@@ -18,8 +18,6 @@
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
 
-using namespace frc;
-
 namespace frc973 {
 
 class SimpleControlSystem;

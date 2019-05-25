@@ -1,6 +1,4 @@
 #include "lib/util/InterpLookupTable.h"
-#include <limits>
-#include <algorithm>
 
 namespace frc973 {
 

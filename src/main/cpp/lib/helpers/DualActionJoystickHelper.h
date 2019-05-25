@@ -7,12 +7,8 @@
 
 #pragma once
 
-#include "frc/WPILib.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
-#include <stdint.h>
-
-using namespace frc;
 
 namespace frc973 {
 

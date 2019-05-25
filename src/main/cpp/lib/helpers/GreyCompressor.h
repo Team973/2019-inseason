@@ -12,10 +12,8 @@
 
 #pragma once
 
-#include "lib/managers/TaskMgr.h"
 #include "lib/managers/CoopTask.h"
-#include "frc/WPILib.h"
-using namespace frc;
+#include "lib/managers/TaskMgr.h"
 
 namespace frc973 {
 

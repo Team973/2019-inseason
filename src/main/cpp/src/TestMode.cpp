@@ -1,7 +1,4 @@
 #include "src/TestMode.h"
-#include "src/controllers/ConstantArcSplineDriveController.h"
-#include "lib/profiles/MotionProfile.h"
-#include <math.h>
 
 using namespace frc;
 
@@ -79,7 +76,7 @@ void Test::TestPeriodic() {
             m_drive->LimelightDriveWithSkew();
             break;
         case DriveMode::LimelightTrig:
-            //m_drive->LimelightTrigDrive();
+            // m_drive->LimelightTrigDrive();
             break;
         case DriveMode::AssistedCheesy:
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);

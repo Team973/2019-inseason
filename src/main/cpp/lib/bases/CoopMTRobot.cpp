@@ -5,16 +5,7 @@
  *      Author: Andrew
  */
 
-#include "unistd.h"
-
-#include "frc/WPILib.h"
-
 #include "lib/bases/CoopMTRobot.h"
-#include "lib/util/Ansi.h"
-#include "lib/util/Util.h"
-#include "lib/util/WrapDash.h"
-#include <stdio.h>
-#include <unistd.h>
 
 static constexpr bool ENABLE_PROFILING = false;
 

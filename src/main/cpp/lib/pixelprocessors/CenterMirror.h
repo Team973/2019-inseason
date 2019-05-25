@@ -8,9 +8,8 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_CENTERMIRROR_H_
 #define SRC_MODULES_PIXELPROCESSORS_CENTERMIRROR_H_
 
-#include <vector>
 #include <algorithm>
-#include "GreyLightTypes.h"
+
 #include "PixelStateProcessor.h"
 
 namespace LightPattern {

@@ -10,8 +10,7 @@
 
 #include <vector>
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
+#include "lib/pixelprocessors/PixelStateProcessor.h"
 
 namespace LightPattern {
 /**

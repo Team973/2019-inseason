@@ -5,8 +5,8 @@
  *      Author: Cole Brinsfield
  */
 
-#include "ReverseModifier.h"
-#include <iostream>
+#include "lib/pixelprocessors/ReverseModifier.h"
+
 namespace LightPattern {
 ReverseModifier::ReverseModifier(PixelStateProcessor* processor) {
     this->processor = processor;
