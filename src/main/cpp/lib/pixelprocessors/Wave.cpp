@@ -7,6 +7,8 @@
 
 #include "lib/pixelprocessors/Wave.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 
 Wave::Wave(Color background, Color foreground, int period) {
@@ -25,5 +27,6 @@ void Wave::Tick(PixelState& state) {
             m_foreground,
             (cos((i + state.frame) * (2 * M_PI / m_period)) + 1) / 2);
     }
+}
 }
 }

@@ -3,7 +3,9 @@
 #include "lib/trajectories/structs.h"
 #include "lib/util/Util.h"
 
-namespace trajectories {
+namespace frc973 {
+
+namespace Trajectories {
 
 /**
  * Get the left drive velocity.
@@ -91,4 +93,5 @@ double GetAngularRateDegrees(TrajectoryDescription *trajectory, double time);
  * @return The angular acceleration.
  */
 double GetAngularAcceleration(TrajectoryDescription *trajectory, double time);
+}
 }

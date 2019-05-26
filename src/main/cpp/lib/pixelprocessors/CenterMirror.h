@@ -12,6 +12,8 @@
 
 #include "PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 
 /**
@@ -44,4 +46,6 @@ private:
     uint8_t m_previousNumLEDs;
 };
 }
+}
+
 #endif /* SRC_MODULES_PIXELPROCESSORS_CENTERMIRROR_H_ */

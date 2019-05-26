@@ -1,8 +1,6 @@
 #include "src/AutonomousMode.h"
 #include "src/auto/AutoCommon.h"
 
-// using namespace trajectories;
-
 namespace frc973 {
 
 /* enumerated AutoSteps

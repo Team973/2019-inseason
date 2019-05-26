@@ -11,6 +11,8 @@
 
 #include "lib/pixelprocessors/PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 /**
  * PixelStateModulator to create an "inch-worm" of pixels moving from one side
@@ -40,6 +42,7 @@ private:
     uint16_t GetFrame(int n);
     Color m_background;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_PIXELCHASE_H_ */

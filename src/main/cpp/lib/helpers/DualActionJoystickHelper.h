@@ -13,13 +13,9 @@
 namespace frc973 {
 
 /**
- * Button mapping for the DualAction joystick
+ * Button mapping for the DualAction joystick.
  */
 namespace DualAction {
-
-/**
- * Standard buttons... shouldn't need any explanation
- */
 
 const unsigned int BtnX = 1;         /**< Button X ID. */
 const unsigned int BtnA = 2;         /**< Button A ID. */
@@ -32,11 +28,6 @@ const unsigned int RightTrigger = 8; /**< Right Trigger ID. */
 const unsigned int Back = 9;         /**< Back Button ID. */
 const unsigned int Start = 10;       /**< Start Button ID. */
 
-/**
- * When you push down on the left and right joystick, that registers
- * as a button press.
- */
-
 const unsigned int LJoystickBtn = 11; /**< Left Joystick Button ID. */
 const unsigned int RJoystickBtn = 12; /**< Right Joystick Button ID. */
 
@@ -45,28 +36,12 @@ const unsigned int DPadDownVirtBtn = 23;  /**< DPad Down Virtual Button ID. */
 const unsigned int DPadLeftVirtBtn = 24;  /**< DPad Left Virtual Button ID. */
 const unsigned int DPadRightVirtBtn = 25; /**< DPad Right Virtual Button ID. */
 
-/**
- * The following are 'virtual' buttons, one for each joystick axis.
- *  - Virtual buttons default to zero.
- *  - When you push the associated joystick axis above 0.5, it registers as
- * pressed
- *  - When you pull the associated joystick axis below -0.5, it registers as
- * released
- */
-
 const unsigned int LXAxisVirtButton = 26; /**< Left X Axis Virtual Button ID. */
 const unsigned int LYAxisVirtButton = 27; /**< Left Y Axis Virtual Button ID. */
-const unsigned int RXAxisVirtButton =
-    28; /**< Right X Axis Virtual Button ID. */
-const unsigned int RYAxisVirtButton =
-    29; /**< Right Y Axis Virtual Button ID. */
+const unsigned int RXAxisVirtButton = 28; /**< Right X Axis Virt Button ID. */
+const unsigned int RYAxisVirtButton = 29; /**< Right Y Axis Virt Button ID. */
 const unsigned int DXAxisVirtButton = 30; /**< DPad X Axis Virtual Button ID. */
 const unsigned int DYAxisVirtButton = 31; /**< DPad Y Axis Virtual Button ID. */
-
-/**
- * Not buttons but the numbers for each axis... can be used with
- * joystick.GetRawAxis. DPad axis only return 0.0, -1.0, and 1.0.
- */
 
 const unsigned int LeftXAxis = 0;  /**< Left X Axis ID. */
 const unsigned int LeftYAxis = 1;  /**< Left Y Axis ID. */

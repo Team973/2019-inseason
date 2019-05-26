@@ -18,9 +18,9 @@
 #include "src/controllers/VelocityArcadeDriveController.h"
 #include "src/controllers/AssistedCheesyDriveController.h"
 
-using namespace trajectories;
-
 namespace frc973 {
+
+using namespace Trajectories;
 
 /**
  * Drive provides an interface to control the drive-base (to do both
@@ -125,8 +125,8 @@ public:
      * @param relativity Point relative to new setpoint.
      * @return The drive controller.
      */
-    SplineDriveController *SplineDrive(
-        trajectories::TrajectoryDescription *trajectory, RelativeTo relativity);
+    SplineDriveController *SplineDrive(TrajectoryDescription *trajectory,
+                                       RelativeTo relativity);
 
     /**
      * Set drive to Constant Arc Spline Controller.

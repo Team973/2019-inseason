@@ -11,8 +11,15 @@
 
 #include "lib/pixelprocessors/GreyLightTypes.h"
 
+namespace frc973 {
+
 using namespace GreyLightType;
+
+/**
+ * Holds different light patterns available to GreyLight.
+ */
 namespace LightPattern {
+
 /**
  * An object that generates Pixel Data to create patterns and animation
  */
@@ -22,7 +29,7 @@ public:
      * Generate a new frame of LED Data.
      * @param state The PixelState for the frame.
      */
-    virtual void Tick(PixelState& state) = 0;
+    virtual void Tick(GreyLightType::PixelState& state) = 0;
 
     /**
      * Reset the PixelStateProcessor.
@@ -61,6 +68,7 @@ public:
 
     PixelStateProcessor* processor; /**< The PixelStateProcessor. */
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELSTATEPROCESSOR_H_ */

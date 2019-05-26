@@ -7,6 +7,8 @@
 
 #include "lib/pixelprocessors/PixelChase.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 
 PixelChase::PixelChase(PixelStateProcessor* processor, Color background) {
@@ -49,5 +51,6 @@ uint16_t PixelChase::GetFrame(int n) {
     else {
         return (((uint16_t)used << 8) ^ 0x00ff);
     }
+}
 }
 }

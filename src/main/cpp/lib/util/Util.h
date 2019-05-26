@@ -13,7 +13,7 @@ enum RobotMode
 {
     MODE_DISABLED, /**< Disabled mode. */
     MODE_AUTO,     /**< Autonomous mode. */
-    MODE_TELEOP,   /**< TeleOp mode. */
+    MODE_TELEOP,   /**< Teleop mode. */
     MODE_TEST      /**< Test mode. */
 };
 

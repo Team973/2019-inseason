@@ -11,9 +11,9 @@
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/trajectories/SplineProfile.h"
 
-using namespace trajectories;
-
 namespace frc973 {
+
+using namespace Trajectories;
 
 /**
  * Spline Drive controller.

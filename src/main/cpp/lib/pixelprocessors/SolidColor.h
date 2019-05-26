@@ -10,6 +10,8 @@
 
 #include "lib/pixelprocessors/PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 /**
  * PixelStateProcessor to fill Pixel Data with a solid Color.
@@ -43,4 +45,6 @@ private:
     Color m_currentColor;
 };
 }
+}
+
 #endif /* SRC_MODULES_PIXELPROCESSORS_SOLIDCOLOR_H_ */

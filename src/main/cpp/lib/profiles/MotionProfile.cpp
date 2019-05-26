@@ -1,8 +1,3 @@
-/**
- *
- * @author kyledematias
- */
-
 #include "lib/profiles/MotionProfile.h"
 
 namespace frc973 {

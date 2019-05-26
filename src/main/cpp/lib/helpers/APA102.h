@@ -13,6 +13,8 @@
 #include "frc/WPILib.h"
 #include "lib/pixelprocessors/GreyLightTypes.h"
 
+namespace frc973 {
+
 using namespace GreyLightType;
 
 /**
@@ -48,5 +50,6 @@ private:
     frc::SPI* m_spi;
     std::vector<uint8_t> m_ledBuffer;
 };
+}
 
 #endif

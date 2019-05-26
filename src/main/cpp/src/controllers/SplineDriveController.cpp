@@ -3,7 +3,7 @@
 namespace frc973 {
 
 using namespace Constants;
-using namespace trajectories;
+using namespace Trajectories;
 
 static constexpr double POSITION_KP = 1.1;
 static constexpr double POSITION_KI = 0.0;
@@ -68,7 +68,7 @@ void SplineDriveController::SetTarget(TrajectoryDescription *trajectory,
             m_angle_offset = m_state->GetAngle();
             break;
         case DriveBase::RelativeTo::SetPoint:
-            // m_angle_offset = trajectories::GetHeadingDegrees(m_trajectory,
+            // m_angle_offset = GetHeadingDegrees(m_trajectory,
             // 0.0);
             break;
         case DriveBase::RelativeTo::Absolute:
@@ -80,13 +80,12 @@ void SplineDriveController::CalcDriveOutput(DriveStateProvider *state,
                                             DriveControlSignalReceiver *out) {
     double time = GetSecTime() - m_time_offset;
 
-    double leftDist = trajectories::GetLeftDist(m_trajectory, time);
-    double rightDist = trajectories::GetRightDist(m_trajectory, time);
-    double leftVel = trajectories::GetLeftDriveVelocity(m_trajectory, time);
-    double rightVel = trajectories::GetRightDriveVelocity(m_trajectory, time);
-    double heading = trajectories::GetHeadingDegrees(m_trajectory, time);
-    double angularRate =
-        trajectories::GetAngularRateDegrees(m_trajectory, time);
+    double leftDist = GetLeftDist(m_trajectory, time);
+    double rightDist = GetRightDist(m_trajectory, time);
+    double leftVel = GetLeftDriveVelocity(m_trajectory, time);
+    double rightVel = GetRightDriveVelocity(m_trajectory, time);
+    double heading = GetHeadingDegrees(m_trajectory, time);
+    double angularRate = GetAngularRateDegrees(m_trajectory, time);
 
     m_l_pos_pid.SetTarget(leftDist);
     m_r_pos_pid.SetTarget(rightDist);
@@ -97,19 +96,14 @@ void SplineDriveController::CalcDriveOutput(DriveStateProvider *state,
     double angle_error = Util::CalcAngleError(heading, AngleFromStart());
 
     /* vel feed forward for linear term */
-    double right_l_vel_ff =
-        trajectories::GetRightDriveVelocity(m_trajectory, time);
-    double left_l_vel_ff =
-        trajectories::GetLeftDriveVelocity(m_trajectory, time);
-    double leftAccel_ff =
-        ACCEL_FF * trajectories::GetLeftAcceleration(m_trajectory, time);
-    double rightAccel_ff =
-        ACCEL_FF * trajectories::GetRightAcceleration(m_trajectory, time);
+    double right_l_vel_ff = GetRightDriveVelocity(m_trajectory, time);
+    double left_l_vel_ff = GetLeftDriveVelocity(m_trajectory, time);
+    double leftAccel_ff = ACCEL_FF * GetLeftAcceleration(m_trajectory, time);
+    double rightAccel_ff = ACCEL_FF * GetRightAcceleration(m_trajectory, time);
     double angleAccel_ff =
-        ANGLE_ACCEL_FF *
-        trajectories::GetAngularAcceleration(m_trajectory, time);
+        ANGLE_ACCEL_FF * GetAngularAcceleration(m_trajectory, time);
     double angleRate_ff =
-        ANGLE_RATE_FF * trajectories::GetAngularRateDegrees(m_trajectory, time);
+        ANGLE_RATE_FF * GetAngularRateDegrees(m_trajectory, time);
 
     /* correction terms for error in {linear,angular} {position,velocioty */
     double left_linear_dist_term = m_l_pos_pid.CalcOutput(LeftDistFromStart());
@@ -134,8 +128,7 @@ void SplineDriveController::CalcDriveOutput(DriveStateProvider *state,
 
     out->SetDriveOutputIPS(left_output, right_output);
 
-    if (time < trajectories::GetLength(m_trajectory) *
-                   m_trajectory->left_trajectory->dt) {
+    if (time < GetLength(m_trajectory) * m_trajectory->left_trajectory->dt) {
         m_done = false;
     }
     else {
@@ -144,8 +137,7 @@ void SplineDriveController::CalcDriveOutput(DriveStateProvider *state,
 }
 
 double SplineDriveController::GetSplinePercentComplete() const {
-    return trajectories::GetPercentComplete(m_trajectory,
-                                            GetSecTime() - m_time_offset);
+    return GetPercentComplete(m_trajectory, GetSecTime() - m_time_offset);
 }
 
 double SplineDriveController::LeftDistFromStart() const {

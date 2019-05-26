@@ -5,6 +5,9 @@
 
 namespace frc973 {
 
+/**
+ * Holds motion profilers.
+ */
 namespace Profiler {
 
 /**

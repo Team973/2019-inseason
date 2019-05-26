@@ -12,6 +12,8 @@
 
 #include "lib/pixelprocessors/PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 /**
  * PixelStateModulator to create a "scrolling" effect from a
@@ -40,6 +42,7 @@ private:
      */
     void Rotate(std::vector<Color>& pixels, int amount, int numLEDs);
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_LOOPMODULATOR_H_ */

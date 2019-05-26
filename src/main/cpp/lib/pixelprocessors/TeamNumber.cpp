@@ -7,6 +7,8 @@
 
 #include "lib/pixelprocessors/TeamNumber.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 
 TeamNumber::TeamNumber() : TeamNumber(Color{255, 0, 0}, Color{0, 0, 255}) {
@@ -32,5 +34,6 @@ void TeamNumber::Tick(PixelState& state) {
     for (std::size_t i = 9 + 7 + spacing * 2; i < state.numLEDs; i++) {
         state.pixels.at(i) = m_foreground;
     }
+}
 }
 }

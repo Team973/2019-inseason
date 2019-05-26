@@ -8,6 +8,8 @@
 
 #include "APA102.h"
 
+namespace frc973 {
+
 using namespace GreyLightType;
 
 APA102::APA102(int numLEDs, frc::SPI::Port port) : m_numLEDs(numLEDs) {
@@ -58,4 +60,5 @@ void APA102::Show(std::vector<Color> pixels) {
         }
         m_spi->Write(txArray, size);
     }
+}
 }

@@ -10,6 +10,8 @@
 
 #include "lib/pixelprocessors/PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 /**
  * PixelStateProcessor to display a cosine wave of color.
@@ -34,6 +36,7 @@ private:
     int m_period;
     Color m_background, m_foreground;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_WAVE_H_ */

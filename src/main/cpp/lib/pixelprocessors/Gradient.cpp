@@ -7,6 +7,8 @@
 
 #include "lib/pixelprocessors/Gradient.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 
 Gradient::Gradient(Color m_gradientStart, Color m_gradientEnd)
@@ -38,5 +40,6 @@ void Gradient::Tick(PixelState& state) {
         state.pixels.at(i) = gradientIndex;
         // std::cout<<"I: "<<i<<" PERCENTANGE 2/2: "<<percentage<<std::endl;
     }
+}
 }
 }

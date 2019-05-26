@@ -12,6 +12,9 @@
 
 namespace frc973 {
 
+/**
+ * Button mapping for the Poofs joystick.
+ */
 namespace PoofsJoysticks {
 const unsigned int LeftXAxis = 1;  /**< Left X Axis ID. */
 const unsigned int LeftYAxis = 0;  /**< Left Y Axis ID. */

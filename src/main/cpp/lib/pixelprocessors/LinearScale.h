@@ -10,6 +10,8 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_LINEARSCALE_H_
 #define SRC_MODULES_PIXELPROCESSORS_LINEARSCALE_H_
 
+namespace frc973 {
+
 namespace LightPattern {
 
 /**
@@ -46,6 +48,7 @@ private:
     Color m_maxColor;
     double m_minVal, m_maxVal, m_currentValue;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_LINEARSCALE_H_ */

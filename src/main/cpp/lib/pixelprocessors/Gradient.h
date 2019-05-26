@@ -10,6 +10,8 @@
 
 #include "lib/pixelprocessors/PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 /**
  * PixelStateProcessor to generate a Gradient.
@@ -33,6 +35,7 @@ private:
     Color m_gradientStart;
     Color m_gradientEnd;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_GRADIENT_H_ */

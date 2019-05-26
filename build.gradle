@@ -97,7 +97,7 @@ doxygen {
     group = 'Custom 973 Tasks'
     description = 'Generate documentation'
 
-    project_name 'greybots-skeleton'
+    project_name '2019-inseason'
 
     generate_html true
     generate_latex false
@@ -108,7 +108,7 @@ doxygen {
 
     use_mdfile_as_mainpage 'README.md'
 
-    outputDir 'build/docs'
+    outputDir 'docs/'
 
     executables {
         doxygen version : '1.8.15'

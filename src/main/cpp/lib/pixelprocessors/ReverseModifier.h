@@ -12,6 +12,8 @@
 
 #include "lib/pixelprocessors/PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 /**
  * PixelStateModulator to reverse a PixelStateProcessor.
@@ -31,4 +33,6 @@ public:
     void Tick(PixelState& state) override;
 };
 }
+}
+
 #endif /* SRC_MODULES_PIXELPROCESSORS_REVERSEMODIFIER_H_ */

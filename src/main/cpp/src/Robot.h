@@ -1,15 +1,3 @@
-/**
- * 2019 Contributors:
- * - Kyle D
- * - Chris M
- * - Chris L
- * - Luis V
- * - Dylan F
- * - Allen B
- * - Andrew N
- * - John P
- */
-
 #pragma once
 
 #include "lib/bases/CoopMTRobot.h"
@@ -35,6 +23,17 @@
 
 using namespace cs;
 
+/**
+ * Main Robot Code for FRC Team 973.
+ * @author Kyle D
+ * @author Chris M
+ * @author Chris L
+ * @author Luis V
+ * @author Dylan F
+ * @author Allen B
+ * @author Andrew N
+ * @author John P
+ */
 namespace frc973 {
 
 /**

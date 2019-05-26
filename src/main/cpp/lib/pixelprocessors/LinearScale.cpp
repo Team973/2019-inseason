@@ -7,6 +7,8 @@
 
 #include "lib/pixelprocessors/LinearScale.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 
 LinearScale::LinearScale(Color minColor, Color maxColor, double minVal,
@@ -31,5 +33,6 @@ void LinearScale::Tick(PixelState& state) {
         state.pixels.at(i) =
             m_minColor.gradientTo(m_maxColor, ((double)i / state.numLEDs));
     }
+}
 }
 }

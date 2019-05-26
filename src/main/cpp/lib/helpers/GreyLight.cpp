@@ -8,6 +8,8 @@
 
 #include "lib/helpers/GreyLight.h"
 
+namespace frc973 {
+
 using namespace GreyLightType;
 
 GreyLight::GreyLight(int numLEDs) {
@@ -57,4 +59,5 @@ void GreyLight::SetPixelStateProcessor(PixelStateProcessor* processor) {
     this->m_processor = processor;
     this->m_processor->Reset();
     m_stateLock.unlock();
+}
 }

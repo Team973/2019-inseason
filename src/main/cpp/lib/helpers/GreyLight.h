@@ -15,6 +15,8 @@
 #include "lib/helpers/APA102.h"
 #endif
 
+namespace frc973 {
+
 using namespace GreyLightType;
 using namespace LightPattern;
 
@@ -56,5 +58,6 @@ private:
     APA102* m_strip;
 #endif
 };
+}
 
 #endif /* SRC_MODULES_GREYLIGHT_H_ */

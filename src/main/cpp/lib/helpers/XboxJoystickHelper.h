@@ -12,6 +12,9 @@
 
 namespace frc973 {
 
+/**
+ * Button mapping for the Xbox joystick.
+ */
 namespace Xbox {
 const unsigned int BtnX = 3;        /**< Button X ID. */
 const unsigned int BtnA = 1;        /**< Button A ID. */

@@ -1,6 +1,11 @@
 #pragma once
 
-namespace trajectories {
+namespace frc973 {
+
+/**
+ * Holds autonomous trajectory methods.
+ */
+namespace Trajectories {
 
 /**
  * The struct that creates segments of trajectories.
@@ -31,4 +36,5 @@ struct TrajectoryDescription {
     Segment *left_trajectory;  /**< The left trajectory. */
     Segment *right_trajectory; /**< The right trajectory. */
 };
+}
 }

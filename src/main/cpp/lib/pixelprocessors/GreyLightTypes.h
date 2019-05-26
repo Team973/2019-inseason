@@ -12,6 +12,11 @@
 #include <cmath>
 #include <vector>
 
+namespace frc973 {
+
+/**
+ * Holds types of GreyLights.
+ */
 namespace GreyLightType {
 /**
  * Data representation of a Color in (r,g,b) format.
@@ -60,5 +65,6 @@ struct PixelState {
     std::vector<Color>
         pixels; /**< The array of pixels (this gets displayed). */
 };
+}
 }
 #endif /* SRC_MODULES_GREYLIGHTTYPES_H_ */

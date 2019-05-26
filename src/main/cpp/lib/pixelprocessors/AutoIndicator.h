@@ -12,6 +12,8 @@
 
 #include "PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 static constexpr Color LEFT_GREEN = {0, 255, 0};
 static constexpr Color RIGHT_WHITE = {255, 255, 255};
@@ -43,5 +45,6 @@ public:
 private:
     std::string m_gameData;
 };
+}
 }
 #endif /* SRC_MODULES_PIXELPROCESSORS_AUTOINDICATOR_H_ */

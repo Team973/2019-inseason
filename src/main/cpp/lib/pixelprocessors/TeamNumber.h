@@ -10,6 +10,8 @@
 
 #include "lib/pixelprocessors/PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 /**
  * PixelStateProcessor to light up 9 pixels, a gap, 7 pixels, a gap, 3 pixels.
@@ -38,6 +40,7 @@ private:
     Color m_foreground;
     Color m_background;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_TEAMNUMBER_H_ */

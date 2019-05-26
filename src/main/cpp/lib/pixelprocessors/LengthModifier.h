@@ -10,6 +10,8 @@
 
 #include "lib/pixelprocessors/PixelStateProcessor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 /**
  * PixelStateModulator to trick a Processor into believing it's a different
@@ -34,4 +36,6 @@ private:
     int m_numLEDS;
 };
 }
+}
+
 #endif /* SRC_MODULES_PIXELPROCESSORS_LENGTHMODIFIER_H_ */

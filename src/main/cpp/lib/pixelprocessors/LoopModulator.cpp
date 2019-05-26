@@ -7,6 +7,8 @@
 
 #include "lib/pixelprocessors/LoopModulator.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 LoopModulator::LoopModulator(PixelStateProcessor* processor) {
     this->processor = processor;
@@ -37,5 +39,6 @@ void LoopModulator::Rotate(std::vector<Color>& pixels, int amount,
         }
         pixels.at(newIndex) = copy[i];
     }
+}
 }
 }

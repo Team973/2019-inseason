@@ -7,6 +7,8 @@
 
 #include "lib/pixelprocessors/SolidColor.h"
 
+namespace frc973 {
+
 namespace LightPattern {
 SolidColor::SolidColor() {
     SolidColor(Color{0, 255, 0});
@@ -21,5 +23,6 @@ void SolidColor::SetColor(Color color) {
 void SolidColor::Tick(PixelState& state) {
     std::fill(state.pixels.begin(), state.pixels.begin() + state.numLEDs,
               m_currentColor);
+}
 }
 }

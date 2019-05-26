@@ -16,6 +16,8 @@
 #include "lib/util/Util.h"
 #endif
 
+namespace frc973 {
+
 namespace LightPattern {
 
 /**
@@ -65,6 +67,7 @@ private:
     int m_loopCount;
     double m_lastTime;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_FLASH_H_ */

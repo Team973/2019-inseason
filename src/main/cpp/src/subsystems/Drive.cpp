@@ -8,6 +8,9 @@
 #include "src/subsystems/Drive.h"
 
 namespace frc973 {
+
+using namespace Trajectories;
+
 Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
              GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
@@ -177,8 +180,8 @@ double Drive::GetPIDDistError() {
     return m_pidDriveController->GetDistError();
 }
 
-SplineDriveController *Drive::SplineDrive(
-    trajectories::TrajectoryDescription *trajectory, RelativeTo relativity) {
+SplineDriveController *Drive::SplineDrive(TrajectoryDescription *trajectory,
+                                          RelativeTo relativity) {
     this->SetDriveController(m_splineDriveController);
     m_splineDriveController->SetTarget(trajectory, relativity);
     m_driveControllerLog->LogPrintf("Spline Drive");
