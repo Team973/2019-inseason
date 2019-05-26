@@ -111,14 +111,6 @@ public:
                           pad is pressed. */
 
     /**
-     * Pretend the Left X Axis is a button.  By default it is not pressed.
-     * If the user pushes it mostly forward (say, more than half way), say
-     * that button is pressed.  If the user pulls it mostly backwards (say,
-     * more than half way), say that button is released.  If it's anywhere
-     * in between, rememember what it last was.
-     */
-
-    /**
      * Get a bitstring containing the state of *all* buttons on the joystick.
      * Including any 'virtual' buttons like the 'joystick buttons'.
      * @return The bitstring of all buttons.
