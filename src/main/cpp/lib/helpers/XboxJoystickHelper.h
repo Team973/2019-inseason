@@ -13,30 +13,30 @@
 namespace frc973 {
 
 namespace Xbox {
-const unsigned int BtnX = 3;        /**< X Button */
-const unsigned int BtnA = 1;        /**< A Button */
-const unsigned int BtnB = 2;        /**< B Button */
-const unsigned int BtnY = 4;        /**< Y Button */
-const unsigned int LeftBumper = 5;  /**< Left Bumper Button */
-const unsigned int RightBumper = 6; /**< Right Bumper Button */
-const unsigned int Back = 7;        /**< Back Button */
-const unsigned int Start = 8;       /**< Start Button */
+const unsigned int BtnX = 3;        /**< Button X ID. */
+const unsigned int BtnA = 1;        /**< Button A ID. */
+const unsigned int BtnB = 2;        /**< Button B ID. */
+const unsigned int BtnY = 4;        /**< Button Y ID. */
+const unsigned int LeftBumper = 5;  /**< Left Bumper Button ID. */
+const unsigned int RightBumper = 6; /**< Right Bumper Button ID. */
+const unsigned int Back = 7;        /**< Back Button ID. */
+const unsigned int Start = 8;       /**< Start Button ID. */
 
-const unsigned int LJoystickBtn = 9;  /**< Left Joystick Button */
-const unsigned int RJoystickBtn = 10; /**< Right Joystick Button */
+const unsigned int LJoystickBtn = 9;  /**< Left Joystick Button ID. */
+const unsigned int RJoystickBtn = 10; /**< Right Joystick Button ID. */
 
-const unsigned int DPadUpVirtBtn = 11;    /**< DPad Up Button*/
-const unsigned int DPadDownVirtBtn = 12;  /**< DPad Down Button*/
-const unsigned int DPadLeftVirtBtn = 13;  /**< DPad Left Button*/
-const unsigned int DPadRightVirtBtn = 14; /**< DPad Right Button*/
+const unsigned int DPadUpVirtBtn = 11;    /**< DPad Up Button ID. */
+const unsigned int DPadDownVirtBtn = 12;  /**< DPad Down Button ID. */
+const unsigned int DPadLeftVirtBtn = 13;  /**< DPad Left Button ID. */
+const unsigned int DPadRightVirtBtn = 14; /**< DPad Right Button ID. */
 
-const unsigned int LeftXAxis = 0;        /**< Left Joystick X Axis*/
-const unsigned int LeftYAxis = 1;        /**< Left Joystick Y Axis*/
-const unsigned int RightXAxis = 4;       /**< Right Joystick X Axis*/
-const unsigned int RightYAxis = 5;       /**< Right Joystick Y Axis*/
-const unsigned int LeftTriggerAxis = 2;  /**< Left Trigger Button Axis*/
-const unsigned int RightTriggerAxis = 3; /**< Right Trigger Button Axis*/
-}  // namespace Xbox
+const unsigned int LeftXAxis = 0;        /**< Left Joystick X Axis ID. */
+const unsigned int LeftYAxis = 1;        /**< Left Joystick Y Axis ID. */
+const unsigned int RightXAxis = 4;       /**< Right Joystick X Axis ID. */
+const unsigned int RightYAxis = 5;       /**< Right Joystick Y Axis ID. */
+const unsigned int LeftTriggerAxis = 2;  /**< Left Trigger Button Axis ID. */
+const unsigned int RightTriggerAxis = 3; /**< Right Trigger Button Axis ID. */
+}
 
 /**
  * An observer for a Xbox Joystick.
@@ -142,9 +142,9 @@ protected:
     /* For observer notification */
     XboxJoystickObserver *m_observer; /**< The class to notify whenever a change
                          in the joystick occurs. */
-    DriverStation *m_ds;              /**< The DriverStation operating on.*/
-    uint32_t m_prevBtn;               /**< The previous button.*/
-    TaskMgr *m_scheduler;             /**< The task manager object.*/
-    LogCell *m_logCell;               /**< The logger.*/
+    DriverStation *m_ds;              /**< The DriverStation operating on. */
+    uint32_t m_prevBtn;               /**< The previous button. */
+    TaskMgr *m_scheduler;             /**< The task manager object. */
+    LogCell *m_logCell;               /**< The logger. */
 };
 }

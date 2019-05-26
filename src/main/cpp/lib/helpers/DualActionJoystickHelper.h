@@ -21,29 +21,29 @@ namespace DualAction {
  * Standard buttons... shouldn't need any explanation
  */
 
-const unsigned int BtnX = 1;         /**< Button X */
-const unsigned int BtnA = 2;         /**< Button A */
-const unsigned int BtnB = 3;         /**< Button B */
-const unsigned int BtnY = 4;         /**< Button Y */
-const unsigned int LeftBumper = 5;   /**< Left Bumper */
-const unsigned int RightBumper = 6;  /**< Right Bumper */
-const unsigned int LeftTrigger = 7;  /**< Left Trigger */
-const unsigned int RightTrigger = 8; /**< Right Trigger */
-const unsigned int Back = 9;         /**< Back Button */
-const unsigned int Start = 10;       /**< Start Button */
+const unsigned int BtnX = 1;         /**< Button X ID. */
+const unsigned int BtnA = 2;         /**< Button A ID. */
+const unsigned int BtnB = 3;         /**< Button B ID. */
+const unsigned int BtnY = 4;         /**< Button Y ID. */
+const unsigned int LeftBumper = 5;   /**< Left Bumper ID. */
+const unsigned int RightBumper = 6;  /**< Right Bumper ID. */
+const unsigned int LeftTrigger = 7;  /**< Left Trigger ID. */
+const unsigned int RightTrigger = 8; /**< Right Trigger ID. */
+const unsigned int Back = 9;         /**< Back Button ID. */
+const unsigned int Start = 10;       /**< Start Button ID. */
 
 /**
  * When you push down on the left and right joystick, that registers
- * as a button press
+ * as a button press.
  */
 
-const unsigned int LJoystickBtn = 11; /**< Left Joystick Button */
-const unsigned int RJoystickBtn = 12; /**< Right Joystick Button */
+const unsigned int LJoystickBtn = 11; /**< Left Joystick Button ID. */
+const unsigned int RJoystickBtn = 12; /**< Right Joystick Button ID. */
 
-const unsigned int DPadUpVirtBtn = 22;    /**< DPad Up Virtual Button */
-const unsigned int DPadDownVirtBtn = 23;  /**< DPad Down Virtual Button */
-const unsigned int DPadLeftVirtBtn = 24;  /**< DPad Left Virtual Button */
-const unsigned int DPadRightVirtBtn = 25; /**< DPad Right Virtual Button */
+const unsigned int DPadUpVirtBtn = 22;    /**< DPad Up Virtual Button ID. */
+const unsigned int DPadDownVirtBtn = 23;  /**< DPad Down Virtual Button ID. */
+const unsigned int DPadLeftVirtBtn = 24;  /**< DPad Left Virtual Button ID. */
+const unsigned int DPadRightVirtBtn = 25; /**< DPad Right Virtual Button ID. */
 
 /**
  * The following are 'virtual' buttons, one for each joystick axis.
@@ -54,25 +54,27 @@ const unsigned int DPadRightVirtBtn = 25; /**< DPad Right Virtual Button */
  * released
  */
 
-const unsigned int LXAxisVirtButton = 26; /**< Left X Axis Virtual Button */
-const unsigned int LYAxisVirtButton = 27; /**< Left Y Axis Virtual Button */
-const unsigned int RXAxisVirtButton = 28; /**< Right X Axis Virtual Button */
-const unsigned int RYAxisVirtButton = 29; /**< Right Y Axis Virtual Button */
-const unsigned int DXAxisVirtButton = 30; /**< DPad X Axis Virtual Button */
-const unsigned int DYAxisVirtButton = 31; /**< DPad Y Axis Virtual Button */
+const unsigned int LXAxisVirtButton = 26; /**< Left X Axis Virtual Button ID. */
+const unsigned int LYAxisVirtButton = 27; /**< Left Y Axis Virtual Button ID. */
+const unsigned int RXAxisVirtButton =
+    28; /**< Right X Axis Virtual Button ID. */
+const unsigned int RYAxisVirtButton =
+    29; /**< Right Y Axis Virtual Button ID. */
+const unsigned int DXAxisVirtButton = 30; /**< DPad X Axis Virtual Button ID. */
+const unsigned int DYAxisVirtButton = 31; /**< DPad Y Axis Virtual Button ID. */
 
 /**
  * Not buttons but the numbers for each axis... can be used with
  * joystick.GetRawAxis. DPad axis only return 0.0, -1.0, and 1.0.
  */
 
-const unsigned int LeftXAxis = 0;  /**< Left X Axis */
-const unsigned int LeftYAxis = 1;  /**< Left Y Axis */
-const unsigned int RightXAxis = 2; /**< Right X Axis */
-const unsigned int RightYAxis = 3; /**< Right Y Axis */
-const unsigned int DPadXAxis = 4;  /**< DPad X Axis */
-const unsigned int DPadYAxis = 5;  /**< DPad Y Axis */
-}  // namespace DualAction
+const unsigned int LeftXAxis = 0;  /**< Left X Axis ID. */
+const unsigned int LeftYAxis = 1;  /**< Left Y Axis ID. */
+const unsigned int RightXAxis = 2; /**< Right X Axis ID. */
+const unsigned int RightYAxis = 3; /**< Right Y Axis ID. */
+const unsigned int DPadXAxis = 4;  /**< DPad X Axis ID. */
+const unsigned int DPadYAxis = 5;  /**< DPad Y Axis ID. */
+}
 
 /**
  * An observer for a Dual Action Joystick.
@@ -144,14 +146,29 @@ public:
     float GetRawAxisWithDeadband(int axis, bool fSquared = false,
                                  double threshold = DEADBAND_INPUT_THRESHOLD);
 
-    bool GetDPadUpVirtButton(); /**< Check whether the up button on the d pad is
-                       pressed. */
-    bool GetDPadDownVirtButton();  /**< Check whether the down button on the d
-                          pad is pressed. */
-    bool GetDPadLeftVirtButton();  /**< Check whether the left button on the d
-                          pad is pressed. */
-    bool GetDPadRightVirtButton(); /**< Check whether the right button on the d
-                          pad is pressed. */
+    /**
+     * DPad Up Virtual button.
+     * @return Whether the DPad's up button is pressed.
+     */
+    bool GetDPadUpVirtButton();
+
+    /**
+     * DPad DownVirtual button.
+     * @return Whether the DPad's down button is pressed.
+     */
+    bool GetDPadDownVirtButton();
+
+    /**
+     * DPad Left Virtual button.
+     * @return Whether the DPad's left button is pressed.
+     */
+    bool GetDPadLeftVirtButton();
+
+    /**
+     * DPad Right Virtual button.
+     * @return Whether the DPad's right button is pressed.
+     */
+    bool GetDPadRightVirtButton();
 
     /**
      * Pretend the Left X Axis is a button.  By default it is not pressed.
@@ -221,17 +238,17 @@ protected:
     /* For observer notification */
     DualActionJoystickObserver *m_observer; /**< The class to notify whenever a
                          change in the joystick occurs. */
-    DriverStation *m_ds;  /**< The DriverStation operating on.*/
-    uint32_t m_prevBtn;   /**< The previous button.*/
-    TaskMgr *m_scheduler; /**< The task manager object.*/
-    LogCell *m_logCell;   /**< The logger.*/
+    DriverStation *m_ds;  /**< The DriverStation operating on. */
+    uint32_t m_prevBtn;   /**< The previous button. */
+    TaskMgr *m_scheduler; /**< The task manager object. */
+    LogCell *m_logCell;   /**< The logger. */
 
     /* For remembering states of sticky buttons */
-    bool m_lastLXVal; /**< The last left joystick's x axis value */
-    bool m_lastLYVal; /**< The last left joystick's y axis value */
-    bool m_lastRXVal; /**< The last right joystick's x axis value */
-    bool m_lastRYVal; /**< The last right joystick's y axis value */
-    bool m_lastDXVal; /**< The last d pad's x axis value */
-    bool m_lastDYVal; /**< The last d pad's y axis value */
+    bool m_lastLXVal; /**< The last left joystick's x axis value. */
+    bool m_lastLYVal; /**< The last left joystick's y axis value. */
+    bool m_lastRXVal; /**< The last right joystick's x axis value. */
+    bool m_lastRYVal; /**< The last right joystick's y axis value. */
+    bool m_lastDXVal; /**< The last DPad's x axis value. */
+    bool m_lastDYVal; /**< The last DPad's y axis value. */
 };
 }
