@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <math.h>
-
 #include "lib/filters/FilterBase.h"
 #include "lib/util/Util.h"
 

@@ -7,10 +7,8 @@
 
 #pragma once
 
-#include <stdio.h>
 #include <unistd.h>
 
-#include "pthread.h"
 #include "lib/managers/TaskMgr.h"
 
 namespace frc973 {
