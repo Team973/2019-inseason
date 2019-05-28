@@ -139,7 +139,7 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>When making calls to PID-like-commands, parameters can be relative to the world (Absolute), relative to the current position (Now), or relative to the current setpoint (SetPoint). </p>
+<p>When making calls to PID-like-commands, parameters can be RelativeTo the world (Absolute), RelativeTo the current position (Now), or RelativeTo the current setpoint (SetPoint). </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac43e7b84e072dd3d4425b80533183cb0af15827f26af30520d7d4ee0cf5d65ee7"></a>Absolute&#160;</td><td class="fielddoc"><p>Relative to where the robot was turned on. </p>
 </td></tr>
@@ -192,8 +192,8 @@ Protected Attributes</h2></td></tr>
 <p>Creates a new <a class="el" href="classfrc973_1_1_drive_base.html">DriveBase</a> Object. The <a class="el" href="classfrc973_1_1_drive_base.html">DriveBase</a> object stores a drive controller (an object capable of calculating motor outputs) and uses it to calculate drive outputs, then drive those drive outputs. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">scheduler</td><td></td></tr>
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
-    <tr><td class="paramname">state</td><td>The state provider for handling incoming messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classfrc973_1_1_drive_state_provider.html">DriveStateProvider</a> for handling incoming messages. </td></tr>
     <tr><td class="paramname">controller</td><td>The drive controller for handling movements. </td></tr>
   </table>
   </dd>
@@ -269,7 +269,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Get input from the currently active <a class="el" href="classfrc973_1_1_drive_controller.html">DriveController</a>. This method comes from <a class="el" href="classfrc973_1_1_coop_task.html">CoopTask</a> and is called automatically once a cycle by m_scheduler. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>The current operating mode of the robot. </td></tr>
+    <tr><td class="paramname">mode</td><td>The current RobotMode. </td></tr>
   </table>
   </dd>
 </dl>

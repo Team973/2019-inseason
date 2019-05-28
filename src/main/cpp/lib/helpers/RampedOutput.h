@@ -1,17 +1,6 @@
 /*
  * RampedOutput.h
  *
- * RampedOutput is a filter that garauntees the maximum rate of change in any
- * signal is at most a certain threshold.  This can be used to ramp drive
- * output on a root with high CG, to ramp motor output on a flywheel that
- * might otherwise spike the battery, or as a filter to a sensor where
- * we know the rate of change of value should always be below a certain
- * threshold.
- *
- * The units for rampRate is whatever is being measured per sec.  This class
- * has an internal clock so regardless of how often it is being called, the
- * ramp rate will stay the same.
- *
  *  Created on: Oct 29, 2015
  *      Author: Andrew
  */
@@ -24,7 +13,16 @@
 namespace frc973 {
 
 /**
- * Interface for a ramped output.
+ * RampedOutput is a filter that garauntees the maximum rate of change in any
+ * signal is at most a certain threshold. This can be used to ramp drive
+ * output on a root with high CG, to ramp motor output on a flywheel that
+ * might otherwise spike the battery, or as a filter to a sensor where
+ * we know the rate of change of value should always be below a certain
+ * threshold.
+ *
+ * The units for rampRate is whatever is being measured per sec. This class
+ * has an internal clock so regardless of how often it is being called, the
+ * ramp rate will stay the same.
  */
 class RampedOutput : public FilterBase {
 public:
@@ -39,7 +37,7 @@ public:
     virtual ~RampedOutput();
 
     /**
-     * Get the filtered output value given the actual input.  Takes into account
+     * Get the filtered output value given the actual input. Takes into account
      * the given input, the previous output, the ramp rate, and the time since
      * last call.
      * @param input The target value that we should try to output.

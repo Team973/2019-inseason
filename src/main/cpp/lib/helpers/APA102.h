@@ -3,6 +3,7 @@
  *  Created on: Feb 5, 2018
  *      Author: Cole Brinsfield
  */
+
 #ifndef SRC_MODULES_APA102_H_
 #define SRC_MODULES_APA102_H_
 

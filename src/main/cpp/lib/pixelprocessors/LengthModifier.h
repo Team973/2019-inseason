@@ -14,13 +14,13 @@ namespace frc973 {
 
 namespace LightPattern {
 /**
- * PixelStateModulator to trick a Processor into believing it's a different
- * length than actual strip.
+ * PixelStateProcessorModulator to trick a Processor into believing it's a
+ * different length than actual strip.
  */
 class LengthModifier : public PixelStateProcessorModulator {
 public:
     /**
-     * Construct a Length Modifier.
+     * Construct a LengthModifier.
      * @param processor The PixelStateProcessor to modify the length of.
      * @param numLEDs The length the processor should run at.
      */

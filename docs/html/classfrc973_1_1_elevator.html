@@ -102,8 +102,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8a744d8d0d9d1ed7ad97bf53879e4ff3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrc973_1_1_elevator.html#a8a744d8d0d9d1ed7ad97bf53879e4ff3">Elevator</a> (<a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> *scheduler, <a class="el" href="classfrc973_1_1_log_spreadsheet.html">LogSpreadsheet</a> *logger, <a class="el" href="classfrc973_1_1_grey_talon_s_r_x.html">GreyTalonSRX</a> *elevatorMotorA, VictorSPX *elevatorMotorB, <a class="el" href="classfrc973_1_1_observable_xbox_joystick.html">ObservableXboxJoystick</a> *operatorJoystick, DigitalInput *elevatorHall)</td></tr>
-<tr class="separator:a8a744d8d0d9d1ed7ad97bf53879e4ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa995b8a0c666b9ecd4ab440051c0ec06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrc973_1_1_elevator.html#aa995b8a0c666b9ecd4ab440051c0ec06">Elevator</a> (<a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> *scheduler, <a class="el" href="classfrc973_1_1_log_spreadsheet.html">LogSpreadsheet</a> *logger, <a class="el" href="classfrc973_1_1_grey_talon_s_r_x.html">GreyTalonSRX</a> *elevatorMotorA, <a class="el" href="classfrc973_1_1_grey_victor_s_p_x.html">GreyVictorSPX</a> *elevatorMotorB, <a class="el" href="classfrc973_1_1_observable_xbox_joystick.html">ObservableXboxJoystick</a> *operatorJoystick, DigitalInput *elevatorHall)</td></tr>
+<tr class="separator:aa995b8a0c666b9ecd4ab440051c0ec06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1244b1bac598ecba7297a1305508adaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrc973_1_1_elevator.html#a1244b1bac598ecba7297a1305508adaa">SetPosition</a> (double position)</td></tr>
 <tr class="separator:a1244b1bac598ecba7297a1305508adaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa21f5402b10e6384fe55c54a09102293"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrc973_1_1_elevator.html#aa21f5402b10e6384fe55c54a09102293">SetManualInput</a> ()</td></tr>
@@ -195,7 +195,7 @@ Static Public Attributes</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aadfcb27aefd6abde61f9585b9c97ab1aa83e7764b789701f001b15d7c8d8e14b2"></a>manualVoltage&#160;</td><td class="fielddoc"><p>Control the motors with manual voltage. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aadfcb27aefd6abde61f9585b9c97ab1aa2eb9386f47aa06d09462bb982ad1f375"></a>motionMagic&#160;</td><td class="fielddoc"><p>Control the motors using position w/ Motion Magic. </p>
+<tr><td class="fieldname"><a id="aadfcb27aefd6abde61f9585b9c97ab1aa2eb9386f47aa06d09462bb982ad1f375"></a>motionMagic&#160;</td><td class="fielddoc"><p>Control the motors using position with Motion Magic. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aadfcb27aefd6abde61f9585b9c97ab1aae62c37e08ddc5c1be1184bccd9d319da"></a>idle&#160;</td><td class="fielddoc"><p>staying in place after pressing a button. </p>
 </td></tr>
@@ -227,8 +227,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8a744d8d0d9d1ed7ad97bf53879e4ff3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a744d8d0d9d1ed7ad97bf53879e4ff3">&#9670;&nbsp;</a></span>Elevator()</h2>
+<a id="aa995b8a0c666b9ecd4ab440051c0ec06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa995b8a0c666b9ecd4ab440051c0ec06">&#9670;&nbsp;</a></span>Elevator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -254,7 +254,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">VictorSPX *&#160;</td>
+          <td class="paramtype"><a class="el" href="classfrc973_1_1_grey_victor_s_p_x.html">GreyVictorSPX</a> *&#160;</td>
           <td class="paramname"><em>elevatorMotorB</em>, </td>
         </tr>
         <tr>
@@ -280,10 +280,10 @@ Static Public Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">scheduler</td><td><a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> object. </td></tr>
     <tr><td class="paramname">logger</td><td><a class="el" href="classfrc973_1_1_log_spreadsheet.html">LogSpreadsheet</a> object. </td></tr>
-    <tr><td class="paramname">elevatorMotorA</td><td>The elevator Talon. </td></tr>
-    <tr><td class="paramname">elevatorMotorB</td><td>The elevator victor. </td></tr>
-    <tr><td class="paramname">operatorJoystick</td><td>The codriver controller. </td></tr>
-    <tr><td class="paramname">elevatorHall</td><td>The elevators hall. </td></tr>
+    <tr><td class="paramname">elevatorMotorA</td><td>The <a class="el" href="classfrc973_1_1_elevator.html">Elevator</a>'s <a class="el" href="classfrc973_1_1_grey_talon_s_r_x.html">GreyTalonSRX</a>. </td></tr>
+    <tr><td class="paramname">elevatorMotorB</td><td>The <a class="el" href="classfrc973_1_1_elevator.html">Elevator</a>'s <a class="el" href="classfrc973_1_1_grey_victor_s_p_x.html">GreyVictorSPX</a>. </td></tr>
+    <tr><td class="paramname">operatorJoystick</td><td>The operator's <a class="el" href="classfrc973_1_1_observable_xbox_joystick.html">ObservableXboxJoystick</a>. </td></tr>
+    <tr><td class="paramname">elevatorHall</td><td>The <a class="el" href="classfrc973_1_1_elevator.html">Elevator</a>'s hall effect DigitalInput. </td></tr>
   </table>
   </dd>
 </dl>
@@ -377,7 +377,7 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Gets the rocket score mode. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="classfrc973_1_1_elevator.html#aad3b5b8aa68a5cdda9692d606e595288">GetRocketScoreMode()</a> </dd></dl>
+<p>Gets the rocket score mode. </p><dl class="section return"><dt>Returns</dt><dd>The current RocketScoreMode. </dd></dl>
 
 </div>
 </div>
@@ -480,7 +480,12 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets the rocket score mode. </p>
+<p>Sets the rocket score mode. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>The RocketScoreMode. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -533,7 +538,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Update function synonymous to TeleopContinuous that gets called continuously. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>The current robot mode. </td></tr>
+    <tr><td class="paramname">mode</td><td>The current RobotMode. </td></tr>
   </table>
   </dd>
 </dl>

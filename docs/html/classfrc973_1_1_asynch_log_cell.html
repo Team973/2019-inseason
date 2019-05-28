@@ -120,7 +120,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a0d3a134a9d503c3562bf25724df5f73b inherit pro_attribs_classfrc973_1_1_log_cell"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classfrc973_1_1_asynch_log_cell.html">AsynchLogCell</a> works like a <a class="el" href="classfrc973_1_1_log_cell.html">LogCell</a> except that it takes a reference to a listener whom it will notify when it's content is requested. </p>
+<div class="textblock"><p>Defines an asynchronous extension to the <a class="el" href="classfrc973_1_1_log_cell.html">LogCell</a> class. When <a class="el" href="classfrc973_1_1_asynch_log_cell.html#ae01255e46473d01eaa25b156cbd895e8">AsynchLogCell.GetContent</a> is called, the <a class="el" href="classfrc973_1_1_asynch_log_cell.html">AsynchLogCell</a> calls a callback to generate that content.</p>
+<p>This is in contrast with the standard <a class="el" href="classfrc973_1_1_log_cell.html">LogCell</a> which returns whatever was last written to it. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae0f01dee85f8c2b6f1b4d1aa473ad5bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae0f01dee85f8c2b6f1b4d1aa473ad5bc">&#9670;&nbsp;</a></span>AsynchLogCell()</h2>
@@ -153,7 +154,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Construct an <a class="el" href="classfrc973_1_1_asynch_log_cell.html">AsynchLogCell</a>. When GetContent is called, listener-&gt;NofityAsynchLogCellListener(this) gets called to generate the content to return. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Construct an <a class="el" href="classfrc973_1_1_asynch_log_cell.html">AsynchLogCell</a>. When GetContent is called, AsynchLogCellListener.NofityAsynchLogCellListener gets called to generate the content to return. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the column to log. </td></tr>
     <tr><td class="paramname">listener</td><td>The listener to notify when content is requested. </td></tr>

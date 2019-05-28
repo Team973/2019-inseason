@@ -11,7 +11,7 @@ Robot::Robot()
               new ObservablePoofsJoystick(DRIVER_JOYSTICK_PORT, this, this))
         , m_operatorJoystick(
               new ObservableXboxJoystick(OPERATOR_JOYSTICK_PORT, this, this))
-        , m_testJoystick(
+        , m_tuningJoystick(
               new ObservableDualActionJoystick(TEST_JOYSTICK_PORT, this, this))
         , m_logger(new LogSpreadsheet(this))
         , m_leftDriveSparkA(new GreySparkMax(
@@ -28,7 +28,7 @@ Robot::Robot()
               RIGHT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
         , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
-        , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
+        , m_elevatorMotorB(new GreyVictorSPX(ELEVATOR_B_CAN_ID))
         , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_hatchCamera(UsbCamera("USB Cmera 0", 0))
@@ -61,15 +61,15 @@ Robot::Robot()
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
         , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
-                              m_testJoystick, m_drive, m_elevator,
+                              m_tuningJoystick, m_drive, m_elevator,
                               m_hatchIntake, m_cargoIntake, m_stinger,
                               m_limelightHatch))
-        , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_testJoystick,
-                          m_drive, m_elevator, m_hatchIntake, m_cargoIntake,
-                          m_stinger, m_limelightHatch))
-        , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
-                                      m_testJoystick, m_teleop, m_gyro, m_drive,
-                                      m_cargoIntake, m_hatchIntake, m_elevator))
+        , m_test(new Test(m_driverJoystick, m_operatorJoystick,
+                          m_tuningJoystick, m_drive, m_elevator, m_hatchIntake,
+                          m_cargoIntake, m_stinger, m_limelightHatch))
+        , m_autonomous(new Autonomous(
+              m_driverJoystick, m_operatorJoystick, m_tuningJoystick, m_teleop,
+              m_gyro, m_drive, m_cargoIntake, m_hatchIntake, m_elevator))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
                                   m_elevator, m_cargoIntake, m_drive,
                                   m_limelightHatch, m_autonomous, m_teleop)) {

@@ -3,14 +3,15 @@
 using namespace frc;
 
 namespace frc973 {
-Test::Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           ObservableDualActionJoystick *testStick, Drive *drive,
+Test::Test(ObservablePoofsJoystick *driverJoystick,
+           ObservableXboxJoystick *operatorJoystick,
+           ObservableDualActionJoystick *tuningJoystick, Drive *drive,
            Elevator *elevator, HatchIntake *hatchIntake,
            CargoIntake *cargoIntake, Stinger *stinger,
            Limelight *limelightHatch)
-        : m_driverJoystick(driver)
-        , m_operatorJoystick(codriver)
-        , m_testJoystick(testStick)
+        : m_driverJoystick(driverJoystick)
+        , m_operatorJoystick(operatorJoystick)
+        , m_tuningJoystick(tuningJoystick)
         , m_drive(drive)
         , m_elevator(elevator)
         , m_hatchIntake(hatchIntake)
@@ -46,14 +47,13 @@ void Test::TestPeriodic() {
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset(), camera_angle);
     double y =
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::LeftYAxis);
     double x =
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
-    bool quickturn =
-        m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis);
+    bool quickturn = m_driverJoystick->GetRawButton(PoofsJoystick::RightBumper);
 
     bool softwareLowGear =
-        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+        m_driverJoystick->GetRawButton(PoofsJoystick::RightTrigger);
 
     switch (m_driveMode) {
         case DriveMode::Cheesy:
@@ -125,7 +125,7 @@ void Test::TestStop() {
 void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
     if (port == DRIVER_JOYSTICK_PORT) {
         switch (button) {
-            case PoofsJoysticks::LeftTrigger:
+            case PoofsJoystick::LeftTrigger:
                 if (pressedP) {
                     m_driveMode = DriveMode::PIDDrive;
                 }
@@ -133,7 +133,7 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_driveMode = DriveMode::Openloop;
                 }
                 break;
-            case PoofsJoysticks::RightTrigger:
+            case PoofsJoystick::RightTrigger:
                 if (pressedP) {
                     m_driveMode = DriveMode::PIDTurn;
                 }
@@ -141,7 +141,7 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_driveMode = DriveMode::Openloop;
                 }
                 break;
-            case PoofsJoysticks::LeftBumper:
+            case PoofsJoystick::LeftBumper:
                 if (pressedP) {
                     m_driveMode = DriveMode::LimelightTrig;
                 }
@@ -149,7 +149,7 @@ void Test::HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP) {
                     m_driveMode = DriveMode::Openloop;
                 }
                 break;
-            case PoofsJoysticks::RightBumper:  // Quickturn
+            case PoofsJoystick::RightBumper:  // Quickturn
                 if (pressedP) {
                 }
                 else {

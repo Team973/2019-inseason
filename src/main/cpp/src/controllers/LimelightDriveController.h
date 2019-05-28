@@ -23,13 +23,13 @@ namespace frc973 {
 class LimelightDriveController : public DriveController {
 public:
     /**
-     * Construct a Limelight Drive controller.
-     * @param logger LogSpreadsheet object.
-     * @param limelight The limelight.
-     * @param isCompSkew Boolean on if using skew compensation.
+     * Construct a LimelightDriveController.
+     * @param logger The LogSpreadsheet object.
+     * @param limelight The Limelight.
+     * @param isCompSkew Whether using skew compensation.
      * @param driverJoystick The driver's controller.
-     * @param hatchIntake The hatch intake subsystem.
-     * @param elevator The elevator subsystem.
+     * @param hatchIntake The HatchIntake subsystem.
+     * @param elevator The Elevator subsystem.
      */
     LimelightDriveController(LogSpreadsheet *logger, Limelight *limelight,
                              bool isCompSkew,
@@ -39,14 +39,14 @@ public:
 
     /**
      * Start the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Start(DriveControlSignalReceiver *out) override;
 
     /**
      * Calculate motor output given the most recent limelight updates.
-     * @param state The state provider for handling incoming messages.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param state The DriveStateProvider for handling incoming messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out) override;
@@ -72,24 +72,24 @@ public:
 
     /**
      * Stop the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Stop(DriveControlSignalReceiver *out) override {
         printf("Turning off Limelight Drive Mode\n");
     }
 
     /**
-     * Return throttle PID output for logging
+     * Gets throttle PID output for logging
      */
     double GetThrottlePidOut() const;
 
     /**
-     * Return turn PID output for logging
+     * Gets turn PID output for logging
      */
     double GetTurnPidOut() const;
 
     /**
-     * Return skew PID output for logging
+     * Gets skew PID output for logging
      */
     double GetGoalAngleComp() const;
 
@@ -99,7 +99,7 @@ private:
     static constexpr double DISTANCE_SETPOINT_CARGO_BAY =
         -9.0; /**< in inches from target to robot bumper */
     static constexpr double HATCH_VISION_OFFSET =
-        0.32; /**< physical offset of the limelight to center of target */
+        0.32; /**< physical offset of the Limelight to center of target */
 
     // Range of distances where the compensation factor is applied
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN =

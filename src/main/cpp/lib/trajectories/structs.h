@@ -3,7 +3,7 @@
 namespace frc973 {
 
 /**
- * Holds autonomous trajectory methods.
+ * Holds Autonomous trajectory methods.
  */
 namespace Trajectories {
 

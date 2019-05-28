@@ -3,9 +3,6 @@
  *
  *  Created on: Oct 18, 2015
  *      Author: Andrew
- *
- * Simple data filter.  Given a value m between 0.0 and 1.0, return the
- * current datapoint times (1 - m) plus the previous datapoint times m.
  */
 
 #pragma once
@@ -15,7 +12,8 @@
 namespace frc973 {
 
 /**
- * A direct-use filter for something that needs to filter moving averages.
+ * Simple data filter. Given a value m between 0.0 and 1.0, return the
+ * current datapoint times (1 - m) plus the previous datapoint times m.
  */
 class MovingAverageFilter : public FilterBase {
 public:
@@ -36,7 +34,7 @@ public:
     double Update(double input);
 
     /**
-     * Return the last value sent to the filter.
+     * Gets the last value sent to the filter.
      * @return The last value.
      */
     double GetLast();

@@ -55,28 +55,28 @@ float ObservablePoofsJoystick::GetRawAxisWithDeadband(int axis, bool fSquared,
 }
 
 bool ObservablePoofsJoystick::GetLTrigger() {
-    return this->GetRawButton(PoofsJoysticks::LeftTrigger);
+    return this->GetRawButton(PoofsJoystick::LeftTrigger);
 }
 
 bool ObservablePoofsJoystick::GetLBumper() {
-    return this->GetRawButton(PoofsJoysticks::LeftBumper);
+    return this->GetRawButton(PoofsJoystick::LeftBumper);
 }
 
 bool ObservablePoofsJoystick::GetRTrigger() {
-    return this->GetRawButton(PoofsJoysticks::RightTrigger);
+    return this->GetRawButton(PoofsJoystick::RightTrigger);
 }
 
 bool ObservablePoofsJoystick::GetRBumper() {
-    return this->GetRawButton(PoofsJoysticks::RightBumper);
+    return this->GetRawButton(PoofsJoystick::RightBumper);
 }
 
 uint32_t ObservablePoofsJoystick::GetAllButtons() {
     uint32_t btns = m_ds->GetStickButtons(m_port);
 
-    btns |= GetLTrigger() << (PoofsJoysticks::LeftTrigger - 1);
-    btns |= GetLBumper() << (PoofsJoysticks::LeftBumper - 1);
-    btns |= GetRTrigger() << (PoofsJoysticks::RightTrigger - 1);
-    btns |= GetRBumper() << (PoofsJoysticks::RightBumper - 1);
+    btns |= GetLTrigger() << (PoofsJoystick::LeftTrigger - 1);
+    btns |= GetLBumper() << (PoofsJoystick::LeftBumper - 1);
+    btns |= GetRTrigger() << (PoofsJoystick::RightTrigger - 1);
+    btns |= GetRBumper() << (PoofsJoystick::RightBumper - 1);
 
     return btns;
 }

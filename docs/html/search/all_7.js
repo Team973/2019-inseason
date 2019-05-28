@@ -101,5 +101,6 @@ var searchData=
   ['greylight',['GreyLight',['../classfrc973_1_1_grey_light.html',1,'frc973::GreyLight'],['../classfrc973_1_1_grey_light.html#ae48835197ae9e214595092564da764cd',1,'frc973::GreyLight::GreyLight()']]],
   ['greysparkmax',['GreySparkMax',['../classfrc973_1_1_grey_spark_max.html',1,'frc973::GreySparkMax'],['../classfrc973_1_1_grey_spark_max.html#a9d15483da6331627ee119ed2fdeb6900',1,'frc973::GreySparkMax::GreySparkMax()']]],
   ['greytalonsrx',['GreyTalonSRX',['../classfrc973_1_1_grey_talon_s_r_x.html',1,'frc973::GreyTalonSRX'],['../classfrc973_1_1_grey_talon_s_r_x.html#a0213085af532b5df65956936f7c714da',1,'frc973::GreyTalonSRX::GreyTalonSRX()']]],
+  ['greyvictorspx',['GreyVictorSPX',['../classfrc973_1_1_grey_victor_s_p_x.html',1,'frc973::GreyVictorSPX'],['../classfrc973_1_1_grey_victor_s_p_x.html#af75fb2ca5b029e0e9c020fd97cc19faf',1,'frc973::GreyVictorSPX::GreyVictorSPX()']]],
   ['ground',['GROUND',['../classfrc973_1_1_elevator.html#a416b7c6b6c628dc12b56be612e6ff9ba',1,'frc973::Elevator']]]
 ];

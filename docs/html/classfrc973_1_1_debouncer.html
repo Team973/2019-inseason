@@ -84,7 +84,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a643f566c9da87bc1c9519aa2cc4c9939"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A direct-use filter for something that needs this to debounce values. This filter sets a timer to "debounce" noisy signals and removes many false-positives. </p>
+<div class="textblock"><p>Filters a digital signal... if the incoming signal has been false at any point in the last |period|, return false. If it has been true for the whole |period|, return true. Helpful for OnTarget and IsFinished type functions.</p>
+<p>Copied from 254. Don't tell no one </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa6f9adce01954a221bfbce7107bbcf7c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6f9adce01954a221bfbce7107bbcf7c">&#9670;&nbsp;</a></span>Debouncer()</h2>
@@ -109,7 +110,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Construct a <a class="el" href="classfrc973_1_1_debouncer.html">Debouncer</a> object with the given period in seconds. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Construct a <a class="el" href="classfrc973_1_1_debouncer.html">Debouncer</a> with the given period in seconds. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">period</td><td>Time in seconds to check for falses. </td></tr>
   </table>

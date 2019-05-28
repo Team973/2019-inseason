@@ -108,7 +108,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a640cbdfdb885c3f02a7ea8feba7fd16b inherit pub_methods_classfrc973_1_1_coop_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classfrc973_1_1_coop_task.html">CoopTask</a> for a compressor object. GreyComperssor will check the pressure every robot cycle and controll the compressor accordingly. </p>
+<div class="textblock"><p><a class="el" href="classfrc973_1_1_grey_compressor.html">GreyCompressor</a> is super simple <a class="el" href="classfrc973_1_1_coop_task.html">CoopTask</a> that checks the given pressure switch and turns on or off the given compressor relay accordingly.</p>
+<p>Can also be explicitly enabled or disabled. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae5ca9de5ed7fc501f01657731febce2b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae5ca9de5ed7fc501f01657731febce2b">&#9670;&nbsp;</a></span>GreyCompressor()</h2>
@@ -222,7 +223,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Periodic task called by <a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a>. Checks pressure switch and turns on or off compressor relay accordingly. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>The current operating mode of the robot. </td></tr>
+    <tr><td class="paramname">mode</td><td>The current RobotMode. </td></tr>
   </table>
   </dd>
 </dl>

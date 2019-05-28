@@ -103,10 +103,10 @@ void HatchIntake::TaskPeriodic(RobotMode mode) {
         case HatchSolenoidState::launch:
             break;
         case HatchSolenoidState::manualPunch:
-            m_hatchPuncher->Set(HatchPuncherSolenoidStates::punch);
+            m_hatchPuncher->Set(HatchPuncherSolenoidState::punch);
             break;
         case HatchSolenoidState::manualRetract:
-            m_hatchPuncher->Set(HatchPuncherSolenoidStates::retract);
+            m_hatchPuncher->Set(HatchPuncherSolenoidState::retract);
             break;
         case HatchSolenoidState::manual:
             // Do nothing

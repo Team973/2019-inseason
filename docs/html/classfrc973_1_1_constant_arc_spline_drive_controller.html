@@ -139,10 +139,10 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Construct a Constant Arc Spline <a class="el" href="classfrc973_1_1_drive.html">Drive</a> controller. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Construct a <a class="el" href="classfrc973_1_1_constant_arc_spline_drive_controller.html">ConstantArcSplineDriveController</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>The state provider for handling incoming messages. </td></tr>
-    <tr><td class="paramname">logger</td><td>Logger for drive controller. </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classfrc973_1_1_drive_state_provider.html">DriveStateProvider</a> for handling incoming messages. </td></tr>
+    <tr><td class="paramname">logger</td><td>The <a class="el" href="classfrc973_1_1_log_spreadsheet.html">LogSpreadsheet</a> for logging. </td></tr>
   </table>
   </dd>
 </dl>
@@ -164,7 +164,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Return angle from start. </p><dl class="section return"><dt>Returns</dt><dd>Angle from start. </dd></dl>
+<p>Gets angle from start. </p><dl class="section return"><dt>Returns</dt><dd>Angle from start. </dd></dl>
 
 </div>
 </div>
@@ -203,8 +203,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Calculate motor output given the most recent sensor updates. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>The state provider for handling incoming messages. </td></tr>
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classfrc973_1_1_drive_state_provider.html">DriveStateProvider</a> for handling incoming messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -227,7 +227,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Return distance from start. </p><dl class="section return"><dt>Returns</dt><dd>Distance from start. </dd></dl>
+<p>Gets distance from start. </p><dl class="section return"><dt>Returns</dt><dd>Distance from start. </dd></dl>
 
 </div>
 </div>
@@ -364,7 +364,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Sets target for robot to reach. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">relativeTo</td><td>Point relative to the new setpoint. </td></tr>
+    <tr><td class="paramname">relativeTo</td><td>Point RelativeTo the new setpoint. </td></tr>
     <tr><td class="paramname">dist</td><td>Distance to travel. </td></tr>
     <tr><td class="paramname">angle</td><td>Angle to turn. </td></tr>
   </table>
@@ -398,7 +398,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Start the drive controller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -432,7 +432,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Stop the drive controller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>

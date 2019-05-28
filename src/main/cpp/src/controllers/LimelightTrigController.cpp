@@ -71,7 +71,7 @@ double LimelightTrigController::GetTargetDirectionConstant() {
     if (m_puncherState == HatchIntake::HatchSolenoidState::manualPunch ||
         m_scoreMode == Elevator::RocketScoreMode::middle) {
         if (m_driverJoystick->GetRawAxisWithDeadband(
-                PoofsJoysticks::RightXAxis) > 0.5) {
+                PoofsJoystick::RightXAxis) > 0.5) {
             if (fabs(m_gyroAngle) > 90.0) {
                 return LEFT_BACK_ROCKET;
             }
@@ -111,12 +111,12 @@ double LimelightTrigController::GetTargetDirectionConstant() {
 
 void LimelightTrigController::CalcDriveOutput(DriveStateProvider *state,
                                               DriveControlSignalReceiver *out) {
-    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) >
+    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) >
         0.5) {
         m_limelight->SetCameraVisionLeft();
     }
     else if (m_driverJoystick->GetRawAxisWithDeadband(
-                 PoofsJoysticks::RightXAxis) < -0.5) {
+                 PoofsJoystick::RightXAxis) < -0.5) {
         m_limelight->SetCameraVisionRight();
     }
     m_limelight->SetLightOn();

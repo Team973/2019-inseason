@@ -130,7 +130,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a45465a70ff56d057c6064080195e97c4 inherit pro_methods_classfrc973_1_1_task_mgr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for a single thread task manager. </p>
+<div class="textblock"><p>Interface for a <a class="el" href="classfrc973_1_1_single_thread_task_mgr.html">SingleThreadTaskMgr</a>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a60b04c584e43aa901f18611917c6ed4c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60b04c584e43aa901f18611917c6ed4c">&#9670;&nbsp;</a></span>SingleThreadTaskMgr()</h2>
@@ -163,9 +163,9 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initialize a Single Threaded Task Manager. The <a class="el" href="classfrc973_1_1_single_thread_task_mgr.html">SingleThreadTaskMgr</a> creates its own pthread in which to run all of its registeredCoopTasks. Registered CoopTasks are guaranteed to run sequentially (i.e., no two tasks will be run at the same time). Registered CoopTasks will not start running until you call Start. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Initialize a Single Threaded Task Manager. The <a class="el" href="classfrc973_1_1_single_thread_task_mgr.html">SingleThreadTaskMgr</a> creates its own pthread in which to run all of its registered <a class="el" href="classfrc973_1_1_coop_task.html">CoopTask</a>'s. Registered <a class="el" href="classfrc973_1_1_coop_task.html">CoopTask</a>'s are guaranteed to run sequentially (i.e., no two tasks will be run at the same time). Registered <a class="el" href="classfrc973_1_1_coop_task.html">CoopTask</a>'s will not start running until you call <a class="el" href="classfrc973_1_1_single_thread_task_mgr.html#ab1a312fdb7f6bbc09af8d3d037cf3f12">SingleThreadTaskMgr.Start</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">stateProvider</td><td>The resource that can be used to determine robot state (can be drive station). </td></tr>
+    <tr><td class="paramname">stateProvider</td><td>The current RobotState. </td></tr>
     <tr><td class="paramname">loopPeriod</td><td>The interval (in seconds) at which to schedule each period. </td></tr>
     <tr><td class="paramname">warnSlow</td><td>Determines whether to issue a warning when the tasks run longer than their alloted time. </td></tr>
   </table>
@@ -259,7 +259,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Check whether the Task Manager is running. </p><dl class="section return"><dt>Returns</dt><dd>The status of the Task Manager. </dd></dl>
+<p>Check whether the <a class="el" href="classfrc973_1_1_single_thread_task_mgr.html">SingleThreadTaskMgr</a> is running. </p><dl class="section return"><dt>Returns</dt><dd>The status of the <a class="el" href="classfrc973_1_1_single_thread_task_mgr.html">SingleThreadTaskMgr</a>. </dd></dl>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Start running registered CoopTasks until Stop is called (non-blocking) </p>
+<p>Start running registered <a class="el" href="classfrc973_1_1_coop_task.html">CoopTask</a>'s until <a class="el" href="classfrc973_1_1_single_thread_task_mgr.html#a9b1ae51b7c12c54a518edc5c9e389354">SingleThreadTaskMgr.Stop</a> is called (non-blocking). </p>
 
 </div>
 </div>
@@ -379,7 +379,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Stop running registered CoopTasks until Start is called (non-blocking) </p>
+<p>Stop running registered <a class="el" href="classfrc973_1_1_coop_task.html">CoopTask</a>'s until <a class="el" href="classfrc973_1_1_single_thread_task_mgr.html#ab1a312fdb7f6bbc09af8d3d037cf3f12">SingleThreadTaskMgr.Start</a> is called (non-blocking). </p>
 
 </div>
 </div>

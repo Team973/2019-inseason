@@ -87,7 +87,7 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
                    m_targetAngle, GetAngleError());
 }
 /*
- * dist and angle are relative to current position
+ * dist and angle are RelativeTo current position
  */
 PIDDriveController *PIDDriveController::SetTarget(
     double dist, double angle, DriveBase::RelativeTo relativity,

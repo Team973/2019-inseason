@@ -81,7 +81,7 @@ public:
 
     /**
      * Set a cap on the integral term of PID. This cap will be in the units of
-     * error*sec, whatever that means to you.  This cap works in absolute terms;
+     * error*sec, whatever that means to you. This cap works in absolute terms;
      * so the integral of error will be bound between positive |icap| and
      * negative |icap|.
      * @param icap The maximum integral of error that may occur in the units of

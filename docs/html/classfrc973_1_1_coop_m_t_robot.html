@@ -174,7 +174,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a45465a70ff56d057c6064080195e97c4 inherit pro_methods_classfrc973_1_1_task_mgr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classfrc973_1_1_coop_m_t_robot.html">CoopMTRobot</a> extends the TimedRobot robot program framework. It is an interface for a cooperative multitasking robot that is managed and kept in sync with other threads. Each task returns after some period of time. The <a class="el" href="classfrc973_1_1_coop_m_t_robot.html">CoopMTRobot</a> class is intended to be subclassed by a user creating a robot program. In addition to Continuous() functions from this class being called each time a new packet is received from the driver station, tasks registered with this class (via the <a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> interface) are also called each time a new packet is received from the driver station. </p>
+<div class="textblock"><p>Functionality pretty similar to WPILIB's TimedRobot except that this one manages tasks and has a Start and Stop method for each state.</p>
+<p><a class="el" href="classfrc973_1_1_coop_m_t_robot.html">CoopMTRobot</a> extends the TimedRobot robot program framework. It is an interface for a cooperative multitasking robot that is managed and kept in sync with other threads. Each task returns after some period of time. The <a class="el" href="classfrc973_1_1_coop_m_t_robot.html">CoopMTRobot</a> class is intended to be subclassed by a user creating a robot program. In addition to Continuous() functions from this class being called each time a new packet is received from the driver station, tasks registered with this class (via the <a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> interface) are also called each time a new packet is received from the driver station.</p>
+<p>A more ideal solution would probably have been to inherit from SimpleRobot and use the same virtual method names as TimedRobot, but TimedRobot handles driver station and HAL communication and those protocols are subject to change... this should be more maintainable in the long run. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1261d515c8f58b53f6cd18de2a0ddcc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1261d515c8f58b53f6cd18de2a0ddcc2">&#9670;&nbsp;</a></span>CoopMTRobot()</h2>
@@ -552,7 +554,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Return autonomous status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is enabled in autonomous or not. </dd></dl>
+<p>Gets <a class="el" href="classfrc973_1_1_autonomous.html">Autonomous</a> status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is enabled in <a class="el" href="classfrc973_1_1_autonomous.html">Autonomous</a> or not. </dd></dl>
 
 </div>
 </div>
@@ -578,7 +580,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Return disabled status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is disabled or not. </dd></dl>
+<p>Gets disabled status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is disabled or not. </dd></dl>
 
 </div>
 </div>
@@ -604,7 +606,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Return enabled status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is enabled or not. </dd></dl>
+<p>Gets enabled status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is enabled or not. </dd></dl>
 
 </div>
 </div>
@@ -630,7 +632,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Return teleop status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is enabled in teleop or not. </dd></dl>
+<p>Gets <a class="el" href="classfrc973_1_1_teleop.html">Teleop</a> status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is enabled in <a class="el" href="classfrc973_1_1_teleop.html">Teleop</a> or not. </dd></dl>
 
 </div>
 </div>
@@ -656,7 +658,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Return test status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is enabled in test or not. </dd></dl>
+<p>Gets test status. Don't implement this in any child classes. </p><dl class="section return"><dt>Returns</dt><dd>Whether the robot is enabled in test or not. </dd></dl>
 
 </div>
 </div>
@@ -683,9 +685,9 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Start a robot mode. Don't implement this in any child classes. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Start a RobotMode. Don't implement this in any child classes. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">toStart</td><td>The robot mode to start. </td></tr>
+    <tr><td class="paramname">toStart</td><td>The RobotMode to start. </td></tr>
   </table>
   </dd>
 </dl>
@@ -715,9 +717,9 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Stop a robot mode. Don't implement this in any child classes. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Stop a RobotMode. Don't implement this in any child classes. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">toStop</td><td>The robot mode to stop. </td></tr>
+    <tr><td class="paramname">toStop</td><td>The RobotMode to stop. </td></tr>
   </table>
   </dd>
 </dl>

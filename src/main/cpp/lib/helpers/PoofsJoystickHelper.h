@@ -13,9 +13,9 @@
 namespace frc973 {
 
 /**
- * Button mapping for the Poofs joystick.
+ * Button mapping for the PoofsJoystick.
  */
-namespace PoofsJoysticks {
+namespace PoofsJoystick {
 const unsigned int LeftXAxis = 1;  /**< Left X Axis ID. */
 const unsigned int LeftYAxis = 0;  /**< Left Y Axis ID. */
 const unsigned int RightXAxis = 3; /**< Right X Axis ID. */
@@ -28,12 +28,12 @@ const unsigned int RightBumper = 4;  /**< Left Bumper ID. */
 }
 
 /**
- * An observer for a Poofs Joystick.
+ * An observer for a PoofsJoystick.
  */
 class PoofsJoystickObserver {
 public:
     /**
-     * Construct a Poofs Joystick observer.
+     * Construct a PoofsJoystickObserver.
      */
     PoofsJoystickObserver() {
     }
@@ -53,7 +53,7 @@ public:
 };
 
 /**
- * An observable Poofs Joystick.
+ * An observable PoofsJoystick.
  */
 class ObservablePoofsJoystick
         : public CoopTask
@@ -125,7 +125,7 @@ public:
     /**
      * This function is called by the TaskMgr to check and process Joystick
      * button events.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPrePeriodic(RobotMode mode) override;
 

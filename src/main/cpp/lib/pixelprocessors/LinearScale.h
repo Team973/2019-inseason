@@ -15,8 +15,8 @@ namespace frc973 {
 namespace LightPattern {
 
 /**
- * PixelStateModulator that overlays a singular bar of a bargraph over a
- * processor.
+ * PixelStateProcessorModulator that overlays a singular bar of a bargraph over
+ * a processor.
  */
 class LinearScale : public PixelStateProcessorModulator {
 public:

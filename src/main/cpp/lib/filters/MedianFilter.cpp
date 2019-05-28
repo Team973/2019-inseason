@@ -2,7 +2,7 @@
  * MedianFilter.cpp
  *
  *  Created on: Jan 21, 2016
- *      Author: andrew
+ *      Author: Andrew
  */
 
 #include "lib/filters/MedianFilter.h"

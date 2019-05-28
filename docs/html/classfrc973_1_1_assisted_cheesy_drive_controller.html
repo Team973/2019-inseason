@@ -124,7 +124,7 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:abc57c381f8da35ec508c9804d7145696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Cheesy <a class="el" href="classfrc973_1_1_drive.html">Drive</a> controller. </p>
+<div class="textblock"><p>The <a class="el" href="classfrc973_1_1_assisted_cheesy_drive_controller.html">AssistedCheesyDriveController</a> that factors in <a class="el" href="classfrc973_1_1_limelight.html">Limelight</a> for <a class="el" href="classfrc973_1_1_cheesy_drive_controller.html">CheesyDriveController</a> steering. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a1a0b47084bea7c2f91b0b9d869a572a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a0b47084bea7c2f91b0b9d869a572a0">&#9670;&nbsp;</a></span>VisionOffset</h2>
@@ -181,7 +181,7 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Construct a Cheesy <a class="el" href="classfrc973_1_1_drive.html">Drive</a> controller. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Construct an AssistedCheesyDriveCntroller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">limelight</td><td>The limelight to use. </td></tr>
     <tr><td class="paramname">offset</td><td>The vision offset. </td></tr>
@@ -227,8 +227,8 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Calculate motor output given the most recent joystick commands. In this case just return the most recent joystick commands. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>The state provider for handling incoming messages. </td></tr>
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classfrc973_1_1_drive_state_provider.html">DriveStateProvider</a> for handling incoming messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -391,7 +391,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Start the drive controller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -425,7 +425,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Stop the drive controller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>

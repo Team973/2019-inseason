@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyCTRE.h"
 #include "lib/helpers/XboxJoystickHelper.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
@@ -26,8 +26,9 @@ public:
     enum ElevatorState
     {
         manualVoltage, /**< Control the motors with manual voltage. */
-        motionMagic, /**< Control the motors using position w/ Motion Magic. */
-        idle,        /**< staying in place after pressing a button. */
+        motionMagic,   /**< Control the motors using position with Motion Magic.
+                        */
+        idle,          /**< staying in place after pressing a button. */
         joystickControl /**< Controlling with the joystick. */
     };
 
@@ -50,7 +51,7 @@ public:
     static constexpr double MID_ROCKET_CARGO = 26.7;
     /**< Mid rocket hatch preset. */
     static constexpr double LOADING_STATION_CARGO = 20.0;
-    /**< Human player loading station preset.*/
+    /**< Human player loading station preset. */
     static constexpr double CARGO_SHIP_HATCH =
         0.5; /**< Cargo ship hatch preset. */
     static constexpr double CARGO_SHIP_CARGO =
@@ -75,13 +76,13 @@ public:
      * Contruct an elevator.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
-     * @param elevatorMotorA The elevator Talon.
-     * @param elevatorMotorB The elevator victor.
-     * @param operatorJoystick The codriver controller.
-     * @param elevatorHall The elevators hall.
+     * @param elevatorMotorA The Elevator's GreyTalonSRX.
+     * @param elevatorMotorB The Elevator's GreyVictorSPX.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param elevatorHall The Elevator's hall effect DigitalInput.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
+             GreyTalonSRX *elevatorMotorA, GreyVictorSPX *elevatorMotorB,
              ObservableXboxJoystick *operatorJoystick,
              DigitalInput *elevatorHall);
     virtual ~Elevator();
@@ -143,19 +144,20 @@ public:
 
     /**
      * Sets the rocket score mode.
+     * @param mode The RocketScoreMode.
      */
     void SetRocketScoreMode(RocketScoreMode mode);
 
     /**
      * Gets the rocket score mode.
-     * @return GetRocketScoreMode()
+     * @return The current RocketScoreMode.
      */
     RocketScoreMode GetRocketScoreMode();
 
     /**
      * Update function synonymous to TeleopContinuous that gets called
      * continuously.
-     * @param mode The current robot mode.
+     * @param mode The current RobotMode.
      */
     void TaskPeriodic(RobotMode mode);
 
@@ -163,7 +165,7 @@ private:
     TaskMgr *m_scheduler;
 
     GreyTalonSRX *m_elevatorMotorA;
-    VictorSPX *m_elevatorMotorB;
+    GreyVictorSPX *m_elevatorMotorB;
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;

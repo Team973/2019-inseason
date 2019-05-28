@@ -5,7 +5,7 @@
  *      Author: Andrew
  *
  * TaskMgr - Task Manager manages a collection of CoopTask objects
- * and calls their periodic functions when appropriate.  Similar to
+ * and calls their periodic functions when appropriate. Similar to
  * 254's MultiLooper class.
  *
  * Notable subclasses would be CoopMTRobot (which calls the periodic methods
@@ -45,15 +45,15 @@ public:
     virtual ~TaskMgr();
 
     /**
-     * Register CoopTask object.  If the task is already registered, the flags
+     * Register CoopTask object. If the task is already registered, the flags
      * passed here are added to those flags for which the task was already
-     * registered.  If the task registry is already full, return false.
+     * registered. If the task registry is already full, return false.
      * @param taskName Specifies the name of the task being registered (for
      * debug purposes).
      * @param task Specifies the task to be registered.
      * @param flags Specifies which callbacks should be called for the given
      * task.
-     * @return Returns true if the task was successfully registered. False
+     * @return * Gets true if the task was successfully registered. False
      * otherwise.
      */
     bool RegisterTask(const char *taskName, CoopTask *task, uint32_t flags);
@@ -70,35 +70,35 @@ protected:
     /**
      * Calls the TaskStartMode method of all CoopTask objects registered with
      * the TASK_START_MODE flag.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskStartModeAll(RobotMode mode);
 
     /**
      * Calls the TaskStopMode method of all CoopTask objects registered with the
      * TASK_STOP_MODE flag.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskStopModeAll(RobotMode mode);
 
     /**
      * Calls the TaskPrePreiodic method of all CoopTask objects registered with
      * the TASK_PRE_PERIODIC flag.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPrePeriodicAll(RobotMode mode);
 
     /**
      * Calls the TaskPreiodic method of all CoopTask objects registered with the
      * TASK_PERIODIC flag.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPeriodicAll(RobotMode mode);
 
     /**
      * Calls the TaskPostPeriodic method of all CoopTask objects registered with
      * the TASK_POST_PERIODIC flag.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPostPeriodicAll(RobotMode mode);
 

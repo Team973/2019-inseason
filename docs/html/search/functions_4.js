@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['elevator',['Elevator',['../classfrc973_1_1_elevator.html#a8a744d8d0d9d1ed7ad97bf53879e4ff3',1,'frc973::Elevator']]],
+  ['elevator',['Elevator',['../classfrc973_1_1_elevator.html#aa995b8a0c666b9ecd4ab440051c0ec06',1,'frc973::Elevator']]],
   ['enable',['Enable',['../classfrc973_1_1_simple_controller.html#a8d68eecd9e8c8a47934dbfff378820ea',1,'frc973::SimpleController::Enable()'],['../classfrc973_1_1_grey_compressor.html#aaddb1fe164d0b02d230983053a3e8037',1,'frc973::GreyCompressor::Enable()']]],
   ['enablebrakemode',['EnableBrakeMode',['../classfrc973_1_1_cargo_intake.html#a5986f890f8b5b2418a51d6ed24ff30f4',1,'frc973::CargoIntake::EnableBrakeMode()'],['../classfrc973_1_1_drive.html#a3a39d0c21a7e78b6a9ead3e7e1a1ec3f',1,'frc973::Drive::EnableBrakeMode()'],['../classfrc973_1_1_elevator.html#a55b85596043b6df71621a83a8329d51f',1,'frc973::Elevator::EnableBrakeMode()']]],
   ['enablecoastmode',['EnableCoastMode',['../classfrc973_1_1_cargo_intake.html#ae248aaac08da459984221fd98cc135e0',1,'frc973::CargoIntake::EnableCoastMode()'],['../classfrc973_1_1_drive.html#a422409c77210888feaa5ffe814c24d3d',1,'frc973::Drive::EnableCoastMode()'],['../classfrc973_1_1_elevator.html#ac743b5c955f24e5d6be6350d019e1fae',1,'frc973::Elevator::EnableCoastMode()']]],

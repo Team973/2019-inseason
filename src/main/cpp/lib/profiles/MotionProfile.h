@@ -14,19 +14,19 @@ namespace Profiler {
  * NewWaypoint represents an intermittent setpoint in a motion profile.
  */
 struct NewWaypoint {
-    double time; /**< The time.*/
+    double time; /**< The time. */
 
-    double linear_dist; /**< The target linear distance.*/
-    double linear_vel;  /**< The target linear velocity.*/
+    double linear_dist; /**< The target linear distance. */
+    double linear_vel;  /**< The target linear velocity. */
 
-    double angular_dist; /**< The target angular distance.*/
-    double angular_vel;  /**< The target angular velocity.*/
+    double angular_dist; /**< The target angular distance. */
+    double angular_vel;  /**< The target angular velocity. */
 
-    bool done;  /**< Whether it's done.*/
-    bool error; /**< Whether it errored.*/
+    bool done;  /**< Whether it's done. */
+    bool error; /**< Whether it errored. */
 
     /**
-     * Construct a new waypoint.
+     * Construct a NewWaypoint.
      * @param time_ The time.
      * @param linear_vel_ The target linear velocity.
      * @param linear_dist_ The target linear distance.
@@ -62,30 +62,32 @@ struct NewWaypoint {
 };
 
 /**
- * TrapProfileUnsafe does the calculation at runtime like one would expect and
- * is a normal function. Do not call this function directly, it is dangerous.
- * Instead, call TrapProfile.
- * @param time
- * @param distance
- * @param angle
- * @param max_velocity
- * @param acceleration
- * @param start_velocity
- * @param end_velocity
+ * TrapezoidProfileUnsafe does the calculation at runtime like one would
+ * expect and is a normal function. Do not call this function directly, it is
+ * dangerous. Instead, call TrapProfile.
+ * @param time The time.
+ * @param distance The distance.
+ * @param angle The angle.
+ * @param max_velocity The maximum velocity.
+ * @param acceleration The acceleration.
+ * @param start_velocity The start velocity.
+ * @param end_velocity The end velocity.
+ * @return The NewWaypoint.
  */
 NewWaypoint TrapezoidProfileUnsafe(double time, double distance, double angle,
                                    double max_velocity, double acceleration,
                                    double start_velocity, double end_velocity);
 
 /**
- * TriProfileUnsafe
- * @param time
- * @param distance
- * @param angle
- * @param max_velocity
- * @param acceleration
- * @param start_velocity
- * @param end_velocity
+ * TriProfileUnsafe.
+ * @param time The time.
+ * @param distance The distance.
+ * @param angle The angle.
+ * @param max_velocity The maximum velocity.
+ * @param acceleration The acceleration.
+ * @param start_velocity The start velocity.
+ * @param end_velocity The end velocity.
+ * @return The NewWaypoint.
  */
 NewWaypoint TriProfileUnsafe(double time, double distance, double angle,
                              double max_velocity, double acceleration,

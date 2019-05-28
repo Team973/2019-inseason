@@ -7,14 +7,14 @@ using namespace rev;
 namespace frc973 {
 
 /**
- * Interface for the GreySparkMax wrapper to be used on SPARK MAX's.
+ * Interface for the GreySparkMax wrapper to be used on CANSparkMax's.
  */
 class GreySparkMax : public virtual CANSparkMax {
 public:
     /**
-     * Construct a GreySparkMax to wrap over a SPARK MAX.
-     * @param canId The SPARK MAX's CAN id.
-     * @param motorType The type of motor connected.
+     * Construct a GreySparkMax to wrap over a CANSparkMax.
+     * @param canId The CANSparkMax's CAN ID.
+     * @param motorType The MotorType connected.
      */
     GreySparkMax(int canId, CANSparkMax::MotorType motorType)
             : CANSparkMax(canId, motorType) {
@@ -24,13 +24,13 @@ public:
     }
 
     /**
-     * Configurate F, P, I, and D for a specifc SPARK MAX
-     * @param kSlotIdx Slot Id
-     * @param kP Proportional value
-     * @param kI Integral value
-     * @param kD Derivative value
-     * @param kF Feed-Forward value
-     * @return The configured motor
+     * Configure P, I, D, and F for a specifc CANSparkMax.
+     * @param kSlotIdx The slot ID.
+     * @param kP The proportional value.
+     * @param kI The integral value.
+     * @param kD The derivative value.
+     * @param kF The feed-forward value.
+     * @return The configured motor.
      */
 
     GreySparkMax* Config_PID(int kSlotIdx, double kP, double kI, double kD,

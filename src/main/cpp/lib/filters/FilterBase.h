@@ -16,7 +16,7 @@ namespace frc973 {
 class FilterBase {
 public:
     /**
-     * Construct a filter.
+     * Construct a FilterBase.
      */
     FilterBase();
     virtual ~FilterBase();
@@ -29,7 +29,7 @@ public:
     virtual double Update(double input) = 0;
 
     /**
-     * Return the last value sent to the filter.
+     * Gets the last value sent to the filter.
      * @return The last value.
      */
     virtual double GetLast() = 0;

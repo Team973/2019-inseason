@@ -1,15 +1,15 @@
 #include "src/AutonomousMode.h"
 
 namespace frc973 {
-Autonomous::Autonomous(ObservablePoofsJoystick *driver,
-                       ObservableXboxJoystick *codriver,
-                       ObservableDualActionJoystick *testJoystick,
+Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
+                       ObservableXboxJoystick *operatorJoystick,
+                       ObservableDualActionJoystick *tuningJoystick,
                        Teleop *teleop, ADXRS450_Gyro *gyro, Drive *drive,
                        CargoIntake *cargoIntake, HatchIntake *hatchIntake,
                        Elevator *elevator)
-        : m_driverJoystick(driver)
-        , m_operatorJoystick(codriver)
-        , m_testJoystick(testJoystick)
+        : m_driverJoystick(driverJoystick)
+        , m_operatorJoystick(operatorJoystick)
+        , m_tuningJoystick(tuningJoystick)
         , m_teleop(teleop)
         , m_autoState(AutoState::Manual)
         , m_autoStateStartPosition(AutoStateStartPosition::LeftHabLevel2)
@@ -32,13 +32,13 @@ void Autonomous::AutonomousInit() {
     m_gyro->Reset();
     m_direction = 1.0;  // positive counterclockwise default
 
-    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) <
+    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) <
         -0.5) {
         m_direction = -1.0;
         m_autoStateStartPosition = AutoStateStartPosition::LeftHabLevel2;
     }
     else if (m_driverJoystick->GetRawAxisWithDeadband(
-                 PoofsJoysticks::RightXAxis) > 0.5) {
+                 PoofsJoystick::RightXAxis) > 0.5) {
         m_autoStateStartPosition = AutoStateStartPosition::RightHabLevel2;
     }
     else {
@@ -53,7 +53,7 @@ void Autonomous::AutonomousPeriodic() {
     // manual and stay in manual
     if (m_autoState != AutoState::Manual &&
         fabs(m_driverJoystick->GetRawAxisWithDeadband(
-            PoofsJoysticks::LeftYAxis)) > 0.50) {
+            PoofsJoystick::LeftYAxis)) > 0.50) {
         m_autoState = AutoState::Manual;
     }
 

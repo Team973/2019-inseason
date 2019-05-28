@@ -1,12 +1,13 @@
 var searchData=
 [
   ['dbstringprintf',['DBStringPrintf',['../namespacefrc973.html#aad6e1895208c25893441dfc95e9d7ff0',1,'frc973']]],
+  ['deadband',['deadband',['../namespacefrc973_1_1_util.html#a6f7608e9022bed8619d111120846979d',1,'frc973::Util']]],
   ['debouncer',['Debouncer',['../classfrc973_1_1_debouncer.html#aa6f9adce01954a221bfbce7107bbcf7c',1,'frc973::Debouncer']]],
   ['delayswitch',['DelaySwitch',['../classfrc973_1_1_delay_switch.html#a3ed5c057322b5f629010b529ec88af56',1,'frc973::DelaySwitch']]],
   ['deployplatformwheel',['DeployPlatformWheel',['../classfrc973_1_1_cargo_intake.html#ac3624c6de7d35b16ee931ce4435a9193',1,'frc973::CargoIntake']]],
   ['deployswitchblade',['DeploySwitchBlade',['../classfrc973_1_1_stinger.html#acfd7720f130dea11ba62be9cf3f0647b',1,'frc973::Stinger']]],
   ['disable',['Disable',['../classfrc973_1_1_simple_controller.html#aff3359f19342e2c8c70b13211f1319e7',1,'frc973::SimpleController::Disable()'],['../classfrc973_1_1_grey_compressor.html#a9924b3b4db95ef404dd3440e68beba02',1,'frc973::GreyCompressor::Disable()']]],
-  ['disabled',['Disabled',['../classfrc973_1_1_disabled.html#ae8efc054efbe9b4f9a9ec35f80cbd0c3',1,'frc973::Disabled']]],
+  ['disabled',['Disabled',['../classfrc973_1_1_disabled.html#afd1e21c460e631426eae9b5fbb269626',1,'frc973::Disabled']]],
   ['disabledcontinuous',['DisabledContinuous',['../classfrc973_1_1_coop_m_t_robot.html#aecf08f9d563263f8cb160531215a88c9',1,'frc973::CoopMTRobot::DisabledContinuous()'],['../classfrc973_1_1_robot.html#a94af1344f10abee6b8ef259b6c1aabe3',1,'frc973::Robot::DisabledContinuous()']]],
   ['disabledinit',['DisabledInit',['../classfrc973_1_1_coop_m_t_robot.html#aff3599685e71c427879c2355c7a01555',1,'frc973::CoopMTRobot::DisabledInit()'],['../classfrc973_1_1_disabled.html#af293aeef891225d5208e2a7fddc4e51a',1,'frc973::Disabled::DisabledInit()']]],
   ['disabledperiodic',['DisabledPeriodic',['../classfrc973_1_1_coop_m_t_robot.html#a22f6aa044a8be1c8025ad1ae7040de19',1,'frc973::CoopMTRobot::DisabledPeriodic()'],['../classfrc973_1_1_disabled.html#a0db9fa41c7c046e0ae780b6604473590',1,'frc973::Disabled::DisabledPeriodic()']]],

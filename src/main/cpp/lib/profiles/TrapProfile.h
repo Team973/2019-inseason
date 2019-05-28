@@ -10,19 +10,19 @@ namespace Profiler {
  * Waypoint represents an intermittent setpoint in a trap profile.
  */
 struct Waypoint {
-    double time; /**< The time.*/
+    double time; /**< The time. */
 
-    double linear_dist; /**< The target linear distance.*/
-    double linear_vel;  /**< The target linear velocity.*/
+    double linear_dist; /**< The target linear distance. */
+    double linear_vel;  /**< The target linear velocity. */
 
-    double angular_dist; /**< The target angular distance.*/
-    double angular_vel;  /**< The target angular velocity.*/
+    double angular_dist; /**< The target angular distance. */
+    double angular_vel;  /**< The target angular velocity. */
 
-    bool done;  /**< Whether it's done.*/
-    bool error; /**< Whether it errored.*/
+    bool done;  /**< Whether it's done. */
+    bool error; /**< Whether it errored. */
 
     /**
-     * Construct a new waypoint.
+     * Construct a Waypoint.
      * @param time_ The time.
      * @param linear_vel_ The target linear velocity.
      * @param linear_dist_ The target linear distance.
@@ -47,6 +47,14 @@ struct Waypoint {
  * TrapProfileUnsafe does the calculation at runtime like one would expect and
  * is a normal function. Do not call this function directly, it is dangerous.
  * Instead, call TrapProfile.
+ * @param time The time.
+ * @param distance The distance.
+ * @param angle The angle.
+ * @param max_velocity The maximum velocity.
+ * @param max_acceleration The maximum acceleration.
+ * @param start_halt Whether to start at a velocity of 0.
+ * @param end_halt Whether to end at a velocity of 0.
+ * @return The Waypoint.
  */
 Waypoint TrapProfileUnsafe(double time, double distance, double angle,
                            double max_velocity, double max_acceleration,
@@ -55,6 +63,8 @@ Waypoint TrapProfileUnsafe(double time, double distance, double angle,
 /**
  * Safely generates a trapazoidal motion profile. Checks at compile time for
  * profile safety.
+ * @param time The time.
+ * @return The Waypoint.
  */
 template <typename DISTANCE, typename ANGLE, typename MAX_VELOCITY,
           typename MAX_ACCELERATION, bool START_HALT, bool END_HALT>

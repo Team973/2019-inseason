@@ -16,7 +16,7 @@ namespace frc973 {
 
 namespace LightPattern {
 /**
- * PixelStateModulator to reverse a PixelStateProcessor.
+ * PixelStateProcessorModulator to reverse a PixelStateProcessor.
  */
 class ReverseModifier : public PixelStateProcessorModulator {
 public:

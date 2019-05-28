@@ -3,11 +3,6 @@
  *
  *  Created on: Nov 3, 2015
  *      Author: Andrew
- *
- * GreyCompresser is super simple CoopTask that checks the given pressure
- * switch and turns on or off the given compressor relay accordingly.
- *
- * Can also be explicitly enabled or disabled.
  */
 
 #pragma once
@@ -18,8 +13,10 @@
 namespace frc973 {
 
 /**
- * CoopTask for a compressor object. GreyComperssor will check the pressure
- * every robot cycle and controll the compressor accordingly.
+ * GreyCompressor is super simple CoopTask that checks the given pressure
+ * switch and turns on or off the given compressor relay accordingly.
+ *
+ * Can also be explicitly enabled or disabled.
  */
 class GreyCompressor : public CoopTask {
 public:
@@ -49,7 +46,7 @@ public:
     /**
      * Periodic task called by TaskMgr. Checks pressure switch and turns on or
      * off compressor relay accordingly.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPeriodic(RobotMode mode);
 

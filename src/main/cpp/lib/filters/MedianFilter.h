@@ -17,7 +17,7 @@ namespace frc973 {
 class MedianFilter : public FilterBase {
 public:
     /**
-     * Construct a median filter.
+     * Construct a MedianFilter.
      * @param buffSize The buffer size.
      */
     MedianFilter(int buffSize = 5);
@@ -31,7 +31,7 @@ public:
     double Update(double in) override;
 
     /**
-     * Return the last value sent to the filter.
+     * Gets the last value sent to the filter.
      * @return The last value.
      */
     double GetLast() override;

@@ -38,7 +38,7 @@ public:
     void SetPixelStateProcessor(PixelStateProcessor* processor);
 
     /**
-     * Return the current state of the LEDs.
+     * Gets the current state of the LEDs.
      * @return The current state.
      */
     PixelState GetState();

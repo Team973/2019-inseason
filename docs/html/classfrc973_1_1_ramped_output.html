@@ -106,7 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a709baf4c36ac2d3667afd1139c8f36fd inherit pub_methods_classfrc973_1_1_filter_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for a ramped output. </p>
+<div class="textblock"><p><a class="el" href="classfrc973_1_1_ramped_output.html">RampedOutput</a> is a filter that garauntees the maximum rate of change in any signal is at most a certain threshold. This can be used to ramp drive output on a root with high CG, to ramp motor output on a flywheel that might otherwise spike the battery, or as a filter to a sensor where we know the rate of change of value should always be below a certain threshold.</p>
+<p>The units for rampRate is whatever is being measured per sec. This class has an internal clock so regardless of how often it is being called, the ramp rate will stay the same. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aed80e762d775a9a6efce4f648b013e3a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aed80e762d775a9a6efce4f648b013e3a">&#9670;&nbsp;</a></span>RampedOutput()</h2>

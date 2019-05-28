@@ -8,15 +8,15 @@
 #include "src/TeleopMode.h"
 
 namespace frc973 {
-Teleop::Teleop(ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver,
-               ObservableDualActionJoystick *testStick, Drive *drive,
+Teleop::Teleop(ObservablePoofsJoystick *driverJoystick,
+               ObservableXboxJoystick *operatorJoystick,
+               ObservableDualActionJoystick *tuningJoystick, Drive *drive,
                Elevator *elevator, HatchIntake *hatchIntake,
                CargoIntake *cargoIntake, Stinger *stinger,
                Limelight *limelightHatch)
-        : m_driverJoystick(driver)
-        , m_operatorJoystick(codriver)
-        , m_testJoystick(testStick)
+        : m_driverJoystick(driverJoystick)
+        , m_operatorJoystick(operatorJoystick)
+        , m_tuningJoystick(tuningJoystick)
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
         , m_elevator(elevator)
@@ -46,13 +46,12 @@ void Teleop::TeleopPeriodic() {
      * Driver Joystick
      */
     double y =  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::LeftYAxis);
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::LeftYAxis);
     double x =  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis);
-    bool quickturn =
-        m_driverJoystick->GetRawButton(PoofsJoysticks::RightBumper);
+        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis);
+    bool quickturn = m_driverJoystick->GetRawButton(PoofsJoystick::RightBumper);
     bool softwareLowGear =
-        m_driverJoystick->GetRawButton(PoofsJoysticks::RightTrigger);
+        m_driverJoystick->GetRawButton(PoofsJoystick::RightTrigger);
 
     DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
@@ -149,7 +148,7 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 3endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
-            if (m_driverJoystick->GetRawButton(PoofsJoysticks::LeftTrigger)) {
+            if (m_driverJoystick->GetRawButton(PoofsJoystick::LeftTrigger)) {
                 m_elevator->SetPosition(12.0);
                 m_cargoIntake->RetractPlatformWheel();
             }
@@ -227,7 +226,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                  bool pressedP) {
     if (port == DRIVER_JOYSTICK_PORT) {
         switch (button) {
-            case PoofsJoysticks::LeftTrigger:
+            case PoofsJoystick::LeftTrigger:
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
@@ -256,7 +255,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                     }
                 }
                 break;
-            case PoofsJoysticks::RightTrigger:
+            case PoofsJoystick::RightTrigger:
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
@@ -295,7 +294,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                     }
                 }
                 break;
-            case PoofsJoysticks::LeftBumper:
+            case PoofsJoystick::LeftBumper:
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
@@ -326,7 +325,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                     }
                 }
                 break;
-            case PoofsJoysticks::RightBumper:
+            case PoofsJoystick::RightBumper:
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::SecondLevelEndGamePeriodic:

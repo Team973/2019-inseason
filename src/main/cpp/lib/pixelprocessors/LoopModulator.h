@@ -16,7 +16,7 @@ namespace frc973 {
 
 namespace LightPattern {
 /**
- * PixelStateModulator to create a "scrolling" effect from a
+ * PixelStateProcessorModulator to create a "scrolling" effect from a
  * PixelStateProcessor.
  */
 class LoopModulator : public PixelStateProcessorModulator {

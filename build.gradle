@@ -103,7 +103,7 @@ doxygen {
     generate_latex false
 
     source 'src/main/cpp'
-    source 'docs'
+    source 'guides/'
     source 'README.md'
 
     use_mdfile_as_mainpage 'README.md'

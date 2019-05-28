@@ -1,11 +1,8 @@
 /*
  * CascadingFilter.h
  *
- * A Cascading filter contains a list of filters and applies them sequentially
- * to the signal.
- *
  *  Created on: Feb 29, 2016
- *      Author: andrew
+ *      Author: Andrew
  */
 
 #pragma once
@@ -17,13 +14,13 @@
 namespace frc973 {
 
 /**
- * A direct-use filter for something that needs to use multiple filters in a
- * sequence.
+ * A Cascading filter contains a list of filters and applies them
+ * sequentially to the signal.
  */
 class CascadingFilter : FilterBase {
 public:
     /**
-     * Construct a cascading filter.
+     * Construct a CascadingFilter.
      */
     CascadingFilter();
     virtual ~CascadingFilter();
@@ -41,7 +38,7 @@ public:
     double Update(double in) override;
 
     /**
-     * Return the last value sent to the filter.
+     * Gets the last value sent to the filter.
      * @return The last value.
      */
     double GetLast() override;

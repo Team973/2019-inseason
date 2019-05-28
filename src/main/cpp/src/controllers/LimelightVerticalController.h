@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyCTRE.h"
 #include "lib/helpers/PID.h"
 #include "lib/sensors/Limelight.h"
 #include "lib/util/Util.h"
@@ -19,7 +19,7 @@ class LimelightVerticalController {
 public:
     /**
      * Constructs a Limelight vertical controller.
-     * @param limelight The limelight.
+     * @param limelight The Limelight.
      * @param motor The motor for the vertical subsystem.
      */
     LimelightVerticalController(Limelight *limelight, GreyTalonSRX *motor);

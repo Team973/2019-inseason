@@ -22,7 +22,7 @@ namespace frc973 {
 class PresetHandlerDispatcher;
 
 /**
- * Controls the teleop mode.
+ * Controls the Teleop mode.
  */
 class Teleop {
 public:
@@ -31,33 +31,34 @@ public:
      */
     enum class GameMode
     {
-        CargoInit,                  /**< Cargo initialization.*/
-        CargoPeriodic,              /**< Cargo periodic.*/
-        HatchInit,                  /**< Hatch initialization.*/
-        HatchPeriodic,              /**< Hatch periodic.*/
-        ThirdLevelEndGameInit,      /**< Third level climb initialization.*/
-        SecondLevelEndGameInit,     /**< Second level climb initialization.*/
-        ThirdLevelEndGamePeriodic,  /**< Third level climb periodic.*/
-        SecondLevelEndGamePeriodic, /**< Second level climb periodic.*/
-        SecondLevelStabilize,       /**< Second level climb stabilize.*/
-        RaiseIntake,                /**< Raise intake state.*/
-        ResetIntake                 /**< Reset intake state.*/
+        CargoInit,                  /**< Cargo initialization. */
+        CargoPeriodic,              /**< Cargo periodic. */
+        HatchInit,                  /**< Hatch initialization. */
+        HatchPeriodic,              /**< Hatch periodic. */
+        ThirdLevelEndGameInit,      /**< Third level climb initialization. */
+        SecondLevelEndGameInit,     /**< Second level climb initialization. */
+        ThirdLevelEndGamePeriodic,  /**< Third level climb periodic. */
+        SecondLevelEndGamePeriodic, /**< Second level climb periodic. */
+        SecondLevelStabilize,       /**< Second level climb stabilize. */
+        RaiseIntake,                /**< Raise intake state. */
+        ResetIntake                 /**< Reset intake state. */
     };
 
     /**
-     * Constuct a teleop mode.
-     * @param driver The driver's joystick.
-     * @param codriver The co-driver's joystick.
-     * @param testStick The testing joystick.
-     * @param drive The drive subsystem.
-     * @param elevator The elevator subsystem.
-     * @param hatchintake The hatch intake subsystem.
-     * @param cargoIntake The cargo intake subsystem.
-     * @param stinger The stinger subsystem.
+     * Constuct a Teleop mode.
+     * @param driverJoystick The driver's ObservablePoofsJoystick.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param tuningJoystick The testing joystick.
+     * @param drive The Drive subsystem.
+     * @param elevator The Elevator subsystem.
+     * @param hatchintake The HatchIntake subsystem.
+     * @param cargoIntake The CargoIntake subsystem.
+     * @param stinger The Stinger subsystem.
      * @param limelightHatch The Limelight for the hatch.
      */
-    Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           ObservableDualActionJoystick *testStick, Drive *drive,
+    Teleop(ObservablePoofsJoystick *driverJoystick,
+           ObservableXboxJoystick *operatorJoystick,
+           ObservableDualActionJoystick *tuningJoystick, Drive *drive,
            Elevator *elevator, HatchIntake *hatchintake,
            CargoIntake *cargoIntake, Stinger *stinger,
            Limelight *limelightHatch);
@@ -65,22 +66,22 @@ public:
     virtual ~Teleop();
 
     /**
-     * Start of teleop.
+     * Start of Teleop.
      */
     void TeleopInit();
 
     /**
-     * Loop of teleop.
+     * Loop of Teleop.
      */
     void TeleopPeriodic();
 
     /**
-     * Stop of teleop.
+     * Stop of Teleop.
      */
     void TeleopStop();
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Teleop mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -89,7 +90,7 @@ public:
                                   bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Teleop mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -97,7 +98,7 @@ public:
     void HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Teleop mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -113,7 +114,7 @@ public:
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
-    ObservableDualActionJoystick *m_testJoystick;
+    ObservableDualActionJoystick *m_tuningJoystick;
 
     Drive *m_drive;
     enum class DriveMode

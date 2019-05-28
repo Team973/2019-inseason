@@ -115,8 +115,7 @@ void LogSpreadsheet::Start() {
     m_oFile = new std::ofstream(buffer);
 
     if (m_oFile->fail()) {
-        fprintf(stderr,
-                "Could not open file `%s` for writing.  Errno %d (%s)\n",
+        fprintf(stderr, "Could not open file `%s` for writing. Errno %d (%s)\n",
                 buffer, errno, strerror(errno));
         return;
     }

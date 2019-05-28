@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['manual',['manual',['../classfrc973_1_1_hatch_intake.html#af4c74758c0b0a61461f1b8a4daa183c1a3c78b35502b2693fefdfc51cba3a53a5',1,'frc973::HatchIntake::manual()'],['../classfrc973_1_1_hatch_intake.html#a06a079844436439895319ae078e8a2e5a3c78b35502b2693fefdfc51cba3a53a5',1,'frc973::HatchIntake::manual()']]],
+  ['manual',['Manual',['../classfrc973_1_1_autonomous.html#a3eaa7cafc44c8e56a128a3f9dd7b14b7ae1ba155a9f2e8c3be94020eef32a0301',1,'frc973::Autonomous::Manual()'],['../classfrc973_1_1_hatch_intake.html#af4c74758c0b0a61461f1b8a4daa183c1a3c78b35502b2693fefdfc51cba3a53a5',1,'frc973::HatchIntake::manual()'],['../classfrc973_1_1_hatch_intake.html#a06a079844436439895319ae078e8a2e5a3c78b35502b2693fefdfc51cba3a53a5',1,'frc973::HatchIntake::manual()']]],
   ['manualpunch',['manualPunch',['../classfrc973_1_1_hatch_intake.html#a06a079844436439895319ae078e8a2e5a92a4a1c17d18b4958ed8eb2ba71ebe9e',1,'frc973::HatchIntake']]],
   ['manualretract',['manualRetract',['../classfrc973_1_1_hatch_intake.html#a06a079844436439895319ae078e8a2e5a9430c07366f58744da4eeced69b61e8e',1,'frc973::HatchIntake']]],
   ['manualrunning',['manualRunning',['../classfrc973_1_1_cargo_intake.html#ad23a6e838aa40e894bfa0dd3dd09d2c1a963b1830efdeb60b568ce68ae9687e3c',1,'frc973::CargoIntake']]],

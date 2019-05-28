@@ -26,7 +26,7 @@ namespace LightPattern {
 class Flash : public PixelStateProcessor {
 public:
     /**
-     * Construct a Flash Processor.
+     * Construct a Flash.
      * @param first The primary Color to flash.
      * @param second The secondary Color to flash.
      * @param hz The frequency to flash at.

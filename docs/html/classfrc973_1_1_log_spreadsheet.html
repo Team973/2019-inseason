@@ -108,7 +108,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a40260305db669834cc059cd5801f8f7c inherit pub_methods_classfrc973_1_1_coop_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A <a class="el" href="classfrc973_1_1_log_spreadsheet.html">LogSpreadsheet</a> writes to a file the contents of each of its registered cells. </p>
+<div class="textblock"><p>A <a class="el" href="classfrc973_1_1_log_spreadsheet.html">LogSpreadsheet</a> writes to a file the contents of each of its registered <a class="el" href="classfrc973_1_1_log_cell.html">LogCell</a>'s. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acf07d6419c776ed1d83136d9053f1a46"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acf07d6419c776ed1d83136d9053f1a46">&#9670;&nbsp;</a></span>LogSpreadsheet()</h2>
@@ -133,9 +133,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Create a new LogSpreadsheetBase... we need the scheduler that will be calling us. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Construct a <a class="el" href="classfrc973_1_1_log_spreadsheet.html">LogSpreadsheet</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">scheduler</td><td>The Task Manager to register this with. </td></tr>
+    <tr><td class="paramname">scheduler</td><td>The <a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> to register this with. </td></tr>
   </table>
   </dd>
 </dl>
@@ -158,9 +158,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Register a new column to be logged. You will figure this value out in GetValue. You cannot register more columns after the header of the file has already been written. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Register a new column to be logged. You will figure this value out in <a class="el" href="classfrc973_1_1_log_cell.html#a05866357e88c1a73f4005354c1ce767c">LogCell.GetContent</a>. You cannot register more columns after the header of the file has already been written. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cell</td><td>The cell to register. </td></tr>
+    <tr><td class="paramname">cell</td><td>The <a class="el" href="classfrc973_1_1_log_cell.html">LogCell</a> to register. </td></tr>
   </table>
   </dd>
 </dl>
@@ -211,7 +211,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Called regularly. If we are initialized, write a row of the table. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>The current operating mode of the robot. </td></tr>
+    <tr><td class="paramname">mode</td><td>The current RobotMode. </td></tr>
   </table>
   </dd>
 </dl>

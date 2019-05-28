@@ -150,10 +150,13 @@ void Drive::CheesyDrive(double throttle, double turn, bool isQuickTurn,
     m_driveControllerLog->LogPrintf("Cheesy Drive");
 }
 
-void Drive::OpenloopArcadeDrive(double throttle, double turn) {
+OpenloopArcadeDriveController *Drive::OpenloopArcadeDrive(double throttle,
+                                                          double turn) {
     this->SetDriveController(m_openloopArcadeDriveController);
     m_openloopArcadeDriveController->SetJoysticks(throttle, turn);
     m_driveControllerLog->LogPrintf("OpenLoopArcade Drive");
+
+    return m_openloopArcadeDriveController;
 }
 
 PIDDriveController *Drive::PIDDrive(double dist, double turn,

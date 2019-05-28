@@ -2,6 +2,7 @@ var searchData=
 [
   ['initialize',['Initialize',['../classfrc973_1_1_coop_m_t_robot.html#a4cc3ea0c329220613ed53dff3639b5aa',1,'frc973::CoopMTRobot::Initialize()'],['../classfrc973_1_1_robot.html#a056e12a428eb274fec343432edb5c928',1,'frc973::Robot::Initialize()']]],
   ['interplookuptable',['InterpLookupTable',['../classfrc973_1_1_interp_lookup_table.html#a91dcfb38dcd5d1fc41765d7d03a8e563',1,'frc973::InterpLookupTable']]],
+  ['interpolate',['interpolate',['../namespacefrc973_1_1_util.html#af77e1a3f435a86d88c7621314da70172',1,'frc973::Util']]],
   ['isautonomous',['IsAutonomous',['../classfrc973_1_1_coop_m_t_robot.html#a85d8ec1954048b4aae433b6dd3c6679c',1,'frc973::CoopMTRobot']]],
   ['isdisabled',['IsDisabled',['../classfrc973_1_1_coop_m_t_robot.html#a02ede487b4548234b16cafae3a033d22',1,'frc973::CoopMTRobot']]],
   ['isenabled',['IsEnabled',['../classfrc973_1_1_coop_m_t_robot.html#a7680ef083843cf318e8f744aa9cb9005',1,'frc973::CoopMTRobot']]],

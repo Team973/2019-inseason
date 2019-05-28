@@ -24,13 +24,13 @@ public:
     SPIGyro();
 
     /**
-     * Returns the latest angle reading from the gyro.
+     * Gets the latest angle reading from the gyro.
      * @return The latest angle reading.
      */
     double GetDegrees();
 
     /**
-     * Returns the latest angular momentum reading from the gyro.
+     * Gets the latest angular momentum reading from the gyro.
      * @return The latest angular momentum reading.
      */
     double GetDegreesPerSec();
@@ -55,15 +55,15 @@ public:
 private:
     /**
      * Initializes and zeros the gyro, then starts collecting angular data
-     * to be served out by this object.  Should be run in its own thread
-     * (started by constructor).  Doesn't stop until someone calls Quit.
+     * to be served out by this object. Should be run in its own thread
+     * (started by constructor). Doesn't stop until someone calls Quit.
      */
     static void *Run(void *p);
 
     /**
      * Runs the recommended gyro startup procedure including checking all
      * of the self-test bits.
-     * Returns true on success.
+     * Gets true on success.
      */
     bool InitializeGyro();
 
@@ -82,7 +82,7 @@ private:
 
     /*
      * Gets a reading from the gyro.
-     * Returns a value to be passed to the Extract* methods or 0 for error.
+     * Gets a value to be passed to the Extract* methods or 0 for error.
      */
     uint32_t GetReading();
 
@@ -93,7 +93,7 @@ private:
     uint16_t DoRead(uint8_t address);
 
     /**
-     * Returns all of the non-data bits in the "header" except the parity from
+     * Gets all of the non-data bits in the "header" except the parity from
      * value.
      */
     uint8_t ExtractStatus(uint32_t value) {
@@ -102,21 +102,21 @@ private:
 
     /**
      * Checks for erros in the passed int.
-     * Returns true if there was an error in the reading, false otherwise.
+     * Gets true if there was an error in the reading, false otherwise.
      * Prints messages to explain possible errors.
      * |res| should be the result of calling gyro.GetReading()
      */
     bool CheckErrors(uint32_t res);
 
     /**
-     * Returns all of the error bits in the "footer" from value.
+     * Gets all of the error bits in the "footer" from value.
      */
     uint8_t ExtractErrors(uint32_t value) {
         return (value >> 1) & 0x7F;
     }
 
     /**
-     * Returns the anglular rate contained in value.
+     * Gets the anglular rate contained in value.
      */
     double ExtractAngle(uint32_t value);
 
@@ -124,12 +124,12 @@ private:
      * Performs a transaction with the gyro.
      * to_write is the value to write. This function handles setting the
      * checksum bit. result is where to stick the result. This function verifies
-     * the parity bit. Returns true for success.
+     * the parity bit. * Gets true for success.
      */
     bool DoTransaction(uint32_t to_write, uint32_t *result);
 
     /**
-     * Returns the part ID from the gyro.
+     * Gets the part ID from the gyro.
      * Retries until it succeeds.
      */
     uint32_t ReadPartID();

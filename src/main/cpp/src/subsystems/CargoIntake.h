@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyCTRE.h"
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
 #include "lib/logging/LogSpreadsheet.h"
@@ -17,14 +17,14 @@ namespace frc973 {
 class CargoIntake : public CoopTask {
 public:
     /**
-     * Construct a Cargo Intake Subsystem.
-     * @param scheduler The task manager.
-     * @param logger The logger.
-     * @param cargoIntakeMotor The cargo intake motor.
-     * @param cargoPlatformLock The cargo platform lock solenoid.
-     * @param cargoWrist The cargo wrist solenoid.
-     * @param limelightHatch The hatch limelight.
-     * @param pdp The power distribution panel.
+     * Construct a CargoIntake subsystem.
+     * @param scheduler The TaskMgr.
+     * @param logger The LogSpreadsheet.
+     * @param cargoIntakeMotor The CargoIntake GreyTalonSRX.
+     * @param cargoPlatformLock The CargoIntake platform lock Solenoid.
+     * @param cargoWrist The CargoIntake wrist Solenoid.
+     * @param limelightHatch The hatch Limelight.
+     * @param pdp The PowerDistributionPanel.
      */
     CargoIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *cargoIntakeMotor, Solenoid *cargoPlatformLock,
@@ -33,7 +33,7 @@ public:
     virtual ~CargoIntake();
 
     /**
-     * Cargo Intake states.
+     * CargoIntake states.
      */
     enum class CargoIntakeState
     {
@@ -110,47 +110,47 @@ public:
 
     /**
      * Get the intake current.
-     * @returns The intake motor's current pull in ohms.
+     * @return The intake motor's current pull in ohms.
      */
     double GetIntakeCurrent();
 
     /**
      * Get the current CargoIntakeState.
-     * @returns The current CargoIntakeState.
+     * @return The current CargoIntakeState.
      */
     CargoIntakeState GetIntakeState();
 
     /**
      * Get the current CargoWristState.
-     * @returns The current CargoWristState.
+     * @return The current CargoWristState.
      */
     CargoWristState GetWristState();
 
     /**
      * Get the current CargoPlatformWheelState.
-     * @returns The current CargoPlatformWheelState.
+     * @return The current CargoPlatformWheelState.
      */
     CargoPlatformLockState GetPlatformLockState();
 
     /**
-     * Sets the cargo intake motor to coast mode.
+     * Sets the CargoIntake motor to coast mode.
      */
     void EnableCoastMode();
 
     /**
-     * Sets the cargo intake motor to brake mode.
+     * Sets the CargoIntake motor to brake mode.
      */
     void EnableBrakeMode();
 
     /**
      * The looping task periodic.
-     * @param mode The current robot mode.
+     * @param mode The current RobotMode.
      */
     void TaskPeriodic(RobotMode mode) override;
 
 private:
     /**
-     * Sets the desired cargo intake state
+     * Sets the desired CargoIntake state
      * @param newState The desired Cargo Intake state.
      */
     void GoToIntakeState(CargoIntakeState newState);

@@ -18,7 +18,7 @@ namespace frc973 {
 class VelocityArcadeDriveController : public DriveController {
 public:
     /**
-     * Construct a Velocity Arcade Drive controller.
+     * Construct a VelocityArcadeDriveController.
      */
     VelocityArcadeDriveController();
     virtual ~VelocityArcadeDriveController();
@@ -26,8 +26,8 @@ public:
     /**
      * Calculate motor output given the most recent joystick commands. In this
      * case just return the most recent joystick commands.
-     * @param state The state provider for handling incoming messages.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param state The DriveStateProvider for handling incoming messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out);
@@ -49,7 +49,7 @@ public:
 
     /**
      * Start the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Start(DriveControlSignalReceiver *out) override {
         printf("Turning on Velocity Arcade Mode\n");
@@ -57,7 +57,7 @@ public:
 
     /**
      * Stop the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Stop(DriveControlSignalReceiver *out) override {
         printf("Turning off Velocity Arcade Mode\n");

@@ -96,5 +96,6 @@ var searchData=
   ['greycompressor',['GreyCompressor',['../classfrc973_1_1_grey_compressor.html#ae5ca9de5ed7fc501f01657731febce2b',1,'frc973::GreyCompressor']]],
   ['greylight',['GreyLight',['../classfrc973_1_1_grey_light.html#ae48835197ae9e214595092564da764cd',1,'frc973::GreyLight']]],
   ['greysparkmax',['GreySparkMax',['../classfrc973_1_1_grey_spark_max.html#a9d15483da6331627ee119ed2fdeb6900',1,'frc973::GreySparkMax']]],
-  ['greytalonsrx',['GreyTalonSRX',['../classfrc973_1_1_grey_talon_s_r_x.html#a0213085af532b5df65956936f7c714da',1,'frc973::GreyTalonSRX']]]
+  ['greytalonsrx',['GreyTalonSRX',['../classfrc973_1_1_grey_talon_s_r_x.html#a0213085af532b5df65956936f7c714da',1,'frc973::GreyTalonSRX']]],
+  ['greyvictorspx',['GreyVictorSPX',['../classfrc973_1_1_grey_victor_s_p_x.html#af75fb2ca5b029e0e9c020fd97cc19faf',1,'frc973::GreyVictorSPX']]]
 ];

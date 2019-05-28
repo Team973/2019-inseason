@@ -73,7 +73,7 @@ class ObservableXboxJoystick
         , public XboxController {
 public:
     /**
-     * Create an instance of the ObservableXboxJoystickJoystick object. Requires
+     * Create an instance of the ObservableXboxJoystick object. Requires
      * the information to instantiate the underlying WPI-Joystick, as well as
      * references to the scheduler that will run it and the observer that
      * will observe its state.
@@ -123,7 +123,7 @@ public:
     /**
      * This function is called by the TaskMgr to check and process Joystick
      * button events.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPrePeriodic(RobotMode mode) override;
 

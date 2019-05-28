@@ -83,11 +83,13 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacefrc973_1_1_light_pattern"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrc973_1_1_light_pattern.html">LightPattern</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacefrc973_1_1_poofs_joysticks"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrc973_1_1_poofs_joysticks.html">PoofsJoysticks</a></td></tr>
+<tr class="memitem:namespacefrc973_1_1_poofs_joystick"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrc973_1_1_poofs_joystick.html">PoofsJoystick</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacefrc973_1_1_profiler"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrc973_1_1_profiler.html">Profiler</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacefrc973_1_1_trajectories"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrc973_1_1_trajectories.html">Trajectories</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacefrc973_1_1_util"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrc973_1_1_util.html">Util</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacefrc973_1_1_xbox"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrc973_1_1_xbox.html">Xbox</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +151,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrc973_1_1_grey_spark_max.html">GreySparkMax</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrc973_1_1_grey_talon_s_r_x.html">GreyTalonSRX</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrc973_1_1_grey_victor_s_p_x.html">GreyVictorSPX</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrc973_1_1_hatch_intake.html">HatchIntake</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -279,9 +283,7 @@ Variables</h2></td></tr>
 <tr class="separator:a6a735bd5ec3919a4ff2064af0097d06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="_drive_8h_source.html">Drive.h</a></p>
-<p>Created on: January 7, 2019 Authors: Kyle, Chris</p>
-<p>Main <a class="el" href="classfrc973_1_1_robot.html">Robot</a> Code for FRC Team 973. </p><dl class="section author"><dt>Author</dt><dd>Kyle D </dd>
+<div class="textblock"><p>Main <a class="el" href="classfrc973_1_1_robot.html">Robot</a> Code for FRC Team 973. </p><dl class="section author"><dt>Author</dt><dd>Kyle D </dd>
 <dd>
 Chris M </dd>
 <dd>
@@ -293,10 +295,9 @@ Dylan F </dd>
 <dd>
 Allen B </dd>
 <dd>
-Andrew N </dd>
+Andrew </dd>
 <dd>
-John P</dd></dl>
-<p><a class="el" href="_spline_drive_controller_8h_source.html">SplineDriveController.h</a> Created On: Feb 12, 2018 Author: Kyle </p>
+John P </dd></dl>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a7d58916fd54e9884a61bf59445c7e9bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d58916fd54e9884a61bf59445c7e9bb">&#9670;&nbsp;</a></span>DBStringPos</h2>
@@ -309,7 +310,7 @@ John P</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Defines dashboard positions for data. </p>
+<p>Quick wrapper of wpilib's debug string interface. Defines dashboard positions for data. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7d58916fd54e9884a61bf59445c7e9bbadbc770a0d9bba94ffb196e4340c34948"></a>DB_LINE0&#160;</td><td class="fielddoc"><p>First column, first row. </p>
 </td></tr>
@@ -450,7 +451,7 @@ John P</dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The current robot mode in RobotMode format. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current RobotMode. </dd></dl>
 
 </div>
 </div>
@@ -577,7 +578,13 @@ John P</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Some nifty byte swapping. </p>
+<p>Some nifty byte swapping. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dword</td><td>The original dword. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The modified dword. </dd></dl>
 
 </div>
 </div>

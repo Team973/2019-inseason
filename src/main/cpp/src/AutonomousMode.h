@@ -10,46 +10,46 @@
 namespace frc973 {
 
 /**
- * Controls the autonomous mode.
+ * Controls the Autonomous mode.
  */
 class Autonomous {
 public:
     /**
-     * Constuct an autonomous mode.
-     * @param driver The driver controller.
-     * @param codriver The codriver controller.
-     * @param testJoystick The test controller.
-     * @param teleop The teleop mode.
-     * @param gyro The gyro.
-     * @param drive The drive subsystem.
-     * @param cargoIntake The cargo intake subsystem.
-     * @param hatchIntake The hatch intake subsystem.
-     * @param elevator The elevator subsystem.
+     * Constuct an Autonomous mode.
+     * @param driverJoystick The driver's ObservablePoofsJoystick.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param tuningJoystick The tuning ObservableDualActionJoystick.
+     * @param Teleop The Teleop mode.
+     * @param gyro The ADXRS450_Gyro.
+     * @param drive The Drive subsystem.
+     * @param cargoIntake The CargoIntake subsystem.
+     * @param hatchIntake The HatchIntake subsystem.
+     * @param elevator The Elevator subsystem.
      */
-    Autonomous(ObservablePoofsJoystick *driver,
-               ObservableXboxJoystick *codriver,
-               ObservableDualActionJoystick *testJoystick, Teleop *teleop,
+    Autonomous(ObservablePoofsJoystick *driverJoystick,
+               ObservableXboxJoystick *operatorJoystick,
+               ObservableDualActionJoystick *tuningJoystick, Teleop *Teleop,
                ADXRS450_Gyro *gyro, Drive *drive, CargoIntake *cargoIntake,
                HatchIntake *hatchIntake, Elevator *elevator);
     virtual ~Autonomous();
 
     /**
-     * Start of autonomous.
+     * Start of Autonomous.
      */
     void AutonomousInit();
 
     /**
-     * Loop of autonomous.
+     * Loop of Autonomous.
      */
     void AutonomousPeriodic();
 
     /**
-     * Stop of autonomous.
+     * Stop of Autonomous.
      */
     void AutonomousStop();
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Autonomous mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -58,7 +58,7 @@ public:
                                   bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Autonomous mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -66,7 +66,7 @@ public:
     void HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Autonomous mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -78,32 +78,32 @@ public:
      */
     enum class AutoState
     {
-        TwoRocket,
-        TwoCargoShip,
-        CargoShipThenRocket,
-        Manual
+        TwoRocket,           /**< Two rocket objects. */
+        TwoCargoShip,        /**< Two cargo objects. */
+        CargoShipThenRocket, /**< One on both the cargo and rocket. */
+        Manual               /**< Manual driver control. */
     };
 
     /**
-     * Gets AutoState
-     * @return Gets autostate.
+     * Gets the current AutoState.
+     * @return The current AuutoState.
      */
     AutoState GetAutoState() const;
 
     /**
-     * Sets AutoState.
-     * @param autoState The auto state.
+     * Sets the AutoState.
+     * @param autoState The new AutoState.
      */
     void SetAutoState(AutoState autoState);
 
     /**
-     * Defines AutoStateStartPositions
+     * Defines AutoStateStartPositions.
      */
     enum class AutoStateStartPosition
     {
-        LeftHabLevel2, /**< Left Level 2 Auto State */
-        CenterHab,     /**< Center Auto State */
-        RightHabLevel2 /**< Right Level 2 Auto State */
+        LeftHabLevel2, /**< Left Level 2 Auto State. */
+        CenterHab,     /**< Center Auto State. */
+        RightHabLevel2 /**< Right Level 2 Auto State. */
     };
 
 private:
@@ -115,7 +115,7 @@ private:
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
-    ObservableDualActionJoystick *m_testJoystick;
+    ObservableDualActionJoystick *m_tuningJoystick;
 
     Teleop *m_teleop;
     AutoState m_autoState;

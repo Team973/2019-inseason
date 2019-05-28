@@ -1,8 +1,6 @@
 /*
  * WrapDash.h
  *
- * Quick wrapper of wpilib's debug string interface
- *
  *  Created on: Sep 3, 2015
  *      Author: Andrew
  */
@@ -18,7 +16,8 @@ using namespace frc;
 namespace frc973 {
 
 /**
- * Defines dashboard positions for data.
+ * Quick wrapper of wpilib's debug string interface. Defines dashboard positions
+ * for data.
  */
 enum DBStringPos
 {

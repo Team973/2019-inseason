@@ -79,12 +79,12 @@ double LimelightDriveController::CalcTurnComp() {
 
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
-    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoysticks::RightXAxis) >
+    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) >
         0.5) {
         m_limelight->SetCameraVisionLeft();
     }
     else if (m_driverJoystick->GetRawAxisWithDeadband(
-                 PoofsJoysticks::RightXAxis) < -0.5) {
+                 PoofsJoystick::RightXAxis) < -0.5) {
         m_limelight->SetCameraVisionRight();
     }
     m_limelight->SetLightOn();

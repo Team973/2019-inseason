@@ -10,12 +10,14 @@ var searchData=
   ['hatchintake',['HatchIntake',['../classfrc973_1_1_hatch_intake.html',1,'frc973::HatchIntake'],['../classfrc973_1_1_hatch_intake.html#a45a52022e028eb2df0faf55f1bf64d2f',1,'frc973::HatchIntake::HatchIntake()']]],
   ['hatchintakestate',['HatchIntakeState',['../classfrc973_1_1_hatch_intake.html#af4c74758c0b0a61461f1b8a4daa183c1',1,'frc973::HatchIntake']]],
   ['hatchperiodic',['HatchPeriodic',['../classfrc973_1_1_teleop.html#a22c550bdcdec08706a0aa931d815a102a30de340eaff5fc9c064c841b44c05adc',1,'frc973::Teleop']]],
-  ['hatchpunchersolenoidstates',['HatchPuncherSolenoidStates',['../classfrc973_1_1_hatch_intake.html#ad5df4ef2c9b361f7ce96cfd242a9ab78',1,'frc973::HatchIntake']]],
+  ['hatchpunchersolenoidstate',['HatchPuncherSolenoidState',['../classfrc973_1_1_hatch_intake.html#ab14ad305b999321c5f151b89e9471474',1,'frc973::HatchIntake']]],
   ['hatchsolenoidstate',['HatchSolenoidState',['../classfrc973_1_1_hatch_intake.html#a06a079844436439895319ae078e8a2e5',1,'frc973::HatchIntake']]],
   ['heading',['heading',['../structfrc973_1_1_trajectories_1_1_segment.html#a557e96983912515ead4a49a5bb42e6f7',1,'frc973::Trajectories::Segment']]],
   ['height',['height',['../structfrc973_1_1_pixy_1_1_block.html#a34f96290b2ea9e2dd7d4facef332ddaf',1,'frc973::Pixy::Block']]],
   ['hold',['hold',['../classfrc973_1_1_hatch_intake.html#af4c74758c0b0a61461f1b8a4daa183c1aaf1d8213f4a22b0f9803fec9259ff7a8',1,'frc973::HatchIntake']]],
   ['holdcargo',['HoldCargo',['../classfrc973_1_1_cargo_intake.html#a46cc9b881f767de72292f57bbd519557',1,'frc973::CargoIntake']]],
   ['holdhatch',['HoldHatch',['../classfrc973_1_1_hatch_intake.html#a371335c72921781b8e6b69effb33e1e8',1,'frc973::HatchIntake']]],
-  ['holding',['holding',['../classfrc973_1_1_cargo_intake.html#ad23a6e838aa40e894bfa0dd3dd09d2c1a903921621e3b2408d232cf003aca5612',1,'frc973::CargoIntake']]]
+  ['holding',['holding',['../classfrc973_1_1_cargo_intake.html#ad23a6e838aa40e894bfa0dd3dd09d2c1a903921621e3b2408d232cf003aca5612',1,'frc973::CargoIntake']]],
+  ['how_20to_20incoporate_20dashboard_20features_20into_20your_20subsystem',['How To Incoporate Dashboard Features Into Your Subsystem',['../md_guides__dashboard_guide.html',1,'']]],
+  ['how_20to_20generate_20javadocs_2fdoxygen_20docs_20for_20code',['How To Generate Javadocs/Doxygen Docs for Code',['../md_guides__doxygen_guide.html',1,'']]]
 ];

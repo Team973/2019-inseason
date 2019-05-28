@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyCTRE.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
 #include "lib/sensors/Limelight.h"
@@ -16,9 +16,9 @@ public:
      * Hatch intake constructor.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
-     * @param hatchRollers The hatch intake's roller.
-     * @param hatchPuncher The hatch intake's puncher.
-     * @param limelightHatch The hatch limelight.
+     * @param hatchRollers The HatchIntake's roller GreyTalonSRX.
+     * @param hatchPuncher The HatchIntake's puncher Solenoid.
+     * @param limelightHatch The HatchIntake's Limelight.
      */
     HatchIntake(TaskMgr *scheduler, LogSpreadsheet *logger,
                 GreyTalonSRX *hatchRollers, Solenoid *hatchPuncher,
@@ -30,11 +30,11 @@ public:
      */
     enum class HatchIntakeState
     {
-        idle,     /**< Idle hatch intakeintaking. */
-        intaking, /**< Prime hatch intake for intaking. */
+        idle,     /**< Idle hatch intaking. */
+        intaking, /**< Prime HatchIntake for intaking. */
         hold,     /**< Hold the hatch. */
         exhaust,  /**< Place the hatch. */
-        manual    /**< Manual hatch intake control. */
+        manual    /**< Manual HatchIntake control. */
     };
 
     /**
@@ -49,64 +49,66 @@ public:
     };
 
     /**
-     * Hatch puncher solenoid definitions.
+     * Hatch puncher Solenoid definitions.
      */
-    enum HatchPuncherSolenoidStates
+    enum HatchPuncherSolenoidState
     {
         punch = true,   /**< Punches hatch. */
         retract = false /**< Retract puncher. */
     };
 
     /**
-     * Set hatch intake to idle.
+     * Set HatchIntake to HatchIntakeState.idle.
      */
     void SetIdle();
 
     /**
-     * Set hatch intake to intaking.
+     * Set HatchIntake to HatchIntakeState.intaking.
      */
     void RunIntake();
 
     /**
-     * Set hatch intake to holding.
+     * Set HatchIntake to HatchIntakeState.hold.
      */
     void HoldHatch();
 
     /**
-     * Set hatch intake to exhausting.
+     * Set HatchIntake to HatchIntakeState.exhaust.
      */
     void Exhaust();
 
     /**
-     * Launch the hatch.
+     * Set HatchIntake to HatchSolenoidState.launch.
      */
     void LaunchHatch();
 
     /**
      * Checks if a hatch is in the intake.
-     * @return True or False for hatch in intake.
+     * @return Whether the hatch is in the intake.
      */
     bool IsHatchInIntake();
 
     /**
-     * Manually punch, regardless of grab state.
+     * Set HatchIntake to HatchSolenoidState.manualPunch, regardless of grab
+     * state.
      */
     void ManualPuncherActivate();
 
     /**
-     * Manually retract puncher, regardless of grab state.
+     * Set HatchIntake to HatchSolenoidState.manualRetract, regardless of
+     * grab state.
      */
     void ManualPuncherRetract();
 
     /**
-     * Gets the hatch puncher state.
-     * @return The hatch puncher state.
+     * Gets the current HatchSolenoidState.
+     * @return The current HatchSolenoidState.
      */
     HatchSolenoidState GetHatchPuncherState();
 
     /**
-     * Periodically update information about the hatch intake.
-     * @param mode The current robot mode.
+     * Periodically update information about the HatchIntake.
+     * @param mode The current RobotMode.
      */
     void TaskPeriodic(RobotMode mode);
 

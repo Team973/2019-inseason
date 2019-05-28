@@ -10,7 +10,7 @@ namespace frc973 {
 class AutoRoutineBase {
 public:
     /**
-     * Construct a Auto Routine base.
+     * Construct an AutoRoutineBase.
      */
     AutoRoutineBase();
     virtual ~AutoRoutineBase();

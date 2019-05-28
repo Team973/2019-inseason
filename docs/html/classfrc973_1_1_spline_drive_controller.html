@@ -139,7 +139,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Construct a Spline <a class="el" href="classfrc973_1_1_drive.html">Drive</a> controller. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Construct a <a class="el" href="classfrc973_1_1_spline_drive_controller.html">SplineDriveController</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">state</td><td>Inputs to the drive controller. </td></tr>
     <tr><td class="paramname">logger</td><td>Logger for the drive controller. </td></tr>
@@ -164,7 +164,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Return angle from beginning. </p><dl class="section return"><dt>Returns</dt><dd>Angle from beginning. </dd></dl>
+<p>Gets angle from beginning. </p><dl class="section return"><dt>Returns</dt><dd>Angle from beginning. </dd></dl>
 
 </div>
 </div>
@@ -203,8 +203,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Calculate motor output given the most recent sensor updates. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>The state provider for handling incoming messages. </td></tr>
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classfrc973_1_1_drive_state_provider.html">DriveStateProvider</a> for handling incoming messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -227,7 +227,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Return percent complete of spline </p><dl class="section return"><dt>Returns</dt><dd>Percent of trajectory done. </dd></dl>
+<p>Gets percent complete of spline </p><dl class="section return"><dt>Returns</dt><dd>Percent of trajectory done. </dd></dl>
 
 </div>
 </div>
@@ -245,7 +245,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Return left distance from beginning. </p><dl class="section return"><dt>Returns</dt><dd>Left distance from beginning. </dd></dl>
+<p>Gets left distance from beginning. </p><dl class="section return"><dt>Returns</dt><dd>Left distance from beginning. </dd></dl>
 
 </div>
 </div>
@@ -291,7 +291,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Return right distance from beginning. </p><dl class="section return"><dt>Returns</dt><dd>Right distance from beginning. </dd></dl>
+<p>Gets right distance from beginning. </p><dl class="section return"><dt>Returns</dt><dd>Right distance from beginning. </dd></dl>
 
 </div>
 </div>
@@ -323,7 +323,7 @@ Public Member Functions</h2></td></tr>
 <p>Set the target trajectory. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">trajectory</td><td>The trajectory. </td></tr>
-    <tr><td class="paramname">relativity</td><td>The point relative to new setpoint. </td></tr>
+    <tr><td class="paramname">relativity</td><td>The point RelativeTo new setpoint. </td></tr>
   </table>
   </dd>
 </dl>
@@ -355,7 +355,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Start the drive controller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -389,7 +389,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Stop the drive controller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>

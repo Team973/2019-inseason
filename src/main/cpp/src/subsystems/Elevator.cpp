@@ -2,7 +2,7 @@
 
 namespace frc973 {
 Elevator::Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-                   GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
+                   GreyTalonSRX *elevatorMotorA, GreyVictorSPX *elevatorMotorB,
                    ObservableXboxJoystick *operatorJoystick,
                    DigitalInput *elevatorHall)
         : m_scheduler(scheduler)

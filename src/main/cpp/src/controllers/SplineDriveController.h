@@ -1,7 +1,8 @@
-/**
+/*
  * SplineDriveController.h
- * Created On: Feb 12, 2018
- * Author: Kyle
+ *
+ *   Created On: Feb 12, 2018
+ *     Author: Kyle
  */
 
 #pragma once
@@ -21,7 +22,7 @@ using namespace Trajectories;
 class SplineDriveController : public DriveController {
 public:
     /**
-     * Construct a Spline Drive controller.
+     * Construct a SplineDriveController.
      * @param state Inputs to the drive controller.
      * @param logger Logger for the drive controller.
      */
@@ -31,15 +32,15 @@ public:
     /**
      * Set the target trajectory.
      * @param trajectory The trajectory.
-     * @param relativity The point relative to new setpoint.
+     * @param relativity The point RelativeTo new setpoint.
      */
     void SetTarget(TrajectoryDescription *trajectory,
                    DriveBase::RelativeTo relativity);
 
     /**
      * Calculate motor output given the most recent sensor updates.
-     * @param state The state provider for handling incoming messages.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param state The DriveStateProvider for handling incoming messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out) override;
@@ -54,7 +55,7 @@ public:
 
     /**
      * Start the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Start(DriveControlSignalReceiver *out) override {
         printf("Turning on Spline Mode\n");
@@ -62,32 +63,32 @@ public:
 
     /**
      * Stop the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Stop(DriveControlSignalReceiver *out) override {
         printf("Turning off Spline Mode\n");
     }
 
     /**
-     * Return percent complete of spline
+     * Gets percent complete of spline
      * @return Percent of trajectory done.
      */
     double GetSplinePercentComplete() const;
 
     /**
-     * Return left distance from beginning.
+     * Gets left distance from beginning.
      * @return Left distance from beginning.
      */
     double LeftDistFromStart() const;
 
     /**
-     * Return right distance from beginning.
+     * Gets right distance from beginning.
      * @return Right distance from beginning.
      */
     double RightDistFromStart() const;
 
     /**
-     * Return angle from beginning.
+     * Gets angle from beginning.
      * @return Angle from beginning.
      */
     double AngleFromStart() const;

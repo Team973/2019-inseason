@@ -158,8 +158,8 @@ Public Member Functions</h2></td></tr>
 <p>A <a class="el" href="classfrc973_1_1_simple_control_system.html">SimpleControlSystem</a> for combining the controller, signal receiver, and state provider. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">scheduler</td><td>The main task manager. </td></tr>
-    <tr><td class="paramname">state</td><td>The state provider for handling incoming messages. </td></tr>
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classfrc973_1_1_drive_state_provider.html">DriveStateProvider</a> for handling incoming messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
     <tr><td class="paramname">controller</td><td>The drive controller for hangling movements. </td></tr>
   </table>
   </dd>
@@ -251,7 +251,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Periodically recalculate drive outputs based on controller's drive method. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>The current operating mode of the robot. </td></tr>
+    <tr><td class="paramname">mode</td><td>The current RobotMode. </td></tr>
   </table>
   </dd>
 </dl>

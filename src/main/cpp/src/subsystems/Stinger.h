@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyCTRE.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
 #include "lib/managers/TaskMgr.h"
@@ -16,47 +16,47 @@ namespace frc973 {
 class Stinger : public CoopTask {
 public:
     /**
-     * Construct a stinger.
-     * @param scheduler The task manager.
-     * @param logger The logger.
-     * @param stingerDriveMotor The stingers drive motor.
+     * Construct a Stinger.
+     * @param scheduler The TaskMgr.
+     * @param logger The LogSpreadsheet.
+     * @param stingerDriveMotor The stinger's GreyTalonSRX.
      */
     Stinger(TaskMgr *scheduler, LogSpreadsheet *logger,
             GreyTalonSRX *stingerDriveMotor);
     virtual ~Stinger();
 
     /**
-     * Deploys the stinger's kick stands
+     * Deploys the Stinger's kick stands.
      */
     void SetKickUpEnable();
 
     /**
-     * Retracts the stinger's kick stands
+     * Retracts the Stinger's kick stands.
      */
     void SetKickUpDisable();
 
     /**
-     * Defines the Switch Blade States
+     * Defines the Switch Blade States.
      */
     enum class SwitchBladeState
     {
-        engaged,  /**< Switch Blade Extended*/
-        retracted /**< Switch Blade Stowed*/
+        engaged,  /**< Switch Blade Extended. */
+        retracted /**< Switch Blade Stowed. */
     };
 
     /**
-     * Returns the Switch Blade's State.
-     * @return The Switch Blade's State.
+     * Get the current SwitchBladeState.
+     * @return The current SwitchBladeState.
      */
     SwitchBladeState GetSwitchBladeState();
 
     /**
-     * Deploys the stingers switch blade
+     * Set Stinger to SwitchBladeState.engaged.
      */
     void DeploySwitchBlade();
 
     /**
-     * Retracts the stinger's switch blade
+     * Set Stinger to SwitchBladeState.retracted.
      */
     void RetractSwitchBlade();
 
@@ -71,8 +71,8 @@ public:
     void RetractGateLatch();
 
     /**
-     * The periodic loooping task for the stinger elevator.
-     * @param mode The current robot mode.
+     * The periodic loooping task for the Stinger.
+     * @param mode The current RobotMode.
      */
     void TaskPeriodic(RobotMode mode) override;
 

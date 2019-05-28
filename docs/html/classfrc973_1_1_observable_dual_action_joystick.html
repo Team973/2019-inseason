@@ -207,10 +207,10 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Create an instance of the <a class="el" href="classfrc973_1_1_observable_dual_action_joystick.html">ObservableDualActionJoystick</a> object. Requires the information to instantiate the underlying WPI-Joystick, as well as references to the scheduler that will run it and the observer that will observe its state. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">port</td><td>The joystick port. </td></tr>
-    <tr><td class="paramname">observer</td><td>The JoystickObserver object for button event notification callback. </td></tr>
-    <tr><td class="paramname">scheduler</td><td>The task manager this task will run on. </td></tr>
-    <tr><td class="paramname">ds</td><td>The driver station. </td></tr>
+    <tr><td class="paramname">port</td><td>The joystick's port. </td></tr>
+    <tr><td class="paramname">observer</td><td>The <a class="el" href="classfrc973_1_1_dual_action_joystick_observer.html">DualActionJoystickObserver</a> object for button event notification callback. </td></tr>
+    <tr><td class="paramname">scheduler</td><td>The <a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> this task will run on. </td></tr>
+    <tr><td class="paramname">ds</td><td>The DriverStation. </td></tr>
   </table>
   </dd>
 </dl>
@@ -413,12 +413,13 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the value of the given axis with deadband. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">axis</td><td>Specifies the axis to get the value of. </td></tr>
-    <tr><td class="paramname">fSquared</td><td>Specifies whether the joystick input should be squared. </td></tr>
-    <tr><td class="paramname">threshold</td><td>Specifies the deadband threshold. </td></tr>
+    <tr><td class="paramname">axis</td><td>The axis to get the value of. </td></tr>
+    <tr><td class="paramname">fSquared</td><td>The joystick input should be squared. </td></tr>
+    <tr><td class="paramname">threshold</td><td>The deadband threshold. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The raw axis value with deadband. </dd></dl>
 
 </div>
 </div>
@@ -475,7 +476,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Register this joystick with a logger so that button state can be logged every time the periodic funciton is called. Only registers with the first call. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">logger</td><td>The spreadsheet to log to. </td></tr>
+    <tr><td class="paramname">logger</td><td>The <a class="el" href="classfrc973_1_1_log_spreadsheet.html">LogSpreadsheet</a> to log to. </td></tr>
   </table>
   </dd>
 </dl>
@@ -507,7 +508,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This function is called by the <a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> to check and process Joystick button events. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>The current operating mode of the robot.</td></tr>
+    <tr><td class="paramname">mode</td><td>The current RobotMode.</td></tr>
   </table>
   </dd>
 </dl>
@@ -721,7 +722,7 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The logger. </p>
+<p>The <a class="el" href="classfrc973_1_1_log_cell.html">LogCell</a>. </p>
 
 </div>
 </div>
@@ -744,7 +745,7 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The class to notify whenever a change in the joystick occurs. </p>
+<p>The <a class="el" href="classfrc973_1_1_dual_action_joystick_observer.html">DualActionJoystickObserver</a> to notify whenever a change in the joystick occurs. </p>
 
 </div>
 </div>
@@ -813,7 +814,7 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The task manager object. </p>
+<p>The <a class="el" href="classfrc973_1_1_task_mgr.html">TaskMgr</a> object. </p>
 
 </div>
 </div>

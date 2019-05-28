@@ -17,14 +17,14 @@ using namespace frc;
 namespace frc973 {
 
 /**
- * Limelight
+ * Limelight camera functions.
  */
 class Limelight {
 public:
     /**
-     * Constuct a Limelight Camera.
-     * @param name The name of the limelight being constructed.
-     * @param inverted Boolean on if the limelight is inverted or not.
+     * Constuct a Limelight camera.
+     * @param name The name of the Limelight being constructed.
+     * @param inverted Whether the Limelight is inverted or not.
      */
     Limelight(const char *name, bool inverted);
     virtual ~Limelight();
@@ -45,9 +45,9 @@ public:
     enum class CameraMode
     {
         onVision, /**< The vision camera mode that uses tuned settings for
-                     autonomous. */
+                     Autonomous. */
         onDriver  /**< The driver camera mode that uses tuned settings for
-                     teleop. */
+                     Teleop. */
     };
 
     /**
@@ -56,8 +56,8 @@ public:
     enum class StreamMode
     {
         standard,    /**< Side by side Limelight/USB camera. */
-        pipMain,     /**< Picture in picture w/ USB camera in lower right. */
-        pipSecondary /**< Picture in picture w/ Limelight in lower right. */
+        pipMain,     /**< Picture in picture with USB camera in lower right. */
+        pipSecondary /**< Picture in picture with Limelight in lower right. */
     };
 
     /**
@@ -189,7 +189,7 @@ public:
 
     /**
      * Gets the target skew.
-     * Returns negative values when target is more distant on the right
+     * Gets negative values when target is more distant on the right
      * side of the robot and vice versa.
      * @return target skew.
      */

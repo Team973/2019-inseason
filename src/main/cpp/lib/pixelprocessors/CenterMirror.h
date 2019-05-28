@@ -17,8 +17,8 @@ namespace frc973 {
 namespace LightPattern {
 
 /**
- * PixelStateModulator to wrap processors around the middle of the strip,
- * rather than the left or right side.
+ * PixelStateProcessorModulator to wrap processors around the middle of the
+ * strip, rather than the left or right side.
  */
 class CenterMirror : public PixelStateProcessorModulator {
 public:

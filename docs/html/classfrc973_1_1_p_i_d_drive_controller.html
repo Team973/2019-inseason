@@ -134,7 +134,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Construct a <a class="el" href="classfrc973_1_1_p_i_d.html">PID</a> <a class="el" href="classfrc973_1_1_drive.html">Drive</a> controller. </p>
+<p>Construct a <a class="el" href="classfrc973_1_1_p_i_d_drive_controller.html">PIDDriveController</a>. </p>
 
 </div>
 </div>
@@ -174,8 +174,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Calculate motor output given the most recent sensor updates. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>The state provider for handling incoming messages. </td></tr>
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classfrc973_1_1_drive_state_provider.html">DriveStateProvider</a> for handling incoming messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -206,7 +206,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Return the angle error. </p><dl class="section return"><dt>Returns</dt><dd>The distance error. </dd></dl>
+<p>Gets the angle error. </p><dl class="section return"><dt>Returns</dt><dd>The distance error. </dd></dl>
 
 </div>
 </div>
@@ -232,7 +232,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Return the distance error. </p><dl class="section return"><dt>Returns</dt><dd>The distance error. </dd></dl>
+<p>Gets the distance error. </p><dl class="section return"><dt>Returns</dt><dd>The distance error. </dd></dl>
 
 </div>
 </div>
@@ -419,12 +419,12 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the target position/heading relative to absolute world. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Set the target position/heading RelativeTo absolute world. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dist</td><td>Distance to travel. </td></tr>
     <tr><td class="paramname">heading</td><td>Heading when moving. </td></tr>
-    <tr><td class="paramname">relativity</td><td>Point relative to new setpoint. </td></tr>
-    <tr><td class="paramname">state</td><td>The state provider for handling incoming messages. </td></tr>
+    <tr><td class="paramname">relativity</td><td>Point RelativeTo new setpoint. </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classfrc973_1_1_drive_state_provider.html">DriveStateProvider</a> for handling incoming messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -499,7 +499,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Start the drive controller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -533,7 +533,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Stop the drive controller. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>The signal receiver for handling outgoing messages. </td></tr>
+    <tr><td class="paramname">out</td><td>The <a class="el" href="classfrc973_1_1_drive_control_signal_receiver.html">DriveControlSignalReceiver</a> for handling outgoing messages. </td></tr>
   </table>
   </dd>
 </dl>

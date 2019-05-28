@@ -15,8 +15,8 @@ namespace frc973 {
 
 namespace LightPattern {
 /**
- * PixelStateModulator to create an "inch-worm" of pixels moving from one side
- * to the other of the strip.
+ * PixelStateProcessorModulator to create an "inch-worm" of pixels moving from
+ * one side to the other of the strip.
  */
 class PixelChase : public PixelStateProcessorModulator {
 public:

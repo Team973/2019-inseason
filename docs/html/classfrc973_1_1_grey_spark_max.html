@@ -90,7 +90,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afd9420e04a6140cee310ebb332e41076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for the <a class="el" href="classfrc973_1_1_grey_spark_max.html">GreySparkMax</a> wrapper to be used on SPARK MAX's. </p>
+<div class="textblock"><p>Interface for the <a class="el" href="classfrc973_1_1_grey_spark_max.html">GreySparkMax</a> wrapper to be used on CANSparkMax's. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9d15483da6331627ee119ed2fdeb6900"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d15483da6331627ee119ed2fdeb6900">&#9670;&nbsp;</a></span>GreySparkMax()</h2>
@@ -125,10 +125,10 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Construct a <a class="el" href="classfrc973_1_1_grey_spark_max.html">GreySparkMax</a> to wrap over a SPARK MAX. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Construct a <a class="el" href="classfrc973_1_1_grey_spark_max.html">GreySparkMax</a> to wrap over a CANSparkMax. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">canId</td><td>The SPARK MAX's CAN id. </td></tr>
-    <tr><td class="paramname">motorType</td><td>The type of motor connected. </td></tr>
+    <tr><td class="paramname">canId</td><td>The CANSparkMax's CAN ID. </td></tr>
+    <tr><td class="paramname">motorType</td><td>The MotorType connected. </td></tr>
   </table>
   </dd>
 </dl>
@@ -187,17 +187,17 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Configurate F, P, I, and D for a specifc SPARK MAX </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Configure P, I, D, and F for a specifc CANSparkMax. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">kSlotIdx</td><td>Slot Id </td></tr>
-    <tr><td class="paramname">kP</td><td>Proportional value </td></tr>
-    <tr><td class="paramname">kI</td><td>Integral value </td></tr>
-    <tr><td class="paramname">kD</td><td>Derivative value </td></tr>
-    <tr><td class="paramname">kF</td><td>Feed-Forward value </td></tr>
+    <tr><td class="paramname">kSlotIdx</td><td>The slot ID. </td></tr>
+    <tr><td class="paramname">kP</td><td>The proportional value. </td></tr>
+    <tr><td class="paramname">kI</td><td>The integral value. </td></tr>
+    <tr><td class="paramname">kD</td><td>The derivative value. </td></tr>
+    <tr><td class="paramname">kF</td><td>The feed-forward value. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The configured motor </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The configured motor. </dd></dl>
 
 </div>
 </div>

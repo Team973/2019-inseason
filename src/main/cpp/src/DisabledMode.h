@@ -14,24 +14,25 @@
 namespace frc973 {
 
 /**
- * Controls the disabled mode.
+ * Controls the Disabled mode.
  */
 class Disabled {
 public:
     /**
-     * Constuct a disabled mode.
-     * @param driver The driver's joystick.
-     * @param codriver The co-driver's joystick.
-     * @param elevator The elevator subsystem.
-     * @param cargoIntake The cargo Intake subsystem.
-     * @param limelightHatch The hatch limelight.
-     * @param autonomous The autonomous mode.
-     * @param drive The drive
-     * @param teleop The teleop mode
+     * Constuct a Disabled mode.
+     * @param driverJoystick The driver's ObservablePoofsJoystick.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param elevator The Elevator subsystem.
+     * @param cargoIntake The CargoIntake subsystem.
+     * @param limelightHatch The hatch Limelight.
+     * @param autonomous The Autonomous mode.
+     * @param drive The Drive subsystem.
+     * @param Teleop The Teleop mode
      */
-    Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             Elevator *elevator, CargoIntake *cargoIntake, Drive *drive,
-             Limelight *limelightHatch, Autonomous *autonomous, Teleop *teleop);
+    Disabled(ObservablePoofsJoystick *driverJoystick,
+             ObservableXboxJoystick *operatorJoystick, Elevator *elevator,
+             CargoIntake *cargoIntake, Drive *drive, Limelight *limelightHatch,
+             Autonomous *autonomous, Teleop *Teleop);
     virtual ~Disabled();
 
     /**
@@ -50,7 +51,7 @@ public:
     void DisabledStop();
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Disabled mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -59,7 +60,7 @@ public:
                                   bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Disabled mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -67,7 +68,7 @@ public:
     void HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Disabled mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.

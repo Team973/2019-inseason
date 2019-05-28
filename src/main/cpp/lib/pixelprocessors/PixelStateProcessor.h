@@ -21,7 +21,7 @@ using namespace GreyLightType;
 namespace LightPattern {
 
 /**
- * An object that generates Pixel Data to create patterns and animation
+ * An object that generates Pixel Data to create patterns and animation.
  */
 class PixelStateProcessor {
 public:
@@ -60,7 +60,7 @@ public:
     }
 
     /**
-     * Reset the PixelStateModulator
+     * Reset the PixelStateProcessorModulator
      */
     void Reset() {
         this->processor->Reset();

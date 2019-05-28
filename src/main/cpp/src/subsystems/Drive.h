@@ -1,4 +1,4 @@
-/**
+/*
  * Drive.h
  *
  *  Created on: January 7, 2019
@@ -24,9 +24,9 @@ using namespace Trajectories;
 
 /**
  * Drive provides an interface to control the drive-base (to do both
- * teleoperated and autonomous movements).  To do this, it makes
- * a bunch of DriveControllers (autonomous PID, autonomous trap,
- * teleop arcade, maybe someday a state space drive controller).  When
+ * Teleop and Autonomous movements). To do this, it makes
+ * a bunch of DriveControllers (Autonomous PID, Autonomous trap,
+ * Teleop arcade, maybe someday a state space Drive controller). When
  * a command is issued (one of these routines is called), Drive determines
  * which controller is best suited to service that command and makes it
  * the "active" controller.
@@ -42,22 +42,22 @@ class Drive
         , public DriveControlSignalReceiver {
 public:
     /**
-     * Construct a drive.
-     * @param scheduler TaskMgr object.
-     * @param logger LogSpreadsheet object.
-     * @param leftDriveSparkA The first left drive motor controller.
-     * @param leftDriveSparkB The second left drive motor controller.
-     * @param leftDriveSparkC The third left drive motor contoller.
-     * @param rightDriveSparkA The first right drive motor controller.
-     * @param rightDriveSparkB The second right drive motor controller.
-     * @param rightDriveSparkC The third right drive motor controller.
-     * @param stingerDriveMotor The stinger's drive motor controller.
-     * @param gyro The gyro object.
-     * @param limelightHatch The hatch limelight.
-     * @param hatchIntake The hatch intake subsystem.
-     * @param elevator The elevator subsystem.
-     * @param driverJoystick The driver's controller.
-     * @param operatorJoystick The operator's controller.
+     * Construct a Drive.
+     * @param scheduler The TaskMgr object.
+     * @param logger The LogSpreadsheet object.
+     * @param leftDriveSparkA The first left GreySparkMax.
+     * @param leftDriveSparkB The second left GreySparkMax.
+     * @param leftDriveSparkC The third left GreySparkMax.
+     * @param rightDriveSparkA The first right GreySparkMax.
+     * @param rightDriveSparkB The second right GreySparkMax.
+     * @param rightDriveSparkC The third right GreySparkMax.
+     * @param stingerDriveMotor The Stinger's GreyTalonSRX.
+     * @param gyro The ADXRS450_Gyro.
+     * @param limelightHatch The hatch Limelight.
+     * @param hatchIntake The HatchIntake subsystem.
+     * @param elevator The Elevator subsystem.
+     * @param driverJoystick The driver's ObservablePoofsJoystick.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
           GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
@@ -70,7 +70,7 @@ public:
     virtual ~Drive();
 
     /**
-     * Set a drive to use the Cheesy drive controller.
+     * Set Drive to use the CheesyDriveController.
      * @param throttle Forward/backwards amount.
      * @param turn Left/right amount.
      * @param isQuickTurn Quickturn mode enable/disable.
@@ -80,107 +80,117 @@ public:
                      bool isHighGear);
 
     /**
-     * Set drive controller to use limelight in following a target.
-     * @return Limelight drive with skew.
+     * Set Drive to use the LimelightDriveController.
+     * @return The LimelightDriveController.
      */
     LimelightDriveController *LimelightDrive();
 
     /**
-     * Set a drive to use the openloop arcade drive controller.
+     * Set Drive to use the OpenloopArcadeDriveController.
      * @param throttle Forward/backwards amount.
      * @param turn Left/right amount.
      */
-    void OpenloopArcadeDrive(double throttle, double turn);
+    OpenloopArcadeDriveController *OpenloopArcadeDrive(double throttle,
+                                                       double turn);
 
     /**
-     * Set a drive to target a distance achieved by PID.
+     * Set Drive to use the PIDDriveController to achieve a distance.
      * @param dist Distance to travel.
      * @param turn Turn value to drive with.
-     * @param relativity Point relative to new setpoint.
+     * @param relativity Point RelativeTo a new setpoint.
      * @param powerCap The power cap.
-     * @return The drive controller.
+     * @return The Drive controller.
      */
     PIDDriveController *PIDDrive(double dist, double turn,
                                  RelativeTo relativity, double powerCap);
 
     /**
-     * Set a drive to target a turn achieved by PID.
+     * Set Drive to use the PIDDriveController to achieve a turn.
      * @param angle Angle in degrees to go.
-     * @param relativity Point relative to new setpoint.
+     * @param relativity Point RelativeTo a new setpoint.
      * @param powerCap The power cap.
-     * @return The drive controller.
+     * @return The Drive controller.
      */
     PIDDriveController *PIDTurn(double angle, RelativeTo relativity,
                                 double powerCap);
 
     /**
-     * Return the PID distance error.
+     * Gets the PID distance error.
      * @return The PID distance error.
      */
     double GetPIDDistError();
 
     /**
-     * Set a drive to use Spline drive controller.
+     * Set Drive to use the SplineDriveController.
      * @param trajectory Trajectory
-     * @param relativity Point relative to new setpoint.
-     * @return The drive controller.
+     * @param relativity Point RelativeTo a new setpoint.
+     * @return The SplineDriveController.
      */
     SplineDriveController *SplineDrive(TrajectoryDescription *trajectory,
                                        RelativeTo relativity);
 
     /**
-     * Set drive to Constant Arc Spline Controller.
-     * @param relativity Point relative to new setpoint
+     * Set Drive to use the ConstantArcSplineDriveController.
+     * @param relativity Point RelativeTo a new setpoint
      * @param distance The distance error.
      * @param angle The angle error.
+     * @return The ConstantArcSplineDriveController.
      */
     ConstantArcSplineDriveController *ConstantArcSplineDrive(
         RelativeTo relativity, double distance, double angle);
 
     /**
-     * Return the Spline drive controller.
-     * @return The drive controller.
+     * Gets the SplineDriveController.
+     * @return The SplineDriveController.
      */
     const SplineDriveController *GetSplineDriveController() {
         return m_splineDriveController;
     }
 
     /**
-     * Return percent complete of spline
-     * @return Percent of trajectory done.
+     * Gets percent complete of spline
+     * @return The percent of the trajectory done.
      */
+
     double GetSplinePercentComplete();
     /**
      * Sets stinger output
-     * @param power The motor power -1 to 1
+     * @param power The motor power -1.0 to 1.0.
      */
     void SetStingerOutput(double power);
 
     /**
-     * Set drive to use the velocity arcade drive controller.
-     * @param throttle Forward/backwards amount.
-     * @param turn Left/right amount.
+     * Set Drive to use the VelocityArcadeDriveController.
+     * @param throttle The forward/backwards amount.
+     * @param turn The left/right amount.
      */
     void VelocityArcadeDrive(double throttle, double turn);
 
     /**
-     * Set drive controller to use limelight with skew in following a target
-     * @return LimelightDriveWithSkew().
+     * Set Drive to use the LimelightDriveController with skew
+     * @return The LimelightDriveController for with skew.
      */
     LimelightDriveController *LimelightDriveWithSkew();
 
     /**
-     * Set Drive controller to use limeight without skew
-     * @return LimelightDriveWithoutSkew().
+     * Set Drive to use the LimelightDriveController without skew.
+     * @return The LimelightDriveController for without skew.
      */
     LimelightDriveController *LimelightDriveWithoutSkew();
 
     /**
-     * Set drive controller to use limelight and driver input to steer and drive
-     * @param throttle Joysticks left y-axis input
-     * @param turn Joysticks right x-axis input
-     * @param isQuickTurn 1 or 0 for if quickturn is enabled
-     * @param isHighGear 1 or 0 for if high gear is enabled
+     * Get the
+     * @return The LimelightDriveController for with skew.
+     */
+    LimelightDriveController *GetLimelightDriveWithSkew() const;
+
+    /**
+     * Set Drive to use the AssistedCheesyDriveController for Hatch.
+     * @param throttle The joystick's left y-axis input.
+     * @param turn The joystick's right x-axis input.
+     * @param isQuickTurn The Quickturn state.
+     * @param isHighGear The high gear state.
+     * @return The AssistedCheesyDriveController.
      */
     AssistedCheesyDriveController *AssistedCheesyHatchDrive(double throttle,
                                                             double turn,
@@ -188,69 +198,69 @@ public:
                                                             bool isHighGear);
 
     /**
-     * Return the left distance from the encoder in inches.
+     * Gets the left distance from the encoder in inches.
      * @return The left distance in inches.
      */
     double GetLeftDist() const override;
 
     /**
-     * Return the right distance from the encoder in inches.
+     * Gets the right distance from the encoder in inches.
      * @return The right distance in inches.
      */
     double GetRightDist() const override;
 
     /**
-     * Return the left velocity from the encoder in inches/second.
+     * Gets the left velocity from the encoder in inches/second.
      * @return The left velocity in inches/second.
      */
     double GetLeftRate() const override;
 
     /**
-     * Return the right velocity from the encoder in inches/second.
+     * Gets the right velocity from the encoder in inches/second.
      * @return The right velocity in inches/second.
      */
     double GetRightRate() const override;
 
     /**
-     * Return the average distance from the encoders in inches.
+     * Gets the average distance from the encoders in inches.
      * @return The average distance.
      */
     double GetDist() const override;
 
     /**
-     * Return the average velocity from the encoders in inches/second.
+     * Gets the average velocity from the encoders in inches/second.
      * @return The average velocity.
      */
     double GetRate() const override;
 
     /**
-     * Return the average current in amperes through Talon SRX output.
+     * Gets the average current in amperes through Drive motor output.
      * @return The average current.
      */
     double GetDriveCurrent() const;
 
     /**
-     * Return the current angle from the gyro in degrees.
-     * @return The current angle
+     * Gets the current angle from the gyro in degrees.
+     * @return The current angle.
      */
     double GetAngle() const override;
 
     /**
-     * Return the angular rate from the gyro in degrees/second.
+     * Gets the angular rate from the gyro in degrees/second.
      * @return The angular rate.
      */
     double GetAngularRate() const override;
 
     /**
-     * Return the left maximum side temperature in celcius.
+     * Gets the left maximum side temperature in celcius.
      * @return The left side temperature in celcius.
      */
     // double GetLeftTemperature();
 
     /**
      * Used by the DriveController to set motor values in inches/second.
-     * @param left Velocity to send to left motors.
-     * @param right Velocity to send to right motors.
+     * @param left The velocity to send to the left motors.
+     * @param right The velocity to send to the right motors.
      */
     void SetDriveOutputIPS(double left, double right) override;
 
@@ -269,13 +279,13 @@ public:
     void SetDriveOutputVBus(double left, double right) override;
 
     /**
-     * Sets the current limit in amperes on drive Talon SRXs.
+     * Sets the current limit in amperes on Drive motors.
      * @param limit The current limit.
      */
     void ConfigDriveCurrentLimit(double limit);
 
     /**
-     * Disables the current limiting on drive Talon SRXs.
+     * Disables the current limiting on Drive motors.
      */
     void DisableDriveCurrentLimit();
 
@@ -283,6 +293,7 @@ public:
      * Enables brake mode
      */
     void EnableBrakeMode();
+
     /**
      * Enables coast mode
      */
@@ -290,15 +301,9 @@ public:
 
     /**
      * Periodically update information about the drive.
-     * @param mode The current robot mode.
+     * @param mode The current RobotMode.
      */
     void TaskPeriodic(RobotMode mode) override;
-
-    /**
-     * Retrieving function for LimelightDriveWithSkew
-     * @return LimelightDriveWithSkew()
-     */
-    LimelightDriveController *GetLimelightDriveWithSkew() const;
 
 private:
     LogSpreadsheet *m_logger;

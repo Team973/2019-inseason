@@ -21,9 +21,9 @@ namespace frc973 {
 class ConstantArcSplineDriveController : public DriveController {
 public:
     /**
-     * Construct a Constant Arc Spline Drive controller.
-     * @param state The state provider for handling incoming messages.
-     * @param logger Logger for drive controller.
+     * Construct a ConstantArcSplineDriveController.
+     * @param state The DriveStateProvider for handling incoming messages.
+     * @param logger The LogSpreadsheet for logging.
      */
     ConstantArcSplineDriveController(DriveStateProvider *state,
                                      LogSpreadsheet *logger);
@@ -31,7 +31,7 @@ public:
 
     /**
      * Sets target for robot to reach.
-     * @param relativeTo Point relative to the new setpoint.
+     * @param relativeTo Point RelativeTo the new setpoint.
      * @param dist Distance to travel.
      * @param angle Angle to turn.
      */
@@ -57,8 +57,8 @@ public:
 
     /**
      * Calculate motor output given the most recent sensor updates.
-     * @param state The state provider for handling incoming messages.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param state The DriveStateProvider for handling incoming messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out) override;
@@ -73,24 +73,24 @@ public:
 
     /**
      * Start the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Start(DriveControlSignalReceiver *out) override;
 
     /**
      * Stop the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Stop(DriveControlSignalReceiver *out) override;
 
     /**
-     * Return distance from start.
+     * Gets distance from start.
      * @return Distance from start.
      */
     double DistFromStart() const;
 
     /**
-     * Return angle from start.
+     * Gets angle from start.
      * @return Angle from start.
      */
     double AngleFromStart() const;

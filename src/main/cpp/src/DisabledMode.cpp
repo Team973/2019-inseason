@@ -1,13 +1,13 @@
 #include "src/DisabledMode.h"
 
 namespace frc973 {
-Disabled::Disabled(ObservablePoofsJoystick *driver,
-                   ObservableXboxJoystick *codriver, Elevator *elevator,
+Disabled::Disabled(ObservablePoofsJoystick *driverJoystick,
+                   ObservableXboxJoystick *operatorJoystick, Elevator *elevator,
                    CargoIntake *cargoIntake, Drive *drive,
                    Limelight *limelightHatch, Autonomous *autonomous,
                    Teleop *teleop)
-        : m_driverJoystick(driver)
-        , m_operatorJoystick(codriver)
+        : m_driverJoystick(driverJoystick)
+        , m_operatorJoystick(operatorJoystick)
         , m_elevator(elevator)
         , m_cargoIntake(cargoIntake)
         , m_drive(drive)

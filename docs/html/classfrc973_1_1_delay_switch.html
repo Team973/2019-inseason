@@ -86,7 +86,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8505b5f75c277438f976a9a5336cd377"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A direct-use filter for something that needs to delay between on/off. Note: this class does not inherit from <a class="el" href="classfrc973_1_1_filter_base.html">FilterBase</a> because it returns booleans rather than doubles. And no, we are not going to use templates! </p>
+<div class="textblock"><p><a class="el" href="classfrc973_1_1_delay_switch.html">DelaySwitch</a> filters a binary filter that may be noisy and creates a binary signal that is definitely not noisy but may be a little delayed.</p>
+<p>Does this by creating a <a class="el" href="classfrc973_1_1_moving_average_filter.html">MovingAverageFilter</a> of all previous binary inputs and doesn't change output until the moving average of input is way above or way below 0.5. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3ed5c057322b5f629010b529ec88af56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3ed5c057322b5f629010b529ec88af56">&#9670;&nbsp;</a></span>DelaySwitch()</h2>

@@ -3,7 +3,7 @@
 #include "lib/bases/CoopMTRobot.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
-#include "lib/helpers/GreyTalon.h"
+#include "lib/helpers/GreyCTRE.h"
 #include "lib/helpers/GreySparkMax.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
@@ -31,7 +31,7 @@ using namespace cs;
  * @author Luis V
  * @author Dylan F
  * @author Allen B
- * @author Andrew N
+ * @author Andrew
  * @author John P
  */
 namespace frc973 {
@@ -57,54 +57,58 @@ public:
     void Initialize() override;
 
     /**
-     * Starts disabled mode.
+     * Starts Disabled mode.
      */
     void DisabledStart() override;
+
     /**
-     * Executes and repeats disabled mode procedutes.
+     * Executes and repeats Disabled mode procedutes.
      */
     void DisabledContinuous() override;
+
     /**
-     * Stops disabled mode.
+     * Stops Disabled mode.
      */
     void DisabledStop() override;
 
     /**
-     * Starts autonomous mode.
+     * Starts Autonomous mode.
      */
     void AutonomousStart() override;
+
     /**
-     * Executes and repeats autonomous mode procedures.
+     * Executes and repeats Autonomous mode procedures.
      */
     void AutonomousContinuous() override;
+
     /**
-     * Stops autonomous mode.
+     * Stops Autonomous mode.
      */
     void AutonomousStop() override;
 
     /**
-     * Starts teleop mode.
+     * Starts Teleop mode.
      */
     void TeleopStart() override;
     /**
-     * Executes and repeats teleop mode procedures.
+     * Executes and repeats Teleop mode procedures.
      */
     void TeleopContinuous() override;
     /**
-     * Stops teleop mode.
+     * Stops Teleop mode.
      */
     void TeleopStop() override;
 
     /**
-     * Starts test mode
+     * Starts Test mode
      */
     void TestStart() override;
     /**
-     * Executes and repeats test mode.
+     * Executes and repeats Test mode.
      */
     void TestContinuous() override;
     /**
-     * Stops test mode.
+     * Stops Test mode.
      */
     void TestStop() override;
 
@@ -119,7 +123,7 @@ public:
     void ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
                                               bool pressedP) override;
     /**
-     * Observes poofs joysticks states.
+     * Observes PoofsJoysticks states.
      */
     void ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
                                          bool pressedP) override;
@@ -134,7 +138,7 @@ private:
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
-    ObservableDualActionJoystick *m_testJoystick;
+    ObservableDualActionJoystick *m_tuningJoystick;
 
     LogSpreadsheet *m_logger;
 
@@ -148,7 +152,7 @@ private:
     GreyTalonSRX *m_stingerDriveMotor;
 
     GreyTalonSRX *m_elevatorMotorA;
-    VictorSPX *m_elevatorMotorB;
+    GreyVictorSPX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;
 
     ADXRS450_Gyro *m_gyro;

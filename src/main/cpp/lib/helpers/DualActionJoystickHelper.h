@@ -52,12 +52,12 @@ const unsigned int DPadYAxis = 5;  /**< DPad Y Axis ID. */
 }
 
 /**
- * An observer for a Dual Action Joystick.
+ * An observer for a DualAction Joystick.
  */
 class DualActionJoystickObserver {
 public:
     /**
-     * Construct a Dual Action Joystick observer.
+     * Construct a DualActionJoystickObserver.
      */
     DualActionJoystickObserver() {
     }
@@ -79,8 +79,8 @@ public:
 
 /**
  * This class observes a given joystick and notifies the given callback
- * on any joystick event.  This is particularly useful for catching the
- * *edge* of a button press or release event.  Also lets you use a joystick
+ * on any joystick event. This is particularly useful for catching the
+ * *edge* of a button press or release event. Also lets you use a joystick
  * axis as a button in an easy way.
  */
 class ObservableDualActionJoystick
@@ -92,11 +92,11 @@ public:
      * the information to instantiate the underlying WPI-Joystick, as well as
      * references to the scheduler that will run it and the observer that
      * will observe its state.
-     * @param port The joystick port.
-     * @param observer The JoystickObserver object for button event notification
-     * callback.
-     * @param scheduler The task manager this task will run on.
-     * @param ds The driver station.
+     * @param port The joystick's port.
+     * @param observer The DualActionJoystickObserver object for button event
+     * notification callback.
+     * @param scheduler The TaskMgr this task will run on.
+     * @param ds The DriverStation.
      */
     ObservableDualActionJoystick(uint16_t port,
                                  DualActionJoystickObserver *observer,
@@ -108,15 +108,16 @@ public:
      * Register this joystick with a logger so that button state can be logged
      * every time the periodic funciton is called. Only registers with the
      * first call.
-     * @param logger The spreadsheet to log to.
+     * @param logger The LogSpreadsheet to log to.
      */
     ObservableDualActionJoystick *RegisterLog(LogSpreadsheet *logger);
 
     /**
      * Get the value of the given axis with deadband.
-     * @param axis Specifies the axis to get the value of.
-     * @param fSquared Specifies whether the joystick input should be squared.
-     * @param threshold Specifies the deadband threshold.
+     * @param axis The axis to get the value of.
+     * @param fSquared The joystick input should be squared.
+     * @param threshold The deadband threshold.
+     * @return The raw axis value with deadband.
      */
     float GetRawAxisWithDeadband(int axis, bool fSquared = false,
                                  double threshold = DEADBAND_INPUT_THRESHOLD);
@@ -146,10 +147,10 @@ public:
     bool GetDPadRightVirtButton();
 
     /**
-     * Pretend the Left X Axis is a button.  By default it is not pressed.
+     * Pretend the Left X Axis is a button. By default it is not pressed.
      * If the user pushes it mostly forward (say, more than half way), say
-     * that button is pressed.  If the user pulls it mostly backwards (say,
-     * more than half way), say that button is released.  If it's anywhere
+     * that button is pressed. If the user pulls it mostly backwards (say,
+     * more than half way), say that button is released. If it's anywhere
      * in between, rememember what it last was.
      */
 
@@ -199,7 +200,7 @@ public:
     /**
      * This function is called by the TaskMgr to check and process Joystick
      * button events.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPrePeriodic(RobotMode mode) override;
 
@@ -211,12 +212,12 @@ protected:
     uint32_t m_port; /**< The port the joystick is plugged into. */
 
     /* For observer notification */
-    DualActionJoystickObserver *m_observer; /**< The class to notify whenever a
-                         change in the joystick occurs. */
+    DualActionJoystickObserver *m_observer; /**< The DualActionJoystickObserver
+                          to notify whenever a change in the joystick occurs. */
     DriverStation *m_ds;  /**< The DriverStation operating on. */
     uint32_t m_prevBtn;   /**< The previous button. */
-    TaskMgr *m_scheduler; /**< The task manager object. */
-    LogCell *m_logCell;   /**< The logger. */
+    TaskMgr *m_scheduler; /**< The TaskMgr object. */
+    LogCell *m_logCell;   /**< The LogCell. */
 
     /* For remembering states of sticky buttons */
     bool m_lastLXVal; /**< The last left joystick's x axis value. */

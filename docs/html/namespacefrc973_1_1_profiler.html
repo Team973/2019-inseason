@@ -151,18 +151,19 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>TrapProfileUnsafe does the calculation at runtime like one would expect and is a normal function. Do not call this function directly, it is dangerous. Instead, call TrapProfile. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>TrapezoidProfileUnsafe does the calculation at runtime like one would expect and is a normal function. Do not call this function directly, it is dangerous. Instead, call TrapProfile. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">time</td><td></td></tr>
-    <tr><td class="paramname">distance</td><td></td></tr>
-    <tr><td class="paramname">angle</td><td></td></tr>
-    <tr><td class="paramname">max_velocity</td><td></td></tr>
-    <tr><td class="paramname">acceleration</td><td></td></tr>
-    <tr><td class="paramname">start_velocity</td><td></td></tr>
-    <tr><td class="paramname">end_velocity</td><td></td></tr>
+    <tr><td class="paramname">time</td><td>The time. </td></tr>
+    <tr><td class="paramname">distance</td><td>The distance. </td></tr>
+    <tr><td class="paramname">angle</td><td>The angle. </td></tr>
+    <tr><td class="paramname">max_velocity</td><td>The maximum velocity. </td></tr>
+    <tr><td class="paramname">acceleration</td><td>The acceleration. </td></tr>
+    <tr><td class="paramname">start_velocity</td><td>The start velocity. </td></tr>
+    <tr><td class="paramname">end_velocity</td><td>The end velocity. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structfrc973_1_1_profiler_1_1_new_waypoint.html">NewWaypoint</a>. </dd></dl>
 
 </div>
 </div>
@@ -183,7 +184,13 @@ template&lt;typename DISTANCE , typename ANGLE , typename MAX_VELOCITY , typenam
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Safely generates a trapazoidal motion profile. Checks at compile time for profile safety. </p>
+<p>Safely generates a trapazoidal motion profile. Checks at compile time for profile safety. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td>The time. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structfrc973_1_1_profiler_1_1_waypoint.html">Waypoint</a>. </dd></dl>
 
 </div>
 </div>
@@ -242,7 +249,19 @@ template&lt;typename DISTANCE , typename ANGLE , typename MAX_VELOCITY , typenam
         </tr>
       </table>
 </div><div class="memdoc">
-<p>TrapProfileUnsafe does the calculation at runtime like one would expect and is a normal function. Do not call this function directly, it is dangerous. Instead, call TrapProfile. </p>
+<p>TrapProfileUnsafe does the calculation at runtime like one would expect and is a normal function. Do not call this function directly, it is dangerous. Instead, call TrapProfile. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td>The time. </td></tr>
+    <tr><td class="paramname">distance</td><td>The distance. </td></tr>
+    <tr><td class="paramname">angle</td><td>The angle. </td></tr>
+    <tr><td class="paramname">max_velocity</td><td>The maximum velocity. </td></tr>
+    <tr><td class="paramname">max_acceleration</td><td>The maximum acceleration. </td></tr>
+    <tr><td class="paramname">start_halt</td><td>Whether to start at a velocity of 0. </td></tr>
+    <tr><td class="paramname">end_halt</td><td>Whether to end at a velocity of 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structfrc973_1_1_profiler_1_1_waypoint.html">Waypoint</a>. </dd></dl>
 
 </div>
 </div>
@@ -301,18 +320,19 @@ template&lt;typename DISTANCE , typename ANGLE , typename MAX_VELOCITY , typenam
         </tr>
       </table>
 </div><div class="memdoc">
-<p>TriProfileUnsafe </p><dl class="params"><dt>Parameters</dt><dd>
+<p>TriProfileUnsafe. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">time</td><td></td></tr>
-    <tr><td class="paramname">distance</td><td></td></tr>
-    <tr><td class="paramname">angle</td><td></td></tr>
-    <tr><td class="paramname">max_velocity</td><td></td></tr>
-    <tr><td class="paramname">acceleration</td><td></td></tr>
-    <tr><td class="paramname">start_velocity</td><td></td></tr>
-    <tr><td class="paramname">end_velocity</td><td></td></tr>
+    <tr><td class="paramname">time</td><td>The time. </td></tr>
+    <tr><td class="paramname">distance</td><td>The distance. </td></tr>
+    <tr><td class="paramname">angle</td><td>The angle. </td></tr>
+    <tr><td class="paramname">max_velocity</td><td>The maximum velocity. </td></tr>
+    <tr><td class="paramname">acceleration</td><td>The acceleration. </td></tr>
+    <tr><td class="paramname">start_velocity</td><td>The start velocity. </td></tr>
+    <tr><td class="paramname">end_velocity</td><td>The end velocity. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structfrc973_1_1_profiler_1_1_new_waypoint.html">NewWaypoint</a>. </dd></dl>
 
 </div>
 </div>
