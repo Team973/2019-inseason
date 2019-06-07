@@ -5,24 +5,30 @@
 
 #pragma once
 
-#include "stdio.h"
-#include "lib/util/Util.h"
+#include "lib/helpers/GreyCTRE.h"
+#include "lib/helpers/PID.h"
 #include "lib/sensors/Limelight.h"
-#include "ctre/Phoenix.h"
+#include "lib/util/Util.h"
 
 namespace frc973 {
 
-class PID;
-
+/**
+ * Limelight Vertical Controller
+ */
 class LimelightVerticalController {
 public:
     /**
      * Constructs a Limelight vertical controller.
-     * @param limelight The limelight.
+     * @param limelight The Limelight.
      * @param motor The motor for the vertical subsystem.
      */
-    LimelightVerticalController(Limelight *limelight, TalonSRX *motor);
+    LimelightVerticalController(Limelight *limelight, GreyTalonSRX *motor);
     virtual ~LimelightVerticalController();
+
+    /**
+     * Start the controller.
+     */
+    void Start();
 
     /**
      * Calculate motor output given the most recent limelight updates.
@@ -38,13 +44,13 @@ public:
     };
 
     static constexpr double VELOCITY_MULTIPLIER =
-        200.0;  // in native units per degree
+        200.0; /**< Velocity multiplier in native units per degree */
 
 private:
     bool m_onTarget;
     double m_setpoint;
 
     Limelight *m_limelight;
-    TalonSRX *m_motor;
+    GreyTalonSRX *m_motor;
 };
 }

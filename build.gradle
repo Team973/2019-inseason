@@ -1,7 +1,7 @@
 plugins {
     id "cpp"
     id "google-test-test-suite"
-    id "edu.wpi.first.GradleRIO" version "2019.1.1"
+    id "edu.wpi.first.GradleRIO" version "2019.4.1"
     id "org.ysb33r.doxygen" version "0.5"
 }
 
@@ -97,18 +97,18 @@ doxygen {
     group = 'Custom 973 Tasks'
     description = 'Generate documentation'
 
-    project_name 'greybots-skeleton'
+    project_name '2019-inseason'
 
     generate_html true
     generate_latex false
 
     source 'src/main/cpp'
-    source 'docs'
+    source 'guides/'
     source 'README.md'
 
     use_mdfile_as_mainpage 'README.md'
 
-    outputDir 'build/docs'
+    outputDir 'docs/'
 
     executables {
         doxygen version : '1.8.15'

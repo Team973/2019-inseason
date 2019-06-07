@@ -3,37 +3,30 @@
  *
  *  Created on: Sep 1, 2015
  *      Author: Andrew
- *
- * Functionality pretty similar to WPILIB's Iterative Robot
- * except that this one manages tasks and has a Start and Stop
- * method for each state.
- *
- * A more ideal solution would probably have been to inherit from
- * SimpleRobot and use the same virtual method names as Iterative Robot,
- * but TimedRobot handles driver station and HAL communication and those
- * protocols are subject to change... this should be more maintainable
- * in the long run.
  */
 
 #pragma once
 
-#include "stdint.h"
+#include <unistd.h>
+
 #include "frc/WPILib.h"
 #include "lib/managers/TaskMgr.h"
+#include "lib/util/Ansi.h"
 #include "lib/util/Util.h"
-#include <pthread.h>
 
 #ifndef PROGRAM_NAME
 #define PROGRAM_NAME "(unspecified)"
 #endif
-
-using namespace frc;
 
 namespace frc973 {
 
 static constexpr int MAXHOSTNAMELEN = 128;
 
 /**
+ * Functionality pretty similar to WPILIB's TimedRobot
+ * except that this one manages tasks and has a Start and Stop
+ * method for each state.
+ *
  * CoopMTRobot extends the TimedRobot robot program framework. It is an
  * interface for a cooperative multitasking robot that is managed and kept in
  * sync with other threads. Each task returns after some period of time. The
@@ -42,6 +35,12 @@ static constexpr int MAXHOSTNAMELEN = 128;
  * each time a new packet is received from the driver station, tasks registered
  * with this class (via the TaskMgr interface) are also called each time a new
  * packet is received from the driver station.
+ *
+ * A more ideal solution would probably have been to inherit from
+ * SimpleRobot and use the same virtual method names as TimedRobot,
+ * but TimedRobot handles driver station and HAL communication and those
+ * protocols are subject to change... this should be more maintainable
+ * in the long run.
  */
 class CoopMTRobot
         : public TimedRobot
@@ -175,7 +174,7 @@ public:
 
 protected:
     /**
-     * For internal use only.  Children of this object should not try to
+     * For internal use only. Children of this object should not try to
      * override these (if they do, they *WILL NOT GET RUN*).
      */
 
@@ -229,43 +228,43 @@ protected:
     void TestPeriodic() override;
 
     /**
-     * Stop a robot mode. Don't implement this in any child classes.
-     * @param toStop The robot mode to stop.
+     * Stop a RobotMode. Don't implement this in any child classes.
+     * @param toStop The RobotMode to stop.
      */
     void ModeStop(RobotMode toStop);
 
     /**
-     * Start a robot mode. Don't implement this in any child classes.
-     * @param toStart The robot mode to start.
+     * Start a RobotMode. Don't implement this in any child classes.
+     * @param toStart The RobotMode to start.
      */
     void ModeStart(RobotMode toStart);
 
     /**
-     * Return disabled status. Don't implement this in any child classes.
+     * Gets disabled status. Don't implement this in any child classes.
      * @return Whether the robot is disabled or not.
      */
     bool IsDisabled() const;
 
     /**
-     * Return enabled status. Don't implement this in any child classes.
+     * Gets enabled status. Don't implement this in any child classes.
      * @return Whether the robot is enabled or not.
      */
     bool IsEnabled() const;
 
     /**
-     * Return teleop status. Don't implement this in any child classes.
-     * @return Whether the robot is enabled in teleop or not.
+     * Gets Teleop status. Don't implement this in any child classes.
+     * @return Whether the robot is enabled in Teleop or not.
      */
     bool IsOperatorControl() const;
 
     /**
-     * Return autonomous status. Don't implement this in any child classes.
-     * @return Whether the robot is enabled in autonomous or not.
+     * Gets Autonomous status. Don't implement this in any child classes.
+     * @return Whether the robot is enabled in Autonomous or not.
      */
     bool IsAutonomous() const;
 
     /**
-     * Return test status. Don't implement this in any child classes.
+     * Gets test status. Don't implement this in any child classes.
      * @return Whether the robot is enabled in test or not.
      */
     bool IsTest() const;

@@ -1,36 +1,38 @@
 #pragma once
 
-#include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/pixelprocessors/SolidColor.h"
+#include "lib/sensors/Limelight.h"
 #include "lib/util/WrapDash.h"
-#include "src/AutonomousMode.h"
-#include "src/Robot.h"
-#include "lib/bases/AutoRoutineBase.h"
-#include "src/info/RobotInfo.h"
-#include <iostream>
 
-using namespace frc;
-using namespace cs;
+#include "src/subsystems/Drive.h"
+#include "src/subsystems/Elevator.h"
+#include "src/AutonomousMode.h"
+#include "src/TeleopMode.h"
 
 namespace frc973 {
 
 /**
- * Controls the disabled mode.
+ * Controls the Disabled mode.
  */
 class Disabled {
 public:
     /**
-     * Constuct a disabled mode.
-     * @param driver The driver's joystick.
-     * @param codriver The co-driver's joystick.
-     * @param greylight The GreyLight system.
+     * Constuct a Disabled mode.
+     * @param driverJoystick The driver's ObservablePoofsJoystick.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param elevator The Elevator subsystem.
+     * @param cargoIntake The CargoIntake subsystem.
+     * @param limelightHatch The hatch Limelight.
+     * @param autonomous The Autonomous mode.
+     * @param drive The Drive subsystem.
+     * @param Teleop The Teleop mode
      */
-    Disabled(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-             GreyLight *greylight);
+    Disabled(ObservablePoofsJoystick *driverJoystick,
+             ObservableXboxJoystick *operatorJoystick, Elevator *elevator,
+             CargoIntake *cargoIntake, Drive *drive, Limelight *limelightHatch,
+             Autonomous *autonomous, Teleop *Teleop);
     virtual ~Disabled();
 
     /**
@@ -49,7 +51,7 @@ public:
     void DisabledStop();
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Disabled mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -58,7 +60,7 @@ public:
                                   bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Disabled mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -66,21 +68,24 @@ public:
     void HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Disabled mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color DISABLED_RED = {
-        255, 0, 0}; /**< Default red disabled color. */
-
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
 
-    GreyLight *m_greylight;
-    LightPattern::SolidColor *m_disabledSignal;
+    Elevator *m_elevator;
+    CargoIntake *m_cargoIntake;
+    Drive *m_drive;
+
+    Limelight *m_limelightHatch;
+
+    Autonomous *m_autonomous;
+    Teleop *m_teleop;
 };
 }

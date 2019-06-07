@@ -7,11 +7,9 @@
 
 #pragma once
 
-#include "pthread.h"
+#include <unistd.h>
+
 #include "lib/managers/TaskMgr.h"
-#include <stdio.h>
-#include "frc/WPILib.h"
-using namespace frc;
 
 namespace frc973 {
 
@@ -21,18 +19,17 @@ static constexpr double DEFAULT_PERIOD =
     (1.0 / (DEFAULT_FREQUENCY)); /**< The default period for loops. */
 
 /**
- * Interface for a single thread task manager.
+ * Interface for a SingleThreadTaskMgr.
  */
 class SingleThreadTaskMgr : public TaskMgr {
 public:
     /**
      * Initialize a Single Threaded Task Manager. The SingleThreadTaskMgr
-     * creates its own pthread in which to run all of its registeredCoopTasks.
-     * Registered CoopTasks are guaranteed to run sequentially (i.e., no two
-     * tasks will be run at the same time).  Registered CoopTasks will not start
-     * running until you call Start.
-     * @param stateProvider The resource that can be used to determine robot
-     * state (can be drive station).
+     * creates its own pthread in which to run all of its registered CoopTask's.
+     * Registered CoopTask's are guaranteed to run sequentially (i.e., no two
+     * tasks will be run at the same time). Registered CoopTask's will not start
+     * running until you call SingleThreadTaskMgr.Start.
+     * @param stateProvider The current RobotState.
      * @param loopPeriod The interval (in seconds) at which to schedule each
      * period.
      * @param warnSlow Determines whether to issue a warning when the tasks run
@@ -44,12 +41,14 @@ public:
     virtual ~SingleThreadTaskMgr();
 
     /**
-     * Start running registered CoopTasks until Stop is called (non-blocking)
+     * Start running registered CoopTask's until SingleThreadTaskMgr.Stop is
+     * called (non-blocking).
      */
     void Start();
 
     /**
-     * Stop running registered CoopTasks until Start is called (non-blocking)
+     * Stop running registered CoopTask's until SingleThreadTaskMgr.Start is
+     * called (non-blocking).
      */
     void Stop();
 
@@ -94,8 +93,8 @@ public:
     }
 
     /**
-     * Check whether the Task Manager is running.
-     * @returns The status of the Task Manager.
+     * Check whether the SingleThreadTaskMgr is running.
+     * @return The status of the SingleThreadTaskMgr.
      */
     bool IsRunning();
 

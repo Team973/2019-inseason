@@ -6,54 +6,82 @@
  */
 #pragma once
 
-#include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/pixelprocessors/Flash.h"
-#include "lib/util/WrapDash.h"
-#include "src/info/RobotInfo.h"
-#include "src/subsystems/Drive.h"
-#include <iostream>
 
-using namespace frc;
+#include "src/subsystems/Elevator.h"
+#include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/HatchIntake.h"
+#include "src/subsystems/Stinger.h"
 
 namespace frc973 {
 
 /**
- * Controls the teleop mode.
+ * Handles preset selection.
+ */
+class PresetHandlerDispatcher;
+
+/**
+ * Controls the Teleop mode.
  */
 class Teleop {
 public:
     /**
-     * Constuct a teleop mode.
-     * @param driver The driver's joystick.
-     * @param codriver The co-driver's joystick.
-     * @param drive The drive subsystem.
-     * @param greylight The GreyLight system.
+     * Define game mode states.
      */
-    Teleop(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-           Drive *drive, GreyLight *greylight);
+    enum class GameMode
+    {
+        CargoInit,                  /**< Cargo initialization. */
+        CargoPeriodic,              /**< Cargo periodic. */
+        HatchInit,                  /**< Hatch initialization. */
+        HatchPeriodic,              /**< Hatch periodic. */
+        ThirdLevelEndGameInit,      /**< Third level climb initialization. */
+        SecondLevelEndGameInit,     /**< Second level climb initialization. */
+        ThirdLevelEndGamePeriodic,  /**< Third level climb periodic. */
+        SecondLevelEndGamePeriodic, /**< Second level climb periodic. */
+        SecondLevelStabilize,       /**< Second level climb stabilize. */
+        RaiseIntake,                /**< Raise intake state. */
+        ResetIntake                 /**< Reset intake state. */
+    };
+
+    /**
+     * Constuct a Teleop mode.
+     * @param driverJoystick The driver's ObservablePoofsJoystick.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param tuningJoystick The testing joystick.
+     * @param drive The Drive subsystem.
+     * @param elevator The Elevator subsystem.
+     * @param hatchintake The HatchIntake subsystem.
+     * @param cargoIntake The CargoIntake subsystem.
+     * @param stinger The Stinger subsystem.
+     * @param limelightHatch The Limelight for the hatch.
+     */
+    Teleop(ObservablePoofsJoystick *driverJoystick,
+           ObservableXboxJoystick *operatorJoystick,
+           ObservableDualActionJoystick *tuningJoystick, Drive *drive,
+           Elevator *elevator, HatchIntake *hatchintake,
+           CargoIntake *cargoIntake, Stinger *stinger,
+           Limelight *limelightHatch);
+
     virtual ~Teleop();
 
     /**
-     * Start of teleop.
+     * Start of Teleop.
      */
     void TeleopInit();
 
     /**
-     * Loop of teleop.
+     * Loop of Teleop.
      */
     void TeleopPeriodic();
 
     /**
-     * Stop of teleop.
+     * Stop of Teleop.
      */
     void TeleopStop();
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Teleop mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -62,7 +90,7 @@ public:
                                   bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Teleop mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -70,30 +98,53 @@ public:
     void HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Teleop mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color END_GAME_RED = {
-        255, 0, 0}; /**< Display red during end game. */
-    static constexpr Color NO_COLOR = {0, 0, 0}; /**< Turn off the LED strip. */
+    /**
+     * Get the current game mode.
+     * @return The current game mode.
+     */
+    GameMode GetGameMode();
 
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_tuningJoystick;
 
     Drive *m_drive;
     enum class DriveMode
     {
-        Openloop
+        Openloop,
+        LimelightDriveWithSkew,
+        LimelightDriveWithoutSkew,
+        AssistedCheesyHatch,
+        Cheesy
     };
     DriveMode m_driveMode;
 
-    GreyLight *m_greylight;
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
+    CargoIntake *m_cargoIntake;
+    HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
+    Stinger *m_stinger;
+
+    Limelight *m_limelightHatch;
+
+    enum class Rumble
+    {
+        on,
+        off
+    };
+    Rumble m_rumble;
+    GameMode m_gameMode;
+
+    uint32_t m_rumbleTimer;
+    uint32_t m_wristResetTimer;
+
+    static constexpr double ELEVATOR_STINGER_VOLTAGE_RATIO = 1.0;
 };
 }

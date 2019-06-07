@@ -1,10 +1,8 @@
 #include "lib/trajectories/SplineProfile.h"
-#include "lib/trajectories/structs.h"
-#include "lib/util/Util.h"
 
-using namespace frc973;
+namespace frc973 {
 
-namespace trajectories {
+namespace Trajectories {
 double GetLeftDriveVelocity(TrajectoryDescription *trajectory, double time) {
     int index = (int)(time / trajectory->left_trajectory->dt);
     if (index >= GetLength(trajectory)) {
@@ -93,5 +91,6 @@ double GetAngularAcceleration(TrajectoryDescription *trajectory, double time) {
     }
     return trajectory->left_trajectory[index].angular_accel *
            Constants::DEG_PER_RAD;
+}
 }
 }

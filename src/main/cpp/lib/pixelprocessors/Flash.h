@@ -8,13 +8,15 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_FLASH_H_
 #define SRC_MODULES_PIXELPROCESSORS_FLASH_H_
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
+#include <chrono>
+
+#include "lib/pixelprocessors/PixelStateProcessor.h"
+
 #ifndef USING_LED_SIMULATOR
 #include "lib/util/Util.h"
 #endif
-#include <vector>
-#include <chrono>
+
+namespace frc973 {
 
 namespace LightPattern {
 
@@ -24,7 +26,7 @@ namespace LightPattern {
 class Flash : public PixelStateProcessor {
 public:
     /**
-     * Construct a Flash Processor.
+     * Construct a Flash.
      * @param first The primary Color to flash.
      * @param second The secondary Color to flash.
      * @param hz The frequency to flash at.
@@ -65,6 +67,7 @@ private:
     int m_loopCount;
     double m_lastTime;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_FLASH_H_ */

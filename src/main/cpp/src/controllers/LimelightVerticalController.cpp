@@ -1,10 +1,8 @@
 #include "src/controllers/LimelightVerticalController.h"
-#include "lib/util/WrapDash.h"
-#include "stdio.h"
 
 namespace frc973 {
 LimelightVerticalController::LimelightVerticalController(Limelight *limelight,
-                                                         TalonSRX *motor)
+                                                         GreyTalonSRX *motor)
         : m_onTarget(false)
         , m_setpoint(0.0)
         , m_limelight(limelight)
@@ -12,6 +10,10 @@ LimelightVerticalController::LimelightVerticalController(Limelight *limelight,
 }
 
 LimelightVerticalController::~LimelightVerticalController() {
+}
+
+void LimelightVerticalController::Start() {
+    m_limelight->SetCameraVisionCenter();
 }
 
 void LimelightVerticalController::CalcOutput() {

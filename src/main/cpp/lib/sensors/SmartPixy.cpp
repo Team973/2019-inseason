@@ -1,6 +1,4 @@
 #include "lib/sensors/SmartPixy.h"
-#include "unistd.h"
-#include "stdlib.h"
 
 namespace frc973 {
 
@@ -33,7 +31,7 @@ void Pixy::Block::print() {
             "angle %d\n",
             signature, signature, x, y, width, height, angle);
     }
-    else  // regular block.  Note, angle is always zero, so no need to print
+    else  // regular block. Note, angle is always zero, so no need to print
         printf("sig: 0x%x x: %d y: %d width: %d height: %d\n", signature, x, y,
                width, height);  // prints out data to console instead of
                                 // smartDashboard -> check on the side of the

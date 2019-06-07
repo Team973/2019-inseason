@@ -9,12 +9,19 @@
     "**/.DS_Store": true,
     "bin/": true,
     ".classpath": true,
-    ".project": true
+    ".project": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
   },
   "C_Cpp.default.configurationProvider": "vscode-wpilib",
   "wpilib.online": true,
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "C_Cpp.configurationWarnings": "Disabled",
+  "C_Cpp.errorSquiggles": "Disabled",
+  "python.linting.pylintEnabled": true
 }

@@ -1,12 +1,8 @@
 /*
  * BullshitFilter.h
  *
- * Bullshit filter looks at a signal and calls bullshit when a point is
- * outside of a valid range.  The behavior when the filter sees a point
- * outside of that range is configurable.
- *
  *  Created on: Feb 29, 2016
- *      Author: andrew
+ *      Author: Andrew
  */
 
 #pragma once
@@ -16,7 +12,9 @@
 namespace frc973 {
 
 /**
- * A direct-use filter for something that needs to check against absurd values.
+ * Bullshit filter looks at a signal and calls bullshit when a point is
+ * outside of a valid range. The behavior when the filter sees a point
+ * outside of that range is configurable.
  */
 class BullshitFilter : public FilterBase {
 public:
@@ -45,7 +43,7 @@ public:
     };
 
     /**
-     * Construct a bullshit filter.
+     * Construct a BullshitFilter.
      * @param minBehavior Specifies the behavior to use when the value is less
      * than min.
      * @param min The lower limit.
@@ -65,7 +63,7 @@ public:
     double Update(double in) override;
 
     /**
-     * Return the last value sent to the filter.
+     * Gets the last value sent to the filter.
      * @return The last value.
      */
     double GetLast() override;

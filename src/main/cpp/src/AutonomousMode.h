@@ -1,66 +1,133 @@
 #pragma once
 
-#include "frc/WPILib.h"
-#include <iostream>
-#include "src/info/RobotInfo.h"
-#include "lib/bases/AutoRoutineBase.h"
-#include "src/auto/NoAuto.h"
-#include "src/auto/ForwardAuto.h"
-#include "lib/util/WrapDash.h"
-#include "src/DisabledMode.h"
-#include "src/Robot.h"
-#include "src/subsystems/Drive.h"
-#include "lib/helpers/GreyLight.h"
-#include "lib/pixelprocessors/AutoIndicator.h"
+#include "lib/helpers/DualActionJoystickHelper.h"
+#include "lib/helpers/PoofsJoystickHelper.h"
+#include "lib/helpers/XboxJoystickHelper.h"
 
-using namespace frc;
+#include "src/info/RobotInfo.h"
+#include "src/TeleopMode.h"
 
 namespace frc973 {
-class Disabled;
 
 /**
- * Controls the autonomous mode.
+ * Controls the Autonomous mode.
  */
 class Autonomous {
 public:
     /**
-     * Constuct an autonomous mode.
-     * @param disabled The disabled mode.
-     * @param drive The drive subsystem.
-     * @param gyro The gyro.
-     * @param greylight The GreyLight system.
+     * Constuct an Autonomous mode.
+     * @param driverJoystick The driver's ObservablePoofsJoystick.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param tuningJoystick The tuning ObservableDualActionJoystick.
+     * @param Teleop The Teleop mode.
+     * @param gyro The ADXRS450_Gyro.
+     * @param drive The Drive subsystem.
+     * @param cargoIntake The CargoIntake subsystem.
+     * @param hatchIntake The HatchIntake subsystem.
+     * @param elevator The Elevator subsystem.
      */
-    Autonomous(Disabled *disabled, Drive *drive, ADXRS450_Gyro *gyro,
-               GreyLight *greylight);
+    Autonomous(ObservablePoofsJoystick *driverJoystick,
+               ObservableXboxJoystick *operatorJoystick,
+               ObservableDualActionJoystick *tuningJoystick, Teleop *Teleop,
+               ADXRS450_Gyro *gyro, Drive *drive, CargoIntake *cargoIntake,
+               HatchIntake *hatchIntake, Elevator *elevator);
     virtual ~Autonomous();
 
     /**
-     * Start of autonomous.
+     * Start of Autonomous.
      */
     void AutonomousInit();
 
     /**
-     * Loop of autonomous.
+     * Loop of Autonomous.
      */
     void AutonomousPeriodic();
 
     /**
-     * Stop of autonomous.
+     * Stop of Autonomous.
      */
     void AutonomousStop();
 
+    /**
+     * Button handler for the Autonomous mode.
+     * @param port The port the joystick is connected to.
+     * @param button The button.
+     * @param pressedP The button's new status.
+     */
+    void HandleDualActionJoystick(uint32_t port, uint32_t button,
+                                  bool pressedP);
+
+    /**
+     * Button handler for the Autonomous mode.
+     * @param port The port the joystick is connected to.
+     * @param button The button.
+     * @param pressedP The button's new status.
+     */
+    void HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP);
+
+    /**
+     * Button handler for the Autonomous mode.
+     * @param port The port the joystick is connected to.
+     * @param button The button.
+     * @param pressedP The button's new status.
+     */
+    void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
+
+    /**
+     * Defines AutoStates.
+     */
+    enum class AutoState
+    {
+        TwoRocket,           /**< Two rocket objects. */
+        TwoCargoShip,        /**< Two cargo objects. */
+        CargoShipThenRocket, /**< One on both the cargo and rocket. */
+        Manual               /**< Manual driver control. */
+    };
+
+    /**
+     * Gets the current AutoState.
+     * @return The current AuutoState.
+     */
+    AutoState GetAutoState() const;
+
+    /**
+     * Sets the AutoState.
+     * @param autoState The new AutoState.
+     */
+    void SetAutoState(AutoState autoState);
+
+    /**
+     * Defines AutoStateStartPositions.
+     */
+    enum class AutoStateStartPosition
+    {
+        LeftHabLevel2, /**< Left Level 2 Auto State. */
+        CenterHab,     /**< Center Auto State. */
+        RightHabLevel2 /**< Right Level 2 Auto State. */
+    };
+
 private:
-    NoAuto *m_noAuto;
-    ForwardAuto *m_forwardAuto;
+    void TwoRocketAuto();
+    void TwoRocketAutoFront();
+    void TwoRocketAutoBack();
+    void TwoCargoShipAuto();
+    void CargoShipThenRocketAuto(const bool doCargoOnly = false);
 
-    Disabled *m_disabled;
+    ObservablePoofsJoystick *m_driverJoystick;
+    ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_tuningJoystick;
 
-    AutoRoutineBase *m_routine;
-
-    Drive *m_drive;
+    Teleop *m_teleop;
+    AutoState m_autoState;
+    AutoStateStartPosition m_autoStateStartPosition;
+    double m_autoTimer;
+    double m_direction;
+    int m_autoStep;
     ADXRS450_Gyro *m_gyro;
 
-    GreyLight *m_greylight;
-    LightPattern::AutoIndicator *m_autoSignal;
+    Drive *m_drive;
+    CargoIntake *m_cargoIntake;
+    HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
 };
 }

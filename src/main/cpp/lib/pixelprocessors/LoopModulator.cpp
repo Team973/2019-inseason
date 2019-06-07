@@ -5,7 +5,9 @@
  *      Author: Cole Brinsfield
  */
 
-#include "LoopModulator.h"
+#include "lib/pixelprocessors/LoopModulator.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 LoopModulator::LoopModulator(PixelStateProcessor* processor) {
@@ -37,5 +39,6 @@ void LoopModulator::Rotate(std::vector<Color>& pixels, int amount,
         }
         pixels.at(newIndex) = copy[i];
     }
+}
 }
 }

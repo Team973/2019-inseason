@@ -10,12 +10,13 @@
 
 #include <vector>
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
+#include "lib/pixelprocessors/PixelStateProcessor.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 /**
- * PixelStateModulator to create a "scrolling" effect from a
+ * PixelStateProcessorModulator to create a "scrolling" effect from a
  * PixelStateProcessor.
  */
 class LoopModulator : public PixelStateProcessorModulator {
@@ -41,6 +42,7 @@ private:
      */
     void Rotate(std::vector<Color>& pixels, int amount, int numLEDs);
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_LOOPMODULATOR_H_ */

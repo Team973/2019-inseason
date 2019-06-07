@@ -7,10 +7,16 @@
 
 #ifndef SRC_MODULES_GREYLIGHTTYPES_H_
 #define SRC_MODULES_GREYLIGHTTYPES_H_
+
 #include <cstdint>
 #include <cmath>
 #include <vector>
 
+namespace frc973 {
+
+/**
+ * Holds types of GreyLights.
+ */
 namespace GreyLightType {
 /**
  * Data representation of a Color in (r,g,b) format.
@@ -23,9 +29,9 @@ struct Color {
     /**
      * Generate an intermediate Color.
      * @param other The Color to gradient to.
-     * @param percentR The Percentage of r channel.
-     * @param percentG The Percentage of g channel.
-     * @param percentB The Percentage of b channel.
+     * @param percentR The percentage of R channel.
+     * @param percentG The percentage of G channel.
+     * @param percentB The percentage of B channel.
      * @return The Color.
      */
     Color gradientTo(Color other, double percentR, double percentG,
@@ -40,7 +46,7 @@ struct Color {
     /**
      * Generate an intermediate Color.
      * @param other The Color to gradient to.
-     * @param percent The Percentage of transition to generate.
+     * @param percent The percentage of transition to generate.
      * @return The gradientTo.
      */
     Color gradientTo(Color other, double percent) const {
@@ -59,5 +65,6 @@ struct PixelState {
     std::vector<Color>
         pixels; /**< The array of pixels (this gets displayed). */
 };
+}
 }
 #endif /* SRC_MODULES_GREYLIGHTTYPES_H_ */

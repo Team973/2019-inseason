@@ -1,11 +1,5 @@
-/**
- *
- * @author kyledematias
- */
-
 #include "lib/profiles/MotionProfile.h"
-#include "lib/util/WrapDash.h"
-#include <cmath>
+
 namespace frc973 {
 
 namespace Profiler {

@@ -8,7 +8,9 @@
 #include "Flash.h"
 
 using namespace std::chrono;
-#include <iostream>
+
+namespace frc973 {
+
 namespace LightPattern {
 
 Flash::Flash(Color first, Color second, int hz, int count)
@@ -50,5 +52,6 @@ void Flash::Tick(PixelState& state) {
     else {
         std::fill(state.pixels.begin(), state.pixels.end(), m_second);
     }
+}
 }
 }

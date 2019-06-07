@@ -8,10 +8,11 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_AUTOINDICATOR_H_
 #define SRC_MODULES_PIXELPROCESSORS_AUTOINDICATOR_H_
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
-#include <vector>
 #include <string>
+
+#include "PixelStateProcessor.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 static constexpr Color LEFT_GREEN = {0, 255, 0};
@@ -44,5 +45,6 @@ public:
 private:
     std::string m_gameData;
 };
+}
 }
 #endif /* SRC_MODULES_PIXELPROCESSORS_AUTOINDICATOR_H_ */

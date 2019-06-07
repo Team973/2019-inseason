@@ -1,27 +1,20 @@
 #ifndef GYRO_CPP
 #define GYRO_CPP
 
-#include <inttypes.h>
 #include "lib/sensors/SPIGyro.h"
-#include <unistd.h>
-
-#include "lib/util/Util.h"
-#include "frc/WPILib.h"
 
 namespace frc973 {
 
 /**
  * Some nifty byte swapping.
+ * @param dword The original dword.
+ * @return The modified dword.
  */
 uint32_t swapTheBytes(uint32_t dword) {
     return ((dword >> 24) & 0x000000FF) | ((dword >> 8) & 0x0000FF00) |
            ((dword << 8) & 0x00FF0000) | ((dword << 24) & 0xFF000000);
 }
 
-/*
- * Constructor initializes gyroscope, starts a thread to continually
- * update values, and then returns.
- */
 SPIGyro::SPIGyro()
         : mutex(PTHREAD_MUTEX_INITIALIZER)
         , gyro(new SPI(SPI::kOnboardCS0))
@@ -45,9 +38,6 @@ SPIGyro::SPIGyro()
     fprintf(stderr, "Started gyro thread\n");
 }
 
-/*
- * Returns the latest angle reading from the gyro.
- */
 double SPIGyro::GetDegrees() {
     pthread_mutex_lock(&mutex);
     double ret = angle;
@@ -55,9 +45,6 @@ double SPIGyro::GetDegrees() {
     return ret;
 }
 
-/*
- * Returns the the latest angular momentum reading from the gyro.
- */
 double SPIGyro::GetDegreesPerSec() {
     pthread_mutex_lock(&mutex);
     double ret = angularMomentum;
@@ -65,20 +52,12 @@ double SPIGyro::GetDegreesPerSec() {
     return ret;
 }
 
-/*
- * Sets the current gyro heading to zero
- */
 void SPIGyro::Reset() {
     pthread_mutex_lock(&mutex);
     angle = 0;
     pthread_mutex_unlock(&mutex);
 }
 
-/*
- * Zero the gyroscope by averaging all readings over 2 seconds.
- * If a lot of those ended up in error, at least make sure we have ~.5
- * seconds worth of data before continuing.
- */
 void SPIGyro::ZeroAngle() {
     unsigned int num_samples = zeroing_points_collected;
     if (zeroing_points_collected > zero_data_buffer_size)
@@ -97,18 +76,10 @@ void SPIGyro::ZeroAngle() {
     printf("Total zero offset: %f\n", zero_offset);
 }
 
-/*
- * Notify gyro to start shutdown sequence soon.
- */
 void SPIGyro::Quit() {
     run_ = false;
 }
 
-/*
- * Runs closed loop; grabs angle values from gyro and saves them so
- * they can be returned by GetDegrees.  Should be run in its own thread
- * (started by constructor).  Doesn't stop until someone calls Quit.
- */
 void *SPIGyro::Run(void *p) {
     SPIGyro *inst = (SPIGyro *)p;
 
@@ -154,11 +125,6 @@ void *SPIGyro::Run(void *p) {
     return NULL;
 }
 
-/*
- * Runs the recommended gyro startup procedure including checking all
- * of the self-test bits.
- * Returns true on success.
- */
 bool SPIGyro::InitializeGyro() {
     uint32_t result;
     if (!DoTransaction(0x20000003, &result)) {
@@ -207,11 +173,6 @@ bool SPIGyro::InitializeGyro() {
     return true;
 }
 
-/*
- * Collects all the anglular momentum readings from the last 6 seconds
- * so that when the user calls ZeroAngle (on autoInit) it has the data
- * to average.
- */
 void SPIGyro::CollectZeroData() {
     static unsigned int zeroing_index = 0;
 
@@ -227,10 +188,6 @@ void SPIGyro::CollectZeroData() {
         zeroing_index = 0;
 }
 
-/*
- * Pulls the angular rate from the gyro, checks for errors, and then
- * updates this object to serve out that data.
- */
 void SPIGyro::UpdateReading() {
     static int startup_cycles_left = 2 * kReadingRate;
     // static uint64_t lastCall;
@@ -258,10 +215,6 @@ void SPIGyro::UpdateReading() {
     }
 }
 
-/*
- * Gets a reading from the gyro.
- * Returns a value to be passed to the Extract* methods or 0 for error.
- */
 uint32_t SPIGyro::GetReading() {
     uint32_t result;
     if (!DoTransaction(0x20000000, &result)) {
@@ -271,10 +224,6 @@ uint32_t SPIGyro::GetReading() {
     return result;
 }
 
-/*
- * Reads from the gyro's internal memory and returns the value.
- * Retries until it succeeds.
- */
 uint16_t SPIGyro::DoRead(uint8_t address) {
     const uint32_t command = (0x8 << 28) | (address << 17);
     uint32_t response;
@@ -292,12 +241,6 @@ uint16_t SPIGyro::DoRead(uint8_t address) {
     }
 }
 
-/*
- * Checks for erros in the passed int.
- * Returns true if there was an error in the reading, false otherwise.
- * Prints messages to explain possible errors.
- * |res| should be the result of calling gyro.GetReading()
- */
 bool SPIGyro::CheckErrors(uint32_t result) {
     if (result == 0) {
         printf("normal gyro read failed\n");
@@ -342,22 +285,11 @@ bool SPIGyro::CheckErrors(uint32_t result) {
     return false;
 }
 
-/*
- * Returns the anglular rate contained in value.
- * unit degrees per sec
- */
 double SPIGyro::ExtractAngle(uint32_t value) {
     const int16_t reading = -(int16_t)(value >> 10 & 0xFFFF);
     return static_cast<double>(reading) / 80.0;
 }
 
-/*
- * Performs a transaction with the gyro.
- * to_write is the value to write. This function handles setting the checksum
- * bit.
- * result is where to stick the result. This function verifies the parity bit.
- * Returns true for success.
- */
 bool SPIGyro::DoTransaction(uint32_t to_write, uint32_t *result) {
     static const uint8_t kBytes = 4;
     static_assert(kBytes == sizeof(to_write),
@@ -395,10 +327,6 @@ bool SPIGyro::DoTransaction(uint32_t to_write, uint32_t *result) {
     return true;
 }
 
-/*
- * Returns the part ID from the gyro.
- * Retries until it succeeds.
- */
 uint32_t SPIGyro::ReadPartID() {
     return (DoRead(0x0E) << 16) | DoRead(0x10);
 }

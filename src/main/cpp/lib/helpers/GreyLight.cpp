@@ -6,9 +6,9 @@
  *      Author: Cole Brinsfield
  */
 
-#include "GreyLight.h"
-#include "lib/pixelprocessors/SolidColor.h"
-#include <iostream>
+#include "lib/helpers/GreyLight.h"
+
+namespace frc973 {
 
 using namespace GreyLightType;
 
@@ -59,4 +59,5 @@ void GreyLight::SetPixelStateProcessor(PixelStateProcessor* processor) {
     this->m_processor = processor;
     this->m_processor->Reset();
     m_stateLock.unlock();
+}
 }

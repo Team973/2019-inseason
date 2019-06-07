@@ -5,10 +5,7 @@
  *      Author: Andrew
  */
 
-#include "GreyCompressor.h"
-
-#include "frc/WPILib.h"
-#include "lib/filters/Debouncer.h"
+#include "lib/helpers/GreyCompressor.h"
 
 namespace frc973 {
 

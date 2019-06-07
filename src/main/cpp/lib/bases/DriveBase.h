@@ -7,13 +7,8 @@
 
 #pragma once
 
-#include "lib/managers/TaskMgr.h"
 #include "lib/managers/CoopTask.h"
-#include "lib/util/Util.h"
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
-
-using namespace frc;
+#include "lib/managers/TaskMgr.h"
 
 namespace frc973 {
 
@@ -23,7 +18,7 @@ namespace frc973 {
 class DriveStateProvider {
 public:
     /**
-     * Construct a drive state provider.
+     * Construct a DriveStateProvider.
      */
     DriveStateProvider() {
     }
@@ -31,49 +26,49 @@ public:
     }
 
     /**
-     * Return the current angle in degrees.
+     * Gets the current angle in degrees.
      * @return The current angle.
      */
     virtual double GetAngle() const = 0;
 
     /**
-     * Return the current angular rate in degrees/second.
+     * Gets the current angular rate in degrees/second.
      * @return The current angular rate.
      */
     virtual double GetAngularRate() const = 0;
 
     /**
-     * Return the current left distance in inches.
+     * Gets the current left distance in inches.
      * @return The current left distance.
      */
     virtual double GetLeftDist() const = 0;
 
     /**
-     * Return the current right distance in inches.
+     * Gets the current right distance in inches.
      * @return The current right distance.
      */
     virtual double GetRightDist() const = 0;
 
     /**
-     * Return the current left velocity in inches/second.
+     * Gets the current left velocity in inches/second.
      * @return The current left velocity.
      */
     virtual double GetLeftRate() const = 0;
 
     /**
-     * Return the current right velocity in inches/second.
+     * Gets the current right velocity in inches/second.
      * @return The current right velocity.
      */
     virtual double GetRightRate() const = 0;
 
     /**
-     * Return the current average distance in inches.
+     * Gets the current average distance in inches.
      * @return The current average distance.
      */
     virtual double GetDist() const = 0;
 
     /**
-     * Return the current average velocity in inches/second.
+     * Gets the current average velocity in inches/second.
      * @return The current average velocity.
      */
     virtual double GetRate() const = 0;
@@ -147,8 +142,8 @@ public:
     /**
      * Use the input signals from the |state| and calculate some output, then
      * send that output to the |out|.
-     * @param state The state provider for handling incoming messages.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param state The DriveStateProvider for handling incoming messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     virtual void CalcDriveOutput(DriveStateProvider *state,
                                  DriveControlSignalReceiver *out) = 0;
@@ -162,33 +157,33 @@ public:
 
     /**
      * Called when the drive controller is set active by the Drive subsystem.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     virtual void Start(DriveControlSignalReceiver *out) {
     }
 
     /**
      * Called when the drive controller is set inactive by the Drive subsystem.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     virtual void Stop(DriveControlSignalReceiver *out) {
     }
 };
 
 /**
- * Base class for a robot drive.  DriveBase keeps track of one DriveController
+ * Base class for a robot drive. DriveBase keeps track of one DriveController
  * and uses it to calculate drive output, then drives the motors with those
  * calculated values. CoopTask handles calling TaskPostPeriodic once a cycle.
  */
 class DriveBase : public CoopTask {
 public:
     /**
-     * Creates a new DriveBase Object.  The DriveBase object stores a drive
+     * Creates a new DriveBase Object. The DriveBase object stores a drive
      * controller (an object capable of calculating motor outputs) and uses it
      * to calculate drive outputs, then drive those drive outputs.
      * @param scheduler
-     * @param out The signal receiver for handling outgoing messages.
-     * @param state The state provider for handling incoming messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
+     * @param state The DriveStateProvider for handling incoming messages.
      * @param controller The drive controller for handling movements.
      */
     DriveBase(TaskMgr *scheduler, DriveControlSignalReceiver *out,
@@ -196,8 +191,8 @@ public:
     virtual ~DriveBase();
 
     /**
-     * When making calls to PID-like-commands, parameters can be relative to the
-     * world (Absolute), relative to the current position (Now), or relative to
+     * When making calls to PID-like-commands, parameters can be RelativeTo the
+     * world (Absolute), RelativeTo the current position (Now), or RelativeTo
      * the current setpoint (SetPoint).
      */
     enum RelativeTo
@@ -210,7 +205,7 @@ public:
     /**
      * Get input from the currently active DriveController. This method comes
      * from CoopTask and is called automatically once a cycle by m_scheduler.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPostPeriodic(RobotMode mode) override;
 

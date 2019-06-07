@@ -5,7 +5,9 @@
  *      Author: Cole Brinsfield
  */
 
-#include "TeamNumber.h"
+#include "lib/pixelprocessors/TeamNumber.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 
@@ -32,5 +34,6 @@ void TeamNumber::Tick(PixelState& state) {
     for (std::size_t i = 9 + 7 + spacing * 2; i < state.numLEDs; i++) {
         state.pixels.at(i) = m_foreground;
     }
+}
 }
 }

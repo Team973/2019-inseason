@@ -1,23 +1,33 @@
 #include "src/DisabledMode.h"
-#include "src/Robot.h"
-
-using namespace frc;
 
 namespace frc973 {
-Disabled::Disabled(ObservablePoofsJoystick *driver,
-                   ObservableXboxJoystick *codriver, GreyLight *greylight)
-        : m_driverJoystick(driver)
-        , m_operatorJoystick(codriver)
-        , m_greylight(greylight)
-        , m_disabledSignal(new LightPattern::SolidColor(DISABLED_RED)) {
+Disabled::Disabled(ObservablePoofsJoystick *driverJoystick,
+                   ObservableXboxJoystick *operatorJoystick, Elevator *elevator,
+                   CargoIntake *cargoIntake, Drive *drive,
+                   Limelight *limelightHatch, Autonomous *autonomous,
+                   Teleop *teleop)
+        : m_driverJoystick(driverJoystick)
+        , m_operatorJoystick(operatorJoystick)
+        , m_elevator(elevator)
+        , m_cargoIntake(cargoIntake)
+        , m_drive(drive)
+        , m_limelightHatch(limelightHatch)
+        , m_autonomous(autonomous)
+        , m_teleop(teleop) {
 }
 
 Disabled::~Disabled() {
 }
-
 void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
-    m_greylight->SetPixelStateProcessor(m_disabledSignal);
+    m_elevator->EnableBrakeMode();
+    m_cargoIntake->EnableBrakeMode();
+    if (m_teleop->GetGameMode() ==
+            Teleop::GameMode::ThirdLevelEndGamePeriodic ||
+        m_teleop->GetGameMode() ==
+            Teleop::GameMode::SecondLevelEndGamePeriodic) {
+        m_drive->EnableBrakeMode();
+    }
 }
 
 void Disabled::DisabledPeriodic() {
@@ -37,18 +47,22 @@ void Disabled::HandleXboxJoystick(uint32_t port, uint32_t button,
             break;
         case Xbox::BtnA:
             if (pressedP) {
+                m_autonomous->SetAutoState(Autonomous::AutoState::TwoCargoShip);
             }
             else {
             }
             break;
         case Xbox::BtnX:
             if (pressedP) {
+                m_autonomous->SetAutoState(
+                    Autonomous::AutoState::CargoShipThenRocket);
             }
             else {
             }
             break;
         case Xbox::BtnB:
             if (pressedP) {
+                m_autonomous->SetAutoState(Autonomous::AutoState::TwoRocket);
             }
             else {
             }

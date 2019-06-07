@@ -3,13 +3,6 @@
  *
  *  Created on: Nov 3, 2015
  *      Author: Andrew
- *
- * DelaySwitch filters a binary filter that may be noisy and creates a binary
- * signal that is definitely not noisy but may be a little delayed.
- *
- * Does this by creating a MovingAverageFilter of all previous binary inputs
- * and doesn't change output until the moving average of input is way above or
- * way below 0.5.
  */
 
 #pragma once
@@ -19,9 +12,12 @@
 namespace frc973 {
 
 /**
- * A direct-use filter for something that needs to delay between on/off. Note:
- * this class does not inherit from FilterBase because it returns booleans
- * rather than doubles. And no, we are not going to use templates!
+ * DelaySwitch filters a binary filter that may be noisy and creates a binary
+ * signal that is definitely not noisy but may be a little delayed.
+ *
+ * Does this by creating a MovingAverageFilter of all previous binary inputs
+ * and doesn't change output until the moving average of input is way above or
+ * way below 0.5.
  */
 class DelaySwitch {
 public:

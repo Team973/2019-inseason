@@ -9,8 +9,9 @@
 
 #include "lib/bases/DriveBase.h"
 #include "lib/helpers/PID.h"
+#include "lib/util/WrapDash.h"
 
-using namespace frc;
+#include "src/info/RobotInfo.h"
 
 namespace frc973 {
 
@@ -20,15 +21,15 @@ namespace frc973 {
 class PIDDriveController : public DriveController {
 public:
     /**
-     * Construct a PID Drive controller.
+     * Construct a PIDDriveController.
      */
     PIDDriveController();
     virtual ~PIDDriveController();
 
     /**
      * Calculate motor output given the most recent sensor updates.
-     * @param state The state provider for handling incoming messages.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param state The DriveStateProvider for handling incoming messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out) override;
@@ -42,11 +43,11 @@ public:
     }
 
     /**
-     * Set the target position/heading relative to absolute world.
+     * Set the target position/heading RelativeTo absolute world.
      * @param dist Distance to travel.
      * @param heading Heading when moving.
-     * @param relativity Point relative to new setpoint.
-     * @param state The state provider for handling incoming messages.
+     * @param relativity Point RelativeTo new setpoint.
+     * @param state The DriveStateProvider for handling incoming messages.
      */
     PIDDriveController *SetTarget(double dist, double heading,
                                   DriveBase::RelativeTo relativity,
@@ -107,7 +108,7 @@ public:
         m_onTarget = false;
     }
     /**
-     * Return the distance error.
+     * Gets the distance error.
      * @return The distance error.
      */
     double GetDistError() {
@@ -115,8 +116,16 @@ public:
     }
 
     /**
+     * Gets the angle error.
+     * @return The distance error.
+     */
+    double GetAngleError() {
+        return m_targetAngle - m_prevAngle;
+    }
+
+    /**
      * Start the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Start(DriveControlSignalReceiver *out) override {
         printf("Turning on PID Mode\n");
@@ -124,7 +133,7 @@ public:
 
     /**
      * Stop the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Stop(DriveControlSignalReceiver *out) override {
         printf("Turning off PID Mode\n");

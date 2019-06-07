@@ -1,16 +1,5 @@
-#include "frc/WPILib.h"
-#include <iostream>
-#include "src/info/RobotInfo.h"
-#include "src/DisabledMode.h"
-#include "src/AutonomousMode.h"
-#include "src/TeleopMode.h"
-#include "src/TestMode.h"
 #include "src/Robot.h"
-#include "ctre/Phoenix.h"
-#include "lib/util/WrapDash.h"
 
-using namespace frc;
-using namespace ctre;
 namespace frc973 {
 Robot::Robot()
         : CoopMTRobot()
@@ -22,34 +11,68 @@ Robot::Robot()
               new ObservablePoofsJoystick(DRIVER_JOYSTICK_PORT, this, this))
         , m_operatorJoystick(
               new ObservableXboxJoystick(OPERATOR_JOYSTICK_PORT, this, this))
-        , m_leftDriveTalonA(new GreyTalonSRX(LEFT_DRIVE_A_CAN_ID))
-        , m_leftDriveVictorB(new VictorSPX(LEFT_DRIVE_B_VICTOR_ID))
-        , m_leftDriveVictorC(new VictorSPX(LEFT_DRIVE_C_VICTOR_ID))
-        , m_rightDriveTalonA(new GreyTalonSRX(RIGHT_DRIVE_A_CAN_ID))
-        , m_rightDriveVictorB(new VictorSPX(RIGHT_DRIVE_B_VICTOR_ID))
-        , m_rightDriveVictorC(new VictorSPX(RIGHT_DRIVE_C_VICTOR_ID))
-        , m_gyro(new ADXRS450_Gyro())
-        , m_greylight(new GreyLight(NUM_LED))
-        , m_limelight(new Limelight())
+        , m_tuningJoystick(
+              new ObservableDualActionJoystick(TEST_JOYSTICK_PORT, this, this))
         , m_logger(new LogSpreadsheet(this))
-        , m_matchIdentifier(new LogCell("Match Identifier", 64))
-        , m_gameSpecificMessage(new LogCell("GameSpecificMessage", 10))
-        , m_drive(new Drive(this, m_logger, m_leftDriveTalonA,
-                            m_leftDriveVictorB, m_leftDriveVictorC,
-                            m_rightDriveTalonA, m_rightDriveVictorB,
-                            m_rightDriveVictorC, m_gyro, m_limelight))
+        , m_leftDriveSparkA(new GreySparkMax(
+              LEFT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
+        , m_leftDriveSparkB(new GreySparkMax(
+              LEFT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
+        , m_leftDriveSparkC(new GreySparkMax(
+              LEFT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkA(new GreySparkMax(
+              RIGHT_DRIVE_A_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkB(new GreySparkMax(
+              RIGHT_DRIVE_B_ID, CANSparkMax::MotorType::kBrushless))
+        , m_rightDriveSparkC(new GreySparkMax(
+              RIGHT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
+        , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
+        , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
+        , m_elevatorMotorB(new GreyVictorSPX(ELEVATOR_B_CAN_ID))
+        , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
+        , m_gyro(new ADXRS450_Gyro())
+        , m_hatchCamera(UsbCamera("USB Cmera 0", 0))
+        , m_cameraServer(CameraServer::GetInstance())
+        , m_greyCam(m_cameraServer->AddServer("serve_GreyCam", 1181))
+        , m_cargoIntakeMotor(new GreyTalonSRX(CARGO_INTAKE_CAN_ID))
+        , m_cargoWrist(new Solenoid(PCM_CAN_ID, CARGO_INTAKE_WRIST_PCM_ID))
+        , m_cargoPlatformLock(
+              new Solenoid(PCM_CAN_ID, CARGO_PLATFORM_LOCK_PCM_ID))
+        , m_hatchRollers(new GreyTalonSRX(HATCH_ROLLER_CAN_ID))
+        , m_hatchPuncher(new Solenoid(PCM_CAN_ID, HATCH_PUNCHER_PCM_ID))
+        , m_limelightHatch(new Limelight("limelight-hatch", false))
+        , m_hatchIntake(new HatchIntake(this, m_logger, m_hatchRollers,
+                                        m_hatchPuncher, m_limelightHatch))
+        , m_elevator(new Elevator(this, m_logger, m_elevatorMotorA,
+                                  m_elevatorMotorB, m_operatorJoystick,
+                                  m_elevatorHall))
+        , m_drive(new Drive(
+              this, m_logger, m_leftDriveSparkA, m_leftDriveSparkB,
+              m_leftDriveSparkC, m_rightDriveSparkA, m_rightDriveSparkB,
+              m_rightDriveSparkC, m_stingerDriveMotor, m_gyro, m_limelightHatch,
+              m_hatchIntake, m_elevator, m_driverJoystick, m_operatorJoystick))
+        , m_cargoIntake(new CargoIntake(this, m_logger, m_cargoIntakeMotor,
+                                        m_cargoPlatformLock, m_cargoWrist,
+                                        m_limelightHatch, m_pdp))
+        , m_stinger(new Stinger(this, m_logger, m_stingerDriveMotor))
         , m_airPressureSwitch(new DigitalInput(PRESSURE_DIN_ID))
         , m_compressorRelay(
               new Relay(COMPRESSOR_RELAY, Relay::Direction::kForwardOnly))
         , m_compressor(
               new GreyCompressor(m_airPressureSwitch, m_compressorRelay, this))
-        , m_disabled(
-              new Disabled(m_driverJoystick, m_operatorJoystick, m_greylight))
-        , m_autonomous(new Autonomous(m_disabled, m_drive, m_gyro, m_greylight))
-        , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick, m_drive,
-                              m_greylight))
-        , m_test(new Test(m_driverJoystick, m_operatorJoystick, m_drive,
-                          m_greylight)) {
+        , m_teleop(new Teleop(m_driverJoystick, m_operatorJoystick,
+                              m_tuningJoystick, m_drive, m_elevator,
+                              m_hatchIntake, m_cargoIntake, m_stinger,
+                              m_limelightHatch))
+        , m_test(new Test(m_driverJoystick, m_operatorJoystick,
+                          m_tuningJoystick, m_drive, m_elevator, m_hatchIntake,
+                          m_cargoIntake, m_stinger, m_limelightHatch))
+        , m_autonomous(new Autonomous(
+              m_driverJoystick, m_operatorJoystick, m_tuningJoystick, m_teleop,
+              m_gyro, m_drive, m_cargoIntake, m_hatchIntake, m_elevator))
+        , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
+                                  m_elevator, m_cargoIntake, m_drive,
+                                  m_limelightHatch, m_autonomous, m_teleop)) {
     std::cout << "Constructed a Robot!" << std::endl;
 }
 
@@ -58,9 +81,11 @@ Robot::~Robot() {
 
 void Robot::Initialize() {
     m_compressor->Enable();
-    m_logger->RegisterCell(m_matchIdentifier);
-    m_logger->RegisterCell(m_gameSpecificMessage);
     m_logger->Start();
+
+    m_cameraServer->AddCamera(m_hatchCamera);
+    m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
+    m_greyCam.SetSource(m_hatchCamera);
 }
 
 void Robot::DisabledStart() {
@@ -112,16 +137,32 @@ void Robot::TestStop() {
 }
 
 void Robot::AllStateContinuous() {
-    // NetworkTable Battery Voltage
-    SmartDashboard::PutNumber("misc/pdp/batteryvoltage", m_pdp->GetVoltage());
+    /*m_limelightHatch->SetLightOn();
+    m_limelightHatch->SetCameraVisionCenter();
+    // m_limelightHatch->SetCameraVisionLeft();
+    // m_limelightHatch->SetCameraVisionRight();
+    DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf",
+                   m_limelightHatch->GetHorizontalDistance(),
+                   m_limelightHatch->GetXOffset());*/
 
-    m_matchIdentifier->LogPrintf(
-        "%s_%s%dm%d", DriverStation::GetInstance().GetEventName().c_str(),
-        MatchTypeToString(DriverStation::GetInstance().GetMatchType()),
-        DriverStation::GetInstance().GetMatchNumber(),
-        DriverStation::GetInstance().GetReplayNumber());
-    m_gameSpecificMessage->LogText(
-        DriverStation::GetInstance().GetGameSpecificMessage().c_str());
+    SmartDashboard::PutNumber("misc/pdp/voltage", m_pdp->GetVoltage());
+    SmartDashboard::PutNumber(
+        "limelight/throttle",
+        m_drive->GetLimelightDriveWithSkew()->GetThrottlePidOut());
+    SmartDashboard::PutNumber(
+        "limelight/turn",
+        m_drive->GetLimelightDriveWithSkew()->GetTurnPidOut());
+    SmartDashboard::PutNumber(
+        "limelight/skewcont",
+        m_drive->GetLimelightDriveWithSkew()->GetGoalAngleComp());
+
+    SmartDashboard::PutNumber("limelight/xoff", m_limelightHatch->GetXOffset());
+    SmartDashboard::PutNumber("limelight/distance",
+                              m_limelightHatch->GetHorizontalDistance());
+    SmartDashboard::PutNumber("limelight/skew",
+                              m_limelightHatch->GetTargetSkew());
+    SmartDashboard::PutBoolean("limelight/target",
+                               m_limelightHatch->isTargetValid());
 }
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
@@ -135,6 +176,9 @@ void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
     else if (this->IsTest()) {
         m_test->HandleDualActionJoystick(port, button, pressedP);
     }
+    else if (this->IsAutonomous()) {
+        m_autonomous->HandleDualActionJoystick(port, button, pressedP);
+    }
 }
 
 void Robot::ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
@@ -144,6 +188,9 @@ void Robot::ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
     }
     else if (this->IsTest()) {
         m_test->HandlePoofsJoystick(port, button, pressedP);
+    }
+    else if (this->IsAutonomous()) {
+        m_autonomous->HandlePoofsJoystick(port, button, pressedP);
     }
 }
 
@@ -158,9 +205,11 @@ void Robot::ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
     else if (this->IsTest()) {
         m_test->HandleXboxJoystick(port, button, pressedP);
     }
+    else if (this->IsAutonomous()) {
+        m_autonomous->HandleXboxJoystick(port, button, pressedP);
+    }
 }
 }
-
 int main() {
     return StartRobot<frc973::Robot>();
 }

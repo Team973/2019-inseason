@@ -6,13 +6,6 @@
  */
 
 #include "src/controllers/VelocityArcadeDriveController.h"
-#include "lib/util/Util.h"
-#include <stdio.h>
-#include "lib/util/WrapDash.h"
-#include "src/info/RobotInfo.h"
-
-using namespace frc;
-using namespace ctre;
 
 namespace frc973 {
 

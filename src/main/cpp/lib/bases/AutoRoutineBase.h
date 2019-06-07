@@ -1,9 +1,6 @@
 #pragma once
 
-#include "frc/WPILib.h"
 #include <iostream>
-
-using namespace frc;
 
 namespace frc973 {
 
@@ -13,7 +10,7 @@ namespace frc973 {
 class AutoRoutineBase {
 public:
     /**
-     * Construct a Auto Routine base.
+     * Construct an AutoRoutineBase.
      */
     AutoRoutineBase();
     virtual ~AutoRoutineBase();

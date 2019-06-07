@@ -5,13 +5,7 @@
  *      Author: Andrew
  */
 
-#include "unistd.h"
 #include "lib/managers/SingleThreadTaskMgr.h"
-#include "lib/util/Util.h"
-
-#include "frc/WPILib.h"
-
-#include <stdio.h>
 
 namespace frc973 {
 
@@ -111,7 +105,7 @@ void *SingleThreadTaskMgr::RunTasks(void *p) {
         }
         else if (inst->m_warnSlow) {
             printf(
-                "TaskRunner (%fhz) taking too long.  "
+                "TaskRunner (%fhz) taking too long. "
                 "Time alloted for period: %llu us; time used %llu us",
                 inst->GetLoopFrequency(), timeSliceAllotedUs, timeSliceUsedUs);
             usleep(0);

@@ -1,6 +1,4 @@
-#include "frc/WPILib.h"
 #include "lib/helpers/PID.h"
-#include "lib/util/Util.h"
 
 namespace frc973 {
 
@@ -89,7 +87,7 @@ double PID::CalcOutput(double actual, uint32_t time) {
 
     /**
      * m_timeLastUpdate will be zero if this is the first call ever or first
-     * call since a reset.  In this case there aren't enough samples to
+     * call since a reset. In this case there aren't enough samples to
      * integrate or differentiate.
      */
     if (m_timeLastUpdateSec != 0.0) {
@@ -127,7 +125,7 @@ double PID::CalcOutputWithError(double error, uint32_t time) {
 
     /**
      * m_timeLastUpdate will be zero if this is the first call ever or first
-     * call since a reset.  In this case there aren't enough samples to
+     * call since a reset. In this case there aren't enough samples to
      * integrate or differentiate.
      */
     if (m_timeLastUpdateSec != 0.0) {

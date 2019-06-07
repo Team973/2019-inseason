@@ -5,7 +5,9 @@
  *      Author: Cole Brinsfield
  */
 
-#include "Wave.h"
+#include "lib/pixelprocessors/Wave.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 
@@ -25,5 +27,6 @@ void Wave::Tick(PixelState& state) {
             m_foreground,
             (cos((i + state.frame) * (2 * M_PI / m_period)) + 1) / 2);
     }
+}
 }
 }

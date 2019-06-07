@@ -5,7 +5,9 @@
  *      Author: Cole Brinsfield
  */
 
-#include "LinearScale.h"
+#include "lib/pixelprocessors/LinearScale.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 
@@ -31,5 +33,6 @@ void LinearScale::Tick(PixelState& state) {
         state.pixels.at(i) =
             m_minColor.gradientTo(m_maxColor, ((double)i / state.numLEDs));
     }
+}
 }
 }

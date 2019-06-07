@@ -15,7 +15,10 @@ const ui = {
         timer: document.getElementById('timer'),
         robotState: document.getElementById('robotState').firstChild,
         autoSelect: document.getElementById('autoSelect'),
-        camera: document.getElementById('cameraContainer')
+        camera: {
+            cameraImg: document.getElementById('camera'),
+            container: document.getElementById('cameraContainer')
+        }
     },
     debugCharts: document.getElementById('debugCharts'),
     indicators: document.getElementById('indicators'),
@@ -70,6 +73,8 @@ function openPage (pageName) {
     document.getElementById(pageName).style.display = 'block'
 }
 
+let graphIntervals = [];
+
 function render () {
     console.log('rendering')
     // Set Chart Defaults
@@ -97,6 +102,11 @@ function render () {
         if (config.charts[i].settings.show === undefined) {
             console.warn(`Setting show for '${config.charts[i].title}' to true`)
             config.charts[i].settings.show = true
+        }
+
+        if (config.charts[i].settings.millisPerPixel === undefined) {
+            console.warn(`Setting millisPerPixel for ${config.charts[i].title} to 20`)
+            config.charts[i].settings.millisPerPixel = 20
         }
     }
 
@@ -131,13 +141,13 @@ function render () {
     for (let i = 0; i < config.charts.length; i += 1) {
         if (config.charts[i].settings.show) {
             config.charts[i].div = document.createElement('div')
-            config.charts[i].div.setAttribute('class', 'chartContainer')
+            config.charts[i].div.setAttribute('class', 'chart')
 
             config.charts[i].displayTitle = document.createElement('span')
             config.charts[i].displayTitle.innerText = `${config.charts[i].title}`
 
             config.charts[i].displayChart = document.createElement('canvas')
-            config.charts[i].displayChart.setAttribute('class', 'responsiveCharts')
+            config.charts[i].displayChart.setAttribute('class', 'responsiveChart')
             config.charts[i].displayChart.setAttribute('name', `chart${i}`)
 
             config.charts[i].chart = new SmoothieChart({
@@ -145,7 +155,8 @@ function render () {
                 interpolation: config.charts[i].settings.interpolation,
                 tooltip: config.charts[i].settings.tooltip,
                 minValue: config.charts[i].settings.minValue,
-                maxValue: config.charts[i].settings.maxValue
+                maxValue: config.charts[i].settings.maxValue,
+                millisPerPixel: config.charts[i].settings.millisPerPixel
             })
 
             config.charts[i].lines = {}
@@ -155,13 +166,20 @@ function render () {
                 config.charts[i].lines[line] = new TimeSeries()
                 config.charts[i].chart.addTimeSeries(config.charts[i].lines[line], {
                     strokeStyle: colors[line],
-                    lineWidth: 3
+                    lineWidth: 4
                 })
                 NetworkTables.addKeyListener(config.charts[i].keys[line], (function bindIndicator (idx) {
                     return (key, value) => {
-                        config.charts[idx].lines[line].append(new Date().getTime(), value)
+                        const intervalKey = `${idx}${line}`
+                        if (graphIntervals[intervalKey] != null) {
+                            clearInterval(graphIntervals[intervalKey])
+                        }
+
+                        graphIntervals[intervalKey] = setInterval(() => {
+                            config.charts[idx].lines[line].append(new Date().getTime(), value)
+                        }, 20)
                     }
-                }(i)))
+                }(i)), true)
             }
 
             config.charts[i].chart.streamTo(config.charts[i].displayChart, 0)
@@ -333,21 +351,34 @@ function render () {
 
 openPage('default')
 
-const cameraUrl = 'http://limelight.local:5800'
+NetworkTables.addKeyListener('/SmartDashboard/misc/limelight/currentLimelight', (key, value) => {
+    var cameraUrl = `http://limelight-${value}.local:5800`
+    setupCamera(cameraUrl);
+})
+
+NetworkTables.addKeyListener('/SmartDashboard/misc/limelight/currentCamera', (key, value) => {
+    if (value == 'limelight') {
+        rotateCamera(0)
+    } else if (value == 'usb') {
+        rotateCamera(0)
+    } else {
+        throw new TypeError("Invalid current camera value.")
+    }
+})
 
 function reloadCamera () {
-    const content = ui.misc.camera.innerHTML
-    ui.misc.camera.innerHTML = content
+    const content = ui.misc.camera.container.innerHTML
+    ui.misc.camera.container.innerHTML = content
 }
 
-function createCamera (url) {
-    const cameraImg = document.createElement('img')
-    cameraImg.setAttribute('src', url)
-    cameraImg.setAttribute('id', 'camera')
-    cameraImg.addEventListener('onerror', () => {
+function rotateCamera (deg) {
+    ui.misc.camera.cameraImg.setAttribute('style', `transform: rotate(${deg}deg)`)
+}
+
+function setupCamera (url) {
+    ui.misc.camera.cameraImg.setAttribute('src', url)
+    ui.misc.camera.cameraImg.setAttribute('class', 'camera')
+    ui.misc.camera.cameraImg.addEventListener('onerror', () => {
         reloadCamera()
     })
-    ui.misc.camera.insertBefore(cameraImg, ui.misc.camera.firstChild)
 }
-
-window.setTimeout(createCamera(cameraUrl), 2000)

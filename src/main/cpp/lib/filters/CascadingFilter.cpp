@@ -2,7 +2,7 @@
  * CascadingFilter.cpp
  *
  *  Created on: Feb 29, 2016
- *      Author: andrew
+ *      Author: Andrew
  */
 
 #include "lib/filters/CascadingFilter.h"

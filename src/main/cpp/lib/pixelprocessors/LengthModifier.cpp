@@ -5,8 +5,10 @@
  *      Author: Cole Brinsfield
  */
 
-#include "LengthModifier.h"
-#include <iostream>
+#include "lib/pixelprocessors/LengthModifier.h"
+
+namespace frc973 {
+
 namespace LightPattern {
 LengthModifier::LengthModifier(PixelStateProcessor* processor, int numLEDs) {
     this->processor = processor;
@@ -19,5 +21,6 @@ void LengthModifier::Tick(PixelState& state) {
     state.numLEDs = m_numLEDS;
     PixelStateProcessorModulator::Tick(state);
     state.numLEDs = previousNumLEDs;
+}
 }
 }

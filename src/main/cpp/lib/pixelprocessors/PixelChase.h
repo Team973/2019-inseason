@@ -7,14 +7,16 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_PIXELCHASE_H_
 #define SRC_MODULES_PIXELPROCESSORS_PIXELCHASE_H_
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
 #include <vector>
+
+#include "lib/pixelprocessors/PixelStateProcessor.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 /**
- * PixelStateModulator to create an "inch-worm" of pixels moving from one side
- * to the other of the strip.
+ * PixelStateProcessorModulator to create an "inch-worm" of pixels moving from
+ * one side to the other of the strip.
  */
 class PixelChase : public PixelStateProcessorModulator {
 public:
@@ -40,6 +42,7 @@ private:
     uint16_t GetFrame(int n);
     Color m_background;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_PIXELCHASE_H_ */

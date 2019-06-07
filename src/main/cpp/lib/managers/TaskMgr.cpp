@@ -5,10 +5,7 @@
  *      Author: Andrew
  */
 
-#include "string.h"
 #include "lib/managers/TaskMgr.h"
-#include "lib/managers/CoopTask.h"
-#include "frc/WPILib.h"
 
 static constexpr bool ENABLE_PROFILING = false;
 
@@ -40,7 +37,7 @@ bool TaskMgr::RegisterTask(const char *taskName, CoopTask *task,
     }
 
     fprintf(stderr, "Task %s registered to %p with result %d (1 is go0d)\n",
-            taskName, this, success);
+            taskName, (void *)this, success);
 
     return success;
 }

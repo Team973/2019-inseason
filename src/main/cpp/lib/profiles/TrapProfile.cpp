@@ -1,5 +1,4 @@
 #include "lib/profiles/TrapProfile.h"
-#include <math.h>
 
 namespace frc973 {
 

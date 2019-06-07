@@ -1,18 +1,16 @@
-
 /*
- * Text.h
+ * Wave.h
  *
- *  Created on: Mar 14, 2017
- *      Author: lytigas
+ *  Created on: Feb 8, 2018
+ *      Author: Cole Brinsfield
  */
 
 #ifndef SRC_MODULES_PIXELPROCESSORS_WAVE_H_
 #define SRC_MODULES_PIXELPROCESSORS_WAVE_H_
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
-#include <math.h>
-#include <algorithm>
+#include "lib/pixelprocessors/PixelStateProcessor.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 /**
@@ -38,6 +36,7 @@ private:
     int m_period;
     Color m_background, m_foreground;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_WAVE_H_ */

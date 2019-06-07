@@ -7,23 +7,13 @@
 
 #pragma once
 
-#include "frc/WPILib.h"
-#include "ctre/Phoenix.h"
-#include "lib/managers/CoopTask.h"
-#include "lib/logging/LogSpreadsheet.h"
-#include "src/info/RobotInfo.h"
-#include "lib/helpers/DualActionJoystickHelper.h"
+#include "lib/helpers/GreyCTRE.h"
 #include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/sensors/Limelight.h"
-#include "src/controllers/LimelightVerticalController.h"
-#include "lib/util/Util.h"
-
-using namespace frc;
+#include "lib/logging/LogSpreadsheet.h"
+#include "lib/managers/CoopTask.h"
+#include "lib/util/WrapDash.h"
 
 namespace frc973 {
-class TaskMgr;
-class LogSpreadsheet;
 
 /**
  * Elevator Subsystem.
@@ -36,33 +26,65 @@ public:
     enum ElevatorState
     {
         manualVoltage, /**< Control the motors with manual voltage. */
-        motionMagic, /**< Control the motors using position w/ Motion Magic. */
-        limelight
+        motionMagic,   /**< Control the motors using position with Motion Magic.
+                        */
+        idle,          /**< staying in place after pressing a button. */
+        joystickControl /**< Controlling with the joystick. */
     };
 
-    static constexpr double GROUND = 0.0;      /**< Ground preset. */
-    static constexpr double VAULT = 4.5;       /**< Vault preset. */
-    static constexpr double LOW_GOAL = 24.0;   /**< Switch preset. */
-    static constexpr double HANGING = 55.0;    /**< Hang preset. */
-    static constexpr double SCALE_LOW = 58.0;  /**< Lower scale preset. */
-    static constexpr double SCALE_MID = 70.0;  /**< Middle scale preset. */
-    static constexpr double SCALE_HIGH = 77.5; /**< Higher scale preset. */
+    /**
+     * Defines the rocket score modes for talon.
+     */
+    enum RocketScoreMode
+    {
+        low,   /**< Score mode for the bottom Rocket */
+        middle /**< Score mode for the middle Rocket */
+    };
 
-    static constexpr double ELEVATOR_SOFT_HEIGHT_LIMIT =
-        80.5; /**< Soft elevator height. */
+    static constexpr double GROUND = 0.2; /**< Ground preset. */
+    static constexpr double LOW_ROCKET_HATCH =
+        0.5; /**< Low rocket hatch preset. */
+    static constexpr double LOW_ROCKET_CARGO =
+        4.0; /**< Low rocket cargo preset. */
+    static constexpr double MID_ROCKET_HATCH = 26.7;
+    /**< Mid rocket hatch preset. */
+    static constexpr double MID_ROCKET_CARGO = 26.7;
+    /**< Mid rocket hatch preset. */
+    static constexpr double LOADING_STATION_CARGO = 20.0;
+    /**< Human player loading station preset. */
+    static constexpr double CARGO_SHIP_HATCH =
+        0.5; /**< Cargo ship hatch preset. */
+    static constexpr double CARGO_SHIP_CARGO =
+        15.0; /**< Cargo ship cargo preset. */
+    static constexpr double THIRD_PLATFORM = 27.0; /**< Platform preset. */
+    static constexpr double THIRD_PLATFORM_RESET = 22.0;
+    /**< Platform preset. */
+    static constexpr double SECOND_PLATFORM = 13.0; /**< Platform preset. */
+
+    static constexpr double ELEVATOR_HEIGHT_SOFT_LIMIT =
+        27.5; /**< Soft elevator height. */
+    static constexpr double ENDGAME_HEIGHT_SOFT_LIMIT = 24.25;
+    /**< Endgame soft elevator height */
+    static constexpr double ELEVATOR_HALL_HEIGHT_OFFSET = 0.6;
+    /**< Minimum elevator height */
     static constexpr double ELEVATOR_INCHES_PER_CLICK =
-        8.0 / 4096.0; /**< Encoder in/click */
+        4.0 / 4096.0; /**< Encoder in/click */
     static constexpr double ELEVATOR_FEED_FORWARD =
-        0.1; /**< The elevator's feed forward. */
+        0.06; /**< The elevator's feed forward. */
 
     /**
      * Contruct an elevator.
      * @param scheduler TaskMgr object.
      * @param logger LogSpreadsheet object.
-     * @param elevatorMotor The elevator Talon.
+     * @param elevatorMotorA The Elevator's GreyTalonSRX.
+     * @param elevatorMotorB The Elevator's GreyVictorSPX.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param elevatorHall The Elevator's hall effect DigitalInput.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             TalonSRX *elevatorMotor, Limelight *limelight);
+             GreyTalonSRX *elevatorMotorA, GreyVictorSPX *elevatorMotorB,
+             ObservableXboxJoystick *operatorJoystick,
+             DigitalInput *elevatorHall);
     virtual ~Elevator();
 
     /**
@@ -72,12 +94,15 @@ public:
     void SetPosition(double position);
 
     /**
+     * Set to manual mode with joystick control
+     */
+    void SetManualInput();
+
+    /**
      * Set the elevator power.
      * @param power The power being sent to the motor from -1.0 to 1.0
      */
     void SetPower(double power);
-
-    void EnableLimelightControl();
 
     /**
      * Get the current position.
@@ -101,21 +126,65 @@ public:
     void EnableCoastMode();
 
     /**
+     * Gets the state of the elevator hall
+     * @return The state of the hall
+     */
+    bool GetElevatorHall();
+
+    /**
+     * Sets the elevators soft limit
+     * @param limit The soft limit to set
+     */
+    void SetSoftLimit(double limit);
+
+    /**
+     * Checks for halls state and auto zeros if its false
+     */
+    void HallZero();
+
+    /**
+     * Sets the rocket score mode.
+     * @param mode The RocketScoreMode.
+     */
+    void SetRocketScoreMode(RocketScoreMode mode);
+
+    /**
+     * Gets the rocket score mode.
+     * @return The current RocketScoreMode.
+     */
+    RocketScoreMode GetRocketScoreMode();
+
+    /**
      * Update function synonymous to TeleopContinuous that gets called
      * continuously.
-     * @param mode The current robot mode.
+     * @param mode The current RobotMode.
      */
     void TaskPeriodic(RobotMode mode);
 
 private:
     TaskMgr *m_scheduler;
 
-    TalonSRX *m_elevatorMotor;
+    GreyTalonSRX *m_elevatorMotorA;
+    GreyVictorSPX *m_elevatorMotorB;
+    ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;
+    double m_power;
+    double m_joystickControl;
+    bool m_prevHall;
     uint32_t m_zeroingTime;
+
     ElevatorState m_elevatorState;
-    LimelightVerticalController *m_limelightVerticalController;
+    RocketScoreMode m_rocketScoreMode;
+
     LogCell *m_positionCell;
+    LogCell *m_currentMasterCell;
+    LogCell *m_voltageMasterCell;
+    LogCell *m_currentFollowerCell;
+    LogCell *m_voltageFollowerCell;
+    LogCell *m_controlModeCell;
+    LogCell *m_powerInputCell;
+
+    DigitalInput *m_elevatorHall;
 };
 }

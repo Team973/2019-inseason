@@ -6,7 +6,9 @@
  */
 
 #include "AutoIndicator.h"
-#include <iostream>
+
+namespace frc973 {
+
 namespace LightPattern {
 
 AutoIndicator::AutoIndicator() {
@@ -63,5 +65,6 @@ void AutoIndicator::Tick(PixelState& state) {
     else {
         std::fill(state.pixels.begin(), state.pixels.end(), NO_MESSAGE_BLUE);
     }
+}
 }
 }

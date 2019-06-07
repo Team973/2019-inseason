@@ -8,16 +8,17 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_CENTERMIRROR_H_
 #define SRC_MODULES_PIXELPROCESSORS_CENTERMIRROR_H_
 
-#include <vector>
 #include <algorithm>
-#include "GreyLightTypes.h"
+
 #include "PixelStateProcessor.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 
 /**
- * PixelStateModulator to wrap processors around the middle of the strip,
- * rather than the left or right side.
+ * PixelStateProcessorModulator to wrap processors around the middle of the
+ * strip, rather than the left or right side.
  */
 class CenterMirror : public PixelStateProcessorModulator {
 public:
@@ -45,4 +46,6 @@ private:
     uint8_t m_previousNumLEDs;
 };
 }
+}
+
 #endif /* SRC_MODULES_PIXELPROCESSORS_CENTERMIRROR_H_ */

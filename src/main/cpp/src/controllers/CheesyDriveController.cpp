@@ -6,17 +6,12 @@
  */
 
 #include "src/controllers/CheesyDriveController.h"
-#include "lib/util/Util.h"
-#include <stdio.h>
-#include "lib/util/WrapDash.h"
-#include "src/info/RobotInfo.h"
-
-using namespace frc;
 
 namespace frc973 {
 
-CheesyDriveController::CheesyDriveController()
-        : m_leftOutput(0.0)
+CheesyDriveController::CheesyDriveController(Limelight *limelightHatch)
+        : m_limelightHatch(limelightHatch)
+        , m_leftOutput(0.0)
         , m_rightOutput(0.0)
         , m_oldWheel(0.0)
         , m_quickStopAccumulator(0.0)
@@ -24,6 +19,12 @@ CheesyDriveController::CheesyDriveController()
 }
 
 CheesyDriveController::~CheesyDriveController() {
+}
+
+void CheesyDriveController::Start(DriveControlSignalReceiver *out) {
+    printf("Turning on Cheesy Mode\n");
+    m_limelightHatch->SetCameraDriver();
+    m_limelightHatch->SetLightOff();
 }
 
 void CheesyDriveController::CalcDriveOutput(DriveStateProvider *state,

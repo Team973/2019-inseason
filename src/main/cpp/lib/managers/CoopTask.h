@@ -4,14 +4,14 @@
  *  Created on: Sep 5, 2015
  *      Author: Andrew
  *
- * Interface for objects that can be run by a TaskMgr.  Similar to 254's
+ * Interface for objects that can be run by a TaskMgr. Similar to 254's
  * Loopable interface.
  *
  * TaskMgr keeps a collection of these objects and runs them repeatedly when
- * appropriate.  In general, TaskPrePeriodic should be for tasks that read
+ * appropriate. In general, TaskPrePeriodic should be for tasks that read
  * sensors or calculate values that other tasks may need to read, TaskPeriodic
  * should be used for most things, and TaskPostPeriodic should be used for
- * tasks that might conflict with other Periodic tasks.  A task may register
+ * tasks that might conflict with other Periodic tasks. A task may register
  * any combination of hooks.
  */
 
@@ -35,36 +35,36 @@ public:
     virtual ~CoopTask();
 
     /**
-     * Beginning of a robot mode.
-     * @param mode The current operating mode of the robot.
+     * Beginning of a RobotMode.
+     * @param mode The current RobotMode.
      */
     virtual void TaskStartMode(RobotMode mode) {
     }
 
     /**
-     * End of a robot mode.
-     * @param mode The current operating mode of the robot.
+     * End of a RobotMode.
+     * @param mode The current RobotMode.
      */
     virtual void TaskStopMode(RobotMode mode) {
     }
 
     /**
      * Runs before periodic.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     virtual void TaskPrePeriodic(RobotMode mode) {
     }
 
     /**
      * Main periodic loop.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     virtual void TaskPeriodic(RobotMode mode) {
     }
 
     /**
      * Runs after periodic.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     virtual void TaskPostPeriodic(RobotMode mode) {
     }

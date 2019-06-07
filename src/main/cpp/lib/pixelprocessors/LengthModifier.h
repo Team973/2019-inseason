@@ -8,19 +8,19 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_LENGTHMODIFIER_H_
 #define SRC_MODULES_PIXELPROCESSORS_LENGTHMODIFIER_H_
 
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
-#include <vector>
+#include "lib/pixelprocessors/PixelStateProcessor.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 /**
- * PixelStateModulator to trick a Processor into believing it's a different
- * length than actual strip.
+ * PixelStateProcessorModulator to trick a Processor into believing it's a
+ * different length than actual strip.
  */
 class LengthModifier : public PixelStateProcessorModulator {
 public:
     /**
-     * Construct a Length Modifier.
+     * Construct a LengthModifier.
      * @param processor The PixelStateProcessor to modify the length of.
      * @param numLEDs The length the processor should run at.
      */
@@ -36,4 +36,6 @@ private:
     int m_numLEDS;
 };
 }
+}
+
 #endif /* SRC_MODULES_PIXELPROCESSORS_LENGTHMODIFIER_H_ */

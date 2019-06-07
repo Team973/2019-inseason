@@ -18,9 +18,9 @@ DelaySwitch::~DelaySwitch() {
 
 /*
  * Create a moving average filter of all previous binary inputs... true maps
- * to 1.0 and false maps to 0.0.  A high moving average implies we've been
+ * to 1.0 and false maps to 0.0. A high moving average implies we've been
  * seeing a lot of trues lately, and a low moving average implies we've been
- * seeing a lot of falses lately.  If our previous output and our average
+ * seeing a lot of falses lately. If our previous output and our average
  * are in significant disagreement, change output to match moving average.
  */
 bool DelaySwitch::Update(bool currentValue) {

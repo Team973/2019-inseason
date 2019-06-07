@@ -1,9 +1,7 @@
 #pragma once
 
-/**
- * Interpolated lookup table
- */
-
+#include <algorithm>
+#include <limits>
 #include <vector>
 
 namespace frc973 {

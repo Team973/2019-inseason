@@ -28,16 +28,19 @@ system('scp -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p lv
     TEAM_NUMBER, DESTINATION_DIR_RAW))
 
 for filename in listdir(DESTINATION_DIR_RAW):
-    matchLabel = None
-    with open(DESTINATION_DIR_RAW + filename, 'r') as f:
-        reader = DictReader(f)
-        for row in reader:
-            if row['Match Identifier']:
-                matchLabel = row['Match Identifier']
+    try:
+       matchLabel = None
+       with open(DESTINATION_DIR_RAW + filename, 'r') as f:
+           reader = DictReader(f)
+           for row in reader:
+               if row['Match Identifier']:
+                   matchLabel = row['Match Identifier']
 
-    if matchLabel:
-        system('cp {} "{}"'.format(
-            DESTINATION_DIR_RAW + filename,
-            DESTINATION_DIR_LABELED + matchLabel + '.csv'))
+       if matchLabel:
+           system('cp {} "{}"'.format(
+               DESTINATION_DIR_RAW + filename,
+               DESTINATION_DIR_LABELED + matchLabel + '.csv'))
+    except Exception as e:
+        print( "Could not categorize logfile %s because exception %s" % ( filename, str( e ) ) )
 
 print("Files located in " + DESTINATION_DIR_PARENT)

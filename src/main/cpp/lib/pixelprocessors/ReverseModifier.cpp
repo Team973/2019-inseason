@@ -5,8 +5,10 @@
  *      Author: Cole Brinsfield
  */
 
-#include "ReverseModifier.h"
-#include <iostream>
+#include "lib/pixelprocessors/ReverseModifier.h"
+
+namespace frc973 {
+
 namespace LightPattern {
 ReverseModifier::ReverseModifier(PixelStateProcessor* processor) {
     this->processor = processor;
@@ -14,5 +16,6 @@ ReverseModifier::ReverseModifier(PixelStateProcessor* processor) {
 void ReverseModifier::Tick(PixelState& state) {
     PixelStateProcessorModulator::Tick(state);
     std::reverse(state.pixels.begin(), state.pixels.end());
+}
 }
 }

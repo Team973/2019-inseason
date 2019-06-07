@@ -3,14 +3,18 @@
  *  Created on: Feb 5, 2018
  *      Author: Cole Brinsfield
  */
+
 #ifndef SRC_MODULES_APA102_H_
 #define SRC_MODULES_APA102_H_
 
-#include <stdint.h>
-#include "frc/WPILib.h"
 #include <algorithm>
-#include "lib/pixelprocessors/GreyLightTypes.h"
 #include <cmath>
+#include <vector>
+
+#include "frc/WPILib.h"
+#include "lib/pixelprocessors/GreyLightTypes.h"
+
+namespace frc973 {
 
 using namespace GreyLightType;
 
@@ -47,5 +51,6 @@ private:
     frc::SPI* m_spi;
     std::vector<uint8_t> m_ledBuffer;
 };
+}
 
 #endif

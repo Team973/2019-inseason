@@ -1,34 +1,42 @@
 #pragma once
 
-#include "frc/WPILib.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
-#include "lib/helpers/GreyLight.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
-#include "lib/helpers/XboxJoystickHelper.h"
-#include "lib/pixelprocessors/Flash.h"
-#include "lib/util/Util.h"
-#include "src/info/RobotInfo.h"
-#include "src/subsystems/Drive.h"
-#include <iostream>
 
-using namespace frc;
+#include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/Drive.h"
+#include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/Elevator.h"
+#include "src/subsystems/HatchIntake.h"
+#include "src/subsystems/Stinger.h"
 
 namespace frc973 {
+/**
+ * Handles preset selection.
+ */
+class PresetHandlerDispatcher;
 
 /**
- * Controls the test mode.
+ * Controls the Test mode.
  */
 class Test {
 public:
     /**
-     * Constuct a test mode.
-     * @param driver The driver's joystick.
-     * @param codriver The co-driver's joystick.
-     * @param drive The drive subsystem.
-     * @param greylight The GreyLight system.
+     * Constuct a Test mode.
+     * @param driverJoystick The driver's ObservablePoofsJoystick.
+     * @param operatorJoystick The operator's ObservableXboxJoystick.
+     * @param tuningJoystick The tuning ObservableDualActionJoystick.
+     * @param drive The Drive subsystem.
+     * @param elevator The Elevator subsystem.
+     * @param hatchIntake The HatchIntake subsystem.
+     * @param cargoIntake The CargoIntake subsystem
+     * @param stinger The Stinger subsystem.
+     * @param limelightHatch The hatch Limelight.
      */
-    Test(ObservablePoofsJoystick *driver, ObservableXboxJoystick *codriver,
-         Drive *drive, GreyLight *greylight);
+    Test(ObservablePoofsJoystick *driverJoystick,
+         ObservableXboxJoystick *operatorJoystick,
+         ObservableDualActionJoystick *tuningJoystick, Drive *drive,
+         Elevator *elevator, HatchIntake *hatchIntake, CargoIntake *cargoIntake,
+         Stinger *stinger, Limelight *limelightHatch);
     virtual ~Test();
 
     /**
@@ -47,7 +55,7 @@ public:
     void TestStop();
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Test mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -56,7 +64,7 @@ public:
                                   bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Test mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
@@ -64,31 +72,47 @@ public:
     void HandlePoofsJoystick(uint32_t port, uint32_t button, bool pressedP);
 
     /**
-     * Button handler for the disabled mode.
+     * Button handler for the Test mode.
      * @param port The port the joystick is connected to.
      * @param button The button.
      * @param pressedP The button's new status.
      */
     void HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP);
 
-    static constexpr Color END_GAME_RED = {
-        255, 0, 0}; /**< Display red during end game. */
-    static constexpr Color NO_COLOR = {0, 0, 0}; /**< Turn off the LED strip. */
+    friend class PresetHandlerDispatcher;
 
 private:
-    enum class DriveMode
-    {
-        Openloop
-    };
-
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
+    ObservableDualActionJoystick *m_tuningJoystick;
 
     Drive *m_drive;
+    enum class DriveMode
+    {
+        Openloop,
+        LimelightHatch,
+        LimelightTrig,
+        AssistedCheesy,
+        Cheesy,
+        PIDDrive,
+        PIDTurn
+    };
     DriveMode m_driveMode;
 
-    GreyLight *m_greylight;
-    LightPattern::Flash *m_endGameSignal;
-    bool m_endGameSignalSent;
+    HatchIntake *m_hatchIntake;
+    Elevator *m_elevator;
+    CargoIntake *m_cargoIntake;
+    Stinger *m_stinger;
+
+    Limelight *m_limelightHatch;
+
+    enum class Rumble
+    {
+        on,
+        off
+    };
+    Rumble m_rumble;
+
+    uint32_t m_rumbleTimer;
 };
 }

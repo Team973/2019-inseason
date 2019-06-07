@@ -8,9 +8,9 @@
 #ifndef SRC_MODULES_PIXELPROCESSORS_GRADIENT_H_
 #define SRC_MODULES_PIXELPROCESSORS_GRADIENT_H_
 
-#include <vector>
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
+#include "lib/pixelprocessors/PixelStateProcessor.h"
+
+namespace frc973 {
 
 namespace LightPattern {
 /**
@@ -35,6 +35,7 @@ private:
     Color m_gradientStart;
     Color m_gradientEnd;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_GRADIENT_H_ */

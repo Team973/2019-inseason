@@ -1,10 +1,5 @@
 /*
- * Debouncer.h  Copied from 254.  Don't tell no one
- *
- * Filters a digital signal... if the incoming signal has been false at any
- * point in the last |period|, return false.  If it has been true for the
- * whole |period|, return true.  Helpful for OnTarget and IsFinished type
- * functions.
+ * Debouncer.h
  *
  *  Created on: Jan 17, 2016
  *      Author: Andrew
@@ -17,14 +12,17 @@
 namespace frc973 {
 
 /**
- * A direct-use filter for something that needs this to debounce values. This
- * filter sets a timer to "debounce" noisy signals and removes many
- * false-positives.
+ * Filters a digital signal... if the incoming signal has been false at any
+ * point in the last |period|, return false. If it has been true for the
+ * whole |period|, return true. Helpful for OnTarget and IsFinished type
+ * functions.
+ *
+ * Copied from 254. Don't tell no one
  */
 class Debouncer {
 public:
     /**
-     * Construct a Debouncer object with the given period in seconds.
+     * Construct a Debouncer with the given period in seconds.
      * @param period Time in seconds to check for falses.
      */
     Debouncer(double period) {

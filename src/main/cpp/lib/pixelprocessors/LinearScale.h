@@ -4,17 +4,19 @@
  *  Created on: Mar 30, 2017
  *      Author: Cole
  */
-#include "GreyLightTypes.h"
-#include "PixelStateProcessor.h"
+
+#include "lib/pixelprocessors/PixelStateProcessor.h"
 
 #ifndef SRC_MODULES_PIXELPROCESSORS_LINEARSCALE_H_
 #define SRC_MODULES_PIXELPROCESSORS_LINEARSCALE_H_
 
+namespace frc973 {
+
 namespace LightPattern {
 
 /**
- * PixelStateModulator that overlays a singular bar of a bargraph over a
- * processor.
+ * PixelStateProcessorModulator that overlays a singular bar of a bargraph over
+ * a processor.
  */
 class LinearScale : public PixelStateProcessorModulator {
 public:
@@ -46,6 +48,7 @@ private:
     Color m_maxColor;
     double m_minVal, m_maxVal, m_currentValue;
 };
+}
 }
 
 #endif /* SRC_MODULES_PIXELPROCESSORS_LINEARSCALE_H_ */

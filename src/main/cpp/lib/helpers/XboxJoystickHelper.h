@@ -7,76 +7,73 @@
 
 #pragma once
 
-#include "frc/WPILib.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
-#include <stdint.h>
-
-using namespace frc;
 
 namespace frc973 {
 
+/**
+ * Button mapping for the Xbox joystick.
+ */
 namespace Xbox {
-const unsigned int BtnX = 3;
-const unsigned int BtnA = 1;
-const unsigned int BtnB = 2;
-const unsigned int BtnY = 4;
-const unsigned int LeftBumper = 5;
-const unsigned int RightBumper = 6;
-const unsigned int Back = 7;
-const unsigned int Start = 8;
+const unsigned int BtnX = 3;        /**< Button X ID. */
+const unsigned int BtnA = 1;        /**< Button A ID. */
+const unsigned int BtnB = 2;        /**< Button B ID. */
+const unsigned int BtnY = 4;        /**< Button Y ID. */
+const unsigned int LeftBumper = 5;  /**< Left Bumper Button ID. */
+const unsigned int RightBumper = 6; /**< Right Bumper Button ID. */
+const unsigned int Back = 7;        /**< Back Button ID. */
+const unsigned int Start = 8;       /**< Start Button ID. */
 
-const unsigned int LJoystickBtn = 9;
-const unsigned int RJoystickBtn = 10;
+const unsigned int LJoystickBtn = 9;  /**< Left Joystick Button ID. */
+const unsigned int RJoystickBtn = 10; /**< Right Joystick Button ID. */
 
-const unsigned int DPadUpVirtBtn = 11;
-const unsigned int DPadDownVirtBtn = 12;
-const unsigned int DPadLeftVirtBtn = 13;
-const unsigned int DPadRightVirtBtn = 14;
+const unsigned int DPadUpVirtBtn = 11;    /**< DPad Up Button ID. */
+const unsigned int DPadDownVirtBtn = 12;  /**< DPad Down Button ID. */
+const unsigned int DPadLeftVirtBtn = 13;  /**< DPad Left Button ID. */
+const unsigned int DPadRightVirtBtn = 14; /**< DPad Right Button ID. */
 
-const unsigned int LeftXAxis = 0;
-const unsigned int LeftYAxis = 1;
-const unsigned int RightXAxis = 4;
-const unsigned int RightYAxis = 5;
-const unsigned int LeftTriggerAxis = 2;
-const unsigned int RightTriggerAxis = 3;
-}  // namespace Xbox
+const unsigned int LeftXAxis = 0;        /**< Left Joystick X Axis ID. */
+const unsigned int LeftYAxis = 1;        /**< Left Joystick Y Axis ID. */
+const unsigned int RightXAxis = 4;       /**< Right Joystick X Axis ID. */
+const unsigned int RightYAxis = 5;       /**< Right Joystick Y Axis ID. */
+const unsigned int LeftTriggerAxis = 2;  /**< Left Trigger Button Axis ID. */
+const unsigned int RightTriggerAxis = 3; /**< Right Trigger Button Axis ID. */
+}
 
-class ObservableXboxJoystick;
-
+/**
+ * An observer for a Xbox Joystick.
+ */
 class XboxJoystickObserver {
 public:
     XboxJoystickObserver() {
     }
     virtual ~XboxJoystickObserver() {
     }
+    /**
+     * This function is overriden by the subclass to handle an Xbox button
+     * event notification.
+     * @param port The joystick port.
+     * @param button The joystick button.
+     * @param newState If true, specifies the button has been pressed, if false,
+     * specifies the button has been released.
+     */
     virtual void ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
                                                 bool newState) = 0;
 };
 
+/**
+ * This class observes a given joystick and notifies the given callback
+ * on any joystick event. This is particularly useful for catching the
+ * *edge* of a button press or release event. Also lets you use a joystick
+ * axis as a button in an easy way.
+ */
 class ObservableXboxJoystick
         : public CoopTask
         , public XboxController {
 public:
-    static constexpr double DEADBAND_INPUT_THRESHOLD =
-        0.05; /**< The deadband threshold on the joysticks. */
-    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
-        0.5; /**< The virtual joystick threshold. */
-
-protected:
-    uint32_t m_port; /**< The port the joystick is plugged into. */
-
-    /* For observer notification */
-    XboxJoystickObserver *m_observer; /**< The class to notify whenever a change
-                         in the joystick occurs. */
-    DriverStation *m_ds;              /**< The DriverStation operating on.*/
-    uint32_t m_prevBtn;               /**< The previous button.*/
-    TaskMgr *m_scheduler;             /**< The task manager object.*/
-    LogCell *m_logCell;               /**< The logger.*/
-
-public:
     /**
-     * Create an instance of the ObservableXboxJoystickJoystick object. Requires
+     * Create an instance of the ObservableXboxJoystick object. Requires
      * the information to instantiate the underlying WPI-Joystick, as well as
      * references to the scheduler that will run it and the observer that
      * will observe its state.
@@ -117,14 +114,6 @@ public:
                           pad is pressed. */
 
     /**
-     * Pretend the Left X Axis is a button.  By default it is not pressed.
-     * If the user pushes it mostly forward (say, more than half way), say
-     * that button is pressed.  If the user pulls it mostly backwards (say,
-     * more than half way), say that button is released.  If it's anywhere
-     * in between, rememember what it last was.
-     */
-
-    /**
      * Get a bitstring containing the state of *all* buttons on the joystick.
      * Including any 'virtual' buttons like the 'joystick buttons'.
      * @return The bitstring of all buttons.
@@ -134,8 +123,23 @@ public:
     /**
      * This function is called by the TaskMgr to check and process Joystick
      * button events.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPrePeriodic(RobotMode mode) override;
+
+    static constexpr double DEADBAND_INPUT_THRESHOLD =
+        0.05; /**< The deadband threshold on the joysticks. */
+    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
+        0.5; /**< The virtual joystick threshold. */
+protected:
+    uint32_t m_port; /**< The port the joystick is plugged into. */
+
+    /* For observer notification */
+    XboxJoystickObserver *m_observer; /**< The class to notify whenever a change
+                         in the joystick occurs. */
+    DriverStation *m_ds;              /**< The DriverStation operating on. */
+    uint32_t m_prevBtn;               /**< The previous button. */
+    TaskMgr *m_scheduler;             /**< The task manager object. */
+    LogCell *m_logCell;               /**< The logger. */
 };
 }

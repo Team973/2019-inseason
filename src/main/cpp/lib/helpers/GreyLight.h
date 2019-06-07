@@ -7,15 +7,15 @@
 #ifndef SRC_MODULES_GREYLIGHT_H_
 #define SRC_MODULES_GREYLIGHT_H_
 
-#include <chrono>
-#include <mutex>
-#include <thread>
 #include "lib/pixelprocessors/GreyLightTypes.h"
 #include "lib/pixelprocessors/PixelStateProcessor.h"
+#include "lib/pixelprocessors/SolidColor.h"
 
 #ifndef USING_LED_SIMULATOR
 #include "lib/helpers/APA102.h"
 #endif
+
+namespace frc973 {
 
 using namespace GreyLightType;
 using namespace LightPattern;
@@ -38,7 +38,7 @@ public:
     void SetPixelStateProcessor(PixelStateProcessor* processor);
 
     /**
-     * Return the current state of the LEDs.
+     * Gets the current state of the LEDs.
      * @return The current state.
      */
     PixelState GetState();
@@ -58,5 +58,6 @@ private:
     APA102* m_strip;
 #endif
 };
+}
 
 #endif /* SRC_MODULES_GREYLIGHT_H_ */

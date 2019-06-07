@@ -8,9 +8,7 @@
 #pragma once
 
 #include "lib/bases/DriveBase.h"
-#include <stdio.h>
-
-using namespace frc;
+#include "lib/sensors/Limelight.h"
 
 namespace frc973 {
 
@@ -20,16 +18,17 @@ namespace frc973 {
 class CheesyDriveController : public DriveController {
 public:
     /**
-     * Construct a Cheesy Drive controller.
+     * Construct a CheesyDriveController.
+     * @param LimelightHatch The hatch Limelight.
      */
-    CheesyDriveController();
+    CheesyDriveController(Limelight *LimelightHatch);
     virtual ~CheesyDriveController();
 
     /**
      * Calculate motor output given the most recent joystick commands. In this
      * case just return the most recent joystick commands.
-     * @param state The state provider for handling incoming messages.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param state The DriveStateProvider for handling incoming messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void CalcDriveOutput(DriveStateProvider *state,
                          DriveControlSignalReceiver *out);
@@ -54,21 +53,37 @@ public:
 
     /**
      * Start the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
-    void Start(DriveControlSignalReceiver *out) override {
-        printf("Turning on Cheesy Mode\n");
-    }
+    void Start(DriveControlSignalReceiver *out) override;
 
     /**
      * Stop the drive controller.
-     * @param out The signal receiver for handling outgoing messages.
+     * @param out The DriveControlSignalReceiver for handling outgoing messages.
      */
     void Stop(DriveControlSignalReceiver *out) override {
         printf("Turning off Cheesy Mode\n");
     }
 
+    /**
+     * Gets the left drive output
+     * @return The left output
+     */
+    double GetLeftOutput() {
+        return m_leftOutput;
+    }
+
+    /**
+     * Gets the right drive output
+     * @return The right output
+     */
+    double GetRightOutput() {
+        return m_rightOutput;
+    }
+
 private:
+    Limelight *m_limelightHatch;
+
     double m_leftOutput;
     double m_rightOutput;
     double m_oldWheel;

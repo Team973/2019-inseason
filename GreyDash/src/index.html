@@ -34,7 +34,9 @@
                 <li>Startup <a href="https://pynetworktables2js.readthedocs.io/en/stable/">pynetworktables2js</a>.</li>
                 <li>Open http://localhost:8888 in a web browser.</li>
             </ol>
-            <p>More information can be found at <a href="https://github.com/Team973/greybots-skeleton/blob/master/docs/DashboardGuide.md">this guide</a>.</p>
+            <p>More information can be found at <a
+                    href="https://github.com/Team973/greybots-skeleton/blob/master/docs/DashboardGuide.md">this
+                    guide</a>.</p>
         </div>
 
         <div class="mdl-dialog__actions">
@@ -45,13 +47,16 @@
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
+                <!-- Logo -->
+                <img src="/img/icon.png" style="margin:auto;height:65%;padding-right:10px;"></img>
                 <!-- Title -->
-                <span class="mdl-layout-title">GreyDash</span>
+                <span class="mdl-layout-title">GreyDash v2019</span>
                 <!-- Add spacer, to align navigation to the right -->
                 <div class="mdl-layout-spacer"></div>
                 <!-- Navigation. We hide it in small screens. -->
                 <nav class="mdl-navigation mdl-layout--large-screen-only">
-                    <a onclick="helpDialog.showModal()" class="mdl-navigation__link"><i class="material-icons">help</i></a>
+                    <a onclick="helpDialog.showModal()" class="mdl-navigation__link"><i
+                            class="material-icons">help</i></a>
                 </nav>
             </div>
         </header>
@@ -70,14 +75,22 @@
             -->
             <section id="default" class="tabcontent">
                 <div class="mdl-grid content">
-                    <div id="cameraContainer" class="cameraContainer mdl-card mdl-cell mdl-cell--7-col mdl-color--grey-400">
-                        <button id="refresh" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="reloadCamera()">
-                            <i class="material-icons">autorenew</i>
-                        </button>
+                    <div class="cards mdl-cell mdl-cell--8-col">
+                        <div id="cameraContainer"
+                            class="cameraContainer mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            <img id="camera"></img>
+                            <button id="refresh"
+                                class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                                onclick="reloadCamera()">
+                                <i class="material-icons">autorenew</i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="cards mdl-cell mdl-cell--2-col">
-                        <div id="indicators" class="indicators mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400"><span>Robot Status: <span id="robotState">Unknown State</span></span>
+                        <div id="indicators" class="indicators mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            <span>Robot
+                                Status: <span id="robotState">Unknown State</span></span>
                         </div>
 
                         <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
@@ -91,9 +104,12 @@
                         </div>
                     </div>
 
-                    <div class="important-cards mdl-cell mdl-cell--3-col">
+                    <div class="important-cards mdl-cell mdl-cell--2-col">
                         <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
                             <h1 id="timer" class="timer">--:--</h1>
+                        </div>
+                        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            <img src="/img/icon.png" class="logo"></img>
                         </div>
                     </div>
                 </div>
@@ -105,12 +121,13 @@
             -->
             <section id="debug" class="tabcontent">
                 <div class="mdl-grid content">
-                    <div id="debugCharts" class="charts mdl-card mdl-cell mdl-cell--7-col mdl-color--grey-400">
+                    <div id="debugCharts" class="chartContainer mdl-card mdl-cell mdl-cell--10-col mdl-color--grey-400">
                     </div>
 
                     <div class="cards mdl-cell mdl-cell--2-col">
 
-                        <div id="debugIndicators" class="indicators mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                        <div id="debugIndicators"
+                            class="indicators mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
                             </span>
                         </div>
 
@@ -124,10 +141,11 @@
                             </svg>
                         </div>
 
-                    </div>
-                    <div class="important-cards mdl-cell mdl-cell--3-col">
                         <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
                             <h1 id="timer" class="timer">--:--</h1>
+                        </div>
+                        <div class="mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                            <img src="/img/icon.png" class="logo"></img>
                         </div>
                     </div>
                 </div>
@@ -139,7 +157,8 @@
             -->
             <section id="table" class="tabcontent">
                 <div class="mdl-grid content">
-                    <div id="tableContainer" class="tableContainer mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
+                    <div id="tableContainer"
+                        class="tableContainer mdl-card mdl-cell mdl-cell--12-col mdl-color--grey-400">
                         <table id="dbTable" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                             <thead>
                                 <tr>
@@ -149,24 +168,34 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td id="/SmartDashboard/DB/String 0" class="mdl-data-table__cell--non-numeric">undefined</td>
-                                    <td id="/SmartDashboard/DB/String 5" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 0" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
+                                    <td id="/SmartDashboard/DB/String 5" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
                                 </tr>
                                 <tr>
-                                    <td id="/SmartDashboard/DB/String 1" class="mdl-data-table__cell--non-numeric">undefined</td>
-                                    <td id="/SmartDashboard/DB/String 6" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 1" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
+                                    <td id="/SmartDashboard/DB/String 6" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
                                 </tr>
                                 <tr>
-                                    <td id="/SmartDashboard/DB/String 2" class="mdl-data-table__cell--non-numeric">undefined</td>
-                                    <td id="/SmartDashboard/DB/String 7" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 2" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
+                                    <td id="/SmartDashboard/DB/String 7" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
                                 </tr>
                                 <tr>
-                                    <td id="/SmartDashboard/DB/String 3" class="mdl-data-table__cell--non-numeric">undefined</td>
-                                    <td id="/SmartDashboard/DB/String 8" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 3" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
+                                    <td id="/SmartDashboard/DB/String 8" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
                                 </tr>
                                 <tr>
-                                    <td id="/SmartDashboard/DB/String 4" class="mdl-data-table__cell--non-numeric">undefined</td>
-                                    <td id="/SmartDashboard/DB/String 9" class="mdl-data-table__cell--non-numeric">undefined</td>
+                                    <td id="/SmartDashboard/DB/String 4" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
+                                    <td id="/SmartDashboard/DB/String 9" class="mdl-data-table__cell--non-numeric">
+                                        undefined</td>
                                 </tr>
                             </tbody>
                         </table>

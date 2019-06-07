@@ -1,13 +1,6 @@
 /*
  * AsynchLogCell.h
  *
- * Defines an asynchronous extension to the LogCell class.
- * When AsynchLogCell.GetContent is called, the AsynchLogCell
- * calls a callback to generate that content.
- *
- * This is in contrast with the standard LogCell which returns
- * whatever was last written to it.
- *
  *  Created on: Jan 1, 2015
  *      Author: Andrew
  */
@@ -21,15 +14,19 @@ namespace frc973 {
 class AsynchLogCellListener;
 
 /**
- * AsynchLogCell works like a LogCell except that it takes a reference to a
- * listener whom it will notify when it's content is requested.
+ * Defines an asynchronous extension to the LogCell class.
+ * When AsynchLogCell.GetContent is called, the AsynchLogCell
+ * calls a callback to generate that content.
+ *
+ * This is in contrast with the standard LogCell which returns
+ * whatever was last written to it.
  */
 class AsynchLogCell : public LogCell {
 public:
     /**
      * Construct an AsynchLogCell. When GetContent is called,
-     * listener->NofityAsynchLogCellListener(this) gets called to generate the
-     * content to return.
+     * AsynchLogCellListener.NofityAsynchLogCellListener gets called to generate
+     * the content to return.
      * @param name The name of the column to log.
      * @param listener The listener to notify when content is requested.
      * @param size The cell size.
@@ -50,7 +47,7 @@ private:
 
 /**
  * AsynchLogCellListener is an interface describing a class that is capable of
- * responding to AsynchLogCell notifications.  The listener should, given a
+ * responding to AsynchLogCell notifications. The listener should, given a
  * reference to the cell creating the notification, call cell->LogText (or
  * something like) that to fill the given cell with whatever content is needed.
  */

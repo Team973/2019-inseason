@@ -3,7 +3,7 @@
  *
  * Base class for an object that writes a spreadsheet.
  *
- * Define a subclass to use this.  Creates a row every time TaskPostPeriodic
+ * Define a subclass to use this. Creates a row every time TaskPostPeriodic
  * is called, so if you wanted you could create a TaskManager and log at
  * whatever frequency you want.
  *
@@ -13,13 +13,13 @@
 
 #pragma once
 
-#include <iostream>
+#include <cstdarg>
 #include <fstream>
+#include <iostream>
 #include <vector>
 
-#include "lib/managers/TaskMgr.h"
 #include "lib/managers/CoopTask.h"
-#include <pthread.h>
+#include "lib/managers/TaskMgr.h"
 
 namespace frc973 {
 
@@ -30,7 +30,7 @@ constexpr uint32_t LOG_CELL_FLAG_CLEAR_ON_READ =
     1; /**< Clear the cell on read or not. */
 
 /**
- * Represents a column in the spreadsheet.  For the column to be printed, you
+ * Represents a column in the spreadsheet. For the column to be printed, you
  * must register the instance of a LogCell in the LogSpreadsheet using
  * LogSpreadsheet.RegisterCell.
  */
@@ -74,7 +74,7 @@ public:
     void LogPrintf(const char *formatstr, ...);
 
     /**
-     * Return the name of this cell.
+     * Gets the name of this cell.
      * @return The name of the cell.
      */
     const char *GetName();
@@ -92,7 +92,7 @@ public:
 
     /**
      * Check whether the cell should be cleared after being read.
-     * @return Whether the cell should be cleared after being logged
+     * @return Whether the cell should be cleared after being logged.
      */
     bool ClearOnRead() {
         return m_flags & LOG_CELL_FLAG_CLEAR_ON_READ;
@@ -124,14 +124,13 @@ private:
 
 /**
  * A LogSpreadsheet writes to a file the contents of each of its registered
- * cells.
+ * LogCell's.
  */
 class LogSpreadsheet : public CoopTask {
 public:
     /**
-     * Create a new LogSpreadsheetBase... we need the scheduler that will be
-     * calling us.
-     * @param scheduler The Task Manager to register this with.
+     * Construct a LogSpreadsheet.
+     * @param scheduler The TaskMgr to register this with.
      */
     explicit LogSpreadsheet(TaskMgr *scheduler);
     virtual ~LogSpreadsheet();
@@ -143,15 +142,15 @@ public:
 
     /**
      * Called regularly. If we are initialized, write a row of the table.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPostPeriodic(RobotMode mode) override;
 
     /**
-     * Register a new column to be logged.  You will figure this value out
-     * in GetValue.  You cannot register more columns after the header of
-     * the file has already been written.
-     * @param cell The cell to register.
+     * Register a new column to be logged. You will figure this value out
+     * in LogCell.GetContent. You cannot register more columns after the header
+     * of the file has already been written.
+     * @param cell The LogCell to register.
      */
     void RegisterCell(LogCell *cell);
 

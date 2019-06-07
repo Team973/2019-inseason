@@ -1,12 +1,6 @@
-#include <cstdarg>
 #include "lib/util/WrapDash.h"
-#include "frc/WPILib.h"
-
-#include <stdio.h>
 
 #define DBSTRING_MAX_LENGTH 30
-
-using namespace frc;
 
 namespace frc973 {
 

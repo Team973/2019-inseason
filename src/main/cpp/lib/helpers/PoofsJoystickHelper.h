@@ -7,59 +7,57 @@
 
 #pragma once
 
-#include "frc/WPILib.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
-#include <stdint.h>
-
-using namespace frc;
 
 namespace frc973 {
 
-namespace PoofsJoysticks {
-const unsigned int LeftXAxis = 1;
-const unsigned int LeftYAxis = 0;
-const unsigned int RightXAxis = 3;
-const unsigned int RightYAxis = 2;
+/**
+ * Button mapping for the PoofsJoystick.
+ */
+namespace PoofsJoystick {
+const unsigned int LeftXAxis = 1;  /**< Left X Axis ID. */
+const unsigned int LeftYAxis = 0;  /**< Left Y Axis ID. */
+const unsigned int RightXAxis = 3; /**< Right X Axis ID. */
+const unsigned int RightYAxis = 2; /**< Right Y Axis ID. */
 
-const unsigned int LeftTrigger = 1;
-const unsigned int LeftBumper = 2;
-const unsigned int RightTrigger = 3;
-const unsigned int RightBumper = 4;
-}  // namespace PoofsJoysticks
+const unsigned int LeftTrigger = 1;  /**< Left Trigger ID. */
+const unsigned int LeftBumper = 2;   /**< Left Bumper ID. */
+const unsigned int RightTrigger = 3; /**< Left Trigger ID. */
+const unsigned int RightBumper = 4;  /**< Left Bumper ID. */
+}
 
-class ObservablePoofsJoystick;
-
+/**
+ * An observer for a PoofsJoystick.
+ */
 class PoofsJoystickObserver {
 public:
+    /**
+     * Construct a PoofsJoystickObserver.
+     */
     PoofsJoystickObserver() {
     }
     virtual ~PoofsJoystickObserver() {
     }
+
+    /**
+     * This function is overriden by the subclass to handle a joystick button
+     * event notification.
+     * @param port The joystick port.
+     * @param button The joystick button.
+     * @param newState If true, specifies the button has been pressed, if false,
+     * specifies the button has been released.
+     */
     virtual void ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
                                                  bool newState) = 0;
 };
 
+/**
+ * An observable PoofsJoystick.
+ */
 class ObservablePoofsJoystick
         : public CoopTask
         , public Joystick {
-public:
-    static constexpr double DEADBAND_INPUT_THRESHOLD =
-        0.05; /**< The deadband threshold on the joysticks. */
-    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
-        0.5; /**< The virtual joystick threshold. */
-
-protected:
-    uint32_t m_port; /**< The port the joystick is plugged into. */
-
-    /* For observer notification */
-    PoofsJoystickObserver *m_observer; /**< The class to notify whenever a
-                         change in the joystick occurs. */
-    DriverStation *m_ds;               /**< The DriverStation operating on.*/
-    uint32_t m_prevBtn;                /**< The previous button.*/
-    TaskMgr *m_scheduler;              /**< The task manager object.*/
-    LogCell *m_logCell;                /**< The logger.*/
-
 public:
     /**
      * Create an instance of the ObservablePoofsJoystick object. Requires the
@@ -93,44 +91,27 @@ public:
     float GetRawAxisWithDeadband(int axis, bool fSquared = false,
                                  double threshold = DEADBAND_INPUT_THRESHOLD);
 
-    bool GetDPadUpVirtButton(); /**< Check whether the up button on the d pad is
-                       pressed. */
-    bool GetDPadDownVirtButton();  /**< Check whether the down button on the d
-                          pad is pressed. */
-    bool GetDPadLeftVirtButton();  /**< Check whether the left button on the d
-                          pad is pressed. */
-    bool GetDPadRightVirtButton(); /**< Check whether the right button on the d
-                          pad is pressed. */
-
     /**
-     * Pretend the Left X Axis is a button.  By default it is not pressed.
-     * If the user pushes it mostly forward (say, more than half way), say
-     * that button is pressed.  If the user pulls it mostly backwards (say,
-     * more than half way), say that button is released.  If it's anywhere
-     * in between, rememember what it last was.
-     */
-
-    /**
-     * Left X Virtual button.
-     * @return Whether the left X virtual button is pressed.
+     * Left trigger button.
+     * @return Whether the left trigger button is pressed.
      */
     bool GetLTrigger();
 
     /**
-     * Left Y Virtual button.
-     * @return Whether the left Y virtual button is pressed.
+     * Left bumper button.
+     * @return Whether the left bumper button is pressed.
      */
     bool GetLBumper();
 
     /**
-     * Right X Virtual button.
-     * @return Whether the right X virtual button is pressed.
+     * Right trigger button.
+     * @return Whether the right trigger button is pressed.
      */
     bool GetRTrigger();
 
     /**
-     * Right Y Virtual button.
-     * @return Whether the right Y virtual button is pressed.
+     * Right bumper button.
+     * @return Whether the right bumper button is pressed.
      */
     bool GetRBumper();
 
@@ -144,8 +125,23 @@ public:
     /**
      * This function is called by the TaskMgr to check and process Joystick
      * button events.
-     * @param mode The current operating mode of the robot.
+     * @param mode The current RobotMode.
      */
     void TaskPrePeriodic(RobotMode mode) override;
+
+    static constexpr double DEADBAND_INPUT_THRESHOLD =
+        0.05; /**< The deadband threshold on the joysticks. */
+    static constexpr double VIRTUAL_JOYSTICK_THRESHOLD =
+        0.5; /**< The virtual joystick threshold. */
+protected:
+    uint32_t m_port; /**< The port the joystick is plugged into. */
+
+    /* For observer notification */
+    PoofsJoystickObserver *m_observer; /**< The class to notify whenever a
+                         change in the joystick occurs. */
+    DriverStation *m_ds;               /**< The DriverStation operating on. */
+    uint32_t m_prevBtn;                /**< The previous button. */
+    TaskMgr *m_scheduler;              /**< The task manager object. */
+    LogCell *m_logCell;                /**< The logger. */
 };
 }
