@@ -43,6 +43,8 @@ Let's define these flags:
  - `minValue` is the lowest value the chart can show.
  - `maxValue` is the highest value the chart can show.
  - `show` determines whether the chart will be shown.
+ - `interpolation` determines the display type of the graph (scatter plot, linear, step, etc)
+ - `millisPerPixel` determines the "zoom" of the chart (how much time is shown on the graph)
  - `title` is the description shown above the chart.
  - `keys` is the container for the SmartDashboard keys to be shown. You can list multiple for multiple lines. Please describe the colors in the title.
 
