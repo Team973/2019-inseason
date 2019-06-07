@@ -68,21 +68,46 @@ $(function() {
 <div class="contents">
 <div class="textblock"><h2>FRC Team 973: The Greybots 2019 Code for Destination: Deep Space</h2>
 <h3>2019 Houston World Champions!</h3>
-<h3>2019 Orange County and Sacramento Regionals Autonomous Award Winners!</h3>
+<h3>2019 Orange County and Sacramento Regional Autonomous Award Winners!</h3>
 <p><a href="https://travis-ci.com/Team973/2019-inseason"><img src="https://travis-ci.com/Team973/2019-inseason.svg?token=9qRQZ4Pb162wPMEfroVb&branch=master" alt="Build Status" class="inline"/>
-</a> <a href="https://www.firstinspires.com/robotics/frc/game-and-season"><object type="image/svg+xml" data="https://img.shields.io/badge/frc-2019-brightgreen.svg" alt="FRC Year"></object>
+</a> <a href="https://www.firstinspires.org/robotics/frc/game-and-season"><object type="image/svg+xml" data="https://img.shields.io/badge/frc-2019-brightgreen.svg" alt="FRC Year"></object>
 />
 </a> <a href="https://wpilib.screenstepslive.com/s/4485/m/13810"><object type="image/svg+xml" data="https://img.shields.io/badge/language-c++-brightgreen.svg" alt="Language Type"></object>
 />
 </a></p>
 <h2>Getting Started</h2>
-<p>We use Gradle to build here. For a walk-through on installing the build system on your computer, check out <code>docs/InstallGuide.md</code>.</p>
-<h2>Making your first Pull Request</h2>
-<p>We do a feature-branch workflow here. You write your features in your own branches. When you finish writing your feature and you've tested it on the robot, you can make a pull request to get those changes merged into <code>dev</code>. When <code>dev</code> has been battle tested, we merge <code>dev</code> into <code>master</code>. In this way <code>dev</code> is kinda stable and <code>master</code> is super duper stable. When it's midnight before an event and the robot is speaking in tongues and Gradle isn't building and we're all grumpy, we revert back to the last commit in <code>master</code> because we know that anything in the <code>master</code> branch is guaranteed to work. <code>master</code> might not always have the latest and greatest features, but it will always have something that the drivers can work with.</p>
-<p>Check out <code>docs/YourFirstPR.md</code> for a walk-through on making a pull request.</p>
-<h2>Style guide</h2>
-<p>Style is important with programming. It can be the difference between your PR getting accepted and your PR getting declined. Check out <code>docs/StyleGuide.md</code> for examples of what good style looks like in source code.</p>
-<p>Other teams may have different style guides. We use this one. It doesn't really matter what style guide we use as long as it's consistent across the whole codebase. </p>
+<p>Welcome to the 2019 Robot Code for the World Champ robot: Fireball! We use Gradle to build here. For a walk-through on installing the build system on your computer, check out <code>guides/InstallGuide.md</code>. Then, run <code>./gradlew build</code> in the top-level directory.</p>
+<h2>Main features</h2>
+<p>Some unique and interesting features to look for:</p>
+<ul>
+<li>Custom vision alignment control algorithm used in teleop and sandstorm by running three PID loops off the roboRIO based off Limelight x-offset, y-offset (for real time distance calculations), and target skew/rotation</li>
+<li>Automated L3, buddy-L3, and L2 climb sequences</li>
+<li>Limelight as a source for driver feedback</li>
+<li>State machine to handle automated motions for simultaneous elevator, cargo, and hatch intake</li>
+<li>Current low-pass filtering for cargo intake</li>
+<li>Utilizing motion magic control mode on Talon SRXs for elevator motions</li>
+<li>Using default dashboard as a tool to quickly change vision PID gains for faster tuning sessions (found in the pidinputs branch)</li>
+<li>GreyDash - custom, real-time dashboard primarily used for tuning PID and reading miscellaneous robot data (based on FRCDashboard pre-electron)</li>
+<li>GreyCTRE/GreySparkMax Wrapper - used to set default values for all Talon SRXs/Victor SPXs and Spark MAXs</li>
+<li>Coding style checker at commit following our own style guide (found in the <code>tools</code> folder)</li>
+</ul>
+<h2>Contributors</h2>
+<p>Thank you to everyone who helped with our code for this year! Special thanks to the following.</p>
+<h3>Students</h3>
+<ul>
+<li>Kyle D (Lead Programmer): <a href="https://github.com/KyleD973">@KyleD973</a></li>
+<li>Chris M (Veteran): <a href="https://github.com/Chrismac112">@Chrismac112</a></li>
+<li>Chris L (Veteran): <a href="https://github.com/Chris2fourlaw">@Chris2fourlaw</a></li>
+<li>Luis V (New!): <a href="https://github.com/Luis-Velasco">@Luis-Velasco</a></li>
+<li>Dylan F (New!): <a href="https://github.com/Dylan-Fitchmun">@Dylan-Fitchmun</a></li>
+</ul>
+<h3>Mentors</h3>
+<ul>
+<li>Allen B: <a href="https://github.com/rubikscube4">@rubikscube4</a></li>
+<li>Andrew N: <a href="https://github.com/yabberyabber">@yabberyabber</a></li>
+<li>Oliver C: <a href="https://github.com/ocurr">@ocurr</a></li>
+<li>John P: <a href="https://github.com/AddictArts">@AddictArts</a> </li>
+</ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->

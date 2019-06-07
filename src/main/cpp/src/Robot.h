@@ -30,9 +30,10 @@ using namespace cs;
  * @author Chris L
  * @author Luis V
  * @author Dylan F
- * @author Allen B
- * @author Andrew
  * @author John P
+ * @author Allen B
+ * @author Andrew N
+ * @author Oliver C
  */
 namespace frc973 {
 
