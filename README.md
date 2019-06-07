@@ -19,7 +19,6 @@ Some unique and interesting features to look for:
 - State machine to handle automated motions for simultaneous elevator, cargo, and hatch intake
 - Current low-pass filtering for cargo intake
 - Utilizing motion magic control mode on Talon SRXs for elevator motions
-- Using default dashboard as a tool to quickly change vision PID gains for faster tuning sessions (found in the pidinputs branch)
 - GreyDash - custom, real-time dashboard primarily used for tuning PID and reading miscellaneous robot data (based on FRCDashboard pre-electron)
 - GreyCTRE/GreySparkMax Wrapper - used to set default values for all Talon SRXs/Victor SPXs and Spark MAXs
 - Coding style checker at commit following our own style guide (found in the `tools` folder)
