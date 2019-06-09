@@ -190,7 +190,7 @@ def install(options):
     '''
     if system() != 'Windows':
 
-        cache_root = Path(user_home(), 'greybots_installer_cache')
+        cache_root = str(Path(user_home(), 'greybots_installer_cache'))
         run(['mkdir', '-p', cache_root])
 
         LOGGER.debug('Caching files at %s', cache_root)
