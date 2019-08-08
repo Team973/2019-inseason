@@ -5,7 +5,7 @@ namespace frc973 {
 ObservablePoofsJoystick::ObservablePoofsJoystick(
     uint16_t port, PoofsJoystickObserver *observer, TaskMgr *scheduler,
     DriverStation *ds)
-        : Joystick(port)
+        : ObservableJoystickBase(port)
         , m_port(port)
         , m_observer(observer)
         , m_ds(ds)
@@ -41,6 +41,10 @@ ObservablePoofsJoystick *ObservablePoofsJoystick::RegisterLog(
     }
 
     return this;
+}
+
+const JoystickBase::JoystickCommon &ObservablePoofsJoystick::GetJoystickCommon() {
+    return PoofsJoystick::COMMON;
 }
 
 float ObservablePoofsJoystick::GetRawAxisWithDeadband(int axis, bool fSquared,

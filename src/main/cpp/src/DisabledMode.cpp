@@ -1,4 +1,5 @@
 #include "src/DisabledMode.h"
+#include "src/subsystems/CargoIntake.h"
 
 namespace frc973 {
 Disabled::Disabled(ObservablePoofsJoystick *driverJoystick,

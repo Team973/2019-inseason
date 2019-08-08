@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "lib/bases/JoystickHelperBase.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
 
@@ -49,6 +50,12 @@ const unsigned int RightXAxis = 2; /**< Right X Axis ID. */
 const unsigned int RightYAxis = 3; /**< Right Y Axis ID. */
 const unsigned int DPadXAxis = 4;  /**< DPad X Axis ID. */
 const unsigned int DPadYAxis = 5;  /**< DPad Y Axis ID. */
+
+constexpr JoystickBase::JoystickCommon COMMON {
+    DualAction::LeftXAxis,      DualAction::LeftYAxis,     DualAction::RightXAxis,
+    DualAction::RightYAxis,     DualAction::LeftBumper,    DualAction::RightBumper,
+    DualAction::LeftTrigger,    DualAction::RightTrigger,
+};
 }
 
 /**
@@ -65,7 +72,7 @@ public:
     }
 
     /**
-     * This function is overriden by the subclass to handle a joystick button
+     * This function is overridden by the subclass to handle a joystick button
      * event notification.
      * @param port The joystick port.
      * @param button The joystick button.
@@ -85,7 +92,7 @@ public:
  */
 class ObservableDualActionJoystick
         : public CoopTask
-        , public Joystick {
+        , public ObservableJoystickBase {
 public:
     /**
      * Create an instance of the ObservableDualActionJoystick object. Requires
@@ -113,6 +120,12 @@ public:
     ObservableDualActionJoystick *RegisterLog(LogSpreadsheet *logger);
 
     /**
+     * Get a const reference to DualAction::COMMON when an
+     * ObservableJoystickBase is a DualAction stick.
+     */
+    const JoystickBase::JoystickCommon &GetJoystickCommon() override;
+
+    /**
      * Get the value of the given axis with deadband.
      * @param axis The axis to get the value of.
      * @param fSquared The joystick input should be squared.
@@ -120,7 +133,7 @@ public:
      * @return The raw axis value with deadband.
      */
     float GetRawAxisWithDeadband(int axis, bool fSquared = false,
-                                 double threshold = DEADBAND_INPUT_THRESHOLD);
+                                 double threshold = DEADBAND_INPUT_THRESHOLD) override;
 
     /**
      * DPad Up Virtual button.

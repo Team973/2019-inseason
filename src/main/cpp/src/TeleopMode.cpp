@@ -5,7 +5,16 @@
  *      Authors: Kyle, Chris
  *
  */
+#include "frc/WPILib.h"
+#include "lib/helpers/DualActionJoystickHelper.h"
+#include "lib/sensors/Limelight.h"
+
 #include "src/TeleopMode.h"
+#include "src/subsystems/Drive.h"
+#include "src/subsystems/Elevator.h"
+#include "src/subsystems/CargoIntake.h"
+#include "src/subsystems/HatchIntake.h"
+#include "src/subsystems/Stinger.h"
 
 namespace frc973 {
 Teleop::Teleop(ObservablePoofsJoystick *driverJoystick,
@@ -17,6 +26,7 @@ Teleop::Teleop(ObservablePoofsJoystick *driverJoystick,
         : m_driverJoystick(driverJoystick)
         , m_operatorJoystick(operatorJoystick)
         , m_tuningJoystick(tuningJoystick)
+        , m_driveControlJoystick(driverJoystick)
         , m_drive(drive)
         , m_driveMode(DriveMode::Cheesy)
         , m_elevator(elevator)
@@ -41,17 +51,19 @@ void Teleop::TeleopInit() {
     m_driveMode = DriveMode::Cheesy;
 }
 
+void Teleop::UseTunningDriverJoystick() {
+    m_driveControlJoystick = m_tuningJoystick;
+}
+
 void Teleop::TeleopPeriodic() {
     /**
      * Driver Joystick
      */
-    double y =  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftYAxis);
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::LeftYAxis);
-    double x =  // m_operatorJoystick->GetRawAxisWithDeadband(Xbox::RightXAxis);
-        -m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis);
-    bool quickturn = m_driverJoystick->GetRawButton(PoofsJoystick::RightBumper);
-    bool softwareLowGear =
-        m_driverJoystick->GetRawButton(PoofsJoystick::RightTrigger);
+    const JoystickBase::JoystickCommon &COMMON = m_driveControlJoystick->GetJoystickCommon();
+    double y = -m_driveControlJoystick->GetRawAxisWithDeadband(COMMON.LeftYAxis);
+    double x = -m_driveControlJoystick->GetRawAxisWithDeadband(COMMON.RightXAxis);
+    bool quickturn = m_driveControlJoystick->GetRawButton(COMMON.RightBumper);
+    bool softwareLowGear = m_driveControlJoystick->GetRawButton(COMMON.RightTrigger);
 
     DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
@@ -148,7 +160,7 @@ void Teleop::TeleopPeriodic() {
             DBStringPrintf(DBStringPos::DB_LINE8, "gm: 3endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
-            if (m_driverJoystick->GetRawButton(PoofsJoystick::LeftTrigger)) {
+            if (m_driveControlJoystick->GetRawButton(COMMON.LeftTrigger)) {
                 m_elevator->SetPosition(12.0);
                 m_cargoIntake->RetractPlatformWheel();
             }
@@ -224,118 +236,129 @@ void Teleop::TeleopStop() {
 
 void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                                  bool pressedP) {
-    if (port == DRIVER_JOYSTICK_PORT) {
-        switch (button) {
-            case PoofsJoystick::LeftTrigger:
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::LimelightDriveWithSkew;
-                            break;
-                        case GameMode::CargoPeriodic:
-                            break;
-                        case GameMode::ThirdLevelEndGamePeriodic:
+    const JoystickBase::JoystickCommon &COMMON = m_driveControlJoystick->GetJoystickCommon();
 
-                            break;
-                        case GameMode::SecondLevelEndGamePeriodic:
-                            break;
-                    }
+    if (port == DRIVER_JOYSTICK_PORT) {
+        if (button == COMMON.LeftTrigger) {
+            if (pressedP) {
+                switch (m_gameMode) {
+                    case GameMode::HatchPeriodic:
+                        m_driveMode = DriveMode::LimelightDriveWithSkew;
+                        break;
+                    case GameMode::CargoPeriodic:
+                        break;
+                    case GameMode::ThirdLevelEndGamePeriodic:
+
+                        break;
+                    case GameMode::SecondLevelEndGamePeriodic:
+                        break;
                 }
-                else {
-                    switch (m_gameMode) {
-                        case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::Cheesy;
-                            break;
-                        case GameMode::CargoPeriodic:
-                            break;
-                        case GameMode::ThirdLevelEndGamePeriodic:
-                            break;
-                        case GameMode::SecondLevelEndGamePeriodic:
-                            break;
-                    }
+            }
+            else {
+                switch (m_gameMode) {
+                    case GameMode::HatchPeriodic:
+                        m_driveMode = DriveMode::Cheesy;
+                        break;
+                    case GameMode::CargoPeriodic:
+                        break;
+                    case GameMode::ThirdLevelEndGamePeriodic:
+                        break;
+                    case GameMode::SecondLevelEndGamePeriodic:
+                        break;
                 }
-                break;
-            case PoofsJoystick::RightTrigger:
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::HatchPeriodic:
-                            m_hatchIntake->Exhaust();
-                            break;
-                        case GameMode::CargoPeriodic:
-                            m_cargoIntake->Exhaust();
-                            break;
-                        case GameMode::
-                            ThirdLevelEndGamePeriodic:  // we want the same
-                                                        // action for both
-                                                        // buttons
-                        case GameMode::SecondLevelEndGamePeriodic:
-                            if (m_stinger->GetSwitchBladeState() ==
-                                Stinger::SwitchBladeState::retracted) {
-                                m_gameMode = GameMode::RaiseIntake;
-                            }
-                            else if (m_stinger->GetSwitchBladeState() ==
-                                     Stinger::SwitchBladeState::engaged) {
-                                m_stinger->SetKickUpEnable();
-                            }
-                            break;
-                    }
+            }
+
+            return;
+        }
+
+        if (button == COMMON.RightTrigger) {
+            if (pressedP) {
+                switch (m_gameMode) {
+                    case GameMode::HatchPeriodic:
+                        m_hatchIntake->Exhaust();
+                        break;
+                    case GameMode::CargoPeriodic:
+                        m_cargoIntake->Exhaust();
+                        break;
+                    case GameMode::
+                        ThirdLevelEndGamePeriodic:  // we want the same
+                                                    // action for both
+                                                    // buttons
+                    case GameMode::SecondLevelEndGamePeriodic:
+                        if (m_stinger->GetSwitchBladeState() ==
+                            Stinger::SwitchBladeState::retracted) {
+                            m_gameMode = GameMode::RaiseIntake;
+                        }
+                        else if (m_stinger->GetSwitchBladeState() ==
+                                    Stinger::SwitchBladeState::engaged) {
+                            m_stinger->SetKickUpEnable();
+                        }
+                        break;
                 }
-                else {
-                    switch (m_gameMode) {
-                        case GameMode::HatchPeriodic:
-                            m_hatchIntake->SetIdle();
-                            break;
-                        case GameMode::CargoPeriodic:
-                            m_cargoIntake->StopIntake();
-                            break;
-                        case GameMode::ThirdLevelEndGamePeriodic:
-                        case GameMode::SecondLevelEndGamePeriodic:
-                            break;
-                    }
+            }
+            else {
+                switch (m_gameMode) {
+                    case GameMode::HatchPeriodic:
+                        m_hatchIntake->SetIdle();
+                        break;
+                    case GameMode::CargoPeriodic:
+                        m_cargoIntake->StopIntake();
+                        break;
+                    case GameMode::ThirdLevelEndGamePeriodic:
+                    case GameMode::SecondLevelEndGamePeriodic:
+                        break;
                 }
-                break;
-            case PoofsJoystick::LeftBumper:
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::LimelightDriveWithoutSkew;
-                            break;
-                        case GameMode::CargoPeriodic:
-                            break;
-                        case GameMode::
-                            ThirdLevelEndGamePeriodic:  // we want the same for
-                                                        // both buttons
-                        case GameMode::SecondLevelEndGamePeriodic:
-                            m_elevator->SetPower(
-                                -ELEVATOR_STINGER_VOLTAGE_RATIO);
-                            break;
-                    }
+            }
+
+            return;
+        }
+
+        if (button == COMMON.LeftBumper) {
+            if (pressedP) {
+                switch (m_gameMode) {
+                    case GameMode::HatchPeriodic:
+                        m_driveMode = DriveMode::LimelightDriveWithoutSkew;
+                        break;
+                    case GameMode::CargoPeriodic:
+                        break;
+                    case GameMode::
+                        ThirdLevelEndGamePeriodic:  // we want the same for
+                                                    // both buttons
+                    case GameMode::SecondLevelEndGamePeriodic:
+                        m_elevator->SetPower(
+                            -ELEVATOR_STINGER_VOLTAGE_RATIO);
+                        break;
                 }
-                else {
-                    switch (m_gameMode) {
-                        case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::Cheesy;
-                            break;
-                        case GameMode::CargoPeriodic:
-                            break;
-                        case GameMode::ThirdLevelEndGamePeriodic:
-                        case GameMode::SecondLevelEndGamePeriodic:
-                            m_elevator->SetPower(0.0);
-                            break;
-                    }
+            }
+            else {
+                switch (m_gameMode) {
+                    case GameMode::HatchPeriodic:
+                        m_driveMode = DriveMode::Cheesy;
+                        break;
+                    case GameMode::CargoPeriodic:
+                        break;
+                    case GameMode::ThirdLevelEndGamePeriodic:
+                    case GameMode::SecondLevelEndGamePeriodic:
+                        m_elevator->SetPower(0.0);
+                        break;
                 }
-                break;
-            case PoofsJoystick::RightBumper:
-                if (pressedP) {
-                    switch (m_gameMode) {
-                        case GameMode::SecondLevelEndGamePeriodic:
-                            m_elevator->SetPosition(23.0);
-                            m_cargoIntake->DeployPlatformWheel();
-                            m_gameMode = GameMode::SecondLevelStabilize;
-                            break;
-                    }
+            }
+
+            return;
+        }
+
+        if (button == COMMON.RightBumper) {
+            if (pressedP) {
+                switch (m_gameMode) {
+                    case GameMode::SecondLevelEndGamePeriodic:
+                        m_elevator->SetPosition(23.0);
+                        m_cargoIntake->DeployPlatformWheel();
+                        m_gameMode = GameMode::SecondLevelStabilize;
+                        break;
                 }
-                break;
+            }
+
+            return;
         }
     }
 }
@@ -513,60 +536,7 @@ void Teleop::HandleXboxJoystick(uint32_t port, uint32_t button, bool pressedP) {
 void Teleop::HandleDualActionJoystick(uint32_t port, uint32_t button,
                                       bool pressedP) {
     if (port == TEST_JOYSTICK_PORT) {
-        switch (button) {
-            case DualAction::BtnA:
-                if (pressedP) {
-                }
-                break;
-            case DualAction::BtnB:
-                if (pressedP) {
-                }
-                break;
-            case DualAction::BtnX:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case DualAction::BtnY:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-
-            case DualAction::LeftBumper:
-            case DualAction::LeftTrigger:
-            case DualAction::RightBumper:
-            case DualAction::RightTrigger:
-                break;
-            case DualAction::DPadUpVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case DualAction::DPadDownVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case DualAction::DPadLeftVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            case DualAction::DPadRightVirtBtn:
-                if (pressedP) {
-                }
-                else {
-                }
-                break;
-            default:
-                break;
-        }
+        HandlePoofsJoystick(DRIVER_JOYSTICK_PORT, button, pressedP);
     }
 }
 

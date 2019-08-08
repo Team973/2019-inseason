@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "lib/bases/JoystickHelperBase.h"
 #include "lib/logging/LogSpreadsheet.h"
 #include "lib/managers/CoopTask.h"
 
@@ -25,6 +26,13 @@ const unsigned int LeftTrigger = 1;  /**< Left Trigger ID. */
 const unsigned int LeftBumper = 2;   /**< Left Bumper ID. */
 const unsigned int RightTrigger = 3; /**< Left Trigger ID. */
 const unsigned int RightBumper = 4;  /**< Left Bumper ID. */
+
+constexpr JoystickBase::JoystickCommon COMMON{
+    PoofsJoystick::LeftXAxis,   PoofsJoystick::LeftYAxis,
+    PoofsJoystick::RightXAxis,  PoofsJoystick::RightYAxis,
+    PoofsJoystick::LeftBumper,  PoofsJoystick::RightBumper,
+    PoofsJoystick::LeftTrigger, PoofsJoystick::RightTrigger,
+};
 }
 
 /**
@@ -41,7 +49,7 @@ public:
     }
 
     /**
-     * This function is overriden by the subclass to handle a joystick button
+     * This function is overridden by the subclass to handle a joystick button
      * event notification.
      * @param port The joystick port.
      * @param button The joystick button.
@@ -57,7 +65,7 @@ public:
  */
 class ObservablePoofsJoystick
         : public CoopTask
-        , public Joystick {
+        , public ObservableJoystickBase {
 public:
     /**
      * Create an instance of the ObservablePoofsJoystick object. Requires the
@@ -76,11 +84,17 @@ public:
 
     /**
      * Register this joystick with a logger so that button state can be logged
-     * every time the periodic funciton is called. Only registers with the
+     * every time the periodic function is called. Only registers with the
      * first call.
      * @param logger The spreadsheet to log to.
      */
     ObservablePoofsJoystick *RegisterLog(LogSpreadsheet *logger);
+
+    /**
+     * Get a const reference to PoofsJoysticks::COMMON when an
+     * ObservableJoystickBase is a Poofs stick.
+     */
+    const JoystickBase::JoystickCommon &GetJoystickCommon() override;
 
     /**
      * Get the value of the given axis with deadband.
@@ -89,7 +103,7 @@ public:
      * @param threshold Specifies the deadband threshold.
      */
     float GetRawAxisWithDeadband(int axis, bool fSquared = false,
-                                 double threshold = DEADBAND_INPUT_THRESHOLD);
+                                 double threshold = DEADBAND_INPUT_THRESHOLD) override;
 
     /**
      * Left trigger button.

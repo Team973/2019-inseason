@@ -6,20 +6,18 @@
  */
 #pragma once
 
-#include "lib/helpers/DualActionJoystickHelper.h"
-
-#include "src/subsystems/Elevator.h"
-#include "src/subsystems/Drive.h"
-#include "src/subsystems/CargoIntake.h"
-#include "src/subsystems/HatchIntake.h"
-#include "src/subsystems/Stinger.h"
-
 namespace frc973 {
 
-/**
- * Handles preset selection.
- */
-class PresetHandlerDispatcher;
+class ObservablePoofsJoystick;
+class ObservableXboxJoystick;
+class ObservableDualActionJoystick;
+class ObservableJoystickBase;
+class Elevator;
+class Drive;
+class CargoIntake;
+class HatchIntake;
+class Stinger;
+class Limelight;
 
 /**
  * Controls the Teleop mode.
@@ -45,7 +43,7 @@ public:
     };
 
     /**
-     * Constuct a Teleop mode.
+     * Construct a Teleop mode.
      * @param driverJoystick The driver's ObservablePoofsJoystick.
      * @param operatorJoystick The operator's ObservableXboxJoystick.
      * @param tuningJoystick The testing joystick.
@@ -111,10 +109,16 @@ public:
      */
     GameMode GetGameMode();
 
+    /**
+     * Switch the driveControlJoystick to the tunning Joystick
+     */
+    void UseTunningDriverJoystick();
+
 private:
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
     ObservableDualActionJoystick *m_tuningJoystick;
+    ObservableJoystickBase *m_driveControlJoystick;
 
     Drive *m_drive;
     enum class DriveMode

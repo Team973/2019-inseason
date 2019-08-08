@@ -5,7 +5,7 @@ namespace frc973 {
 ObservableDualActionJoystick::ObservableDualActionJoystick(
     uint16_t port, DualActionJoystickObserver *observer, TaskMgr *scheduler,
     DriverStation *ds)
-        : Joystick(port)
+        : ObservableJoystickBase(port)
         , m_port(port)
         , m_observer(observer)
         , m_ds(ds)
@@ -49,6 +49,10 @@ ObservableDualActionJoystick *ObservableDualActionJoystick::RegisterLog(
     return this;
 }
 
+const JoystickBase::JoystickCommon &ObservableDualActionJoystick::GetJoystickCommon() {
+    return DualAction::COMMON;
+}
+
 float ObservableDualActionJoystick::GetRawAxisWithDeadband(int axis,
                                                            bool fSquared,
                                                            double threshold) {
@@ -58,7 +62,7 @@ float ObservableDualActionJoystick::GetRawAxisWithDeadband(int axis,
         value = Util::signSquare(value);
     }
 
-    return value;
+    return -value;
 }
 
 bool ObservableDualActionJoystick::GetDPadUpVirtButton() {

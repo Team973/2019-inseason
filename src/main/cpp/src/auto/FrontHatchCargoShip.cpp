@@ -1,5 +1,6 @@
 #include "src/AutonomousMode.h"
 #include "src/auto/AutoCommon.h"
+#include "src/subsystems/Drive.h"
 
 namespace frc973 {
 
