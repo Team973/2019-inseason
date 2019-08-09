@@ -196,6 +196,10 @@ void Robot::ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
 
 void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
                                                  bool pressedP) {
+    if (button == DualAction::Start && pressedP) {
+        m_teleop->UseTunningDriverJoystick();
+    }
+
     if (this->IsOperatorControl()) {
         m_teleop->HandleDualActionJoystick(port, button, pressedP);
     }
