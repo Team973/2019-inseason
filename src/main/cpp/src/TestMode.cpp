@@ -28,6 +28,13 @@ void Test::TestInit() {
     std::cout << "Test Start" << std::endl;
     m_elevator->EnableCoastMode();
     m_driveMode = DriveMode::Openloop;
+
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        m_drive->GetLimelightDriveWithSkew()->CreateLimelightDriveDB();
+        // m_drive->GetLimelightDriveWithSkew()->UpdateLimelightDriveDB();
+        m_limelightHatch->CreateLimelightDB();
+        // m_limelightHatch->UpdateLimelightDB();
+    }
 }
 
 void Test::TestPeriodic() {

@@ -397,8 +397,8 @@ void Drive::TaskPeriodic(RobotMode mode) {
     m_angleRate = -1.0 * ((GetRightRate() - GetLeftRate()) / 2.0) /
                   (DRIVE_WIDTH / 2.0) * Constants::DEG_PER_RAD;
 
-    DBStringPrintf(DB_LINE9, "l %2.1lf r %2.1lf g %2.1lf", this->GetLeftDist(),
-                   this->GetRightDist(), this->GetAngle());
+    /* DBStringPrintf(DB_LINE9, "l %2.1lf r %2.1lf g %2.1lf",
+       this->GetLeftDist(), this->GetRightDist(), this->GetAngle()); */
 
     m_angleLog->LogDouble(GetAngle());
     m_angularRateLog->LogDouble(GetAngularRate());

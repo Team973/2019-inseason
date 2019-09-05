@@ -39,6 +39,11 @@ void Teleop::TeleopInit() {
     m_stinger->RetractSwitchBlade();
     m_stinger->SetKickUpDisable();
     m_driveMode = DriveMode::Cheesy;
+
+    if (SmartDashboard::GetBoolean("DB/Button 0", false) == true) {
+        m_drive->GetLimelightDriveWithSkew()->CreateLimelightDriveDB();
+        m_limelightHatch->CreateLimelightDB();
+    }
 }
 
 void Teleop::TeleopPeriodic() {
@@ -53,14 +58,14 @@ void Teleop::TeleopPeriodic() {
     bool softwareLowGear =
         m_driverJoystick->GetRawButton(PoofsJoystick::RightTrigger);
 
-    DBStringPrintf(DB_LINE7, "td:%2.2lf xo:%2.2lf s:%2.2lf",
+    /* DBStringPrintf(DB_LINE9, "td:%2.2lf xo:%2.2lf s:%2.2lf",
                    m_limelightHatch->GetHorizontalDistance(),
                    m_limelightHatch->GetXOffset(),
-                   m_limelightHatch->GetTargetSkew());
+                   m_limelightHatch->GetTargetSkew()); */
 
     switch (m_driveMode) {
         case DriveMode::Cheesy:
-            DBStringPrintf(DB_LINE2, "Drive Mode: Cheesy Drive");
+            // DBStringPrintf(DB_LINE2, "Drive Mode: Cheesy Drive");
             if (softwareLowGear) {
                 m_drive->CheesyDrive(y / 3.0, x / 3.0, quickturn, true);
             }
@@ -69,7 +74,7 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case DriveMode::Openloop:
-            DBStringPrintf(DB_LINE2, "Drive Open Loop");
+            // DBStringPrintf(DB_LINE2, "Drive Open Loop");
             if (softwareLowGear) {
                 m_drive->OpenloopArcadeDrive(y / 3.0, x / 3.0);
             }
@@ -78,15 +83,15 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case DriveMode::LimelightDriveWithSkew:
-            DBStringPrintf(DB_LINE2, "Drive lime with skew");
+            // DBStringPrintf(DB_LINE2, "Drive lime with skew");
             m_drive->LimelightDriveWithSkew();
             break;
         case DriveMode::LimelightDriveWithoutSkew:
-            DBStringPrintf(DB_LINE2, "Drive lime no skew");
+            // DBStringPrintf(DB_LINE2, "Drive lime no skew");
             m_drive->LimelightDriveWithoutSkew();
             break;
         case DriveMode::AssistedCheesyHatch:
-            DBStringPrintf(DB_LINE2, "Drive Assisted Cheesy");
+            // DBStringPrintf(DB_LINE2, "Drive Assisted Cheesy");
             m_drive->AssistedCheesyHatchDrive(y, x, quickturn, false);
             break;
         default:
@@ -103,7 +108,7 @@ void Teleop::TeleopPeriodic() {
             m_gameMode = GameMode::CargoPeriodic;
             break;
         case GameMode::CargoPeriodic:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: cargo");
+            // DBStringPrintf(DBStringPos::DB_LINE8, "gm: cargo");
             if (GetMsecTime() - m_wristResetTimer > 500) {
                 m_cargoIntake->RetractWrist();
             }
@@ -115,13 +120,13 @@ void Teleop::TeleopPeriodic() {
             m_gameMode = GameMode::HatchPeriodic;
             break;
         case GameMode::HatchPeriodic:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: hatch");
+            // DBStringPrintf(DBStringPos::DB_LINE8, "gm: hatch");
             if (GetMsecTime() - m_wristResetTimer > 500) {
                 m_cargoIntake->RetractWrist();
             }
             break;
         case GameMode::ThirdLevelEndGameInit:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: ThirdLevelEndGameinit");
+            // DBStringPrintf(DBStringPos::DB_LINE8, "gm: ThirdLevelEndGameinit");
             m_limelightHatch->SetCameraDriver();
             m_cargoIntake->StopIntake();
             m_hatchIntake->SetIdle();
@@ -133,7 +138,7 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case GameMode::SecondLevelEndGameInit:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: SecondLevelEndGameinit");
+            // DBStringPrintf(DBStringPos::DB_LINE8, "gm: SecondLevelEndGameinit");
             m_limelightHatch->SetCameraDriver();
             m_cargoIntake->StopIntake();
             m_hatchIntake->SetIdle();
@@ -145,7 +150,7 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case GameMode::ThirdLevelEndGamePeriodic:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: 3endgameperiodic");
+            // DBStringPrintf(DBStringPos::DB_LINE8, "gm: 3endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
             if (m_driverJoystick->GetRawButton(PoofsJoystick::LeftTrigger)) {
@@ -154,7 +159,7 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case GameMode::SecondLevelEndGamePeriodic:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: 2endgameperiodic");
+            // DBStringPrintf(DBStringPos::DB_LINE8, "gm: 2endgameperiodic");
             m_drive->SetStingerOutput(y);
             m_driveMode = DriveMode::Cheesy;
             break;
@@ -165,13 +170,13 @@ void Teleop::TeleopPeriodic() {
             }
             break;
         case GameMode::RaiseIntake:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
+            // DBStringPrintf(DBStringPos::DB_LINE8, "gm: raiseintake");
             m_elevator->SetPosition(Elevator::THIRD_PLATFORM_RESET);
             m_cargoIntake->RetractPlatformWheel();
             m_gameMode = GameMode::ResetIntake;
             break;
         case GameMode::ResetIntake:
-            DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
+            // DBStringPrintf(DBStringPos::DB_LINE8, "gm: resetintake");
             if (m_elevator->GetPosition() >
                 Elevator::THIRD_PLATFORM_RESET - 2.0) {
                 m_cargoIntake->RetractWrist();
@@ -298,7 +303,12 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::LimelightDriveWithoutSkew;
+                            // m_driveMode = DriveMode::LimelightDriveWithoutSkew;
+                            if (SmartDashboard::GetBoolean("DB/Button 0",
+                                                           false) == true) {
+                                m_drive->GetLimelightDriveWithSkew()->UpdateLimelightDriveDB();
+                                m_limelightHatch->UpdateLimelightDB();
+                            }
                             break;
                         case GameMode::CargoPeriodic:
                             break;
@@ -314,7 +324,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 else {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::Cheesy;
+                            // m_driveMode = DriveMode::Cheesy;
                             break;
                         case GameMode::CargoPeriodic:
                             break;

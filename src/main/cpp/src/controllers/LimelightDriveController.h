@@ -60,7 +60,7 @@ public:
     /**
      * Calculate turn PID factor based off distance of target
      */
-    double CalcTurnComp();
+    double CalcTurnComp(double horizontalDistance);
 
     /**
      * Checks with the controller to see if we are on target.
@@ -93,6 +93,12 @@ public:
      */
     double GetGoalAngleComp() const;
 
+    /**
+     * DBString inputed values for limelight
+     */
+    void UpdateLimelightDriveDB();
+    void CreateLimelightDriveDB();
+
 private:
     static constexpr double DISTANCE_SETPOINT_ROCKET =
         -2.0; /**< in inches from target to robot bumper */
@@ -100,6 +106,7 @@ private:
         -9.0; /**< in inches from target to robot bumper */
     static constexpr double HATCH_VISION_OFFSET =
         0.32; /**< physical offset of the Limelight to center of target */
+    // in degrees -1.0, was -2.0 at p-field 0.96 on real field
 
     // Range of distances where the compensation factor is applied
     static constexpr double GOAL_ANGLE_COMP_DISTANCE_MIN =
@@ -137,6 +144,7 @@ private:
         0.0; /**< I Value for Throttle PID */
     static constexpr double THROTTLE_PID_KD =
         0.002; /**< D Value for Throttle PID */
+    static constexpr double THROTTLE_FEED_FORWARD = 0.05;
 
     bool m_onTarget;
     double m_leftSetpoint;
@@ -160,5 +168,34 @@ private:
 
     PID *m_turnPid;
     PID *m_throttlePid;
+
+    double m_DBThrottlePIDkP;
+    double m_DBThrottlePIDkI;
+    double m_DBThrottlePIDkD;
+    PID *m_DBThrottlePID;
+    double m_DBThrottlePIDOut;
+    double m_DBTurnPIDkP;
+    double m_DBTurnPIDkI;
+    double m_DBTurnPIDkD;
+    PID *m_DBTurnPID;
+    double m_DBTurnPIDOut;
+    double m_DBGoalAngleCompkP;
+    double m_DBGoalAngleComp;
+    double m_DBThrottleFeedForward;
+    double m_DBHatchVisionOffset;
+    double m_DBHatchVisionXOffset;
+    double m_DBDistanceSetpointRocket;
+    double m_DBDistanceSetpointCargoBay;
+    double m_DBThrottleMin;
+    double m_DBThrottleMax;
+    double m_DBTurnMin;
+    double m_DBTurnMax;
+    double m_DBSkewMin;
+    double m_DBSkewMax;
+    double m_skew_comp;
+
+    bool m_disableThrottlePidOut;
+    bool m_disableTurnPidOut;
+    bool m_disableSkewComp;
 };
 }

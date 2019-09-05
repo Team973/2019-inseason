@@ -129,11 +129,11 @@ void Elevator::TaskPeriodic(RobotMode mode) {
     m_voltageMasterCell->LogDouble(m_elevatorMotorA->GetMotorOutputVoltage());
     m_controlModeCell->LogInt(m_elevatorState);
     m_powerInputCell->LogDouble(m_power);
-    DBStringPrintf(DBStringPos::DB_LINE0, "ep:%2.2lf ev:%2.2lf", GetPosition(),
+    /* DBStringPrintf(DBStringPos::DB_LINE0, "ep:%2.2lf ev:%2.2lf", GetPosition(),
                    (float)m_elevatorMotorA->GetSelectedSensorVelocity(0));
     DBStringPrintf(DBStringPos::DB_LINE5, "eout:%2.2lf ec:%2.2lf h:%d",
                    m_elevatorMotorA->GetMotorOutputPercent(),
-                   m_elevatorMotorA->GetOutputCurrent(), GetElevatorHall());
+                   m_elevatorMotorA->GetOutputCurrent(), GetElevatorHall()); */
     HallZero();
 
     switch (m_elevatorState) {

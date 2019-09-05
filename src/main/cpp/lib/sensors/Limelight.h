@@ -240,8 +240,14 @@ public:
         (Constants::PI / 180.0); /**< Camera Angle in degrees wrt ground */
     //-29.25 for comp; -27.3 for pbot
     static constexpr double CAMERA_BUMPER_OFFSET =
-        19.25; /**< The offset in inches between the camera and the bumper edge
-                */
+        19.25; /**< The offset in inches between the camera and the bumper edge */
+
+    double FindCameraAngle();
+    /**
+     * Updates all DBString variables
+     */
+    void UpdateLimelightDB();
+    void CreateLimelightDB();
 
 private:
     std::shared_ptr<NetworkTable> m_limelight;  // constructs the limelight
@@ -267,5 +273,11 @@ private:
 
     static constexpr double TARGET_ASPECT_RATIO =
         6.0 / 15.0;  // Constant for the targets aspect ratio
+
+    double m_DBTargetHeight;
+    double m_DBCameraHeight;
+    double m_DBCameraAngle;
+    double m_DBCameraBumperOffset;
+    double m_DBDistance;
 };
 }
