@@ -17,11 +17,6 @@
 namespace frc973 {
 
 /**
- * Handles preset selection.
- */
-class PresetHandlerDispatcher;
-
-/**
  * Controls the Teleop mode.
  */
 class Teleop {
