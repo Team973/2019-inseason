@@ -82,7 +82,7 @@ public:
      * @param elevatorHall The Elevator's hall effect DigitalInput.
      */
     Elevator(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreyTalonSRX *elevatorMotorA, GreyVictorSPX *elevatorMotorB,
+             GreyTalonSRX *elevatorMotorA, VictorSPX *elevatorMotorB,
              ObservableXboxJoystick *operatorJoystick,
              DigitalInput *elevatorHall);
     virtual ~Elevator();
@@ -165,7 +165,7 @@ private:
     TaskMgr *m_scheduler;
 
     GreyTalonSRX *m_elevatorMotorA;
-    GreyVictorSPX *m_elevatorMotorB;
+    VictorSPX *m_elevatorMotorB;
     ObservableXboxJoystick *m_operatorJoystick;
 
     double m_position;

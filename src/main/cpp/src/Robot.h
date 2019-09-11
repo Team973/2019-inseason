@@ -153,7 +153,7 @@ private:
     GreyTalonSRX *m_stingerDriveMotor;
 
     GreyTalonSRX *m_elevatorMotorA;
-    GreyVictorSPX *m_elevatorMotorB;
+    VictorSPX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;
 
     ADXRS450_Gyro *m_gyro;
