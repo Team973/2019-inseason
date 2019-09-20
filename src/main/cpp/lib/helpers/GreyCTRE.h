@@ -105,7 +105,7 @@ public:
      * @param canId The VictorSPX's CAN ID.
      */
     GreyVictorSPX(int canId)
-            : BaseMotorController(canId | 0x02040000), VictorSPX(canId) {
+            : BaseMotorController(canId | 0x01040000), VictorSPX(canId) {
         FactoryReset(this);
     }
     virtual ~GreyVictorSPX() {
