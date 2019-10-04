@@ -186,6 +186,9 @@ void Robot::ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
     if (this->IsOperatorControl()) {
         m_teleop->HandlePoofsJoystick(port, button, pressedP);
     }
+    else if (this->IsDisabled()) {
+        m_disabled->HandlePoofsJoystick(port, button, pressedP);
+    }
     else if (this->IsTest()) {
         m_test->HandlePoofsJoystick(port, button, pressedP);
     }

@@ -22,18 +22,34 @@ void Disabled::DisabledInit() {
     std::cout << "Disabled Start" << std::endl;
     m_elevator->EnableBrakeMode();
     m_cargoIntake->EnableBrakeMode();
+
     if (m_teleop->GetGameMode() ==
             Teleop::GameMode::ThirdLevelEndGamePeriodic ||
         m_teleop->GetGameMode() ==
             Teleop::GameMode::SecondLevelEndGamePeriodic) {
         m_drive->EnableBrakeMode();
     }
+
+    m_drive->GetLimelightDriveWithSkew()->CreateLimelightDriveDB();
+    m_limelightHatch->CreateLimelightDB();
 }
 
 void Disabled::DisabledPeriodic() {
 }
 
 void Disabled::DisabledStop() {
+}
+
+void Disabled::HandlePoofsJoystick(uint32_t port, uint32_t button,
+                                   bool pressedP) {
+    switch (button) {
+        case PoofsJoystick::LeftBumper:
+            if (pressedP) {
+                m_drive->GetLimelightDriveWithSkew()->UpdateLimelightDriveDB();
+                m_limelightHatch->UpdateLimelightDB();
+                break;
+            }
+    }
 }
 
 void Disabled::HandleXboxJoystick(uint32_t port, uint32_t button,

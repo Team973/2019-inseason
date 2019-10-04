@@ -303,7 +303,6 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
-                            // m_driveMode = DriveMode::LimelightDriveWithoutSkew;
                             if (SmartDashboard::GetBoolean("DB/Button 0",
                                                            false) == true) {
                                 m_drive->GetLimelightDriveWithSkew()->UpdateLimelightDriveDB();
