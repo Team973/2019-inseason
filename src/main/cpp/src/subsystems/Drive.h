@@ -147,6 +147,10 @@ public:
         return m_splineDriveController;
     }
 
+    PIDDriveController *GetPIDDriveController() const {
+        return m_pidDriveController;
+    }
+
     /**
      * Gets percent complete of spline
      * @return The percent of the trajectory done.

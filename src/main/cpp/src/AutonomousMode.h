@@ -81,7 +81,8 @@ public:
         TwoRocket,           /**< Two rocket objects. */
         TwoCargoShip,        /**< Two cargo objects. */
         CargoShipThenRocket, /**< One on both the cargo and rocket. */
-        Manual               /**< Manual driver control. */
+        CargoToHuman,
+        Manual /**< Manual driver control. */
     };
 
     /**
@@ -112,6 +113,7 @@ private:
     void TwoRocketAutoBack();
     void TwoCargoShipAuto();
     void CargoShipThenRocketAuto(const bool doCargoOnly = false);
+    void CargoToHumanPlayer();
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;

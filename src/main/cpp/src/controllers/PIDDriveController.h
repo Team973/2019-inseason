@@ -139,6 +139,14 @@ public:
         printf("Turning off PID Mode\n");
     }
 
+    PID *GetDrivePID() const {
+        return m_drivePID;
+    }
+
+    PID *GetTurnPID() const {
+        return m_turnPID;
+    }
+
 private:
     double m_prevDist;
     double m_prevAngle;

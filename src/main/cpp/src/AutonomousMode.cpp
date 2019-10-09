@@ -11,7 +11,7 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
         , m_operatorJoystick(operatorJoystick)
         , m_tuningJoystick(tuningJoystick)
         , m_teleop(teleop)
-        , m_autoState(AutoState::Manual)
+        , m_autoState(AutoState::CargoToHuman)
         , m_autoStateStartPosition(AutoStateStartPosition::LeftHabLevel2)
         , m_autoTimer(0.0)
         , m_direction(1.0)  // counterclockwise is positive
@@ -45,6 +45,10 @@ void Autonomous::AutonomousInit() {
         m_autoStateStartPosition = AutoStateStartPosition::CenterHab;
     }
 
+    PIDDriveController *ctrl = m_drive->GetPIDDriveController();
+
+    ctrl->GetDrivePID()->SetGains(0.025, 0.0, 0.00);
+    ctrl->GetTurnPID()->SetGains(0.0105, 0.0, 0.00135);
     std::cout << "Autonomous Start" << std::endl;
 }
 
@@ -66,6 +70,9 @@ void Autonomous::AutonomousPeriodic() {
             break;
         case AutoState::CargoShipThenRocket:
             CargoShipThenRocketAuto();
+            break;
+        case AutoState::CargoToHuman:
+            CargoToHumanPlayer();
             break;
         case AutoState::Manual:
             m_teleop->TeleopPeriodic();
