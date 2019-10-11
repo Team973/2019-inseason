@@ -10,12 +10,12 @@
 namespace frc973 {
 // Constants
 static constexpr double DRIVE_WIDTH = 24.0;
-static constexpr double DRIVE_WHEEL_DIAMETER = 4.0;
+static constexpr double DRIVE_WHEEL_DIAMETER = 3.875;
 static constexpr double DRIVE_ENCODER_COUNT = 42;
 static constexpr double DRIVE_DIST_PER_WHEEL_REVOLUTION =
     DRIVE_WHEEL_DIAMETER * Constants::PI;  // aka 15.70796
 static constexpr double DRIVE_WHEEL_REVOLUTION_PER_MOTOR_REVOLUTON =
-    1.0 / 7.4;  // aka 0.13514
+    (9.0 / 46.0) * (40.0 / 64.0);
 static constexpr double DRIVE_DIST_PER_REVOLUTION =
     DRIVE_DIST_PER_WHEEL_REVOLUTION *
     DRIVE_WHEEL_REVOLUTION_PER_MOTOR_REVOLUTON;  // aka 2.12270

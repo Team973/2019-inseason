@@ -384,14 +384,35 @@ void Drive::TaskPeriodic(RobotMode mode) {
     m_horizontalDistanceLog->LogDouble(
         m_limelightHatch->GetHorizontalDistance());
 
-    SmartDashboard::PutNumber("drive/percentages/leftpercent",
-                              m_leftDriveOutput);
-    SmartDashboard::PutNumber("drive/percentages/rightpercent",
-                              m_rightDriveOutput);
+    // NetworkTable Voltages
+    SmartDashboard::PutNumber("drive/voltages/leftvoltage",
+                              m_leftDriveSparkA->GetBusVoltage());
+    SmartDashboard::PutNumber("drive/voltages/rightvoltage",
+                              m_rightDriveSparkA->GetBusVoltage());
+
+    // NetworkTable Currents
     SmartDashboard::PutNumber("drive/currents/leftcurrent",
                               m_leftDriveSparkA->GetOutputCurrent());
     SmartDashboard::PutNumber("drive/currents/rightcurrent",
                               m_rightDriveSparkA->GetOutputCurrent());
+
+    // NetworkTable Encoders
+    SmartDashboard::PutNumber("drive/encoders/leftencoder", GetLeftDist());
+    SmartDashboard::PutNumber("drive/encoders/rightencoder", GetRightDist());
+
+    // NetworkTable motor output
+    SmartDashboard::PutNumber("drive/outputs/leftratesetpoint",
+                              m_leftDriveOutput);
+    SmartDashboard::PutNumber("drive/outputs/leftrateactual",
+                              Drive::GetLeftRate());
+
+    SmartDashboard::PutNumber("drive/outputs/rightratesetpoint",
+                              m_rightDriveOutput);
+    SmartDashboard::PutNumber("drive/outputs/rightrateactual",
+                              Drive::GetRightRate());
+
+    // NetworkTable Gyro
+    SmartDashboard::PutNumber("drive/gyro/angle", this->GetAngle());
 
     // Austin ADXRS450_Gyro config
     m_angleRate = -1.0 * ((GetRightRate() - GetLeftRate()) / 2.0) /

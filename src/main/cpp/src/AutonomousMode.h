@@ -30,7 +30,8 @@ public:
                ObservableXboxJoystick *operatorJoystick,
                ObservableDualActionJoystick *tuningJoystick, Teleop *Teleop,
                ADXRS450_Gyro *gyro, Drive *drive, CargoIntake *cargoIntake,
-               HatchIntake *hatchIntake, Elevator *elevator);
+               HatchIntake *hatchIntake, Elevator *elevator,
+               Limelight *limelightHatch);
     virtual ~Autonomous();
 
     /**
@@ -111,6 +112,8 @@ public:
         RightHabLevel2 /**< Right Level 2 Auto State. */
     };
 
+    double timer;
+
 private:
     void ForwardAuto();
     void SingleHatchAuto();
@@ -139,5 +142,7 @@ private:
     CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
+
+    Limelight *m_limelightHatch;
 };
 }

@@ -10,7 +10,7 @@
 namespace frc973 {
 
 // Drive pid takes in error in inches and outputs velocity in inches/sec
-static constexpr double DRIVE_PID_KP = 0.0;
+static constexpr double DRIVE_PID_KP = 0.05;
 static constexpr double DRIVE_PID_KI = 0.0;
 static constexpr double DRIVE_PID_KD = 0.0;
 
@@ -57,10 +57,11 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
     m_prevAngle = state->GetAngle();
 
     double throttle =
-        m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist);
+        m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist) * m_speedCap;
     /*Util::bound(m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist),
     -m_vmax, m_vmax) * m_speedCap;*/
-    double turn = m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle);
+    double turn = m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle) *
+                  m_speedCap;
     /*Util::bound(m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle),
     -m_avmax, m_avmax) * m_speedCap * DRIVE_ARC_IN_PER_DEG;*/
 

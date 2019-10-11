@@ -6,7 +6,7 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
                        ObservableDualActionJoystick *tuningJoystick,
                        Teleop *teleop, ADXRS450_Gyro *gyro, Drive *drive,
                        CargoIntake *cargoIntake, HatchIntake *hatchIntake,
-                       Elevator *elevator)
+                       Elevator *elevator, Limelight *limelightHatch)
         : m_driverJoystick(driverJoystick)
         , m_operatorJoystick(operatorJoystick)
         , m_tuningJoystick(tuningJoystick)
@@ -20,7 +20,8 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
         , m_drive(drive)
         , m_cargoIntake(cargoIntake)
         , m_hatchIntake(hatchIntake)
-        , m_elevator(elevator) {
+        , m_elevator(elevator)
+        , m_limelightHatch(limelightHatch) {
 }
 
 Autonomous::~Autonomous() {
