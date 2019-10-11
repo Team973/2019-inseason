@@ -11,7 +11,7 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
         , m_operatorJoystick(operatorJoystick)
         , m_tuningJoystick(tuningJoystick)
         , m_teleop(teleop)
-        , m_autoState(AutoState::Manual)
+        , m_autoState(AutoState::NoAuto)
         , m_autoStateStartPosition(AutoStateStartPosition::LeftHabLevel2)
         , m_autoTimer(0.0)
         , m_direction(1.0)  // counterclockwise is positive
@@ -58,6 +58,12 @@ void Autonomous::AutonomousPeriodic() {
     }
 
     switch (m_autoState) {
+        case AutoState::ForwardAuto:
+            ForwardAuto();
+            break;
+        case AutoState::SingleHatchAuto:
+            SingleHatchAuto();
+            break;
         case AutoState::TwoRocket:
             TwoRocketAuto();
             break;
@@ -69,6 +75,9 @@ void Autonomous::AutonomousPeriodic() {
             break;
         case AutoState::Manual:
             m_teleop->TeleopPeriodic();
+            break;
+        case AutoState::NoAuto:
+            NoAuto();
             break;
         default:
             m_teleop->TeleopPeriodic();

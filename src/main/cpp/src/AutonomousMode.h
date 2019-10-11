@@ -78,10 +78,15 @@ public:
      */
     enum class AutoState
     {
+        ForwardAuto,         /**< Basic Forward Auto. */
+        SingleHatchAuto,     /**< Place a single hatch on the cargo ship. */
         TwoRocket,           /**< Two rocket objects. */
         TwoCargoShip,        /**< Two cargo objects. */
         CargoShipThenRocket, /**< One on both the cargo and rocket. */
-        Manual               /**< Manual driver control. */
+        Manual,              /**< Manual driver control. */
+        NoAuto,              /**< No autonomous. */
+        DoubleHatchAuto,     /**< Place a single hatch plus... */
+        TurnAuto,            /**< Turn 90 degrees. */
     };
 
     /**
@@ -107,11 +112,16 @@ public:
     };
 
 private:
+    void ForwardAuto();
+    void SingleHatchAuto();
     void TwoRocketAuto();
     void TwoRocketAutoFront();
     void TwoRocketAutoBack();
     void TwoCargoShipAuto();
     void CargoShipThenRocketAuto(const bool doCargoOnly = false);
+    void NoAuto();
+    void DoubleHatchAuto();
+    void TurnAuto();
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
