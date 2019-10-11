@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include "frc/WPILib.h"
+#include "ctre/Phoenix.h"
 #include "lib/helpers/GreySparkMax.h"
 
 #include "src/controllers/CheesyDriveController.h"
@@ -320,6 +322,8 @@ private:
     GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
+    PigeonIMU *m_pidgeygyro;
+    double m_gyroAngle;
 
     ControlMode m_controlMode;
 
