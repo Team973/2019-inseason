@@ -30,7 +30,7 @@ Robot::Robot()
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
         , m_elevatorMotorB(new GreyVictorSPX(ELEVATOR_B_CAN_ID))
         , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
-        , m_gyro(new ADXRS450_Gyro())
+        , m_gyro(new PigeonIMU(m_stingerDriveMotor))
         , m_hatchCamera(UsbCamera("USB Cmera 0", 0))
         , m_cameraServer(CameraServer::GetInstance())
         , m_greyCam(m_cameraServer->AddServer("serve_GreyCam", 1181))
@@ -86,6 +86,16 @@ void Robot::Initialize() {
     m_cameraServer->AddCamera(m_hatchCamera);
     m_hatchCamera.SetVideoMode(VideoMode::PixelFormat::kMJPEG, 160, 120, 10);
     m_greyCam.SetSource(m_hatchCamera);
+
+    // m_gyro->EnterCalibrationMode(PigeonIMU::CalibrationMode::Temperature,
+    // 30);
+    m_gyro->ConfigFactoryDefault();
+
+    const int kTimeoutMs = 30;
+
+    m_gyro->SetFusedHeading(
+        0.0, kTimeoutMs); /* reset heading, angle measurement wraps at
+                             plus/minus 23,040 degrees (64 rotations) */
 }
 
 void Robot::DisabledStart() {

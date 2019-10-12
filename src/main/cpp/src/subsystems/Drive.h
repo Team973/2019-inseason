@@ -54,7 +54,7 @@ public:
      * @param rightDriveSparkB The second right GreySparkMax.
      * @param rightDriveSparkC The third right GreySparkMax.
      * @param stingerDriveMotor The Stinger's GreyTalonSRX.
-     * @param gyro The ADXRS450_Gyro.
+     * @param gyro The PidgeonIMU.
      * @param limelightHatch The hatch Limelight.
      * @param hatchIntake The HatchIntake subsystem.
      * @param elevator The Elevator subsystem.
@@ -65,7 +65,7 @@ public:
           GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
           GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
           GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
-          GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+          GreyTalonSRX *stingerDriveMotor, PigeonIMU *gyro,
           Limelight *limelightHatch, HatchIntake *hatchIntake,
           Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
           ObservableXboxJoystick *operatorJoystick);
@@ -322,7 +322,6 @@ private:
     GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
-    PigeonIMU *m_pidgeygyro;
     double m_gyroAngle;
 
     ControlMode m_controlMode;
@@ -352,7 +351,8 @@ private:
     double m_leftPosZero;
     double m_rightPosZero;
 
-    ADXRS450_Gyro *m_gyro;
+    // ADXRS450_Gyro *m_gyro;
+    PigeonIMU *m_gyro;
     Limelight *m_limelightHatch;
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;

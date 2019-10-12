@@ -1,5 +1,8 @@
 #pragma once
 
+#include "frc/WPILib.h"
+#include "ctre/Phoenix.h"
+
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/helpers/XboxJoystickHelper.h"
@@ -20,7 +23,7 @@ public:
      * @param operatorJoystick The operator's ObservableXboxJoystick.
      * @param tuningJoystick The tuning ObservableDualActionJoystick.
      * @param Teleop The Teleop mode.
-     * @param gyro The ADXRS450_Gyro.
+     * @param gyro The PigeonIMU.
      * @param drive The Drive subsystem.
      * @param cargoIntake The CargoIntake subsystem.
      * @param hatchIntake The HatchIntake subsystem.
@@ -29,7 +32,7 @@ public:
     Autonomous(ObservablePoofsJoystick *driverJoystick,
                ObservableXboxJoystick *operatorJoystick,
                ObservableDualActionJoystick *tuningJoystick, Teleop *Teleop,
-               ADXRS450_Gyro *gyro, Drive *drive, CargoIntake *cargoIntake,
+               PigeonIMU *gyro, Drive *drive, CargoIntake *cargoIntake,
                HatchIntake *hatchIntake, Elevator *elevator);
     virtual ~Autonomous();
 
@@ -123,9 +126,9 @@ private:
     AutoState m_autoState;
     AutoStateStartPosition m_autoStateStartPosition;
     double m_autoTimer;
-    double m_direction;
     int m_autoStep;
-    ADXRS450_Gyro *m_gyro;
+    // ADXRS450_Gyro *m_gyro;
+    PigeonIMU *m_gyro;
 
     Drive *m_drive;
     CargoIntake *m_cargoIntake;

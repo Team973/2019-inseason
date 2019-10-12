@@ -4,7 +4,7 @@ namespace frc973 {
 Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
                        ObservableXboxJoystick *operatorJoystick,
                        ObservableDualActionJoystick *tuningJoystick,
-                       Teleop *teleop, ADXRS450_Gyro *gyro, Drive *drive,
+                       Teleop *teleop, PigeonIMU *gyro, Drive *drive,
                        CargoIntake *cargoIntake, HatchIntake *hatchIntake,
                        Elevator *elevator)
         : m_driverJoystick(driverJoystick)
@@ -14,7 +14,6 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
         , m_autoState(AutoState::CargoToHuman)
         , m_autoStateStartPosition(AutoStateStartPosition::LeftHabLevel2)
         , m_autoTimer(0.0)
-        , m_direction(1.0)  // counterclockwise is positive
         , m_autoStep(0)
         , m_gyro(gyro)
         , m_drive(drive)
@@ -29,12 +28,10 @@ Autonomous::~Autonomous() {
 void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
     m_teleop->TeleopInit();
-    m_gyro->Reset();
-    m_direction = 1.0;  // positive counterclockwise default
+    // m_gyro->Reset(); // switched to PidgeonIMU
 
     if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) <
         -0.5) {
-        m_direction = -1.0;
         m_autoStateStartPosition = AutoStateStartPosition::LeftHabLevel2;
     }
     else if (m_driverJoystick->GetRawAxisWithDeadband(

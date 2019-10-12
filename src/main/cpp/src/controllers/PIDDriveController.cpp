@@ -57,12 +57,11 @@ void PIDDriveController::CalcDriveOutput(DriveStateProvider *state,
     m_prevAngle = state->GetAngle();
 
     double throttle =
-        m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist);
-    /*Util::bound(m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist),
-    -m_vmax, m_vmax) * m_speedCap;*/
-    double turn = m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle);
-    /*Util::bound(m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle),
-    -m_avmax, m_avmax) * m_speedCap * DRIVE_ARC_IN_PER_DEG;*/
+        m_drivePID->CalcOutputWithError(m_targetDist - m_prevDist) * m_speedCap;
+    double turn = m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle) *
+                  m_speedCap;
+    // m_turnPID->CalcOutputWithError(m_targetAngle - m_prevAngle)
+    //            * m_speedCap * DRIVE_ARC_IN_PER_DEG;
 
     out->SetDriveOutputVBus(throttle - turn, throttle + turn);
 
