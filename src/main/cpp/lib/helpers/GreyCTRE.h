@@ -106,6 +106,9 @@ public:
      */
     GreyVictorSPX(int canId)
             : BaseMotorController(canId | 0x02040000), VictorSPX(canId) {
+        // Hex number should be 0x01040000, but is set to talon hex due to
+        // mechanically have two elevator talons rather than 1 talon and 1
+        // victor
         FactoryReset(this);
     }
     virtual ~GreyVictorSPX() {
