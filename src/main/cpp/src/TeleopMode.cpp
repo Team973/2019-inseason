@@ -53,6 +53,7 @@ void Teleop::TeleopInit() {
 
 void Teleop::UseTunningDriverJoystick() {
     m_driveControlJoystick = m_tuningJoystick;
+    m_drive->GetLimelightDriveWithSkew()->UseTunningDriverJoystick(m_tuningJoystick);
 }
 
 void Teleop::TeleopPeriodic() {
