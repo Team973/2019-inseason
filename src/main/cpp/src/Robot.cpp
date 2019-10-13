@@ -28,7 +28,7 @@ Robot::Robot()
               RIGHT_DRIVE_C_ID, CANSparkMax::MotorType::kBrushless))
         , m_stingerDriveMotor(new GreyTalonSRX(STINGER_DRIVE_CAN_ID))
         , m_elevatorMotorA(new GreyTalonSRX(ELEVATOR_A_CAN_ID))
-        , m_elevatorMotorB(new VictorSPX(ELEVATOR_B_CAN_ID))
+        , m_elevatorMotorB(new GreyVictorSPX(ELEVATOR_B_CAN_ID))
         , m_elevatorHall(new DigitalInput(ELEVATOR_HALL_ID))
         , m_gyro(new ADXRS450_Gyro())
         , m_hatchCamera(UsbCamera("USB Cmera 0", 0))
@@ -165,6 +165,26 @@ void Robot::AllStateContinuous() {
                                m_limelightHatch->isTargetValid());
 }
 
+void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
+                                                 bool pressedP) {
+    if (button == DualAction::Start && pressedP) {
+        m_teleop->UseTunningDriverJoystick();
+    }
+
+    if (this->IsOperatorControl()) {
+        m_teleop->HandleDualActionJoystick(port, button, pressedP);
+    }
+    else if (this->IsDisabled()) {
+        m_disabled->HandleDualActionJoystick(port, button, pressedP);
+    }
+    else if (this->IsTest()) {
+        m_test->HandleDualActionJoystick(port, button, pressedP);
+    }
+    else if (this->IsAutonomous()) {
+        m_autonomous->HandleDualActionJoystick(port, button, pressedP);
+    }
+}
+
 void Robot::ObservePoofsJoystickStateChange(uint32_t port, uint32_t button,
                                             bool pressedP) {
     if (this->IsOperatorControl()) {
@@ -191,26 +211,6 @@ void Robot::ObserveXboxJoystickStateChange(uint32_t port, uint32_t button,
     }
     else if (this->IsAutonomous()) {
         m_autonomous->HandleXboxJoystick(port, button, pressedP);
-    }
-}
-
-void Robot::ObserveDualActionJoystickStateChange(uint32_t port, uint32_t button,
-                                                 bool pressedP) {
-    if (button == DualAction::Start && pressedP) {
-        m_teleop->UseTunningDriverJoystick();
-    }
-
-    if (this->IsOperatorControl()) {
-        m_teleop->HandleDualActionJoystick(port, button, pressedP);
-    }
-    else if (this->IsDisabled()) {
-        m_disabled->HandleDualActionJoystick(port, button, pressedP);
-    }
-    else if (this->IsTest()) {
-        m_test->HandleDualActionJoystick(port, button, pressedP);
-    }
-    else if (this->IsAutonomous()) {
-        m_autonomous->HandleDualActionJoystick(port, button, pressedP);
     }
 }
 }
