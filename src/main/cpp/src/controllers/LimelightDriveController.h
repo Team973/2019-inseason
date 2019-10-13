@@ -7,7 +7,6 @@
 
 #include "lib/bases/DriveBase.h"
 #include "lib/helpers/PID.h"
-#include "lib/helpers/PoofsJoystickHelper.h"
 #include "lib/util/Util.h"
 #include "lib/sensors/Limelight.h"
 
@@ -16,6 +15,7 @@
 #include "src/subsystems/HatchIntake.h"
 
 namespace frc973 {
+class ObservableJoystickBase;
 
 /**
  * Limelight Drive Controller
@@ -33,7 +33,7 @@ public:
      */
     LimelightDriveController(LogSpreadsheet *logger, Limelight *limelight,
                              bool isCompSkew,
-                             ObservablePoofsJoystick *driverJoystick,
+                             ObservableJoystickBase *driverJoystick,
                              HatchIntake *hatchIntake, Elevator *elevator);
     virtual ~LimelightDriveController();
 
@@ -93,6 +93,11 @@ public:
      */
     double GetGoalAngleComp() const;
 
+    /**
+     * Switch the driveControlJoystick to the tunning Joystick
+     */
+    void UseTunningDriverJoystick(ObservableJoystickBase *tunningJoystick);
+
 private:
     static constexpr double DISTANCE_SETPOINT_ROCKET =
         -2.0; /**< in inches from target to robot bumper */
@@ -146,7 +151,7 @@ private:
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
 
-    ObservablePoofsJoystick *m_driverJoystick;
+    ObservableJoystickBase *m_driverJoystick;
 
     double m_throttle;
     double m_turn;

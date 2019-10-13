@@ -1,9 +1,10 @@
 #include "src/controllers/LimelightDriveController.h"
+#include "lib/bases/JoystickHelperBase.h"
 
 namespace frc973 {
 LimelightDriveController::LimelightDriveController(
     LogSpreadsheet *logger, Limelight *limelight, bool isCompSkew,
-    ObservablePoofsJoystick *driverJoystick, HatchIntake *hatchIntake,
+    ObservableJoystickBase *driverJoystick, HatchIntake *hatchIntake,
     Elevator *elevator)
         : m_onTarget(false)
         , m_leftSetpoint(0.0)
@@ -27,6 +28,10 @@ LimelightDriveController::LimelightDriveController(
 
 LimelightDriveController::~LimelightDriveController() {
     delete m_turnPid, m_throttlePid;
+}
+
+void LimelightDriveController::UseTunningDriverJoystick(ObservableJoystickBase *tunningJoystick) {
+    m_driverJoystick = tunningJoystick;
 }
 
 double LimelightDriveController::GetThrottlePidOut() const {
@@ -79,12 +84,14 @@ double LimelightDriveController::CalcTurnComp() {
 
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
-    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) >
+    const JoystickBase::JoystickCommon &COMMON = m_driverJoystick->GetJoystickCommon();
+
+    if (m_driverJoystick->GetRawAxisWithDeadband(COMMON.RightXAxis) >
         0.5) {
         m_limelight->SetCameraVisionLeft();
     }
     else if (m_driverJoystick->GetRawAxisWithDeadband(
-                 PoofsJoystick::RightXAxis) < -0.5) {
+                 COMMON.RightXAxis) < -0.5) {
         m_limelight->SetCameraVisionRight();
     }
     m_limelight->SetLightOn();
