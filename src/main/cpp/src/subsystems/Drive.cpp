@@ -28,7 +28,6 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_rightDriveSparkB(rightDriveSparkB)
         , m_rightDriveSparkC(rightDriveSparkC)
         , m_stingerDriveMotor(stingerDriveMotor)
-        , m_gyroAngle(0.0)
         , m_controlMode(ControlMode::PercentOutput)
         , m_leftDriveOutput(0.0)
         , m_rightDriveOutput(0.0)
@@ -50,8 +49,6 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_horizontalLengthLog(new LogCell("LL Horizontal Length"))
         , m_verticalLengthLog(new LogCell("LL Vertical Length"))
         , m_horizontalDistanceLog(new LogCell("LL Horizontal Distance"))
-        , m_leftPosZero(0.0)
-        , m_rightPosZero(0.0)
         , m_gyro(gyro)
         , m_limelightHatch(limelightHatch)
         , m_hatchIntake(hatchIntake)
@@ -75,8 +72,11 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               new AssistedCheesyDriveController(
                   m_limelightHatch,
                   AssistedCheesyDriveController::VisionOffset::Hatch))
-        , m_angle()
-        , m_angleRate()
+        , m_leftPosZero(0.0)
+        , m_rightPosZero(0.0)
+        , m_gyroZero(0.0)
+        , m_gyroAngle(0.0)
+        , m_angleRate(0.0)
         , m_angleLog(new LogCell("Angle"))
         , m_angularRateLog(new LogCell("Angular Rate"))
         , m_leftDistLog(new LogCell("Left Encoder Distance"))
@@ -274,13 +274,23 @@ double Drive::GetDriveCurrent() const {
            2.0;
 }
 
+void Drive::Zero() {
+    if (m_gyro) {
+        PigeonIMU::FusionStatus *stat = new PigeonIMU::FusionStatus();
+        double currentAngle = 0.0;
+
+        m_gyro->GetFusedHeading(*stat);
+        currentAngle = stat->heading;
+        m_gyroZero = currentAngle;
+    }
+}
+
 double Drive::GetAngle() const {
-    return -m_gyroAngle;  // - to switch the front of robot to the hatch, TODO:
-                          // - m_zeroAngle
+    return -(m_gyroAngle - m_gyroZero);  // - to switch the front of robot to the hatch
 }
 
 double Drive::GetAngularRate() const {
-    return -m_angleRate;
+    return m_angleRate;
 }
 
 void Drive::SetDriveOutputIPS(double left, double right) {
@@ -389,6 +399,8 @@ void Drive::TaskPeriodic(RobotMode mode) {
     currentAngle = stat->heading;
     currentAngularRate = xyz_dps[2];
     angleIsGood = (m_gyro->GetState() == PigeonIMU::Ready) ? true : false;
+
+    DBStringPrintf(DB_LINE1, "good %2.0lf gz: %2.1lf, g: %2.1lf", angleIsGood ? 1.0 : 0.0, m_gyroZero, currentAngle);
 
     if (angleIsGood) {
         m_gyroAngle = currentAngle;

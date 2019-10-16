@@ -28,7 +28,7 @@ Autonomous::~Autonomous() {
 void Autonomous::AutonomousInit() {
     // Remember to zero all sensors here
     m_teleop->TeleopInit();
-    // m_gyro->Reset(); // switched to PidgeonIMU
+    m_drive->Zero();
 
     if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) <
         -0.5) {
@@ -45,7 +45,7 @@ void Autonomous::AutonomousInit() {
     PIDDriveController *ctrl = m_drive->GetPIDDriveController();
 
     ctrl->GetDrivePID()->SetGains(0.025, 0.0, 0.00);
-    ctrl->GetTurnPID()->SetGains(0.0105, 0.0, 0.00135);
+    ctrl->GetTurnPID()->SetGains(0.0205, 0.0, 0.00135);
     std::cout << "Autonomous Start" << std::endl;
 }
 

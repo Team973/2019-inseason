@@ -13,7 +13,7 @@ void Autonomous::CargoToHumanPlayer() {
         case 1:  // turn toward human player right
                  // if (m_drive->OnTarget()) {
             // m_drive->PIDTurn(-90.0, DriveBase::RelativeTo::Absolute, 0.8);
-            m_drive->PIDTurn(-20.0, DriveBase::RelativeTo::Now, 0.2);
+            m_drive->PIDTurn(60.0, DriveBase::RelativeTo::Now, 0.7);
             m_autoStep++;
             // }
             break;

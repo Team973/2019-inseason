@@ -245,6 +245,8 @@ public:
      */
     double GetDriveCurrent() const;
 
+    void Zero();
+
     /**
      * Gets the current angle from the gyro in degrees.
      * @return The current angle.
@@ -322,8 +324,6 @@ private:
     GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
-    double m_gyroAngle;
-
     ControlMode m_controlMode;
 
     double m_leftDriveOutput;
@@ -369,7 +369,8 @@ private:
     LimelightDriveController *m_limelightDriveWithoutSkew;
     AssistedCheesyDriveController *m_assistedCheesyDriveHatchController;
 
-    double m_angle;
+    double m_gyroZero;
+    double m_gyroAngle;
     double m_angleRate;
     LogCell *m_angleLog;
     LogCell *m_angularRateLog;
