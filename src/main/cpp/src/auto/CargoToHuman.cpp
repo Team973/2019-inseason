@@ -6,21 +6,19 @@ namespace frc973 {
 void Autonomous::CargoToHumanPlayer() {
     switch (m_autoStep) {
         case 0:  // Backwards -30"
-            // m_drive->PIDDrive(-30.0, 0.0, DriveBase::RelativeTo::Absolute,
-            // 0.8);
+            m_drive->PIDDrive(-30.0, 0.0, DriveBase::RelativeTo::Absolute, 0.8);
             m_autoStep++;
             break;
         case 1:  // turn toward human player right
-                 // if (m_drive->OnTarget()) {
-            // m_drive->PIDTurn(-90.0, DriveBase::RelativeTo::Absolute, 0.8);
-            m_drive->PIDTurn(60.0, DriveBase::RelativeTo::Now, 0.7);
-            m_autoStep++;
-            // }
+            if (m_drive->OnTarget()) {
+                m_drive->PIDTurn(-90.0, DriveBase::RelativeTo::Absolute, 0.8);
+                // m_drive->PIDTurn(60.0, DriveBase::RelativeTo::Now, 0.7);
+                m_autoStep++;
+            }
             break;
         case 2:  // ONLY IF NEEDED
             if (m_drive->OnTarget()) {
-                // m_drive->PIDDrive(10.0, 0.0, DriveBase::RelativeTo::Now,
-                // 0.8);
+                m_drive->PIDDrive(10.0, 0.0, DriveBase::RelativeTo::Now, 0.8);
             }
             break;
         case 3:

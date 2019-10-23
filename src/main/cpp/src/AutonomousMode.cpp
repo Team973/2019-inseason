@@ -6,7 +6,7 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
                        ObservableDualActionJoystick *tuningJoystick,
                        Teleop *teleop, PigeonIMU *gyro, Drive *drive,
                        CargoIntake *cargoIntake, HatchIntake *hatchIntake,
-                       Elevator *elevator)
+                       Elevator *elevator, Limelight *limelightHatch)
         : m_driverJoystick(driverJoystick)
         , m_operatorJoystick(operatorJoystick)
         , m_tuningJoystick(tuningJoystick)
@@ -14,12 +14,14 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
         , m_autoState(AutoState::CargoToHuman)
         , m_autoStateStartPosition(AutoStateStartPosition::LeftHabLevel2)
         , m_autoTimer(0.0)
+        , m_direction(1.0)  // counterclockwise is positive
         , m_autoStep(0)
         , m_gyro(gyro)
         , m_drive(drive)
         , m_cargoIntake(cargoIntake)
         , m_hatchIntake(hatchIntake)
-        , m_elevator(elevator) {
+        , m_elevator(elevator)
+        , m_limelightHatch(limelightHatch) {
 }
 
 Autonomous::~Autonomous() {
@@ -32,6 +34,7 @@ void Autonomous::AutonomousInit() {
 
     if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) <
         -0.5) {
+        m_direction = -1.0;
         m_autoStateStartPosition = AutoStateStartPosition::LeftHabLevel2;
     }
     else if (m_driverJoystick->GetRawAxisWithDeadband(

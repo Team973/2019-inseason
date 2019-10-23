@@ -33,7 +33,8 @@ public:
                ObservableXboxJoystick *operatorJoystick,
                ObservableDualActionJoystick *tuningJoystick, Teleop *Teleop,
                PigeonIMU *gyro, Drive *drive, CargoIntake *cargoIntake,
-               HatchIntake *hatchIntake, Elevator *elevator);
+               HatchIntake *hatchIntake, Elevator *elevator,
+               Limelight *limelightHatch);
     virtual ~Autonomous();
 
     /**
@@ -81,11 +82,14 @@ public:
      */
     enum class AutoState
     {
+        ForwardAuto,         /**< Basic Forward Auto. */
         TwoRocket,           /**< Two rocket objects. */
         TwoCargoShip,        /**< Two cargo objects. */
         CargoShipThenRocket, /**< One on both the cargo and rocket. */
         CargoToHuman,
-        Manual /**< Manual driver control. */
+        Manual,   /**< Manual driver control. */
+        NoAuto,   /**< No autonomous. */
+        TurnAuto, /**< Turn 90 degrees. */
     };
 
     /**
@@ -110,13 +114,20 @@ public:
         RightHabLevel2 /**< Right Level 2 Auto State. */
     };
 
+    double timer;
+
 private:
+    void ForwardAuto();
+    void SingleHatchAuto();
     void TwoRocketAuto();
     void TwoRocketAutoFront();
     void TwoRocketAutoBack();
     void TwoCargoShipAuto();
     void CargoShipThenRocketAuto(const bool doCargoOnly = false);
     void CargoToHumanPlayer();
+    void NoAuto();
+    void DoubleHatchAuto();
+    void TurnAuto();
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
@@ -126,6 +137,7 @@ private:
     AutoState m_autoState;
     AutoStateStartPosition m_autoStateStartPosition;
     double m_autoTimer;
+    double m_direction;
     int m_autoStep;
     // ADXRS450_Gyro *m_gyro;
     PigeonIMU *m_gyro;
@@ -134,5 +146,7 @@ private:
     CargoIntake *m_cargoIntake;
     HatchIntake *m_hatchIntake;
     Elevator *m_elevator;
+
+    Limelight *m_limelightHatch;
 };
 }

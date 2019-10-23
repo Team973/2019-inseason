@@ -67,9 +67,10 @@ Robot::Robot()
         , m_test(new Test(m_driverJoystick, m_operatorJoystick,
                           m_tuningJoystick, m_drive, m_elevator, m_hatchIntake,
                           m_cargoIntake, m_stinger, m_limelightHatch))
-        , m_autonomous(new Autonomous(
-              m_driverJoystick, m_operatorJoystick, m_tuningJoystick, m_teleop,
-              m_gyro, m_drive, m_cargoIntake, m_hatchIntake, m_elevator))
+        , m_autonomous(new Autonomous(m_driverJoystick, m_operatorJoystick,
+                                      m_tuningJoystick, m_teleop, m_gyro,
+                                      m_drive, m_cargoIntake, m_hatchIntake,
+                                      m_elevator, m_limelightHatch))
         , m_disabled(new Disabled(m_driverJoystick, m_operatorJoystick,
                                   m_elevator, m_cargoIntake, m_drive,
                                   m_limelightHatch, m_autonomous, m_teleop)) {

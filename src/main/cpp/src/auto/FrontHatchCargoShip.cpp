@@ -41,7 +41,7 @@ void Autonomous::CargoShipThenRocketAuto(const bool doCargoOnly) {
             break;
         case 1:  // TurnTowardCargoFront
             if (m_drive->OnTarget()) {
-                m_drive->PIDTurn(HAB_TURN_TOWARD_TARGET,
+                m_drive->PIDTurn(HAB_TURN_TOWARD_TARGET * m_direction,
                                  DriveBase::RelativeTo::Now, 1.0);
                 m_autoStep++;
             }

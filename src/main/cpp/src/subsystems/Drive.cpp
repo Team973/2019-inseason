@@ -49,6 +49,8 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         , m_horizontalLengthLog(new LogCell("LL Horizontal Length"))
         , m_verticalLengthLog(new LogCell("LL Vertical Length"))
         , m_horizontalDistanceLog(new LogCell("LL Horizontal Distance"))
+        , m_leftPosZero(0.0)
+        , m_rightPosZero(0.0)
         , m_gyro(gyro)
         , m_limelightHatch(limelightHatch)
         , m_hatchIntake(hatchIntake)
@@ -72,8 +74,6 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               new AssistedCheesyDriveController(
                   m_limelightHatch,
                   AssistedCheesyDriveController::VisionOffset::Hatch))
-        , m_leftPosZero(0.0)
-        , m_rightPosZero(0.0)
         , m_gyroZero(0.0)
         , m_gyroAngle(0.0)
         , m_angleRate(0.0)
@@ -286,7 +286,8 @@ void Drive::Zero() {
 }
 
 double Drive::GetAngle() const {
-    return -(m_gyroAngle - m_gyroZero);  // - to switch the front of robot to the hatch
+    return -(m_gyroAngle -
+             m_gyroZero);  // - to switch the front of robot to the hatch
 }
 
 double Drive::GetAngularRate() const {
@@ -400,7 +401,8 @@ void Drive::TaskPeriodic(RobotMode mode) {
     currentAngularRate = xyz_dps[2];
     angleIsGood = (m_gyro->GetState() == PigeonIMU::Ready) ? true : false;
 
-    DBStringPrintf(DB_LINE1, "good %2.0lf gz: %2.1lf, g: %2.1lf", angleIsGood ? 1.0 : 0.0, m_gyroZero, currentAngle);
+    DBStringPrintf(DB_LINE1, "good %2.0lf gz: %2.1lf, g: %2.1lf",
+                   angleIsGood ? 1.0 : 0.0, m_gyroZero, currentAngle);
 
     if (angleIsGood) {
         m_gyroAngle = currentAngle;
@@ -419,18 +421,39 @@ void Drive::TaskPeriodic(RobotMode mode) {
     m_horizontalDistanceLog->LogDouble(
         m_limelightHatch->GetHorizontalDistance());
 
-    SmartDashboard::PutNumber("drive/percentages/leftpercent",
-                              m_leftDriveOutput);
-    SmartDashboard::PutNumber("drive/percentages/rightpercent",
-                              m_rightDriveOutput);
+    // NetworkTable Voltages
+    SmartDashboard::PutNumber("drive/voltages/leftvoltage",
+                              m_leftDriveSparkA->GetBusVoltage());
+    SmartDashboard::PutNumber("drive/voltages/rightvoltage",
+                              m_rightDriveSparkA->GetBusVoltage());
+
+    // NetworkTable Currents
     SmartDashboard::PutNumber("drive/currents/leftcurrent",
                               m_leftDriveSparkA->GetOutputCurrent());
     SmartDashboard::PutNumber("drive/currents/rightcurrent",
                               m_rightDriveSparkA->GetOutputCurrent());
 
+    // NetworkTable Encoders
+    SmartDashboard::PutNumber("drive/encoders/leftencoder", GetLeftDist());
+    SmartDashboard::PutNumber("drive/encoders/rightencoder", GetRightDist());
+
+    // NetworkTable motor output
+    SmartDashboard::PutNumber("drive/outputs/leftratesetpoint",
+                              m_leftDriveOutput);
+    SmartDashboard::PutNumber("drive/outputs/leftrateactual",
+                              Drive::GetLeftRate());
+
+    SmartDashboard::PutNumber("drive/outputs/rightratesetpoint",
+                              m_rightDriveOutput);
+    SmartDashboard::PutNumber("drive/outputs/rightrateactual",
+                              Drive::GetRightRate());
+
+    // NetworkTable Gyro
+    SmartDashboard::PutNumber("drive/gyro/angle", this->GetAngle());
+
     // Austin ADXRS450_Gyro config
-    // m_angleRate = -1.0 * ((GetRightRate() - GetLeftRate()) / 2.0) /
-    //               (DRIVE_WIDTH / 2.0) * Constants::DEG_PER_RAD;
+    m_angleRate = -1.0 * ((GetRightRate() - GetLeftRate()) / 2.0) /
+                  (DRIVE_WIDTH / 2.0) * Constants::DEG_PER_RAD;
 
     DBStringPrintf(DB_LINE9, "l %2.1lf r %2.1lf g %2.1lf", this->GetLeftDist(),
                    this->GetRightDist(), this->GetAngle());
