@@ -83,13 +83,15 @@ public:
     enum class AutoState
     {
         ForwardAuto,         /**< Basic Forward Auto. */
+        SingleHatchAuto,     /**< Place a single hatch on the cargo ship. */
         TwoRocket,           /**< Two rocket objects. */
         TwoCargoShip,        /**< Two cargo objects. */
         CargoShipThenRocket, /**< One on both the cargo and rocket. */
+        Manual,              /**< Manual driver control. */
+        NoAuto,              /**< No autonomous. */
+        DoubleHatchAuto,     /**< Place a single hatch plus... */
+        TurnAuto,            /**< Turn 90 degrees. */
         CargoToHuman,
-        Manual,   /**< Manual driver control. */
-        NoAuto,   /**< No autonomous. */
-        TurnAuto, /**< Turn 90 degrees. */
     };
 
     /**

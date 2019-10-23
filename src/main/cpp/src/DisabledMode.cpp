@@ -56,14 +56,15 @@ void Disabled::HandleXboxJoystick(uint32_t port, uint32_t button,
         case Xbox::BtnX:
             if (pressedP) {
                 m_autonomous->SetAutoState(
-                    Autonomous::AutoState::CargoShipThenRocket);
+                    Autonomous::AutoState::SingleHatchAuto);
             }
             else {
             }
             break;
         case Xbox::BtnB:
             if (pressedP) {
-                m_autonomous->SetAutoState(Autonomous::AutoState::TwoRocket);
+                m_autonomous->SetAutoState(
+                    Autonomous::AutoState::DoubleHatchAuto);
             }
             else {
             }
@@ -124,6 +125,7 @@ void Disabled::HandleXboxJoystick(uint32_t port, uint32_t button,
             break;
         case Xbox::Start:
             if (pressedP) {
+                m_autonomous->SetAutoState(Autonomous::AutoState::CargoToHuman);
             }
             else {
             }

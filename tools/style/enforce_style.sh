@@ -10,7 +10,7 @@ fi
 
 UnameOut=$(uname -s)
 case "${UnameOut}" in
-    Linux*)   FormatCmd="clang-format-5.0 -style=file";;
+    Linux*)   FormatCmd="clang-format -style=file";;
     Darwin*)  FormatCmd="clang-format -style=file";;
     *)        FormatCmd="clang-format -style-file"
 esac
