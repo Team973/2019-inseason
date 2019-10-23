@@ -39,6 +39,7 @@ void Teleop::TeleopInit() {
     m_stinger->RetractSwitchBlade();
     m_stinger->SetKickUpDisable();
     m_driveMode = DriveMode::Cheesy;
+    m_drive->Zero();
 }
 
 void Teleop::TeleopPeriodic() {

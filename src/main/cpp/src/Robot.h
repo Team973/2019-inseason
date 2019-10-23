@@ -1,5 +1,8 @@
 #pragma once
 
+#include "frc/WPILib.h"
+#include "ctre/Phoenix.h"
+
 #include "lib/bases/CoopMTRobot.h"
 #include "lib/helpers/DualActionJoystickHelper.h"
 #include "lib/helpers/GreyCompressor.h"
@@ -156,7 +159,7 @@ private:
     GreyVictorSPX *m_elevatorMotorB;
     DigitalInput *m_elevatorHall;
 
-    ADXRS450_Gyro *m_gyro;
+    PigeonIMU *m_gyro;
 
     UsbCamera m_hatchCamera;
     CameraServer *m_cameraServer;

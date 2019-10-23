@@ -18,21 +18,21 @@ void Autonomous::SingleHatchAuto() {
         case 2:
             m_drive->LimelightDriveWithSkew();
             m_limelightHatch->SetCameraVisionRight();
-            timer = GetMsecTime();
+            m_autoTimer = GetMsecTime();
             m_autoStep++;
             break;
         case 3:
-            if (GetMsecTime() - timer > 3000) {
+            if (GetMsecTime() - m_autoTimer > 3000) {
                 m_autoStep++;
             }
             break;
         case 4:
             m_hatchIntake->Exhaust();
-            timer = GetMsecTime();
+            m_autoTimer = GetMsecTime();
             m_autoStep++;
             break;
         case 5:
-            if (GetMsecTime() - timer > 1000) {
+            if (GetMsecTime() - m_autoTimer > 1000) {
                 m_drive->PIDDrive(20.0, 0.0, Drive::RelativeTo::Now, 0.8);
                 m_autoStep++;
             }

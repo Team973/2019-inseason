@@ -15,7 +15,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
              GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
              GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
              GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
-             GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
+             GreyTalonSRX *stingerDriveMotor, PigeonIMU *gyro,
              Limelight *limelightHatch, HatchIntake *hatchIntake,
              Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
              ObservableXboxJoystick *operatorJoystick)
@@ -74,8 +74,9 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
               new AssistedCheesyDriveController(
                   m_limelightHatch,
                   AssistedCheesyDriveController::VisionOffset::Hatch))
-        , m_angle()
-        , m_angleRate()
+        , m_gyroZero(0.0)
+        , m_gyroAngle(0.0)
+        , m_angleRate(0.0)
         , m_angleLog(new LogCell("Angle"))
         , m_angularRateLog(new LogCell("Angular Rate"))
         , m_leftDistLog(new LogCell("Left Encoder Distance"))
@@ -273,12 +274,24 @@ double Drive::GetDriveCurrent() const {
            2.0;
 }
 
+void Drive::Zero() {
+    if (m_gyro) {
+        PigeonIMU::FusionStatus *stat = new PigeonIMU::FusionStatus();
+        double currentAngle = 0.0;
+
+        m_gyro->GetFusedHeading(*stat);
+        currentAngle = stat->heading;
+        m_gyroZero = currentAngle;
+    }
+}
+
 double Drive::GetAngle() const {
-    return m_gyro->GetAngle();
+    return -(m_gyroAngle -
+             m_gyroZero);  // - to switch the front of robot to the hatch
 }
 
 double Drive::GetAngularRate() const {
-    return -m_angleRate;
+    return m_angleRate;
 }
 
 void Drive::SetDriveOutputIPS(double left, double right) {
@@ -372,6 +385,30 @@ void Drive::EnableCoastMode() {
 }
 
 void Drive::TaskPeriodic(RobotMode mode) {
+    /* some temps for Pigeon API */
+    PigeonIMU::GeneralStatus genStatus;
+    double xyz_dps[3];
+    PigeonIMU::FusionStatus *stat = new PigeonIMU::FusionStatus();
+    double currentAngle;
+    bool angleIsGood;
+    double currentAngularRate;
+
+    /* grab some input data from Pigeon and gamepad */
+    m_gyro->GetGeneralStatus(genStatus);
+    m_gyro->GetRawGyro(xyz_dps);
+    m_gyro->GetFusedHeading(*stat);
+    currentAngle = stat->heading;
+    currentAngularRate = xyz_dps[2];
+    angleIsGood = (m_gyro->GetState() == PigeonIMU::Ready) ? true : false;
+
+    DBStringPrintf(DB_LINE1, "good %2.0lf gz: %2.1lf, g: %2.1lf",
+                   angleIsGood ? 1.0 : 0.0, m_gyroZero, currentAngle);
+
+    if (angleIsGood) {
+        m_gyroAngle = currentAngle;
+        m_angleRate = currentAngularRate;
+    }
+
     m_targetLog->LogDouble(m_limelightHatch->isTargetValid());
     m_xOffsetLog->LogDouble(m_limelightHatch->GetXOffset());
     m_yOffsetLog->LogDouble(m_limelightHatch->GetYOffset());
