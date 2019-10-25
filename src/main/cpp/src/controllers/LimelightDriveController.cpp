@@ -80,7 +80,7 @@ double LimelightDriveController::CalcTurnComp() {
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
 
-    if (!m_onTarget) {
+    if (m_onTarget) {
         m_leftSetpoint = 0.0;
         m_rightSetpoint = 0.0;
         out->SetDriveOutputVBus(m_leftSetpoint, m_rightSetpoint);
