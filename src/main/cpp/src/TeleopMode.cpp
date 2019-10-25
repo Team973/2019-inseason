@@ -96,6 +96,7 @@ void Teleop::TeleopPeriodic() {
 
     switch (m_gameMode) {
         case GameMode::CargoInit:
+            m_driveMode = DriveMode::Cheesy;
             m_cargoIntake->RetractPlatformWheel();
             m_wristResetTimer = GetMsecTime();
             m_hatchIntake->SetIdle();
