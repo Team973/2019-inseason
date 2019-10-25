@@ -97,6 +97,7 @@ void Teleop::TeleopPeriodic() {
 
     switch (m_gameMode) {
         case GameMode::CargoInit:
+            m_driveMode = DriveMode::Cheesy;
             m_cargoIntake->RetractPlatformWheel();
             m_wristResetTimer = GetMsecTime();
             m_hatchIntake->SetIdle();
@@ -299,7 +300,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
-                            // m_driveMode = DriveMode::LimelightDriveWithoutSkew; // removed so the right "trigger" button is used
+                            // m_driveMode = DriveMode::LimelightDriveWithoutSkew; // removed so the right "trigger" button is used only
                             break;
                         case GameMode::CargoPeriodic:
                             break;

@@ -20,15 +20,13 @@ void Autonomous::SingleHatchAuto() {
                 AutoStateStartPosition::LeftHabLevel2) {
                 m_limelightHatch->SetCameraVisionLeft();
                 m_drive->LimelightDriveWithSkew();
-                m_autoTimer = GetMsecTime();
                 m_autoStep++;
                 break;
             }
             else if (m_autoStateStartPosition ==
-                     AutoStateStartPosition::RightHabLevel2) {
+                AutoStateStartPosition::RightHabLevel2) {
                 m_drive->LimelightDriveWithSkew();
                 m_limelightHatch->SetCameraVisionRight();
-                m_autoTimer = GetMsecTime();
                 m_autoStep++;
                 break;
             }
@@ -39,14 +37,11 @@ void Autonomous::SingleHatchAuto() {
             break;
         case 4:
             m_hatchIntake->Exhaust();
-            m_autoTimer = GetMsecTime();
-            // m_autoStep++;
+            m_autoStep++;
             break;
         case 5:
-            if (GetMsecTime() - m_autoTimer > 250) {
-                m_drive->PIDDrive(20.0, 0.0, Drive::RelativeTo::Now, 0.8);
-                m_autoStep++;
-            }
+            m_drive->PIDDrive(m_dir * -20.0, 0.0, Drive::RelativeTo::Now, 0.8);
+            m_autoStep++;
             break;
         case 6:
             if (m_drive->OnTarget()) {

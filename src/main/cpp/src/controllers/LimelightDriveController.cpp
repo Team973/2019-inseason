@@ -79,6 +79,14 @@ double LimelightDriveController::CalcTurnComp() {
 
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
+
+    if (!m_onTarget) {
+        m_leftSetpoint = 0.0;
+        m_rightSetpoint = 0.0;
+        out->SetDriveOutputVBus(m_leftSetpoint, m_rightSetpoint);
+        return;
+    }
+
     if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) >
         0.5) {
         m_limelight->SetCameraVisionLeft();
@@ -100,9 +108,7 @@ void LimelightDriveController::CalcDriveOutput(
         distError = m_distance - DISTANCE_SETPOINT_CARGO_BAY;
     }
 
-    if (!m_limelight->isTargetValid() || m_onTarget) {
-        // Proof of concept: Allow driver to turn to get a target, should only
-        // be when !isTargetValid(), so break away from the || above
+    if (!m_limelight->isTargetValid()) {
         m_leftSetpoint = 0.0;   //- driverComp;
         m_rightSetpoint = 0.0;  //+ driverComp;
     }
@@ -129,11 +135,13 @@ void LimelightDriveController::CalcDriveOutput(
                    m_throttlePidOut, m_turnPidOut, m_goalAngleComp);
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
                    m_leftSetpoint, m_rightSetpoint);
+    DBStringPrintf(DBStringPos::DB_LINE1, "ds:%2.2lfar:%2.2lfde:%2.2lfr:%2.2lf",
+        m_distance, state->GetAngularRate(), distError, state->GetRate());
 
     out->SetDriveOutputVBus(m_leftSetpoint, m_rightSetpoint);
 
     if ((fabs(offset) < 5.0 && fabs(state->GetAngularRate()) < 5.0) &&
-        (fabs(distError) < 3.0 && fabs(state->GetRate() < 3.0))) {
+        (fabs(distError) < 5.0 && fabs(state->GetRate() < 3.0))) {
         m_onTarget = true;
     }
     else {
