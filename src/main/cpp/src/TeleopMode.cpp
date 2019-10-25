@@ -299,7 +299,7 @@ void Teleop::HandlePoofsJoystick(uint32_t port, uint32_t button,
                 if (pressedP) {
                     switch (m_gameMode) {
                         case GameMode::HatchPeriodic:
-                            m_driveMode = DriveMode::LimelightDriveWithoutSkew;
+                            // m_driveMode = DriveMode::LimelightDriveWithoutSkew; // removed so the right "trigger" button is used only
                             break;
                         case GameMode::CargoPeriodic:
                             break;
