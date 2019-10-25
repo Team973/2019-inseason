@@ -15,9 +15,9 @@ static constexpr double DRIVE_PID_KI = 0.0;
 static constexpr double DRIVE_PID_KD = 0.0;
 
 // Turn pid takes in error in degrees and outputs velocity in degrees/sec
-static constexpr double TURN_PID_KP = 0.0;
+static constexpr double TURN_PID_KP = 0.0205;
 static constexpr double TURN_PID_KI = 0.0;
-static constexpr double TURN_PID_KD = 0.0;
+static constexpr double TURN_PID_KD = 0.00135;
 
 static constexpr double MAX_LINEAR_SPEED_IPS =
     60.0;  // reduced for testing from: 150.0;          // in in/sec

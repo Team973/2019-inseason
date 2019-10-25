@@ -22,9 +22,6 @@ void Autonomous::CargoShipThenRocketAuto(const bool doCargoOnly) {
         case AutoStateStartPosition::LeftHabLevel2:
             initial_dist += 12.0;
             break;
-        case AutoStateStartPosition::CenterHab:
-            initial_dist -= 12.0;
-            break;
         case AutoStateStartPosition::RightHabLevel2:
             initial_dist += 12.0;
             break;
@@ -41,7 +38,7 @@ void Autonomous::CargoShipThenRocketAuto(const bool doCargoOnly) {
             break;
         case 1:  // TurnTowardCargoFront
             if (m_drive->OnTarget()) {
-                m_drive->PIDTurn(HAB_TURN_TOWARD_TARGET * m_direction,
+                m_drive->PIDTurn(HAB_TURN_TOWARD_TARGET,
                                  DriveBase::RelativeTo::Now, 1.0);
                 m_autoStep++;
             }

@@ -111,7 +111,6 @@ public:
     enum class AutoStateStartPosition
     {
         LeftHabLevel2, /**< Left Level 2 Auto State. */
-        CenterHab,     /**< Center Auto State. */
         RightHabLevel2 /**< Right Level 2 Auto State. */
     };
 
@@ -135,7 +134,8 @@ private:
     AutoState m_autoState;
     AutoStateStartPosition m_autoStateStartPosition;
     double m_autoTimer;
-    double m_direction;
+    double m_dir;  // sign of forward direction, set in autonoumous init
+    double m_tur;  // sign of clockwise turn from the hatch orientation
     int m_autoStep;
     // ADXRS450_Gyro *m_gyro;
     PigeonIMU *m_gyro;

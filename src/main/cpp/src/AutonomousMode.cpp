@@ -12,9 +12,10 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
         , m_tuningJoystick(tuningJoystick)
         , m_teleop(teleop)
         , m_autoState(AutoState::NoAuto)
-        , m_autoStateStartPosition(AutoStateStartPosition::LeftHabLevel2)
+        , m_autoStateStartPosition(AutoStateStartPosition::RightHabLevel2)
         , m_autoTimer(0.0)
-        , m_direction(1.0)  // counterclockwise is positive
+        , m_dir(-1.0)
+        , m_tur(1.0)
         , m_autoStep(0)
         , m_gyro(gyro)
         , m_drive(drive)
@@ -32,23 +33,14 @@ void Autonomous::AutonomousInit() {
     m_teleop->TeleopInit();
     m_drive->Zero();
 
-    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) <
-        -0.5) {
-        m_direction = -1.0;
+    if (m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftXAxis) < -0.5) {
         m_autoStateStartPosition = AutoStateStartPosition::LeftHabLevel2;
     }
-    else if (m_driverJoystick->GetRawAxisWithDeadband(
-                 PoofsJoystick::RightXAxis) > 0.5) {
+    else if (m_operatorJoystick->GetRawAxisWithDeadband(Xbox::LeftXAxis) >
+             0.5) {
         m_autoStateStartPosition = AutoStateStartPosition::RightHabLevel2;
     }
-    else {
-        m_autoStateStartPosition = AutoStateStartPosition::CenterHab;
-    }
 
-    PIDDriveController *ctrl = m_drive->GetPIDDriveController();
-
-    ctrl->GetDrivePID()->SetGains(0.025, 0.0, 0.00);
-    ctrl->GetTurnPID()->SetGains(0.0205, 0.0, 0.00135);
     std::cout << "Autonomous Start" << std::endl;
 }
 
@@ -82,6 +74,9 @@ void Autonomous::AutonomousPeriodic() {
             break;
         case AutoState::NoAuto:
             NoAuto();
+            break;
+        case AutoState::DoubleHatchAuto:
+            DoubleHatchAuto();
             break;
         default:
             m_teleop->TeleopPeriodic();
