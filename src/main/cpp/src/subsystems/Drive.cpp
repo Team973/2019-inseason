@@ -283,6 +283,12 @@ void Drive::Zero() {
         currentAngle = stat->heading;
         m_gyroZero = currentAngle;
     }
+    if (m_leftDriveSparkA) {
+        m_leftPosZero = GetLeftDist();
+    }
+    if (m_rightDriveSparkA) {
+        m_rightPosZero = GetRightDist();
+    }
 }
 
 double Drive::GetAngle() const {

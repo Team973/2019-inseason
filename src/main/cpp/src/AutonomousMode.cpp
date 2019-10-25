@@ -15,7 +15,7 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
         , m_autoStateStartPosition(AutoStateStartPosition::RightHabLevel2)
         , m_autoTimer(0.0)
         , m_dir(-1.0)
-        , m_tur(1.0)
+        , m_tur(-1.0)
         , m_autoStep(0)
         , m_gyro(gyro)
         , m_drive(drive)

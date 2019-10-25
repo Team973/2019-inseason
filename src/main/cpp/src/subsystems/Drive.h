@@ -245,6 +245,9 @@ public:
      */
     double GetDriveCurrent() const;
 
+    /**
+     * Zero encoders and gyro.
+     */
     void Zero();
 
     /**
