@@ -79,64 +79,56 @@ double LimelightDriveController::CalcTurnComp() {
 
 void LimelightDriveController::CalcDriveOutput(
     DriveStateProvider *state, DriveControlSignalReceiver *out) {
-
-    if (m_onTarget) {
-        m_leftSetpoint = 0.0;
-        m_rightSetpoint = 0.0;
-        out->SetDriveOutputVBus(m_leftSetpoint, m_rightSetpoint);
-        return;
-    }
-
-    if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) >
-        0.5) {
-        m_limelight->SetCameraVisionLeft();
-    }
-    else if (m_driverJoystick->GetRawAxisWithDeadband(
-                 PoofsJoystick::RightXAxis) < -0.5) {
-        m_limelight->SetCameraVisionRight();
-    }
-    m_limelight->SetLightOn();
-    double offset = m_limelight->GetXOffset();
-    m_distance = m_limelight->GetHorizontalDistance();  // in inches
+    double offset;
     double distError;
-    if (m_hatchIntake->GetHatchPuncherState() ==
-            HatchIntake::HatchSolenoidState::manualPunch ||
-        m_elevator->GetRocketScoreMode() == Elevator::RocketScoreMode::middle) {
-        distError = m_distance - DISTANCE_SETPOINT_ROCKET;
-    }
-    else {
-        distError = m_distance - DISTANCE_SETPOINT_CARGO_BAY;
-    }
 
-    if (!m_limelight->isTargetValid()) {
-        m_leftSetpoint = 0.0;   //- driverComp;
-        m_rightSetpoint = 0.0;  //+ driverComp;
-    }
-    else {
-        m_turnPidOut =
-            Util::bound(
-                m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET),
-                TURN_MIN, TURN_MAX) *
-            CalcTurnComp();
-        m_throttlePidOut =
-            Util::bound(m_throttlePid->CalcOutputWithError(-distError),
-                        THROTTLE_MIN, THROTTLE_MAX);
-        m_goalAngleComp = CalcScaleGoalAngleComp();
-        if (m_isCompensatingSkew) {
+    m_leftSetpoint = 0.0;
+    m_rightSetpoint = 0.0;
+
+    if (!m_onTarget) {
+        if (m_driverJoystick->GetRawAxisWithDeadband(PoofsJoystick::RightXAxis) >
+            0.5) {
+            m_limelight->SetCameraVisionLeft();
+        }
+        else if (m_driverJoystick->GetRawAxisWithDeadband(
+                    PoofsJoystick::RightXAxis) < -0.5) {
+            m_limelight->SetCameraVisionRight();
+        }
+
+        m_limelight->SetLightOn();
+        offset = m_limelight->GetXOffset();
+        m_distance = m_limelight->GetHorizontalDistance();  // in inches
+
+        if (m_hatchIntake->GetHatchPuncherState() ==
+                HatchIntake::HatchSolenoidState::manualPunch ||
+            m_elevator->GetRocketScoreMode() == Elevator::RocketScoreMode::middle) {
+            distError = m_distance - DISTANCE_SETPOINT_ROCKET;
+        }
+        else {
+            distError = m_distance - DISTANCE_SETPOINT_CARGO_BAY;
+        }
+
+        if (m_limelight->isTargetValid()) {
+            m_turnPidOut =
+                Util::bound(
+                    m_turnPid->CalcOutputWithError(offset - HATCH_VISION_OFFSET),
+                    TURN_MIN, TURN_MAX) *
+                CalcTurnComp();
+            m_throttlePidOut =
+                Util::bound(m_throttlePid->CalcOutputWithError(-distError),
+                            THROTTLE_MIN, THROTTLE_MAX);
+            m_goalAngleComp = CalcScaleGoalAngleComp();
             m_leftSetpoint = m_throttlePidOut - m_turnPidOut - m_goalAngleComp;
             m_rightSetpoint = m_throttlePidOut + m_turnPidOut + m_goalAngleComp;
         }
-        else {
-            m_leftSetpoint = m_throttlePidOut + m_turnPidOut;
-            m_rightSetpoint = m_throttlePidOut - m_turnPidOut;
-        }
     }
+
     DBStringPrintf(DBStringPos::DB_LINE3, "th%2.2lf tu%2.2lf sk%2.2lf",
                    m_throttlePidOut, m_turnPidOut, m_goalAngleComp);
     DBStringPrintf(DBStringPos::DB_LINE4, "lim: l:%2.2lf r:%2.2lf",
                    m_leftSetpoint, m_rightSetpoint);
-    DBStringPrintf(DBStringPos::DB_LINE1, "ds:%2.2lfar:%2.2lfde:%2.2lfr:%2.2lf",
-        m_distance, state->GetAngularRate(), distError, state->GetRate());
+    // DBStringPrintf(DBStringPos::DB_LINE1, "ds:%2.2lfar:%2.2lfde:%2.2lfr:%2.2lf",
+    //     m_distance, state->GetAngularRate(), distError, state->GetRate());
 
     out->SetDriveOutputVBus(m_leftSetpoint, m_rightSetpoint);
 
