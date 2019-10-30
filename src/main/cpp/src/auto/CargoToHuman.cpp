@@ -46,46 +46,8 @@ void Autonomous::CargoToHuman() {
             break;
         case 6:
             if (m_drive->OnTarget()) {
-                // m_autoStep++;
             }
             break;
-
-            // case 22:
-            //     if (m_drive->OnTarget()) {
-            //         m_autoStep++;
-            //     }
-            //     break;
-            // case 23:
-            //     m_drive->PIDDrive(m_dir * 30.0, 0.0, Drive::RelativeTo::Now,
-            //     0.8); m_autoStep++; break;
-            // case 24:
-            //     if (m_drive->OnTarget()) {
-            //         m_autoStep++;
-            //     }
-            //     break;
-            // case 25:
-            //     m_drive->LimelightDriveWithSkew();
-            //     m_autoStep++;
-            //     break;
-            // case 26:
-            //     if (m_drive->OnTarget()) {
-            //         m_autoStep++;
-            //     }
-            //     break;
-            // case 27:
-            //     m_hatchIntake->Exhaust();
-            //     m_autoStep++;
-            //     break;
-            // case 28:
-            //     m_drive->PIDDrive(m_dir * 10.0, 0.0, Drive::RelativeTo::Now,
-            //     0.8); m_autoStep++;
-            //     break;
-            // case 29:
-            //     if (m_drive->OnTarget()) {
-            //         m_hatchIntake->SetIdle();
-            //         m_autoStep++;
-            //     }
-            //     break;
     }
 }
 }
