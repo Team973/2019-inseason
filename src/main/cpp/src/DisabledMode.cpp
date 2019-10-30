@@ -55,8 +55,7 @@ void Disabled::HandleXboxJoystick(uint32_t port, uint32_t button,
             break;
         case Xbox::BtnX:
             if (pressedP) {
-                m_autonomous->SetAutoState(
-                    Autonomous::AutoState::SingleHatchAuto);
+                m_autonomous->SetAutoState(Autonomous::AutoState::StartToCargo);
             }
             else {
             }

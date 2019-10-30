@@ -83,7 +83,7 @@ public:
     enum class AutoState
     {
         ForwardAuto,         /**< Basic Forward Auto. */
-        SingleHatchAuto,     /**< Place a single hatch on the cargo ship. */
+        StartToCargo,        /**< Place a single hatch on the cargo ship. */
         TwoRocket,           /**< Two rocket objects. */
         TwoCargoShip,        /**< Two cargo objects. */
         CargoShipThenRocket, /**< One on both the cargo and rocket. */
@@ -117,7 +117,7 @@ public:
 
 private:
     void ForwardAuto();
-    void SingleHatchAuto();
+    void StartToCargo();
     void TwoRocketAuto();
     void TwoRocketAutoFront();
     void TwoRocketAutoBack();
