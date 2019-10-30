@@ -92,6 +92,7 @@ public:
         DoubleHatchAuto,     /**< Place a single hatch plus... */
         TurnAuto,            /**< Turn 90 degrees. */
         CargoToHuman,
+        StartToCargo,
     };
 
     /**
@@ -116,8 +117,6 @@ public:
         RightHabLevel2 /**< Right Level 2 Auto State. */
     };
 
-    double timer;
-
 private:
     void ForwardAuto();
     void SingleHatchAuto();
@@ -127,6 +126,7 @@ private:
     void TwoCargoShipAuto();
     void CargoShipThenRocketAuto(const bool doCargoOnly = false);
     void CargoToHumanPlayer();
+    void StartPlatformToCargo();
     void NoAuto();
     void DoubleHatchAuto();
     void TurnAuto();
@@ -139,7 +139,6 @@ private:
     AutoState m_autoState;
     AutoStateStartPosition m_autoStateStartPosition;
     double m_autoTimer;
-    double m_direction;
     int m_autoStep;
     // ADXRS450_Gyro *m_gyro;
     PigeonIMU *m_gyro;

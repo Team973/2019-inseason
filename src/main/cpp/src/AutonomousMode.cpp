@@ -14,7 +14,6 @@ Autonomous::Autonomous(ObservablePoofsJoystick *driverJoystick,
         , m_autoState(AutoState::NoAuto)
         , m_autoStateStartPosition(AutoStateStartPosition::LeftHabLevel2)
         , m_autoTimer(0.0)
-        , m_direction(1.0)  // counterclockwise is positive
         , m_autoStep(0)
         , m_gyro(gyro)
         , m_drive(drive)
@@ -78,6 +77,7 @@ void Autonomous::AutonomousPeriodic() {
             CargoShipThenRocketAuto();
             break;
         case AutoState::CargoToHuman:
+            StartPlatformToCargo();
             CargoToHumanPlayer();
             break;
         case AutoState::Manual:
