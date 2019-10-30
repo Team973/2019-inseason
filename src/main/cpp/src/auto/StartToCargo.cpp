@@ -4,7 +4,7 @@ using namespace frc;
 
 namespace frc973 {
 
-void Autonomous::SingleHatchAuto() {
+void Autonomous::StartToCargo() {
     switch (m_autoStep) {
         case 0:
             m_drive->PIDDrive(m_dir * 50.0, 0.0, Drive::RelativeTo::Now, 0.5);
@@ -24,7 +24,7 @@ void Autonomous::SingleHatchAuto() {
                 break;
             }
             else if (m_autoStateStartPosition ==
-                AutoStateStartPosition::RightHabLevel2) {
+                     AutoStateStartPosition::RightHabLevel2) {
                 m_drive->LimelightDriveWithSkew();
                 m_limelightHatch->SetCameraVisionRight();
                 m_autoStep++;

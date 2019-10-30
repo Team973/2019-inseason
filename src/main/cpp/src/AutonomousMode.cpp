@@ -57,8 +57,8 @@ void Autonomous::AutonomousPeriodic() {
         case AutoState::ForwardAuto:
             ForwardAuto();
             break;
-        case AutoState::SingleHatchAuto:
-            SingleHatchAuto();
+        case AutoState::StartToCargo:
+            StartToCargo();
             break;
         case AutoState::TwoRocket:
             TwoRocketAuto();
