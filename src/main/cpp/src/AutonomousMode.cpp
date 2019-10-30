@@ -77,6 +77,8 @@ void Autonomous::AutonomousPeriodic() {
             break;
         case AutoState::DoubleHatchAuto:
             DoubleHatchAuto();
+        case AutoState::CargoToHuman:
+            CargoToHuman();
             break;
         default:
             m_teleop->TeleopPeriodic();

@@ -91,6 +91,7 @@ public:
         NoAuto,              /**< No autonomous. */
         DoubleHatchAuto,     /**< Place a single hatch plus... */
         TurnAuto,            /**< Turn 90 degrees. */
+        CargoToHuman,        /**< Same as in DoubleHatchAuto. */
     };
 
     /**
@@ -125,6 +126,7 @@ private:
     void NoAuto();
     void DoubleHatchAuto();
     void TurnAuto();
+    void CargoToHuman();
 
     ObservablePoofsJoystick *m_driverJoystick;
     ObservableXboxJoystick *m_operatorJoystick;
