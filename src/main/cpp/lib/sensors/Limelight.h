@@ -236,7 +236,7 @@ public:
     static constexpr double CAMERA_HEIGHT =
         47.0; /**< Camera's Height in inches from ground */
     static constexpr double CAMERA_ANGLE =
-        -27.5 *                  // Originally -31.2
+        -28.52 *                  // Originally -31.2
         (Constants::PI / 180.0); /**< Camera Angle in degrees wrt ground */
     //-29.25 for comp; -27.3 for pbot
     static constexpr double CAMERA_BUMPER_OFFSET =
