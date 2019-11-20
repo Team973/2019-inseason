@@ -46,11 +46,7 @@ public:
      * @param scheduler The TaskMgr object.
      * @param logger The LogSpreadsheet object.
      * @param leftDriveSparkA The first left GreySparkMax.
-     * @param leftDriveSparkB The second left GreySparkMax.
-     * @param leftDriveSparkC The third left GreySparkMax.
      * @param rightDriveSparkA The first right GreySparkMax.
-     * @param rightDriveSparkB The second right GreySparkMax.
-     * @param rightDriveSparkC The third right GreySparkMax.
      * @param stingerDriveMotor The Stinger's GreyTalonSRX.
      * @param gyro The ADXRS450_Gyro.
      * @param limelightHatch The hatch Limelight.
@@ -60,9 +56,7 @@ public:
      * @param operatorJoystick The operator's ObservableXboxJoystick.
      */
     Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
-          GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
-          GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
-          GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
+          GreySparkMax *leftDriveSparkA, GreySparkMax *rightDriveSparkA,
           GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
           Limelight *limelightHatch, HatchIntake *hatchIntake,
           Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
@@ -309,11 +303,7 @@ private:
     LogSpreadsheet *m_logger;
 
     GreySparkMax *m_leftDriveSparkA;
-    GreySparkMax *m_leftDriveSparkB;
-    GreySparkMax *m_leftDriveSparkC;
     GreySparkMax *m_rightDriveSparkA;
-    GreySparkMax *m_rightDriveSparkB;
-    GreySparkMax *m_rightDriveSparkC;
 
     GreyTalonSRX *m_stingerDriveMotor;
 

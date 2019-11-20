@@ -12,9 +12,7 @@ namespace frc973 {
 using namespace Trajectories;
 
 Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
-             GreySparkMax *leftDriveSparkA, GreySparkMax *leftDriveSparkB,
-             GreySparkMax *leftDriveSparkC, GreySparkMax *rightDriveSparkA,
-             GreySparkMax *rightDriveSparkB, GreySparkMax *rightDriveSparkC,
+             GreySparkMax *leftDriveSparkA, GreySparkMax *rightDriveSparkA,
              GreyTalonSRX *stingerDriveMotor, ADXRS450_Gyro *gyro,
              Limelight *limelightHatch, HatchIntake *hatchIntake,
              Elevator *elevator, ObservablePoofsJoystick *driverJoystick,
@@ -22,11 +20,7 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
         : DriveBase(scheduler, this, this, nullptr)
         , m_logger(logger)
         , m_leftDriveSparkA(leftDriveSparkA)
-        , m_leftDriveSparkB(leftDriveSparkB)
-        , m_leftDriveSparkC(leftDriveSparkC)
         , m_rightDriveSparkA(rightDriveSparkA)
-        , m_rightDriveSparkB(rightDriveSparkB)
-        , m_rightDriveSparkC(rightDriveSparkC)
         , m_stingerDriveMotor(stingerDriveMotor)
         , m_controlMode(ControlMode::PercentOutput)
         , m_leftDriveOutput(0.0)
@@ -90,21 +84,11 @@ Drive::Drive(TaskMgr *scheduler, LogSpreadsheet *logger,
     m_leftDriveSparkA->EnableVoltageCompensation(12.0);
     m_leftDriveSparkA->Config_PID(0, 1.0, 0.0, 0.0, 0.0);
 
-    m_leftDriveSparkB->Follow(*m_leftDriveSparkA);
-    m_leftDriveSparkB->SetInverted(false);
-    m_leftDriveSparkC->Follow(*m_leftDriveSparkB);
-    m_leftDriveSparkC->SetInverted(false);
-
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
     m_rightDriveSparkA->SetInverted(false);
     m_rightDriveSparkA->SetOpenLoopRampRate(0.3);
     m_rightDriveSparkA->EnableVoltageCompensation(12.0);
     m_rightDriveSparkA->Config_PID(0, 0.01, 0.0, 0.0, 0.0);
-
-    m_rightDriveSparkB->Follow(*m_rightDriveSparkA);
-    m_rightDriveSparkB->SetInverted(false);
-    m_rightDriveSparkC->Follow(*m_rightDriveSparkB);
-    m_rightDriveSparkC->SetInverted(false);
 
     m_stingerDriveMotor->SetNeutralMode(Coast);
     m_stingerDriveMotor->SetInverted(false);
@@ -353,22 +337,14 @@ void Drive::DisableDriveCurrentLimit() {
 
 void Drive::EnableBrakeMode() {
     m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kBrake);
-    m_leftDriveSparkB->SetIdleMode(CANSparkMax::IdleMode::kBrake);
-    m_leftDriveSparkC->SetIdleMode(CANSparkMax::IdleMode::kBrake);
 
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kBrake);
-    m_rightDriveSparkB->SetIdleMode(CANSparkMax::IdleMode::kBrake);
-    m_rightDriveSparkC->SetIdleMode(CANSparkMax::IdleMode::kBrake);
 }
 
 void Drive::EnableCoastMode() {
     m_leftDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
-    m_leftDriveSparkB->SetIdleMode(CANSparkMax::IdleMode::kCoast);
-    m_leftDriveSparkC->SetIdleMode(CANSparkMax::IdleMode::kCoast);
 
     m_rightDriveSparkA->SetIdleMode(CANSparkMax::IdleMode::kCoast);
-    m_rightDriveSparkB->SetIdleMode(CANSparkMax::IdleMode::kCoast);
-    m_rightDriveSparkC->SetIdleMode(CANSparkMax::IdleMode::kCoast);
 }
 
 void Drive::TaskPeriodic(RobotMode mode) {
