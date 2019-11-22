@@ -47,8 +47,17 @@ void Disabled::HandlePoofsJoystick(uint32_t port, uint32_t button,
             if (pressedP) {
                 m_drive->GetLimelightDriveWithSkew()->UpdateLimelightDriveDB();
                 m_limelightHatch->UpdateLimelightDB();
-                break;
             }
+            break;
+        case PoofsJoystick::LeftTrigger:
+            if (pressedP) {
+                m_drive->LimelightDriveWithSkew();
+            }
+            else {
+                m_drive->CheesyDrive(0, 0, false, true);
+                m_drive->SetDriveController(nullptr);
+            }
+            break;
     }
 }
 
